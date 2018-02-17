@@ -4,7 +4,10 @@
   "description": "The player moves around the field and paints the cells.",
   "main": "app.js",
   "scripts": {
-    "start": "node server"
+    "start": "node server/app.js"
+  },
+  "devDependencies": {
+    "express": "^4.16.2"
   },
   "repository": {
     "type": "git",
@@ -13,7 +16,7 @@
   "keywords": [
     "technopark"
   ],
-  "author": "Dmitry Zaytsev (@HaseProgram)",
+  "author": "S.D.D.",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D./issues"
