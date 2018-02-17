@@ -1,0 +1,22 @@
+{
+  "name": "colorit-game",
+  "version": "1.0.0",
+  "description": "The player moves around the field and paints the cells.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2018_1_S.D.D..git"
+  },
+  "keywords": [
+    "technopark"
+  ],
+  "author": "Dmitry Zaytsev (@HaseProgram)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D./issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D.#readme"
+}
