@@ -20,7 +20,6 @@ class Route {
      * 
      * @this {Route}
      */
-
     load() {
         if (this.instance == null) {
             this.instance = new this.controller();

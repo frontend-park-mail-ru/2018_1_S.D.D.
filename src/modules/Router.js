@@ -5,17 +5,12 @@ import Route from './route';
 class Router {
     
     /**
-     * Creates Router (singleton)
+     * Creates Router
      * 
      * @this {Router}
      */
     constructor() {
-        if (Router.__instance != null) {
-            return Router.__instance;
-        }
-        Router.__instance == this;
         this.routes = [];
-
     }
 
     /**
