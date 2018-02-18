@@ -10,5 +10,6 @@ deploy:
   provider: heroku
   api_key:
     secure: b6a99335-aa23-49e9-8130-4e04ef9c0b73
-  app:
-    travis: color-it
+  app: color-it
+  on:
+    all_branches: true
