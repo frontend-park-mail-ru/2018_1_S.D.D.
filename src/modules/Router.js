@@ -6,8 +6,6 @@ class Router {
     
     /**
      * Creates Router
-     * 
-     * @this {Router}
      */
     constructor() {
         this.routes = [];
@@ -16,21 +14,76 @@ class Router {
     /**
      * Adds route to Router
      * 
-     * @param {string} urlPath - url path to page 
+     * @param {string} urlPath - url path to page
      * @param {object} controller - controller, which render page
-     * @this {Router} 
      */
     addRoute(urlPath, controller) {
-        const route = new Router(urlPath, controller);
+        const route = new Route(urlPath, controller);
         this.routes.push(route);
     }
 
-    go() {
+    /** 
+     * Returns current page url path 
+     * 
+     * @return {string} - current path
+    */
+    getCurrentUrlPath() {
+        window.location.pathname;
+    }
 
+    /**
+     * Redirect to new page specified by urlPath
+     * 
+     * @param {string} urlPath - url path to page 
+     */
+    go(urlPath) {
+        if (urlPath === this.getCurrentUrlPath()) {
+            return;
+        }
+        window.history.pushState({}, '', urlPath);
+        this.loadPage(urlPath);
     }
     
-    loadPage() {
-        
+    /**
+     * Checks path for valid and returns new path
+     *
+     * @param {string} urlPath - url path to page
+     * @return {string} - new url path to page 
+     */
+    getNewUrlPath(urlPath) {
+        if (!urlPath) {
+            return this.getCurrentUrlPath();
+        }
+
+        if (urlPath != '/' && urlPath.slice(-1) == '/') {
+            return urlPath.slice(0, 1);
+        }
+
+        // return 
+
+    }
+
+    /**
+     * Loads page associated with url 
+     * 
+     * @param {string} urlPath - url path to page
+     */
+    changePage(urlPath) {
+        const newUrlPath = this.getNewUrlPath(urlPath);
+        const route = this.routes.find(routeIterator => {
+            return routeIterator.urlPath == newUrlPath;
+        });
+
+        if (this.currentRoute != null) {
+            this.currentRoute.destroy();
+        }
+
+        if (!route) {
+            route = this.routes[0];
+        }
+
+        this.currentRoute = route;
+        this.currentRoute.load();
     }
 }
 

@@ -4,8 +4,6 @@
 class ServiceManager {
     /** 
      * Creates Service manager object (singleton)
-     * 
-     * @this {ServiceManager}
      */
     constructor() {
         if (ServiceManager._instance) {
@@ -20,8 +18,6 @@ class ServiceManager {
     
     /**
      * Returns Router object
-     * 
-     * @this {ServiceManger}
      */
     get router() {
         return this._router;
@@ -29,8 +25,6 @@ class ServiceManager {
 
     /**
      * Returns User object
-     * 
-     * @this {ServiceManger}
      */
     get user() {
         return this._user;
@@ -38,8 +32,6 @@ class ServiceManager {
 
     /**
      * Returns ApiService object
-     * 
-     * @this {ServiceManger}
      */
     get apiService() {
         return this._apiService;

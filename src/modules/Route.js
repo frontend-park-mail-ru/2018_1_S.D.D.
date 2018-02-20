@@ -7,7 +7,6 @@ class Route {
      * 
      * @param {string} urlPath - url path to page
      * @param {object} controller - controller, which renders page
-     * @this {Route}
      */
     constructor(urlPath, controller) {
         this.urlPath = urlPath;
@@ -17,8 +16,6 @@ class Route {
 
     /**
      * Creates instance to render current page
-     * 
-     * @this {Route}
      */
     load() {
         if (this.instance == null) {
@@ -31,8 +28,6 @@ class Route {
 
     /** 
      * Destroys instance
-     * 
-     * @this {Route}
      */
     destroy() {
         this.instance.destroyPage();
