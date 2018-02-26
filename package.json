@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D.#readme",
   "pre-commit": {
-    "run": "lintFix"
+    "run": "lint-fix"
   },
   "eslintIgnore": ["./node_modules/"]
 }
