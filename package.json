@@ -4,14 +4,14 @@
   "description": "The player moves around the field and paints the cells.",
   "main": "app.js",
   "scripts": {
-    "start": "node server/app.js",
+    "start": "npm run build-dev && node server/app.js",
     "build-dev": "webpack --config webpack.dev.js",
     "lint-fix": "eslint ./ --fix"
   },
   "devDependencies": {
     "express": "^4.16.2",
     "pre-commit": "^1.2.2",
-    "webpack": "^4.0.0",
+    "webpack": "^3.6.0",
     "pug": "^2.0.0-rc.4",
     "pug-loader": "^2.3.0"
   },
