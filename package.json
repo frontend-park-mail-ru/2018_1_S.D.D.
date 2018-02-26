@@ -4,10 +4,12 @@
   "description": "The player moves around the field and paints the cells.",
   "main": "app.js",
   "scripts": {
-    "start": "node server/app.js"
+    "start": "node server/app.js",
+    "lintFix": "eslint ./server/ --fix; eslint ./src/ --fix"
   },
   "devDependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "pre-commit": "^1.2.2"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D./issues"
   },
-  "homepage": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D.#readme"
+  "homepage": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D.#readme",
+  "pre-commit": {
+    "run": "lintFix"
+  }
 }
