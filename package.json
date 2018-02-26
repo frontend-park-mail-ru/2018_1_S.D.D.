@@ -5,11 +5,15 @@
   "main": "app.js",
   "scripts": {
     "start": "node server/app.js",
-    "lintFix": "eslint ./server/ --fix; eslint ./src/ --fix"
+    "build-dev": "webpack --config webpack.dev.js",
+    "lint-fix": "eslint ./ --fix"
   },
   "devDependencies": {
     "express": "^4.16.2",
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^1.2.2",
+    "webpack": "^4.0.0",
+    "pug": "^2.0.0-rc.4",
+    "pug-loader": "^2.3.0"
   },
   "repository": {
     "type": "git",
@@ -26,5 +30,6 @@
   "homepage": "https://github.com/frontend-park-mail-ru/2018_1_S.D.D.#readme",
   "pre-commit": {
     "run": "lintFix"
-  }
+  },
+  "eslintIgnore": ["./node_modules/"]
 }
