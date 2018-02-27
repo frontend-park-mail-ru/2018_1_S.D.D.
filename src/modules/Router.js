@@ -15,10 +15,10 @@ class Router {
      * Adds route to Router
      * 
      * @param {string} urlPath - url path to page
-     * @param {object} controller - controller, which render page
+     * @param {object} Controller - controller, which render page
      */
-    addRoute(urlPath, controller) {
-        const route = new Route(urlPath, controller);
+    addRoute(urlPath, Controller) {
+        const route = new Route(urlPath, Controller);
         this.routes.push(route);
     }
 
@@ -51,16 +51,11 @@ class Router {
      * @return {string} - new url path to page 
      */
     getNewUrlPath(urlPath) {
-        if (!urlPath) {
-            return this.getCurrentUrlPath();
+        if (urlPath && urlPath != '/' && urlPath.slice(-1) == '/') {
+            return urlPath.slice(0, -1);
         }
 
-        if (urlPath != '/' && urlPath.slice(-1) == '/') {
-            return urlPath.slice(0, 1);
-        }
-
-        // return 
-
+        return this.getCurrentUrlPath();
     }
 
     /**

@@ -31,5 +31,7 @@
   "pre-commit": {
     "run": "lint-fix"
   },
-  "eslintIgnore": ["./node_modules/"]
+  "eslintIgnore": [
+    "./node_modules/"
+  ]
 }

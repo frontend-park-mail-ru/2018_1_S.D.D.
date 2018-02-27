@@ -11,30 +11,30 @@ class ServiceManager {
         }   
         ServiceManager._instance = this;
      
-        this._user = new User();
-        this._router = new Router();
-        this._apiService = new Api();
+        this._User = new User();
+        this._Router = new Router();
+        this._ApiService = new Api();
     }
     
     /**
      * Returns Router object
      */
-    get router() {
-        return this._router;
+    get Router() {
+        return this._Router;
     }
 
     /**
      * Returns User object
      */
-    get user() {
-        return this._user;
+    get User() {
+        return this._User;
     }
 
     /**
      * Returns ApiService object
      */
-    get apiService() {
-        return this._apiService;
+    get ApiService() {
+        return this._ApiService;
     }
 }
 
