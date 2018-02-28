@@ -23,6 +23,10 @@ class Controller {
 	actionIndex() {
 		this._View.show();
 	}
+
+	get ServiceManager() {
+		return this._SM;
+	}
 }
 
 export default Controller;

@@ -1,7 +1,11 @@
 'use strict';
 import Route from './route';
 
-/** Class represents router in application. Allows  url routing. */
+/** 
+ * Creates Router.
+ * @class
+ * @classdesc Provide routing in application.
+*/
 class Router {
     
 	/**
@@ -14,8 +18,8 @@ class Router {
 	/**
      * Adds route to Router
      * 
-     * @param {string} urlPath - url path to page
-     * @param {object} Controller - controller, which render page
+     * @param {string} urlPath Url path to page
+     * @param {object} Controller Controller, which render page
      */
 	addRoute(urlPath, Controller) {
 		const route = new Route(urlPath, Controller);
@@ -25,7 +29,7 @@ class Router {
 	/** 
      * Returns current page url path 
      * 
-     * @return {string} - current path
+     * @return {string} Current path
     */
 	getCurrentUrlPath() {
 		window.location.pathname;
@@ -34,7 +38,7 @@ class Router {
 	/**
      * Redirect to new page specified by urlPath
      * 
-     * @param {string} urlPath - url path to page 
+     * @param {string} urlPath Url path to page 
      */
 	go(urlPath) {
 		if (urlPath === this.getCurrentUrlPath()) {
@@ -47,8 +51,8 @@ class Router {
 	/**
      * Checks path for valid and returns new path
      *
-     * @param {string} urlPath - url path to page
-     * @return {string} - new url path to page 
+     * @param {string} urlPath Url path to page
+     * @return {string} New url path to page 
      */
 	getNewUrlPath(urlPath) {
 		if (urlPath && urlPath != '/' && urlPath.slice(-1) == '/') {
@@ -61,7 +65,7 @@ class Router {
 	/**
      * Loads page associated with url 
      * 
-     * @param {string} urlPath - url path to page
+     * @param {string} urlPath Url path to page
      */
 	changePage(urlPath) {
 		const newUrlPath = this.getNewUrlPath(urlPath);
