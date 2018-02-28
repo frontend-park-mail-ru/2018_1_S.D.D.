@@ -3,11 +3,11 @@
 /** Class representing functionality to store controller and url associated with it. */ 
 class Route {
 	/**
-     * Creates Route instance
-     * 
-     * @param {string} urlPath - url path to page
-     * @param {object} controller - controller, which renders page
-     */
+	 * Creates Route instance
+	 * 
+	 * @param {string} urlPath - url path to page
+	 * @param {object} controller - controller, which renders page
+	 */
 	constructor(urlPath, controller) {
 		this.urlPath = urlPath;
 		this.controller = controller;
@@ -15,8 +15,8 @@ class Route {
 	}
 
 	/**
-     * Creates instance to render current page
-     */
+	 * Creates instance to render current page
+	 */
 	load() {
 		if (this.instance == null) {
 			this.instance = new this.controller();
@@ -27,8 +27,8 @@ class Route {
 
 
 	/** 
-     * Destroys instance
-     */
+	 * Destroys instance
+	 */
 	destroy() {
 		this.instance.destroyPage();
 		this.instance = null;

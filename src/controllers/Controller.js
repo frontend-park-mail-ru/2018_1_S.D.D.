@@ -6,8 +6,8 @@
 */
 class Controller {
 	/** 
-     * Default action.
-    */
+	 * Default action.
+	 */
 	actionIndex() {
 	}
 }

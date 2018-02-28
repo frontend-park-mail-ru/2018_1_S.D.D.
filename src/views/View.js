@@ -10,7 +10,7 @@ import Dom from '../modules/Dom';
  */
 class View {
 	/**
-	 * Creates instance of View
+	 * Creates instance of View. Finds main parts of page.
 	 */
 	constructor() {
 		this._Dom = new Dom();
@@ -25,8 +25,8 @@ class View {
 	}
 
 	/** 
-     * Display page.
-    */
+	 * Display page.
+	 */
 	show() {
 
 	}

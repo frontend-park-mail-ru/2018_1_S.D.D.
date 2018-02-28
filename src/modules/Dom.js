@@ -71,7 +71,7 @@ class Dom {
 	 * 
 	 * @param {HTMLElement} element Root element
 	 * @param {string} className Class name to find
-     * @returns {Array} Array of founded HTMLElements
+	 * @returns {Array} Array of founded HTMLElements
 	 */
 	getByClass(element, className) {
 		return element.getElementsByClassName(className);
@@ -82,7 +82,7 @@ class Dom {
 	 * 
 	 * @param {HTMLElement} element Root element
 	 * @param {string} id Id to find
-     * @returns {HTMLElement} Founded HTMLElement
+	 * @returns {HTMLElement} Founded HTMLElement
 	 */
 	getById(element, id) {
 		return element.getElementById(id);
@@ -93,7 +93,7 @@ class Dom {
 	 * 
 	 * @param {HTMLElement} element Root element
 	 * @param {string} tagName Tag name to find
-     * @returns {Array} Array of founded HTMLElements
+	 * @returns {Array} Array of founded HTMLElements
 	 */
 	getByTag(element, tagName) {
 		return element.getElementsByTagName(tagName);
@@ -142,12 +142,12 @@ class Dom {
 	}
 
 	/**
-     * Insert element in DOM
-     * 
-     * @param {HTMLElement} parent Root of inserted element
-     * @param {HTMLElement} element Element to insert in DOM
-     * @param {boolean} insertBefore Flag - insert before content
-     */
+	 * Insert element in DOM
+	 * 
+	 * @param {HTMLElement} parent Root of inserted element
+	 * @param {HTMLElement} element Element to insert in DOM
+	 * @param {boolean} insertBefore Flag - insert before content
+	 */
 	insertDom(parent, element, insertBefore = false) {
 		if(insertBefore) {
 			parent.insertBefore(element, parent.firstChild);

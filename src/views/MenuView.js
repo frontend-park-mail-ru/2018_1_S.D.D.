@@ -11,8 +11,8 @@ import MenuTemplate from '../ui/templates/menu/menu';
  */
 class MenuView extends View {
 	/**
-     * Creates instance of MenuView
-     */
+	 * Creates instance of MenuView
+	 */
 	constructor() {
 		super();
 		this.template = MenuTemplate.render({

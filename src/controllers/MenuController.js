@@ -5,8 +5,8 @@ import MenuView from '../views/MenuView';
 
 class MenuController extends Controller {
 	/**
-     * Creates instance of MenuController
-     */
+	 * Creates instance of MenuController
+	 */
 	constructor() {
 		super();
 		this._View = new MenuView();

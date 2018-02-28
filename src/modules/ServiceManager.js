@@ -5,8 +5,8 @@ import Router from './Router';
 /** Service manager object - container of major application objects */
 class ServiceManager {
 	/** 
-     * Creates Service manager object (singleton)
-     */
+	 * Creates Service manager object (singleton)
+	 */
 	constructor() {
 		if (ServiceManager._instance) {
 			return ServiceManager._instance;
@@ -19,22 +19,22 @@ class ServiceManager {
 	}
     
 	/**
-     * Returns Router object
-     */
+	 * Returns Router object
+	 */
 	get Router() {
 		return this._Router;
 	}
 
 	/**
-     * Returns User object
-     */
+	 * Returns User object
+	 */
 	get User() {
 		return this._User;
 	}
 
 	/**
-     * Returns ApiService object
-     */
+	 * Returns ApiService object
+	 */
 	get ApiService() {
 		return this._ApiService;
 	}

@@ -9,37 +9,37 @@ import Route from './route';
 class Router {
     
 	/**
-     * Creates Router
-     */
+	 * Creates Router
+	 */
 	constructor() {
 		this.routes = [];
 	}
 
 	/**
-     * Adds route to Router
-     * 
-     * @param {string} urlPath Url path to page
-     * @param {object} Controller Controller, which render page
-     */
+	 * Adds route to Router
+	 * 
+	 * @param {string} urlPath Url path to page
+	 * @param {object} Controller Controller, which render page
+	 */
 	addRoute(urlPath, Controller) {
 		const route = new Route(urlPath, Controller);
 		this.routes.push(route);
 	}
 
 	/** 
-     * Returns current page url path 
-     * 
-     * @return {string} Current path
-    */
+	 * Returns current page url path 
+	 * 
+	 * @return {string} Current path
+	 */
 	getCurrentUrlPath() {
 		window.location.pathname;
 	}
 
 	/**
-     * Redirect to new page specified by urlPath
-     * 
-     * @param {string} urlPath Url path to page 
-     */
+	 * Redirect to new page specified by urlPath
+	 * 
+	 * @param {string} urlPath Url path to page 
+	 */
 	go(urlPath) {
 		if (urlPath === this.getCurrentUrlPath()) {
 			return;
@@ -49,11 +49,11 @@ class Router {
 	}
     
 	/**
-     * Checks path for valid and returns new path
-     *
-     * @param {string} urlPath Url path to page
-     * @return {string} New url path to page 
-     */
+	 * Checks path for valid and returns new path
+	 *
+	 * @param {string} urlPath Url path to page
+	 * @return {string} New url path to page 
+	 */
 	getNewUrlPath(urlPath) {
 		if (urlPath && urlPath != '/' && urlPath.slice(-1) == '/') {
 			return urlPath.slice(0, -1);
@@ -63,10 +63,10 @@ class Router {
 	}
 
 	/**
-     * Loads page associated with url 
-     * 
-     * @param {string} urlPath Url path to page
-     */
+	 * Loads page associated with url 
+	 * 
+	 * @param {string} urlPath Url path to page
+	 */
 	changePage(urlPath) {
 		const newUrlPath = this.getNewUrlPath(urlPath);
 		let route = this.routes.find(routeIterator => {
