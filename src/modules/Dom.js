@@ -110,7 +110,7 @@ class Dom {
 		const selectorArray = selector.split(' ');
 		selectorArray.some(selectorElement => {
 			const elementType = selectorElement[0];
-            const s = selectorElement.substring(1, selectorElement.length);
+			const s = selectorElement.substring(1, selectorElement.length);
 			if(!searchableElement) {
 				switch(elementType) {
 				case '#':
