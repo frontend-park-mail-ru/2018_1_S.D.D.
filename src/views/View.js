@@ -13,18 +13,14 @@ class View {
 	 * Creates instance of View
 	 */
 	constructor() {
-		if(View._instance) {
-			return View._instance;
-		}
-		View._instance = this;
 		this._Dom = new Dom();
 
 		this._body = this.Dom.getByTag(document, 'body')[0];
-		this._main = this.Dom.get(".block .main");
-		this._left = this.Dom.get(".block .left");
-		this._right = this.Dom.get(".block .right");
+		this._main = this.Dom.get('.block .main');
+		this._left = this.Dom.get('.block .left');
+		this._right = this.Dom.get('.block .right');
 
-		this._parts = {};
+		this._parts = {}; // later in a different singleton class
 
 	}
 

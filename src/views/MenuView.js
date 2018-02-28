@@ -1,6 +1,7 @@
 'use strict';
 
 import View from './View';
+import MenuTemplate from '../ui/templates/menu/menu';
 
 /**
  * Creates instance of MenuView
@@ -14,15 +15,18 @@ class MenuView extends View {
      */
 	constructor() {
 		super();
+		this.template = MenuTemplate.render({
+			menuItems: [{link:'123',text:'456'}]
+		}); // later in parts object
 	}
     
 	show() {
+		
+	}
 
-    }
-
-    hide() {
+	hide() {
         
-    }
+	}
 }
 
-export default MenuController;
+export default MenuView;

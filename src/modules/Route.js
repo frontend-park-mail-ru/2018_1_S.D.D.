@@ -22,7 +22,7 @@ class Route {
 			this.instance = new this.controller();
 		}
 
-		this.controller.renderPage();
+		this.instance.actionIndex();
 	}
 
 

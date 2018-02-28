@@ -9,10 +9,11 @@ class MenuController extends Controller {
      */
 	constructor() {
 		super();
+		this._View = new MenuView();
 	}
     
 	actionIndex() {
-       
+		this._View.show();
 	}
 }
 

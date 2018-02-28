@@ -45,7 +45,7 @@ class Router {
 			return;
 		}
 		window.history.pushState({}, '', urlPath);
-		this.loadPage(urlPath);
+		this.changePage(urlPath);
 	}
     
 	/**
@@ -80,7 +80,6 @@ class Router {
 		if (!route) {
 			route = this.routes[0];
 		}
-
 		this.currentRoute = route;
 		this.currentRoute.load();
 	}

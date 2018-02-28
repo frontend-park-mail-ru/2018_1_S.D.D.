@@ -108,9 +108,9 @@ class Dom {
 	get(selector) {
 		let searchableElement = false;
 		const selectorArray = selector.split(' ');
-		selectorArray.forEach(selectorElement => {
+		selectorArray.some(selectorElement => {
 			const elementType = selectorElement[0];
-			const s = selectorElement.substring(1, selectorElement.length);
+            const s = selectorElement.substring(1, selectorElement.length);
 			if(!searchableElement) {
 				switch(elementType) {
 				case '#':
@@ -123,8 +123,8 @@ class Dom {
 					searchableElement = this.getByTag(document, selectorElement);
 					break;
 				}
-				if(!searchableElement) {
-					return false;
+				if(!searchableElement || searchableElement.length === 0) {
+					return true;
 				}
 			} else {
 				if(searchableElement.isArray()) {
@@ -133,28 +133,28 @@ class Dom {
 					});
 				} else {
 					if(!this.hasSelector(searchableElement, selectorElement)) {
-						return false;
+						return true;
 					}
 				}
 			}
 		});
 		return searchableElement;
-    }
+	}
 
-    /**
+	/**
      * Insert element in DOM
      * 
      * @param {HTMLElement} parent Root of inserted element
      * @param {HTMLElement} element Element to insert in DOM
      * @param {boolean} insertBefore Flag - insert before content
      */
-    insertDom(parent, element, insertBefore = false) {
-        if(insertBefore) {
-            parent.insertBefore(element, parent.firstChild);
-        } else {
-            parent.appendChild(element);
-        }
-    }
+	insertDom(parent, element, insertBefore = false) {
+		if(insertBefore) {
+			parent.insertBefore(element, parent.firstChild);
+		} else {
+			parent.appendChild(element);
+		}
+	}
 }
 
 export default Dom;

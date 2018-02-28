@@ -1,6 +1,7 @@
 'use strict';
 
-import Router from 'Router';
+import Router from './Router';
+import Controller from '../controllers/Controller'
 
 /** Service manager object - container of major application objects */
 class ServiceManager {
