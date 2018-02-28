@@ -1,8 +1,7 @@
 'use strict';
 
 import Controller from './Controller';
-//import MenuView from '../views/MenuView';
-//import MenuModel from '../models/MenuModel';
+import MenuView from '../views/MenuView';
 
 class MenuController extends Controller {
 	/**
