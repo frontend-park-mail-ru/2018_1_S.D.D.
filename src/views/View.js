@@ -64,10 +64,17 @@ class View {
 	 */
 	load(templateName, templateObject, properties = null) {
 		const T = this._TemplateHolder.template(templateName);
+		
 		if(!T || T.reload || properties.reload) {
 			const html = templateObject.render(properties);
 			properties.reload = false;
-			this._TemplateHolder.save(templateName, html);
+
+			// if(T) -> it's reload
+			if(T) {
+				this._TemplateHolder.upadte(templateName, html, properties);
+			} else {
+				this._TemplateHolder.save(templateName, html, properties);
+			}
 
 			if(properties.block && this._vb[properties.block]) {
 				this.Dom.insertDom(this._vb[properties.block].root, html);
