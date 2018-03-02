@@ -82,6 +82,19 @@ class TemplateHolder {
 		}
 		delete this._parts[templateName];
 	}
+
+	/**
+	 * Get template from holder.
+	 * 
+	 * @param {string} templateName Template ID in holder.
+	 * @returns {boolean|Object} False if template not found, template object other case.
+	 */
+	template(templateName) {
+		if(!this._parts[templateName]) {
+			return false;
+		}
+		return this._parts[templateName];
+	}
 }
 
 export default TemplateHolder;

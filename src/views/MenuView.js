@@ -19,13 +19,18 @@ class MenuView extends View {
 	}
 
 	_loadRequirements() {
-		this._menuTemplate = this.load('Menu', MenuTemplate,{
-			menuItems: [{link:'123',text:'456'}]
+		this._menuTemplate = this.load('Menu', MenuTemplate, {
+			menuItems: [
+				{ link:'/index', text:'Home' },
+				{ link:'/about', text:'About' },
+				{ link:'/rules', text:'Rules' },
+			],
+			block: 'right'
 		});
 	}
     
 	constructPage() {
-		this.show('Menu', 'right');
+		this.show('Menu');
 	}
 
 	destroyPage() {

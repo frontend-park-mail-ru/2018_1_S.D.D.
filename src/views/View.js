@@ -26,7 +26,7 @@ class View {
 		this._vb = {
 			'main': {
 				'root': Dom.get('.block .main')[0],
-				'content': null,
+				'active': false,
 				'show': () => {
 					this._vb.left.hide();
 					this._vb.right.hide();
@@ -35,7 +35,7 @@ class View {
 			},
 			'left': {
 				'root': Dom.get('.block .left')[0],
-				'content': null,
+				'active': false,
 				'show': () => {
 					this._vb.main.hide();
 				},
@@ -43,7 +43,7 @@ class View {
 			},
 			'right': {
 				'root': Dom.get('.block .right')[0],
-				'content': null,
+				'active': false,
 				'show': () => {
 					this._vb.main.hide();
 				},
@@ -53,41 +53,40 @@ class View {
 	}
 
 	/**
-	 * Searches for template, which was required in view.
+	 * Searches for template, which was required in view and insert in DOM.
 	 * 
 	 * @param {string} templateName Template name (key)
 	 * @param {Object} templateObject Template object (Renderer)
 	 * @param {Object} properties Some custom properties.
 	 */
 	load(templateName, templateObject, properties = null) {
-		const T = this._TemplateHolder[templateName];
+		const T = this._TemplateHolder.template(templateName);
 		if(!T || T.reload || properties.reload) {
 			const html = templateObject.render(properties);
 			properties.reload = false;
 			this._TemplateHolder.save(templateName, html);
+			if(properties.block && this._vb[properties.block]) {
+				this.Dom.insertDom(this._vb[properties.block].root, html);
+			} else {
+				let first = false;
+				if(properties.appendFirst) {
+					first = true;
+				}
+				this.Dom.insertDom(this._body, html, first);
+			}
 		}
 	}
 
 	/** 
 	 * Display element.
 	 */
-	show(templateName, block = null) {
-		if (block) {
-			if(this._vb[block].content !== templateName) {
-				this._vb[block].hide();
-				this._vb[block].content = templateName;
-				this._vb[block].root.innerHTML = '';
-				this.Dom.insertDom(
-					this._vb[block].root,
-					this._TemplateHolder.load(templateName)
-				);
-				this._vb[block].show();
+	show(templateName) {
+		const T = this._TemplateHolder.load(templateName);
+		if(T) {
+			T.hidden = false;
+			if(T.block) {
+				this._vb[T.block].show();
 			}
-		} else {
-			this.Dom.insertDom(
-				this._body, 
-				this._TemplateHolder.load(templateName)
-			);
 		}
 	}
 
