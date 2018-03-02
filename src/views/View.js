@@ -1,6 +1,7 @@
 'use strict';
 
 import Dom from '../modules/Dom';
+import TemplateHolder from '../ui/templates/TemplateHolder'
 
 /**
  * Creates instance of View
@@ -14,14 +15,12 @@ class View {
 	 */
 	constructor() {
 		this._Dom = new Dom();
+		this._TemplateHolder = new TemplateHolder();
 
 		this._body = this.Dom.getByTag(document, 'body')[0];
 		this._main = this.Dom.get('.block .main');
 		this._left = this.Dom.get('.block .left');
 		this._right = this.Dom.get('.block .right');
-
-		this._parts = {}; // later in a different singleton class
-
 	}
 
 	/** 
