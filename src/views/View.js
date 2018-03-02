@@ -1,7 +1,7 @@
 'use strict';
 
 import Dom from '../modules/Dom';
-import TemplateHolder from '../ui/templates/TemplateHolder'
+import TemplateHolder from '../ui/templates/TemplateHolder';
 
 /**
  * Creates instance of View
