@@ -28,6 +28,26 @@ class Dom {
 	}
 
 	/**
+	 * Removes class from element
+	 * 
+	 * @param {HTMLElement} element Element with class
+	 * @param {string} className Class to delete
+	 */
+	removeClass(element, className) {
+		element.classList.remove(className);
+	}
+
+	/**
+	 * Add class to element
+	 * 
+	 * @param {HTMLElement} element Element without class
+	 * @param {string} className Class to add
+	 */
+	addClass(element, className) {
+		element.classList.add(className);
+	}
+
+	/**
 	 * Check if element has id.
 	 * 
 	 * @param {HTMLElement} element Element to check
@@ -117,17 +137,17 @@ class Dom {
 					searchableElement = this.getById(document, s);
 					break;
 				case '.':
-					searchableElement = this.getByClass(document, s);
+					searchableElement = Array.from(this.getByClass(document, s));
 					break;
 				default:
-					searchableElement = this.getByTag(document, selectorElement);
+					searchableElement = Array.from(this.getByTag(document, selectorElement));
 					break;
 				}
 				if(!searchableElement || searchableElement.length === 0) {
 					return true;
 				}
 			} else {
-				if(searchableElement.isArray()) {
+				if(Array.isArray(searchableElement)) {
 					searchableElement = searchableElement.filter(element => {
 						return this.hasSelector(element, selectorElement);
 					});

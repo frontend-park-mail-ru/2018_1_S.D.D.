@@ -15,16 +15,20 @@ class MenuView extends View {
 	 */
 	constructor() {
 		super();
-		this.template = MenuTemplate.render({
-			menuItems: [{link:'123',text:'456'}]
-		}); // later in parts object
-	}
-    
-	show() {
-		
+		this._loadRequirements();
 	}
 
-	hide() {
+	_loadRequirements() {
+		this._menuTemplate = this.load('Menu', MenuTemplate,{
+			menuItems: [{link:'123',text:'456'}]
+		});
+	}
+    
+	constructPage() {
+		this.show('Menu', 'right');
+	}
+
+	destroyPage() {
         
 	}
 }

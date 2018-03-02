@@ -5,6 +5,8 @@ import './menu.scss';
 
 export default {
 	render: params => {
-		return template(params);
+		const elem = document.createElement('div');
+		elem.innerHTML = template(params);
+		return elem;
 	}
 };

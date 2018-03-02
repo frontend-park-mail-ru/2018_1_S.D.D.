@@ -13,7 +13,7 @@ class MenuController extends Controller {
 	}
     
 	actionIndex() {
-		this._View.show();
+		this._View.constructPage();
 	}
 }
 

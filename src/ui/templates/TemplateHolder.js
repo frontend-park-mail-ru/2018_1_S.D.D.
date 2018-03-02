@@ -30,8 +30,11 @@ class TemplateHolder {
 	save(templateName, templateHTML, properties = {}) {
 		if(!this._parts[templateName]) {
 			this._parts[templateName] = {
-				'html': templateHTML, properties
+				'html': templateHTML, 
+				'reload': false,
+				properties
 			};
+			return true;
 		}
 		return false;
 	}
@@ -42,9 +45,12 @@ class TemplateHolder {
 	 * @param {string} templateName Template ID in holder.
 	 * @param {Object} properties Asociated array with properties.
 	 */
-	update(templateName, properties = {}) {
+	update(templateName, templateHTML = null, properties = {}) {
 		if(!this._parts[templateName]) {
 			return false;
+		}
+		if(templateHTML) {
+			this._parts[templateName].html = templateHTML;
 		}
 		for(let [key, property] of properties) {
 			this._parts[templateName][key] = property;
@@ -62,6 +68,19 @@ class TemplateHolder {
 			return false;
 		}
 		return this._parts[templateName].html;
+	}
+
+	/**
+	 * Delete template from holder.
+	 * 
+	 * @param {string} templateName Template ID in holder.
+	 * @returns {boolean} False if template not found, true in deleted successful.
+	 */
+	delete(templateName) {
+		if(!this._parts[templateName]) {
+			return false;
+		}
+		delete this._parts[templateName];
 	}
 }
 
