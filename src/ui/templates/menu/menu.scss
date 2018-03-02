@@ -14,8 +14,13 @@ $menu-background-hovered: rgba(162, 169, 211, 0.5);
     padding: 5px 20px;
 }
 
-.menu__item:hover{
+.menu__item:hover {
     background: $menu-background-hovered;
+}
+
+.menu__item__link {
+    color: $menu-text-color;
+    text-decoration: none;
 }
 
 @media screen and (max-width: 1080px) {

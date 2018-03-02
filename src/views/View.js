@@ -2,6 +2,7 @@
 
 import Dom from '../modules/Dom';
 import TemplateHolder from '../ui/templates/TemplateHolder';
+import '../ui/styles/main.scss';
 
 /**
  * Creates instance of View
@@ -25,7 +26,7 @@ class View {
 		const Dom = this.Dom;
 		this._vb = {
 			'main': {
-				'root': Dom.get('.block .main')[0],
+				'root': Dom.get('#main'),
 				'active': false,
 				'show': () => {
 					this._vb.left.hide();
@@ -34,7 +35,7 @@ class View {
 				'hide': () => {}
 			},
 			'left': {
-				'root': Dom.get('.block .left')[0],
+				'root': Dom.get('#left'),
 				'active': false,
 				'show': () => {
 					this._vb.main.hide();
@@ -42,7 +43,7 @@ class View {
 				'hide': () => {}
 			},
 			'right': {
-				'root': Dom.get('.block .right')[0],
+				'root': Dom.get('#right'),
 				'active': false,
 				'show': () => {
 					this._vb.main.hide();
@@ -64,7 +65,7 @@ class View {
 	 */
 	load(templateName, templateObject, properties = null) {
 		const T = this._TemplateHolder.template(templateName);
-		
+
 		if(!T || T.reload || properties.reload) {
 			const html = templateObject.render(properties);
 			properties.reload = false;

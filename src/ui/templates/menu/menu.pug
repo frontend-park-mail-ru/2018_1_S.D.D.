@@ -1,5 +1,4 @@
-.block.block_inline.block_w50p
-    ul.list.menu
-        each item in menuItems
-            li.list__item.menu__item
-                a(href=item.link) #{item.text}
+ul.list.menu
+    each item in menuItems
+        li.list__item.menu__item
+            a(href=item.link).menu__item__link #{item.text}
