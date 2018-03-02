@@ -58,6 +58,9 @@ class View {
 	 * @param {string} templateName Template name (key)
 	 * @param {Object} templateObject Template object (Renderer)
 	 * @param {Object} properties Some custom properties.
+	 * @param properties.block View block
+	 * @param properties.reload Even if template already exists - we render it.
+	 * @param properties.appendFirst Flag - insert before content.
 	 */
 	load(templateName, templateObject, properties = null) {
 		const T = this._TemplateHolder.template(templateName);
@@ -65,6 +68,7 @@ class View {
 			const html = templateObject.render(properties);
 			properties.reload = false;
 			this._TemplateHolder.save(templateName, html);
+
 			if(properties.block && this._vb[properties.block]) {
 				this.Dom.insertDom(this._vb[properties.block].root, html);
 			} else {
@@ -79,6 +83,8 @@ class View {
 
 	/** 
 	 * Display element.
+	 * 
+	 * @param {string} templateName Name of template to display.
 	 */
 	show(templateName) {
 		const T = this._TemplateHolder.load(templateName);
@@ -92,9 +98,17 @@ class View {
 
 	/**
 	 * Hide element.
+	 * 
+	 * @param {string} templateName Name of template to hide.
 	 */
-	hide() {
-		
+	hide(templateName) {
+		const T = this._TemplateHolder.load(templateName);
+		if(T) {
+			T.hidden = true;
+			if(T.block) {
+				this._vb[T.block].hide();
+			}
+		}
 	}
 
 	get Dom() {

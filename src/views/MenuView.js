@@ -34,7 +34,7 @@ class MenuView extends View {
 	}
 
 	destroyPage() {
-        
+		this.hide('Menu');
 	}
 }
 
