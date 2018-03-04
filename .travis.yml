@@ -13,4 +13,4 @@ deploy:
   app: color-it
   on:
     all_branches: true
-run: npm install && npm start
+run: npm install && npm run start
