@@ -50,9 +50,11 @@ class TemplateHolder {
 			return false;
 		}
 		if(templateHTML) {
+			this._parts[templateName].html.remove();
 			this._parts[templateName].html = templateHTML;
 		}
-		for(let [key, property] of properties) {
+
+		for(let [key, property] in properties) {
 			this._parts[templateName][key] = property;
 		}
 	}

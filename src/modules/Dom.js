@@ -125,7 +125,7 @@ class Dom {
 	 * @param {string} selector CSS selector like "tag #id .class"
 	 * @returns {(HtmlElement|Array|Boolean)} HTMLElement or array that contains elements. False if element not found.
 	 */
-	get(selector) {
+	get(selector, root = document) {
 		let searchableElement = false;
 		const selectorArray = selector.split(' ');
 		selectorArray.some(selectorElement => {
@@ -134,13 +134,13 @@ class Dom {
 			if(!searchableElement) {
 				switch(elementType) {
 				case '#':
-					searchableElement = this.getById(document, s);
+					searchableElement = this.getById(root, s);
 					break;
 				case '.':
-					searchableElement = Array.from(this.getByClass(document, s));
+					searchableElement = Array.from(this.getByClass(root, s));
 					break;
 				default:
-					searchableElement = Array.from(this.getByTag(document, selectorElement));
+					searchableElement = Array.from(this.getByTag(root, selectorElement));
 					break;
 				}
 				if(!searchableElement || searchableElement.length === 0) {

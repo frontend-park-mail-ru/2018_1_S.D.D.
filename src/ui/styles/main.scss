@@ -183,3 +183,28 @@ main {
         margin: 15px auto 5px auto;
     }
 }
+
+#main {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.block.active {
+    z-index: 1;
+}
+
+.block.disabled {
+    z-index: 0;
+    opacity: 0;
+}
+
+$duration: 0.8s;
+
+.block.disabled, .block.active {
+    -o-transition: $duration;
+    -ms-transition: $duration;
+    -moz-transition: $duration;
+    -webkit-transition: $duration;
+    transition: $duration;
+}

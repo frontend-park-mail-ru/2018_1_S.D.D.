@@ -13,6 +13,9 @@ class Router {
 	 */
 	constructor() {
 		this.routes = [];
+		window.addEventListener('popstate', () => {
+			this.loadPage(location.pathname);
+		}, false);
 	}
 
 	/**
@@ -32,7 +35,7 @@ class Router {
 	 * @return {string} Current path
 	 */
 	getCurrentUrlPath() {
-		window.location.pathname;
+		return window.location.pathname;
 	}
 
 	/**
@@ -45,7 +48,7 @@ class Router {
 			return;
 		}
 		window.history.pushState({}, '', urlPath);
-		this.changePage(urlPath);
+		this.loadPage(urlPath);
 	}
     
 	/**
@@ -58,8 +61,17 @@ class Router {
 		if (urlPath && urlPath != '/' && urlPath.slice(-1) == '/') {
 			return urlPath.slice(0, -1);
 		}
-
+		
 		return this.getCurrentUrlPath();
+	}
+
+	/** 
+	 * Returns route with 404 controller.
+	 * 
+	 * @returns {Route} Route with 404 controller.
+	*/
+	notFound() {
+		return this.routes[0];
 	}
 
 	/**
@@ -67,8 +79,8 @@ class Router {
 	 * 
 	 * @param {string} urlPath Url path to page
 	 */
-	changePage(urlPath) {
-		const newUrlPath = this.getNewUrlPath(urlPath);
+	loadPage(urlPath) {
+		let newUrlPath = this.getNewUrlPath(urlPath);
 		let route = this.routes.find(routeIterator => {
 			return routeIterator.urlPath == newUrlPath;
 		});
@@ -77,11 +89,22 @@ class Router {
 			this.currentRoute.destroy();
 		}
 
+		let action = null;
 		if (!route) {
-			route = this.routes[0];
+			route = this.notFound();
+			action = '404';
+		} else {
+			newUrlPath = newUrlPath.split('/');
+			action = newUrlPath[2];
 		}
+		
 		this.currentRoute = route;
-		this.currentRoute.load();
+		
+		if(!this.currentRoute.load(action)) {
+			route = this.notFound();
+			this.currentRoute = route;
+			this.currentRoute.load('404');
+		}
 	}
 }
 
