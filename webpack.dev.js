@@ -25,6 +25,17 @@ module.exports = {
 						loader: 'sass-loader'
 					}
 				]
+			},
+			{
+				test: /\.svg$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options : {
+							outputPath: 'images/'
+						}
+					}
+				]
 			}
 		]
 	}

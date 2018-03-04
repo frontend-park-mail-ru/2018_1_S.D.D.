@@ -1,7 +1,8 @@
 'use strict';
 
 import View from './View';
-import MenuTemplate from '../ui/templates/menu/menu';
+import LogoTemplate from '../ui/templates/logo/';
+import MenuTemplate from '../ui/templates/menu/';
 
 /**
  * Creates instance of MenuView
@@ -15,26 +16,21 @@ class MenuView extends View {
 	 */
 	constructor() {
 		super();
-		this._loadRequirements();
-	}
-
-	_loadRequirements() {
-		this._menuTemplate = this.load('Menu', MenuTemplate, {
-			menuItems: [
-				{ link:'/play', text:'PLAY' },
-				{ link:'/scores', text:'SCORES' },
-				{ link:'/rules', text:'RULES' },
-				{ link:'/about', text:'ABOUT' }
-			],
-			block: 'right'
-		});
 	}
     
-	constructPage() {
+	constructPage(data = {}) {
+		this._data = data;
+		this.load('Logo', LogoTemplate, { block: 'left' });
+		this.load('Menu', MenuTemplate, { block: 'right' });
+	}
+
+	showPage() {
+		this.show('Logo');
 		this.show('Menu');
 	}
 
-	destroyPage() {
+	hidePage() {
+		this.hide('Logo');
 		this.hide('Menu');
 	}
 }

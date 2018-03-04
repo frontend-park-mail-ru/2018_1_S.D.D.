@@ -19,6 +19,7 @@ class View {
 		this._TemplateHolder = new TemplateHolder();
 
 		this._body = this.Dom.getByTag(document, 'body')[0];
+		this._data = {};
 		this._initViewBlocks();
 	}
 
@@ -59,15 +60,16 @@ class View {
 	 * @param {string} templateName Template name (key)
 	 * @param {Object} templateObject Template object (Renderer)
 	 * @param {Object} properties Some custom properties.
-	 * @param properties.block View block
+	 * @param properties.block View block in wich template will be placed.
 	 * @param properties.reload Even if template already exists - we render it.
-	 * @param properties.appendFirst Flag - insert before content.
+	 * @param properties.appendFirst Flag - insert before or after existing content.
 	 */
-	load(templateName, templateObject, properties = null) {
+	load(templateName, templateObject, properties = {}) {
 		const T = this._TemplateHolder.template(templateName);
+		const renderData = this._data[templateName];
 
 		if(!T || T.reload || properties.reload) {
-			const html = templateObject.render(properties);
+			const html = templateObject.render(renderData);
 			properties.reload = false;
 
 			// if(T) -> it's reload
