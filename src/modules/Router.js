@@ -32,7 +32,7 @@ class Router {
 	 * @return {string} Current path
 	 */
 	getCurrentUrlPath() {
-		window.location.pathname;
+		return window.location.pathname;
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Router {
 			return;
 		}
 		window.history.pushState({}, '', urlPath);
-		this.changePage(urlPath);
+		this.loadPage(urlPath);
 	}
     
 	/**
@@ -62,13 +62,22 @@ class Router {
 		return this.getCurrentUrlPath();
 	}
 
+	/** 
+	 * Returns route with 404 controller.
+	 * 
+	 * @returns {Route} Route with 404 controller.
+	*/
+	notFound() {
+		return this.routes[0];
+	}
+
 	/**
 	 * Loads page associated with url 
 	 * 
 	 * @param {string} urlPath Url path to page
 	 */
-	changePage(urlPath) {
-		const newUrlPath = this.getNewUrlPath(urlPath);
+	loadPage(urlPath) {
+		let newUrlPath = this.getNewUrlPath(urlPath);
 		let route = this.routes.find(routeIterator => {
 			return routeIterator.urlPath == newUrlPath;
 		});
@@ -78,10 +87,17 @@ class Router {
 		}
 
 		if (!route) {
-			route = this.routes[0];
+			route = this.notFound();
 		}
+		
 		this.currentRoute = route;
-		this.currentRoute.load();
+		newUrlPath = newUrlPath.split('/');
+
+		if(!this.currentRoute.load(newUrlPath[2])) {
+			route = this.notFound();
+			this.currentRoute = route;
+			this.currentRoute.load();
+		}
 	}
 }
 

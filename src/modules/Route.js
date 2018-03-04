@@ -16,21 +16,26 @@ class Route {
 
 	/**
 	 * Creates instance to render current page
+	 * 
+	 * @param {string} action Action to be called in controller.
+	 * @returns {boolean} False if action not found (404), true in other case.
 	 */
-	load() {
+	load(action = 'index') {
 		if (this.instance == null) {
 			this.instance = new this.controller();
 		}
 
-		this.instance.actionIndex();
+		if(this.instance.action(action.toLowerCase())) {
+			return true;
+		}
+		return false;
 	}
-
 
 	/** 
 	 * Destroys instance
 	 */
 	destroy() {
-		this.instance.destroyPage();
+		this.instance.actionClose();
 		this.instance = null;
 	}
 }

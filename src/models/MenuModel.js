@@ -12,7 +12,12 @@ class MenuModel {
 	 */
 	constructor() {
 	}
-    
+	
+	/**
+	 * Get menu links
+	 * 
+	 * @returns {Object} Onject contains menu links.
+	 */
 	getMenuItems() {
 		return {
 			menuItems: [

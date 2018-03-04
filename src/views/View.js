@@ -1,5 +1,6 @@
 'use strict';
 
+import ServiceManager from '../modules/ServiceManager';
 import Dom from '../modules/Dom';
 import TemplateHolder from '../ui/templates/TemplateHolder';
 import '../ui/styles/main.scss';
@@ -16,6 +17,7 @@ class View {
 	 */
 	constructor() {
 		this._Dom = new Dom();
+		this._ServiceManager = new ServiceManager();
 		this._TemplateHolder = new TemplateHolder();
 
 		this._body = this.Dom.getByTag(document, 'body')[0];
@@ -54,6 +56,17 @@ class View {
 		};
 	}
 
+	listenLinks(html) {
+		const links = this.Dom.get('a', html);
+		[].forEach.call(links, link => {
+			link.addEventListener('click', event => {
+				event.preventDefault();
+				const route = link.getAttribute('href');
+				this._ServiceManager.Router.go(route);
+			});
+		});
+	}
+
 	/**
 	 * Searches for template, which was required in view and insert in DOM.
 	 * 
@@ -71,6 +84,7 @@ class View {
 		if(!T || T.reload || properties.reload) {
 			const html = templateObject.render(renderData);
 			properties.reload = false;
+			this.listenLinks(html);
 
 			// if(T) -> it's reload
 			if(T) {
