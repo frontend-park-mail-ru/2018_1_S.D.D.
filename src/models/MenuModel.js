@@ -1,22 +1,25 @@
 'use strict';
 
+import Model from './Model';
+
 /**
  * Creates instance of MenuModel
  * 
  * @class
  * @classdesc Menu model. Provide data for template rendering.
  */
-class MenuModel {
+class MenuModel extends Model {
 	/**
 	 * Creates instance of MenuModel
 	 */
 	constructor() {
+		super();
 	}
 	
 	/**
 	 * Get menu links
 	 * 
-	 * @returns {Object} Onject contains menu links.
+	 * @returns {Object} Object contains menu links.
 	 */
 	getMenuItems() {
 		return {

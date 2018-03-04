@@ -13,6 +13,9 @@ class Router {
 	 */
 	constructor() {
 		this.routes = [];
+		window.addEventListener('popstate', () => {
+			this.loadPage(location.pathname);
+		}, false);
 	}
 
 	/**
@@ -58,7 +61,7 @@ class Router {
 		if (urlPath && urlPath != '/' && urlPath.slice(-1) == '/') {
 			return urlPath.slice(0, -1);
 		}
-
+		
 		return this.getCurrentUrlPath();
 	}
 
@@ -86,17 +89,21 @@ class Router {
 			this.currentRoute.destroy();
 		}
 
+		let action = null;
 		if (!route) {
 			route = this.notFound();
+			action = '404';
+		} else {
+			newUrlPath = newUrlPath.split('/');
+			action = newUrlPath[2];
 		}
 		
 		this.currentRoute = route;
-		newUrlPath = newUrlPath.split('/');
-
-		if(!this.currentRoute.load(newUrlPath[2])) {
+		
+		if(!this.currentRoute.load(action)) {
 			route = this.notFound();
 			this.currentRoute = route;
-			this.currentRoute.load();
+			this.currentRoute.load('404');
 		}
 	}
 }

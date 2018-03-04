@@ -28,11 +28,6 @@ class MenuView extends View {
 		this.show('Logo');
 		this.show('Menu');
 	}
-
-	hidePage() {
-		this.hide('Logo');
-		this.hide('Menu');
-	}
 }
 
 export default MenuView;

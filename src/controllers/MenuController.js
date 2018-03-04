@@ -15,21 +15,22 @@ class MenuController extends Controller {
 		this.addActions();
 	}
 
+	/**
+	 * Add actions to controller.
+	 */
 	addActions() {
 		this.addAction('index', this.actionIndex);
-		this.addAction('close', this.actionClose);
 	}
 
+	/**
+	 * Default action. Renders menu.
+	 */
 	actionIndex() {
 		const data = {
 			'Menu': this._Menu.getMenuItems()
 		};	
 		this._View.constructPage(data);
 		this._View.showPage();
-	}
-
-	actionClose() {
-		this._View.hidePage();
 	}
 }
 

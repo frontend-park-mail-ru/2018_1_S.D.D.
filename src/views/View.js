@@ -1,8 +1,9 @@
 'use strict';
 
 import ServiceManager from '../modules/ServiceManager';
-import Dom from '../modules/Dom';
 import TemplateHolder from '../ui/templates/TemplateHolder';
+import PageParts from '../ui/templates/PageParts';
+import Dom from '../modules/Dom';
 import '../ui/styles/main.scss';
 
 /**
@@ -13,51 +14,25 @@ import '../ui/styles/main.scss';
  */
 class View {
 	/**
-	 * Creates instance of View. Finds main parts of page.
+	 * Creates instance of View.
 	 */
 	constructor() {
-		this._Dom = new Dom();
 		this._ServiceManager = new ServiceManager();
 		this._TemplateHolder = new TemplateHolder();
+		this._Dom = new Dom();
+		this._body = this._Dom.get('body')[0];
 
-		this._body = this.Dom.getByTag(document, 'body')[0];
 		this._data = {};
-		this._initViewBlocks();
+		this._vb = new PageParts();
 	}
 
-	_initViewBlocks() {
-		const Dom = this.Dom;
-		this._vb = {
-			'main': {
-				'root': Dom.get('#main'),
-				'active': false,
-				'show': () => {
-					this._vb.left.hide();
-					this._vb.right.hide();
-				},
-				'hide': () => {}
-			},
-			'left': {
-				'root': Dom.get('#left'),
-				'active': false,
-				'show': () => {
-					this._vb.main.hide();
-				},
-				'hide': () => {}
-			},
-			'right': {
-				'root': Dom.get('#right'),
-				'active': false,
-				'show': () => {
-					this._vb.main.hide();
-				},
-				'hide': () => {}
-			}
-		};
-	}
-
+	/**
+	 * All links in block gonna use router instead of opening new page.
+	 * 
+	 * @param {HTMLElement} html Block in which we will listen links.
+	 */
 	listenLinks(html) {
-		const links = this.Dom.get('a', html);
+		const links = this._Dom.get('a', html);
 		[].forEach.call(links, link => {
 			link.addEventListener('click', event => {
 				event.preventDefault();
@@ -88,19 +63,19 @@ class View {
 
 			// if(T) -> it's reload
 			if(T) {
-				this._TemplateHolder.upadte(templateName, html, properties);
+				this._TemplateHolder.update(templateName, html, properties);
 			} else {
 				this._TemplateHolder.save(templateName, html, properties);
 			}
 
-			if(properties.block && this._vb[properties.block]) {
-				this.Dom.insertDom(this._vb[properties.block].root, html);
+			if(properties.block && this._vb.block(properties.block)) {
+				this._Dom.insertDom(this._vb.block(properties.block).root, html);
 			} else {
 				let first = false;
 				if(properties.appendFirst) {
 					first = true;
 				}
-				this.Dom.insertDom(this._body, html, first);
+				this._Dom.insertDom(this._body, html, first);
 			}
 		}
 	}
@@ -111,11 +86,13 @@ class View {
 	 * @param {string} templateName Name of template to display.
 	 */
 	show(templateName) {
-		const T = this._TemplateHolder.load(templateName);
+		const T = this._TemplateHolder.template(templateName);
 		if(T) {
-			T.hidden = false;
-			if(T.block) {
-				this._vb[T.block].show();
+			const block = T.properties.block;
+			if(block) {
+				this._vb.changeTemplate(block, templateName);
+			} else {
+				T.html.hidden = false;
 			}
 		}
 	}
@@ -126,30 +103,12 @@ class View {
 	 * @param {string} templateName Name of template to hide.
 	 */
 	hide(templateName) {
-		const T = this._TemplateHolder.load(templateName);
+		const T = this._TemplateHolder.template(templateName);
 		if(T) {
-			T.hidden = true;
-			if(T.block) {
-				this._vb[T.block].hide();
-			}
+			T.html.hidden = true;
 		}
 	}
 
-	get Dom() {
-		return this._Dom;
-	}
-
-	get main() {
-		return this._main;
-	}
-
-	get left() {
-		return this._left;
-	}
-
-	get right() {
-		return this._right;
-	}
 }
 
 export default View;

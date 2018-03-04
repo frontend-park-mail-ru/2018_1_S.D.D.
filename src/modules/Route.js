@@ -35,7 +35,6 @@ class Route {
 	 * Destroys instance
 	 */
 	destroy() {
-		this.instance.actionClose();
 		this.instance = null;
 	}
 }
