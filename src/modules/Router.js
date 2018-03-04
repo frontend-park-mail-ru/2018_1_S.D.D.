@@ -1,5 +1,5 @@
 'use strict';
-import Route from './route';
+import Route from './Route';
 
 /** 
  * Creates Router.
