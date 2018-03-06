@@ -3,7 +3,7 @@
 import View from './View';
 import HeaderTemplate from '../ui/templates/header/';
 import LogoTemplate from '../ui/templates/logo/';
-import MenuTemplate from '../ui/templates/menu/';
+import FormTemplate from '../ui/templates/form/';
 
 /**
  * Creates instance of MenuView
@@ -11,7 +11,7 @@ import MenuTemplate from '../ui/templates/menu/';
  * @class
  * @classdesc Menu view. Render, shows, hide page.
  */
-class MenuView extends View {
+class LoginView extends View {
 	/**
 	 * Creates instance of MenuView
 	 */
@@ -23,14 +23,14 @@ class MenuView extends View {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
 		this.load('Logo', LogoTemplate, { block: 'left' });
-		this.load('Menu', MenuTemplate, { block: 'right' });
+		this.load('LoginForm', FormTemplate, { block: 'right' });
 	}
 
 	showPage() {
 		this.show('Header');
 		this.show('Logo');
-		this.show('Menu');
+		this.show('LoginForm');
 	}
 }
 
-export default MenuView;
+export default LoginView;

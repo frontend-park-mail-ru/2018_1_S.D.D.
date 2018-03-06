@@ -25,6 +25,7 @@ class ErrorView extends View {
 	}
 
 	showPage() {
+		this.show('Header');
 		this.show('Error');
 	}
 }

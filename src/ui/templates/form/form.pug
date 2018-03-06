@@ -1,0 +1,13 @@
+a(href='/').return-link ← Back to menu
+form.form
+	h1.form__header #{header}
+	if social
+		button(href='http://vk.com/', target='_blank').btn.form__btn.form__btn_social.form__btn_social-vk
+			img(src='/' + require('../../images/vk.svg'))
+			|  VK
+		button(href='http://google.com/', target='_blank').btn.form__btn.form__btn_social.form__btn_social-google
+			span.gp G+
+			|  Google
+	each input in formInputs
+		input(type=input.type, placeholder=input.placeholder).form__input
+	button(type='submit').btn.form__btn.form__btn_submit #{button}

@@ -75,7 +75,7 @@ class PageParts {
 		const currentTemplate = this.block(id).currentTemplate;
 
 		let T = this._TemplateHolder.template(currentTemplate);
-		if(currentTemplate && currentTemplate !== newTemplateName) {
+		if(T && currentTemplate !== newTemplateName) {
 			T.html.hidden = true;
 		}
 		this.block(id).currentTemplate = newTemplateName;
