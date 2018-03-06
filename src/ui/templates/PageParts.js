@@ -1,6 +1,5 @@
 'use strict';
 
-import Dom from '../../modules/Dom';
 import TemplateHolder from './TemplateHolder';
 
 /**
@@ -19,7 +18,6 @@ class PageParts {
 		}
 		PageParts._instance = this;
 		
-		this._Dom = new Dom();
 		this._TemplateHolder = new TemplateHolder();
 		this._vb = {};
 	}
@@ -40,7 +38,7 @@ class PageParts {
 	 * @param {string} id Id of element.
 	 * @param {HTMLElement} root Element where we insert new block.
 	 * @param {string[]} classes Element classes (for CSS or whatever).
-	 * @param {string[]} hideOnShowList Id of blocks which dhould be hided when this block is visible.
+	 * @param {string[]} hideOnShowList Id of blocks which should be hided when this block is visible.
 	 */
 	addViewBlock(id, root, classes = [], hideOnShowList = []) {
 		if(!this.block(id)) {
@@ -48,9 +46,9 @@ class PageParts {
 			element.hidden = true;
 			element.id = id;
 			classes.forEach(c => {
-				this._Dom.addClass(element, c);
+				element.classList.add(c);
 			});
-			this._Dom.insertDom(root, element);
+			root.appendChild(element);
 
 			this._vb[id] = {
 				root: element,
@@ -81,7 +79,7 @@ class PageParts {
 		this.block(id).currentTemplate = newTemplateName;
 
 		T = this._TemplateHolder.template(newTemplateName);
-		this._Dom.addClass(T.html, 'template-disabled');
+		T.html.classList.add('template-disabled');
 		T.html.hidden = true;
 		
 		this.activateViewBlock(id);
@@ -115,8 +113,8 @@ class PageParts {
 			// we need to set timeout after disable visibility hidden
 			// or it's transition wont work
 			setTimeout(() => {
-				this._Dom.addClass(T, 'template-active');
-				this._Dom.removeClass(T, 'template-disabled');
+				T.classList.add('template-active');
+				T.classList.remove('template-disabled');
 			}, 50);	
 		}		
 	}
@@ -132,8 +130,8 @@ class PageParts {
 			const T = this._TemplateHolder.load(currentTemplate);
 			if(T) {
 				T.hidden = true;
-				this._Dom.removeClass(T, 'template-active');
-				this._Dom.addClass(T, 'template-disabled');
+				T.classList.add('template-disabled');
+				T.classList.remove('template-active');
 			}
 			this.block(id).root.hidden = true;
 			this.block(id).active = false;

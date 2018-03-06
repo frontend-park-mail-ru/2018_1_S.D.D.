@@ -18,7 +18,40 @@ class LoginView extends View {
 	constructor() {
 		super();
 	}
-    
+
+	/**
+	 * Serealize login form.
+	 * 
+	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
+	 */
+	serializeForm() {
+		const form = this.load('LoginForm');
+		if(!form) {
+			return false;
+		}
+		return FormTemplate.serialize(form);
+	}
+
+	/**
+	 * Add error message to input in form.
+	 * 
+	 * @param {string} input Input name.
+	 * @param {string} message Error message.
+	 * @returns {boolean} True if ok, false if form or input not found.
+	 */
+	addFormError(input, message) {
+		const form = this.load('LoginForm');
+		if(!form) {
+			return false;
+		}
+		return FormTemplate.addError(input, message, form);
+	}
+	
+	/**
+	 * Load all required templates.
+	 * 
+	 * @param {Object} data Data for template rendering.
+	 */
 	constructPage(data = {}) {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
@@ -26,6 +59,9 @@ class LoginView extends View {
 		this.load('LoginForm', FormTemplate, { block: 'right' });
 	}
 
+	/**
+	 * Display reuired templates.
+	 */
 	showPage() {
 		this.show('Header');
 		this.show('Logo');

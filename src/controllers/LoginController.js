@@ -1,7 +1,7 @@
 'use strict';
 
 import Controller from './Controller';
-//import ErrorModel from '../models/LoginModel';
+import LoginModel from '../models/LoginModel';
 import LoginView from '../views/LoginView';
 
 class LoginController extends Controller {
@@ -10,9 +10,12 @@ class LoginController extends Controller {
 	 */
 	constructor() {
 		super();
-		//this._Login = new LoginModel();
+		this._Model = new LoginModel();
 		this._View = new LoginView();
 		this.addActions();
+		this.data = {
+			'LoginForm': this._Model.getLoginForm()
+		};
 	}
 
 	/**
@@ -20,25 +23,40 @@ class LoginController extends Controller {
 	 */
 	addActions() {
 		this.addAction('index', this.actionIndex);
+		this.addAction('submit', this.actionSubmit);
 	}
 
 	/**
 	 * Common action. Show login form.
 	 */
 	actionIndex() {
-		const data = {
-			'LoginForm': {
-				header: 'Login',
-				social: true,
-				formInputs: [
-					{ type: 'text', placeholder: 'Login' },
-					{ type: 'password', placeholder: 'Password' }
-				],
-				button: 'Login'
-			}
-		};
-		this._View.constructPage(data);
+		this._View.constructPage(this.data);
 		this._View.showPage();
+	}
+
+	/**
+	 * Submit action. Validate form and submit data to server if ok.
+	 */
+	actionSubmit() {
+		const submitData = this._View.serializeForm(this.data);
+		const validation = this._Model.validate(submitData);
+		let noValidationError = true;
+		for(let input in validation) {
+			if(validation[input]) {
+				this._View.addFormError(input, validation[input]);
+				noValidationError = false;
+			}
+		}
+		if(noValidationError) {
+			noValidationError = false; // submit data to server
+		}
+
+		if(noValidationError) {
+			this.go('/'); // login later
+		} else {
+			// errors from server
+			this.go('/login');
+		}
 	}
 }
 
