@@ -43,7 +43,7 @@ class PageParts {
 	 * @param {string[]} hideOnShowList Id of blocks which dhould be hided when this block is visible.
 	 */
 	addViewBlock(id, root, classes = [], hideOnShowList = []) {
-		if(!this._vb[id]) {
+		if(!this.block(id)) {
 			const element = document.createElement('div');
 			element.hidden = true;
 			element.id = id;
@@ -52,11 +52,12 @@ class PageParts {
 			});
 			this._Dom.insertDom(root, element);
 
-			this._vb[id] = {};
-			this._vb[id].root = element;
-			this._vb[id].active = false;
-			this._vb[id].hideOnShow = hideOnShowList;
-			this._vb[id].currentTemplate = null;
+			this._vb[id] = {
+				root: element,
+				active: false,
+				hideOnShow: hideOnShowList,
+				currentTemplate: null
+			};
 		}
 	}
 
@@ -109,6 +110,9 @@ class PageParts {
 
 			if(T) {
 				T.hidden = false;
+				// if there is some CSS transition on .template-activate block
+				// we need to set timeout after disable visibility hidden
+				// or it's transition wont work
 				setTimeout(() => {
 					this._Dom.addClass(T, 'template-active');
 					this._Dom.removeClass(T, 'template-disabled');
