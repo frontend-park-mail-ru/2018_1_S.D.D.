@@ -115,6 +115,7 @@ main {
 
 .block {
     margin: auto;
+    position: relative;
 }
 
 .block_w40p {
@@ -190,18 +191,19 @@ main {
     position: absolute;
 }
 
-.block.active {
-    z-index: 1;
+.tempalte-active {
+    opacity: 1;
+    visibility: visible;
 }
 
-.block.disabled {
-    z-index: 0;
+.template-disabled {
     opacity: 0;
+    visibility: hidden;
 }
 
 $duration: 0.8s;
 
-.block.disabled, .block.active {
+.template-disabled, .template-active {
     -o-transition: $duration;
     -ms-transition: $duration;
     -moz-transition: $duration;

@@ -14,7 +14,7 @@ import '../ui/styles/main.scss';
  */
 class View {
 	/**
-	 * Creates instance of View.
+	 * Creates instance of View. Creates main blocks on page.
 	 */
 	constructor() {
 		this._ServiceManager = new ServiceManager();
@@ -23,7 +23,32 @@ class View {
 		this._body = this._Dom.get('body')[0];
 
 		this._data = {};
-		this._vb = new PageParts();
+		this._PageBlock = new PageParts();
+		this._initPageBlocks();
+	}
+
+	/**
+	 * Creates main blocks on page. In this blocks we can insert templates.
+	 */
+	_initPageBlocks() {
+		this._PageBlock.addViewBlock(
+			'main',
+			this._Dom.get('main')[0],
+			['block'],
+			['left', 'right']
+		);
+		this._PageBlock.addViewBlock(
+			'left',
+			this._Dom.get('main')[0],
+			['block', 'block-inline', 'block_w50p'],
+			['main']
+		);
+		this._PageBlock.addViewBlock(
+			'right',
+			this._Dom.get('main')[0],
+			['block', 'block-inline', 'block_w50p'],
+			['main']
+		);
 	}
 
 	/**
@@ -43,7 +68,7 @@ class View {
 	}
 
 	/**
-	 * Searches for template, which was required in view and insert in DOM.
+	 * Searches for template, which was required in view and insert it in DOM.
 	 * 
 	 * @param {string} templateName Template name (key)
 	 * @param {Object} templateObject Template object (Renderer)
@@ -68,8 +93,8 @@ class View {
 				this._TemplateHolder.save(templateName, html, properties);
 			}
 
-			if(properties.block && this._vb.block(properties.block)) {
-				this._Dom.insertDom(this._vb.block(properties.block).root, html);
+			if(properties.block && this._PageBlock.block(properties.block)) {
+				this._Dom.insertDom(this._PageBlock.block(properties.block).root, html);
 			} else {
 				let first = false;
 				if(properties.appendFirst) {
@@ -90,7 +115,7 @@ class View {
 		if(T) {
 			const block = T.properties.block;
 			if(block) {
-				this._vb.changeTemplate(block, templateName);
+				this._PageBlock.changeTemplate(block, templateName);
 			} else {
 				T.html.hidden = false;
 			}

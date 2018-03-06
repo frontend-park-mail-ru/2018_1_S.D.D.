@@ -153,6 +153,7 @@ class Dom {
 					});
 				} else {
 					if(!this.hasSelector(searchableElement, selectorElement)) {
+						searchableElement = false;
 						return true;
 					}
 				}
