@@ -74,16 +74,15 @@ class PageParts {
 
 		const currentTemplate = this.block(id).currentTemplate;
 
-		let T = null;
+		let T = this._TemplateHolder.template(currentTemplate);
 		if(currentTemplate && currentTemplate !== newTemplateName) {
-			T = this._TemplateHolder.template(currentTemplate).html;
-			T.hidden = true;
+			T.html.hidden = true;
 		}
 		this.block(id).currentTemplate = newTemplateName;
 
-		T = this._TemplateHolder.template(newTemplateName).html;
-		this._Dom.addClass(T, 'template-disabled');
-		T.hidden = true;
+		T = this._TemplateHolder.template(newTemplateName);
+		this._Dom.addClass(T.html, 'template-disabled');
+		T.html.hidden = true;
 		
 		this.activateViewBlock(id);
 	}
@@ -105,22 +104,21 @@ class PageParts {
 	activateViewBlock(id) {
 		if(!this.block(id).active) {
 			this.block(id).root.hidden = false;
-			const currentTemplate = this.block(id).currentTemplate;
-			const T = this._TemplateHolder.load(currentTemplate);
-
-			if(T) {
-				T.hidden = false;
-				// if there is some CSS transition on .template-activate block
-				// we need to set timeout after disable visibility hidden
-				// or it's transition wont work
-				setTimeout(() => {
-					this._Dom.addClass(T, 'template-active');
-					this._Dom.removeClass(T, 'template-disabled');
-				}, 50);	
-			}
-			
 			this.block(id).active = true;
 		}
+		const currentTemplate = this.block(id).currentTemplate;
+		const T = this._TemplateHolder.load(currentTemplate);
+
+		if(T) {
+			T.hidden = false;
+			// if there is some CSS transition on .template-activate block
+			// we need to set timeout after disable visibility hidden
+			// or it's transition wont work
+			setTimeout(() => {
+				this._Dom.addClass(T, 'template-active');
+				this._Dom.removeClass(T, 'template-disabled');
+			}, 50);	
+		}		
 	}
 
 	/**

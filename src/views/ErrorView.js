@@ -2,6 +2,7 @@
 
 import View from './View';
 import ErrorTemplate from '../ui/templates/error/';
+import HeaderTemplate from '../ui/templates/header/';
 
 /**
  * Creates instance of ErrorView
@@ -20,6 +21,7 @@ class ErrorView extends View {
 	constructPage(data = {}) {
 		this._data = data;
 		this.load('Error', ErrorTemplate, { block: 'main', reload: true });
+		this.load('Header', HeaderTemplate, { appendFirst: true });
 	}
 
 	showPage() {

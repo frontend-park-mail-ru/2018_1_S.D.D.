@@ -1,0 +1,49 @@
+.header {
+    width: 100%;
+    height: 80px;
+}
+
+.header__container {
+    width: 350px;
+    height: 80px;
+    padding: 0px 20px;
+}
+
+.header__container_right {
+    float: right;
+}
+
+.header__link:hover {
+    text-decoration: underline;
+}
+
+.header__list {
+    margin-top: 9px;
+    text-align: center;
+}
+
+.header__link {
+    color: #fff;
+	text-decoration: none;
+	font-size: 18px;
+}
+
+.header__link_btn {
+    background: linear-gradient(90deg, #2f164e, #7db9fd);
+}
+
+.header__link_btn:hover {
+    background-color: #7db9fd !important; 
+    text-decoration: none;
+    color: #16174e;
+}
+
+@media screen and (max-width: 1080px) {
+    .header {
+        height: 40px;
+    }
+
+    .header__link {
+        font-size: 12px;
+	}
+}
