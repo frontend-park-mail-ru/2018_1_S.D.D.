@@ -25,9 +25,8 @@ class ErrorModel extends Model {
 		const url = this._ServiceManager.Router.getNewUrlPath();
 		return {
 			Code: '404',
-			Header: 'Page not found.',
-			Message: 'Are you sure that it\'s correct addres?',
-			Link: url
+			Header: 'We can\'t find what are you looked for...',
+			Message: 'Are you sure that "' + url + '" is correct addres?'
 		};
 	}
 }

@@ -21,6 +21,9 @@ class Route {
 	 * @returns {boolean} False if action not found (404), true in other case.
 	 */
 	load(action = 'index') {
+		if (action === '') {
+			action = 'index';
+		}
 		if (this.instance == null) {
 			this.instance = new this.controller();
 		}

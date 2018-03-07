@@ -1,5 +1,7 @@
 'use strict';
 
+import ServiceManager from '../modules/ServiceManager';
+
 /** 
  * @class
  * @classdesc Base controller class. Defined actionIndex method.
@@ -9,6 +11,7 @@ class Controller {
 	 * Creates instance if Controller
 	 */
 	constructor() {
+		this._ServiceManager = new ServiceManager();
 		this._actions = {
 			index: () => {},
 			close: () => {}
@@ -37,6 +40,15 @@ class Controller {
 		}
 		callback();
 		return true;
+	}
+
+	/**
+	 * Load new page.
+	 * 
+	 * @param {string} url Page url.
+	 */
+	go(url) {
+		this._ServiceManager.Router.go(url);
 	}
 }
 

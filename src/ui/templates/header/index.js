@@ -1,7 +1,7 @@
 'use strict';
 
-import template from './error.pug';
-import './error.scss';
+import template from './header.pug';
+import './header.scss';
 
 export default {
 	render: params => {

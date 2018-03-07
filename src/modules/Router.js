@@ -1,5 +1,5 @@
 'use strict';
-import Route from './route';
+import Route from './Route';
 
 /** 
  * Creates Router.
@@ -43,11 +43,13 @@ class Router {
 	 * 
 	 * @param {string} urlPath Url path to page 
 	 */
-	go(urlPath) {
+	go(urlPath, pushState = true) {
 		if (urlPath === this.getCurrentUrlPath()) {
 			return;
 		}
-		window.history.pushState({}, '', urlPath);
+		if(pushState) {
+			window.history.pushState({}, '', urlPath);
+		}
 		this.loadPage(urlPath);
 	}
     
@@ -58,10 +60,12 @@ class Router {
 	 * @return {string} New url path to page 
 	 */
 	getNewUrlPath(urlPath) {
-		if (urlPath && urlPath != '/' && urlPath.slice(-1) == '/') {
-			return urlPath.slice(0, -1);
+		if (urlPath) {
+			if (urlPath != '/' && urlPath.slice(-1) == '/') {
+				return urlPath.slice(0, -1);
+			}
+			return urlPath;
 		}
-		
 		return this.getCurrentUrlPath();
 	}
 
@@ -81,8 +85,9 @@ class Router {
 	 */
 	loadPage(urlPath) {
 		let newUrlPath = this.getNewUrlPath(urlPath);
+		newUrlPath = newUrlPath.split('/');
 		let route = this.routes.find(routeIterator => {
-			return routeIterator.urlPath == newUrlPath;
+			return routeIterator.urlPath == newUrlPath[1];
 		});
 
 		if (this.currentRoute != null) {
@@ -94,7 +99,6 @@ class Router {
 			route = this.notFound();
 			action = '404';
 		} else {
-			newUrlPath = newUrlPath.split('/');
 			action = newUrlPath[2];
 		}
 		

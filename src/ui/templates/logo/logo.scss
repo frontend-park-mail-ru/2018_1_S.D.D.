@@ -3,6 +3,7 @@
 	font-weight: bold;
 	color: #fff;
 	text-align: center;
+	margin: auto;
 }
 
 .logo__link {
@@ -68,6 +69,6 @@
 
 @media screen and (max-width: 640px) {
 	.logo {
-		margin-bottom: 80px;
+		margin-bottom: 40px;
 	}
 }

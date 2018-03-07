@@ -44,11 +44,13 @@ class TemplateHolder {
 	 * 
 	 * @param {string} templateName Template ID in holder.
 	 * @param {Object} properties Asociated array with properties.
+	 * @returns {boolean} Flse if template not found, true if ok.
 	 */
 	update(templateName, templateHTML = null, properties = {}) {
 		if(!this._parts[templateName]) {
 			return false;
 		}
+		
 		if(templateHTML) {
 			this._parts[templateName].html.remove();
 			this._parts[templateName].html = templateHTML;
@@ -57,6 +59,8 @@ class TemplateHolder {
 		for(let [key, property] in properties) {
 			this._parts[templateName][key] = property;
 		}
+
+		return true;
 	}
 
 	/**

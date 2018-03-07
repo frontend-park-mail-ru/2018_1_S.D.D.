@@ -6,7 +6,7 @@ import ErrorView from '../views/ErrorView';
 
 class ErrorController extends Controller {
 	/**
-	 * Creates instance of MenuController
+	 * Creates instance of ErrorController
 	 */
 	constructor() {
 		super();
