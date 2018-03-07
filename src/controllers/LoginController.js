@@ -38,10 +38,10 @@ class LoginController extends Controller {
 	 * Submit action. Validate form and submit data to server if ok.
 	 */
 	actionSubmit() {
-		let submitData = this._View.serializeForm(this.data);
+		let submitData = this._View.serializeForm();
 		if(!submitData) {
 			this._View.constructPage(this.data);
-			submitData = this._View.serializeForm(this.data);
+			submitData = this._View.serializeForm();
 		}
 
 		const validation = this._Model.validate(submitData);
@@ -53,7 +53,7 @@ class LoginController extends Controller {
 				noValidationError = false;
 			}
 		}
-		
+
 		if(noValidationError) {
 			noValidationError = false; // submit data to server
 		}

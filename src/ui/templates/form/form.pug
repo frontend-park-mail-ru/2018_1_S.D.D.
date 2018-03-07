@@ -10,7 +10,7 @@ a(href='/').return-link ← Back to menu
 			|  Google
 	form(action=formAction)
 		each input in formInputs
-			input(type=input.type, placeholder=input.placeholder,name=input.name).form__input
-			br
-			span(class='error-'+input.name).error-message
+			.input__holder
+				input(type=input.type, placeholder=input.placeholder,name=input.name).form__input
+				span(class='error-'+input.name).error-message
 		button(type='submit').btn.form__btn.form__btn_submit #{button}
