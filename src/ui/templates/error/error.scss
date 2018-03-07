@@ -57,6 +57,14 @@ $link-color-active: #16174e;
 }
 
 @media screen and (max-width: 640px) {
+	.error {
+		width: 100%;
+		height: auto;
+		text-align: center;
+		display: block;
+		position: relative;
+	}
+
     .error__smile {
 		height: 60px;
 		margin-bottom: 10px;

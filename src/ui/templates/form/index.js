@@ -15,10 +15,14 @@ export default {
 	},
 	addError: (input, message, html = document) => {
 		const inputElement = html.querySelector('[name="' + input + '"]');
+		if(!inputElement) {
+			return false;
+		}
 		inputElement.classList.add('input-error');
 		const inputMessage = html.querySelector('.error-' + input);
 		inputMessage.classList.add('error-message-active');
 		inputMessage.innerHTML = message;
+		return true;
 	},
 	render: params => {
 		const elem = document.createElement('div');

@@ -27,7 +27,7 @@
 
 .form__input {
     height: 50px;
-    width: 90%;
+    width: 100%;
     margin: 10px auto;
     text-align: center;
     font-size: 22px;
@@ -50,7 +50,7 @@
 
 .form__btn_submit {
     margin-top: 10px;
-    width: 90%;
+    width: 100%;
 }
 
 .form__btn_submit:hover {
@@ -59,7 +59,7 @@
 }
 
 .form__btn_social {
-    width: 45%;
+    width: 50%;
     display: inline-block;
     margin: 10px 0px;
 	padding: 7px 10px;
@@ -92,6 +92,29 @@
     font-weight: bold;
 }
 
+
+
+.input-error {
+	margin-bottom: 10px;
+	background: rgba(202, 96, 96, 0.502);
+}
+
+.error-message {
+	display: block;
+	max-width: 97%;
+	margin: 0 auto 10px auto;
+	top: -5px;
+}
+
+.error-message-active {
+	color: rgb(221, 221, 221);
+	background: rgba(165, 54, 54, 0.781);
+	padding: 5px;
+	border-radius: 50px;
+	position: relative;
+	font-weight: bold;
+}
+
 @media screen and (max-width: 1200px) {
     .form__header {
         font-size: 30px;
@@ -112,31 +135,35 @@
     
     .form__btn_submit {
         margin-top: 10px;
-        width: 90%;
     }
 
     .form__btn_social img {
         height: 16px;
-    }
+	}
+	
+	.error-message {
+		top: -2px;
+	}
+
+	.error-message-active {
+		font-weight: normal;
+	}
 }
 
-.input-error {
-	margin-bottom: 10px;
-	background: rgba(202, 96, 96, 0.502);
-}
+@media screen and (max-width: 640px) {
+	.form__btn {
+        width: 95%;
+	}
+	
+	.form__input {
+		width: 95%;
+	}
 
-.error-message {
-	display: block;
-	max-width: 85%;
-	margin: 0 auto 10px auto;
-	top: -5px;
-}
+	.form__btn_social {
+		width: 47%;
+	}
 
-.error-message-active {
-	color: rgb(221, 221, 221);
-	background: rgba(165, 54, 54, 0.781);
-	padding: 5px;
-	border-radius: 50px;
-	position: relative;
-	font-weight: bold;
+	.error-message {
+		max-width: 90%;
+	}
 }

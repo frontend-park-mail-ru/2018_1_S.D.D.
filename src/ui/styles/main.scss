@@ -32,7 +32,6 @@ html, body {
     width: 100%;
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
 }
 
 body {
@@ -133,16 +132,8 @@ main {
 }
 
 @media screen and (max-width: 1080px) {
-    .header {
-        height: 40px;
-    }
-
     main {
         top: 40px;
-    }
-
-    .header__link {
-        font-size: 12px;
     }
 
     .return-link {
@@ -152,9 +143,16 @@ main {
 }
 
 @media screen and (max-width: 640px) {
+
+    html, body {
+        overflow: auto;
+    }
+
     main {
         display: block;
-        padding: 80px 0px;
+        position: relative;
+        padding: 40px 0;
+        height: auto;
     }
 
     .block_w50p {

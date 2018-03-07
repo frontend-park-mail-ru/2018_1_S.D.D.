@@ -1,5 +1,5 @@
 a(href='/').return-link ← Back to menu
-form(action=formAction).form
+.form
 	h1.form__header #{header}
 	if social
 		button(href='http://vk.com/').btn.form__btn.form__btn_social.form__btn_social-vk
@@ -8,8 +8,9 @@ form(action=formAction).form
 		button(href='http://google.com/').btn.form__btn.form__btn_social.form__btn_social-google
 			span.gp G+
 			|  Google
-	each input in formInputs
-		input(type=input.type, placeholder=input.placeholder,name=input.name).form__input
-		br
-		span(class='error-'+input.name).error-message
-	button(type='submit').btn.form__btn.form__btn_submit #{button}
+	form(action=formAction)
+		each input in formInputs
+			input(type=input.type, placeholder=input.placeholder,name=input.name).form__input
+			br
+			span(class='error-'+input.name).error-message
+		button(type='submit').btn.form__btn.form__btn_submit #{button}
