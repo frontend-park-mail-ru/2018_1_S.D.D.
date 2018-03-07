@@ -36,6 +36,7 @@ html, body {
 
 body {
     background: linear-gradient(-50deg, #2f164e, #7db9fd);
+    background-attachment: fixed;
 }
 
 /* LISTS STYLE */
@@ -79,8 +80,8 @@ body {
 
 main {
     width: 100%;
-    height: 80%;
-    position: fixed;
+    height: 70%;
+    position: relative;
     top: 80px;
     left: 0;
     display: flex;
@@ -150,7 +151,6 @@ main {
 
     main {
         display: block;
-        position: relative;
         padding: 40px 0;
         height: auto;
     }
