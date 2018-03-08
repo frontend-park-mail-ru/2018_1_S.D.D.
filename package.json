@@ -4,10 +4,12 @@
   "description": "The player moves around the field and paints the cells.",
   "main": "app.js",
   "scripts": {
-    "start": "npm run build-dev && npm run server",
+    "start-dev": "npm run build-dev && npm run server",
+    "start-heroku": "npm run build-heroku && npm run server",
     "server": "node server/app.js",
     "build-dev": "webpack --config webpack.dev.js",
     "build-dev-watch": "webpack --config webpack.dev.js --watch",
+    "build-heroku": "webpack --config webpack.heroku.js",
     "lint-fix": "eslint ./ --fix"
   },
   "devDependencies": {
@@ -21,7 +23,8 @@
     "pug-loader": "^2.3.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.2",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "webpack-merge": "^4.1.2"
   },
   "repository": {
     "type": "git",

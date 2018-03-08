@@ -2,5 +2,5 @@ const webpack = require('webpack-merge');
 
 module.exports = webpack([
 	require('./build-configs/common'),
-	require('./build-configs/dev')
+	require('./build-configs/heroku')
 ]);

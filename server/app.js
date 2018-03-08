@@ -9,7 +9,7 @@ app.get('*', (req, res) => {
 	res.sendFile('public/index.html', {root: '.'});
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
 	console.log(`Server listening on port: ${port}`);
 });

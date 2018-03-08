@@ -14,7 +14,9 @@ class LoginController extends Controller {
 		this._View = new LoginView();
 		this.addActions();
 		this.data = {
-			'LoginForm': this._Model.getLoginForm()
+			'LoginForm': this._Model.getLoginForm(
+				() => this._ServiceManager.Router.go('/login/submit', false)
+			)
 		};
 	}
 
@@ -55,13 +57,17 @@ class LoginController extends Controller {
 		}
 
 		if(noValidationError) {
-			noValidationError = false; // submit data to server
-		}
-
-		if(noValidationError) {
-			this.go('/'); // login later
+			this._Model.authenticate(
+				submitData,
+				() => {},
+				errors => {
+					for(let e in errors) {
+						this._View.addFormError(e, errors[e]);
+					}
+					this.go('/login');
+				}
+			);
 		} else {
-			// errors from server
 			this.go('/login');
 		}
 	}
