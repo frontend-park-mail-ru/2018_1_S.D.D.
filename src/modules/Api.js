@@ -48,7 +48,8 @@ class Api {
 		const requestSettings = {
 			method: httpMethod,
 			headers: {
-				'Content-Type': contentType
+				'Content-Type': contentType,
+				'Accept-Language': 'en-US'
 			},
 			credentials: 'include', // send user cookies, auth (etc) for cross-origin calls.
 			mode: 'cors' // allow cross-domain request
@@ -58,7 +59,14 @@ class Api {
 			requestSettings.body = JSON.stringify(data);
 		}
 
-		return fetch(`${this.serverAddress}/api/${path}`, requestSettings);
+		return fetch(`${this.serverAddress}/api/${path}`, requestSettings).then(
+			response => {
+				return response.json();
+			},
+			() => {
+				throw new Error('Connection issues. Try again later!');
+			}
+		);
 	}
 	
 }

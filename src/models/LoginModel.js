@@ -14,17 +14,24 @@ class LoginModel extends Model {
 	 */
 	constructor() {
 		super();
-		this.defaultLoginForm = {
+	}
+	
+	/**
+	 * Get login form data.
+	 * 
+	 * @param {Function} onSubmitCallback Form behaviour on submit event.
+	 * @returns {Object} Inputs and header.
+	 */
+	getLoginForm(onSubmitCallback) {
+		return this.defaultLoginForm = {
 			header: 'COME IN!',
 			social: true,
 			formAction: '/login/submit',
-			onSubmit: function() {
-				this._ServiceManager.Router.go('/login/submit', false);
-			}.bind(this),
+			onSubmit: () => onSubmitCallback(),
 			formInputs: [
 				{
 					type: 'text',
-					name: 'login',
+					name: 'nickname',
 					placeholder: 'Login'
 				},
 				{
@@ -35,15 +42,6 @@ class LoginModel extends Model {
 			],
 			button: 'LOG IN'
 		};
-	}
-	
-	/**
-	 * Get login form data.
-	 * 
-	 * @returns {Object} Inputs and header.
-	 */
-	getLoginForm() {
-		return this.defaultLoginForm;
 	}
 
 	/**
@@ -86,10 +84,26 @@ class LoginModel extends Model {
 	 */
 	validate(formData) {
 		return {
-			login: this.validateLogin(formData.login),
+			nickname: this.validateLogin(formData.nickname),
 			password: this.validatePassword(formData.password)
 		};
 	}
+
+	authenticate(formData, onSuccessCallback, onErrorCallback) {
+		this._ServiceManager.ApiService.POST('user/signin', formData)
+			.then(response => {
+				if(this.responseSuccess(response)) {
+					onSuccessCallback();
+				} else {
+					onErrorCallback(response.errors);
+				}
+			})
+			.catch(error => {
+				onErrorCallback({'general': error});
+			});
+	}
+
+
 }
 
 export default LoginModel;

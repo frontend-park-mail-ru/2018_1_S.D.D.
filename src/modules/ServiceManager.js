@@ -1,3 +1,5 @@
+/* global API_SERVER_ADDRESS */
+
 'use strict';
 
 import Router from './Router';
@@ -16,7 +18,7 @@ class ServiceManager {
      
 		//this._User = new User();
 		this._Router = new Router();
-		this._ApiService = new Api('http://localhost:8080');
+		this._ApiService = new Api(API_SERVER_ADDRESS);
 	}
     
 	/**
