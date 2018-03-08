@@ -56,8 +56,8 @@ class TemplateHolder {
 			this._parts[templateName].html = templateHTML;
 		}
 
-		for(let [key, property] in properties) {
-			this._parts[templateName][key] = property;
+		for(let propertyName in properties) {
+			this._parts[templateName][propertyName] = properties[propertyName];
 		}
 
 		return true;

@@ -15,7 +15,7 @@ class LoginModel extends Model {
 	constructor() {
 		super();
 		this.defaultLoginForm = {
-			header: 'Login',
+			header: 'COME IN!',
 			social: true,
 			formAction: '/login/submit',
 			onSubmit: function() {
@@ -33,7 +33,7 @@ class LoginModel extends Model {
 					placeholder: 'Password'
 				}
 			],
-			button: 'Login'
+			button: 'LOG IN'
 		};
 	}
 	
@@ -73,7 +73,7 @@ class LoginModel extends Model {
 			return 'You should fill password field!';
 		}
 		if(value.length < 6) {
-			return 'Login should be at least 6 characters in length!';
+			return 'Password should be at least 6 characters in length!';
 		}
 		return false;
 	}

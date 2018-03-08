@@ -1,6 +1,7 @@
 'use strict';
 
 import Router from './Router';
+import Api from './Api';
 
 /** Service manager object - container of major application objects */
 class ServiceManager {
@@ -15,7 +16,7 @@ class ServiceManager {
      
 		//this._User = new User();
 		this._Router = new Router();
-		//this._ApiService = new Api();
+		this._ApiService = new Api('http://localhost:8080');
 	}
     
 	/**

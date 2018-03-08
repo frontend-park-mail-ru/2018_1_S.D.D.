@@ -56,6 +56,7 @@ class LoginController extends Controller {
 
 		if(noValidationError) {
 			noValidationError = false; // submit data to server
+			this._ServiceManager.ApiService.POST('user/signin');
 		}
 
 		if(noValidationError) {
