@@ -24,7 +24,7 @@ class SignupModel extends Model {
 	 * @returns {Object} Inputs and header.
 	 */
 	getSignupForm(onSubmitCallback) {
-		return this.defaultSignupForm = {
+		return {
 			header: 'HI STRANGER!',
 			social: false,
 			formAction: '/signup/submit',

@@ -10,7 +10,7 @@ class ErrorController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Error = new ErrorModel();
+		this._Model = new ErrorModel();
 		this._View = new ErrorView();
 		this.addActions();
 	}
@@ -29,7 +29,8 @@ class ErrorController extends Controller {
 	 */
 	action404() {
 		const data = {
-			'Error': this._Error.get404Message()
+			'Error': this._Model.get404Message(),
+			'Header': this._Model.getHeaderData()
 		};
 		this._View.constructPage(data);
 		this._View.showPage();
@@ -40,7 +41,8 @@ class ErrorController extends Controller {
 	 */
 	action503() {
 		const data = {
-			'Error': this._Error.get503Message()
+			'Error': this._Model.get503Message(),
+			'Header': this._Model.getHeaderData()
 		};
 		this._View.constructPage(data);
 		this._View.showPage();

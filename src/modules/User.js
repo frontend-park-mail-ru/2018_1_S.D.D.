@@ -35,14 +35,16 @@ class User {
 	 */
 	loadUser() {
 		const serverResponse = this._API.GET('user/info');
-		serverResponse.then(response => {
+		return serverResponse.then(response => {
 			if(this._API.responseSuccess(response)) {
-				this._avatar = 'src/from/response.jpg';
+				const data = response.data;
+				this._avatar = data.avatar;
+				this._nickname = data.nickname;
+				this._email = data.email;
+				this._rating = data.rating;
 				this._loggedIn = true;
-				//etc
 			}
 		}).catch(() => {});
-		return serverResponse;
 	}
 
 	/**
@@ -53,13 +55,12 @@ class User {
 	 */
 	login(data) {
 		const serverResponse = this._API.POST('user/signin', data);
-		serverResponse.then(response => {
+		return serverResponse.then(response => {
 			if(this._API.responseSuccess(response)) {
 				this._loggedIn = true;
-				this.loadUser().catch(() => {});
+				return this.loadUser().catch(() => {});
 			}
 		}).catch(() => {});
-		return serverResponse;
 	}
 
 	/**
@@ -74,6 +75,26 @@ class User {
 
 	logout() {
 
+	}
+
+	get nickname() {
+		return this._nickname;
+	}
+
+	get avatar() {
+		return this._avatar;
+	}
+
+	get defaultAvatar() {
+		return this._avatar == null ? true : false;
+	}
+
+	get email() {
+		return this._email;
+	}
+
+	get rating() {
+		return this._rating;
 	}
 
 }

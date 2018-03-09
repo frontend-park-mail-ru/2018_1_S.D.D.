@@ -16,7 +16,8 @@ class SignupController extends Controller {
 		this.data = {
 			'SignupForm': this._Model.getSignupForm(
 				() => this._ServiceManager.Router.go('/signup/submit', false)
-			)
+			),
+			'Header': this._Model.getHeaderData()
 		};
 	}
 
@@ -60,7 +61,11 @@ class SignupController extends Controller {
 			this._Model.signup(
 				submitData,
 				() => {
-					// success behaviour here
+					const reconstructData = {
+						'Header': this._Model.getHeaderData()
+					};
+					this._View.reconstructPage(reconstructData);
+					this.go('/');
 				},
 				errors => {
 					for(let e in errors) {

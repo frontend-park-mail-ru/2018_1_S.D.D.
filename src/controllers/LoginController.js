@@ -16,7 +16,8 @@ class LoginController extends Controller {
 		this.data = {
 			'LoginForm': this._Model.getLoginForm(
 				() => this._ServiceManager.Router.go('/login/submit', false)
-			)
+			),
+			'Header': this._Model.getHeaderData()
 		};
 	}
 
