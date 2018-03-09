@@ -98,7 +98,7 @@ class View {
 			}
 
 			if(properties.block && this._PageBlock.block(properties.block)) {
-				this._PageBlock.block(properties.block).root.appendChild(html);
+				this._PageBlock.addToBlock(properties.block, html);
 			} else {
 				if(properties.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);

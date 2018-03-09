@@ -59,6 +59,11 @@ class PageParts {
 		}
 	}
 
+	addToBlock(id, element) {
+		element.classList.add('template-disabled');
+		this.block(id).root.appendChild(element);
+	}
+
 	/**
 	 * Change current visible template in block. And show block if it's hidden.
 	 * 
@@ -74,13 +79,13 @@ class PageParts {
 
 		let T = this._TemplateHolder.template(currentTemplate);
 		if(T && currentTemplate !== newTemplateName) {
+			T.html.classList.add('template-disabled');
+			T.html.classList.remove('template-active');
 			T.html.hidden = true;
 		}
 		this.block(id).currentTemplate = newTemplateName;
 
 		T = this._TemplateHolder.template(newTemplateName);
-		T.html.classList.add('template-disabled');
-		T.html.hidden = true;
 		
 		this.activateViewBlock(id);
 	}
@@ -126,13 +131,12 @@ class PageParts {
 	 */
 	disableViewBlock(id) {
 		if(this.block(id).active) {
-			const currentTemplate = this.block(id).currentTemplate;
-			const T = this._TemplateHolder.load(currentTemplate);
-			if(T) {
-				T.hidden = true;
-				T.classList.add('template-disabled');
-				T.classList.remove('template-active');
-			}
+			const loadedTemplates = this.block(id).root.childNodes;
+			[].forEach.call(loadedTemplates, template => {
+				template.hidden = true;
+				template.classList.add('template-disabled');
+				template.classList.remove('template-active');
+			});
 			this.block(id).root.hidden = true;
 			this.block(id).active = false;
 		}

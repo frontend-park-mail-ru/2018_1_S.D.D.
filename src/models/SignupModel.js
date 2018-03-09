@@ -36,7 +36,7 @@ class SignupModel extends Model {
 					placeholder: 'Login'
 				},
 				{
-					type: 'email',
+					type: 'text',
 					name: 'email',
 					placeholder: 'Email'
 				},

@@ -31,7 +31,7 @@ export default {
 		if(email === '') {
 			return 'You should fill email field!';
 		}
-		const re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/;
+		const re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/i;
 		if(!re.test(email)) {
 			return 'That\'s not valid email!';
 		}
