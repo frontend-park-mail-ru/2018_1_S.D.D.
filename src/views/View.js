@@ -98,7 +98,7 @@ class View {
 			}
 
 			if(properties.block && this._PageBlock.block(properties.block)) {
-				this._PageBlock.addToBlock(properties.block, html);
+				this._PageBlock.addToBlock(templateName);
 			} else {
 				if(properties.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);
@@ -132,6 +132,11 @@ class View {
 		if(T) {
 			T.html.hidden = true;
 		}
+	}
+
+	remove(templateName) {
+		this._PageBlock.disconnectViewBlock(templateName);
+		this._TemplateHolder.delete(templateName);
 	}
 
 }

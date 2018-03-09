@@ -6,10 +6,16 @@ import LoginController from './controllers/LoginController';
 import SignupController from './controllers/SignupController';
 
 const SM = new ServiceManager();
-
 SM.Router.addRoute('error', ErrorController);
 SM.Router.addRoute('index', MenuController);
 SM.Router.addRoute('', MenuController);
 SM.Router.addRoute('login', LoginController);
 SM.Router.addRoute('signup', SignupController);
-SM.Router.loadPage();
+
+SM.User.loadUser()
+	.then(() => {
+		SM.Router.loadPage();
+	})
+	.catch(() => {
+		SM.Router.go('/error/503', false);
+	});

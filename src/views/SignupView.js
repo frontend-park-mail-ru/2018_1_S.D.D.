@@ -59,6 +59,12 @@ class SignupView extends View {
 		this.load('SignupForm', FormTemplate, { block: 'right' });
 	}
 
+	reconstructPage(data = {}) {
+		this._data = data;
+		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
+		
+	}
+
 	/**
 	 * Display reuired templates.
 	 */

@@ -15,7 +15,7 @@ export default {
 		if(password.length < 6) {
 			return 'Password should be at least 6 characters in length!';
 		}
-		if(passwordCheck && password !== passwordCheck) {
+		if(passwordCheck !== null && password !== passwordCheck) {
 			return 'Different passwords were entered!';
 		}
 		return false;

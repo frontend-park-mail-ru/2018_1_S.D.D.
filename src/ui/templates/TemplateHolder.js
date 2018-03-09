@@ -90,6 +90,7 @@ class TemplateHolder {
 		if(!this._parts[templateName]) {
 			return false;
 		}
+		this._parts[templateName].html.remove();
 		delete this._parts[templateName];
 	}
 

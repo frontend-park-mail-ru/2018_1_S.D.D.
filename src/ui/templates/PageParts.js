@@ -60,18 +60,36 @@ class PageParts {
 	}
 
 	/**
+	 * If incoming template is current template in it's block, set current block to null.
+	 * 
+	 * @param {string} templateName Id of template to disconnect.
+	 */
+	disconnectViewBlock(templateName) {
+		const templateObject = this._TemplateHolder.template(templateName);
+		if(!templateObject || !templateObject.block) {
+			return;
+		}
+		if(this.block(templateObject.block).currentTemplate === templateName) {
+			this.block(templateObject.block).currentTemplate = null;
+		}
+	}
+
+	/**
 	 * Add html template to block on page.
 	 * 
-	 * @param {string} id Id of block in which we add template.
-	 * @param {HTMLElement} element Html template which we add to block.
+	 * @param {string} templateName Id of template to add in block.
 	 * @returns {boolean} False if block not found. True in other case.
 	 */
-	addToBlock(id, element) {
-		if(!this.block(id)) {
+	addToBlock(templateName) {
+		const templateObject = this._TemplateHolder.template(templateName);
+		if(!templateObject || !templateObject.block) {
 			return false;
 		}
-		element.classList.add('template-disabled');
-		this.block(id).root.appendChild(element);
+		if(!this.block(templateObject.block)) {
+			return false;
+		}
+		templateObject.html.classList.add('template-disabled');
+		this.block(templateObject.block).root.appendChild(templateObject.html);
 		return true;
 	}
 

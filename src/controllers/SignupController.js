@@ -57,7 +57,18 @@ class SignupController extends Controller {
 		}
 
 		if(noValidationError) {
-			// SignUp action
+			this._Model.signup(
+				submitData,
+				() => {
+					// success behaviour here
+				},
+				errors => {
+					for(let e in errors) {
+						this._View.addFormError(e, errors[e]);
+					}
+					this.go('/signup');
+				}
+			);
 		} else {
 			this.go('/signup');
 		}
