@@ -6,26 +6,26 @@ import LogoTemplate from '../ui/templates/logo/';
 import FormTemplate from '../ui/templates/form/';
 
 /**
- * Creates instance of LoginView
+ * Creates instance of SignupView
  * 
  * @class
- * @classdesc Login view. Render, shows, hide page.
+ * @classdesc Signup view. Render, shows, hide page.
  */
-class LoginView extends View {
+class SignupView extends View {
 	/**
-	 * Creates instance of LoginView
+	 * Creates instance of SignupView
 	 */
 	constructor() {
 		super();
 	}
 
 	/**
-	 * Serealize login form.
+	 * Serealize signup form.
 	 * 
 	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
 	 */
 	serializeForm() {
-		const form = this.load('LoginForm');
+		const form = this.load('SignupForm');
 		if(!form) {
 			return false;
 		}
@@ -40,7 +40,7 @@ class LoginView extends View {
 	 * @returns {boolean} True if ok, false if form or input not found.
 	 */
 	addFormError(input, message) {
-		const form = this.load('LoginForm');
+		const form = this.load('SignupForm');
 		if(!form) {
 			return false;
 		}
@@ -56,7 +56,7 @@ class LoginView extends View {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
 		this.load('Logo', LogoTemplate, { block: 'left' });
-		this.load('LoginForm', FormTemplate, { block: 'right' });
+		this.load('SignupForm', FormTemplate, { block: 'right' });
 	}
 
 	/**
@@ -65,8 +65,8 @@ class LoginView extends View {
 	showPage() {
 		this.show('Header');
 		this.show('Logo');
-		this.show('LoginForm');
+		this.show('SignupForm');
 	}
 }
 
-export default LoginView;
+export default SignupView;

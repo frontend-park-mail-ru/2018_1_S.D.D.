@@ -1,12 +1,13 @@
 'use strict';
 
 import Model from './Model';
+import validation from '../modules/validations';
 
 /**
  * Creates instance of LoginModel
  * 
  * @class
- * @classdesc Error model. Provide data for template rendering.
+ * @classdesc Login model. Provide data for template rendering.
  */
 class LoginModel extends Model {
 	/**
@@ -45,38 +46,6 @@ class LoginModel extends Model {
 	}
 
 	/**
-	 * Validate login.
-	 * 
-	 * @param {string} value Login value.
-	 * @returns {string|boolean} Error message or false if no validation error.
-	 */
-	validateLogin(value) {
-		if(value === '') {
-			return 'You should fill login field!';
-		}
-		if(value.length < 4) {
-			return 'Login should be at least 4 characters in length!';
-		}
-		return false;
-	}
-
-	/**
-	 * Validate password.
-	 * 
-	 * @param {string} value Password value.
-	 * @returns {string|boolean} Error message or false if no validation error.
-	 */
-	validatePassword(value) {
-		if(value === '') {
-			return 'You should fill password field!';
-		}
-		if(value.length < 6) {
-			return 'Password should be at least 6 characters in length!';
-		}
-		return false;
-	}
-
-	/**
 	 * Validate form.
 	 * 
 	 * @param {Object} formData Serealized form values.
@@ -84,8 +53,8 @@ class LoginModel extends Model {
 	 */
 	validate(formData) {
 		return {
-			nickname: this.validateLogin(formData.nickname),
-			password: this.validatePassword(formData.password)
+			nickname: validation.login(formData.nickname),
+			password: validation.password(formData.password)
 		};
 	}
 
