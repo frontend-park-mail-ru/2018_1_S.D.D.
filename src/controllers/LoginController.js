@@ -59,7 +59,9 @@ class LoginController extends Controller {
 		if(noValidationError) {
 			this._Model.authenticate(
 				submitData,
-				() => {},
+				() => {
+					// success behaviour here
+				},
 				errors => {
 					for(let e in errors) {
 						this._View.addFormError(e, errors[e]);
