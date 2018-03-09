@@ -32,8 +32,12 @@ class TemplateHolder {
 			this._parts[templateName] = {
 				'html': templateHTML, 
 				'reload': false,
-				properties
 			};
+
+			for(let propertyName in properties) {
+				this._parts[templateName][propertyName] = properties[propertyName];
+			}
+			
 			return true;
 		}
 		return false;

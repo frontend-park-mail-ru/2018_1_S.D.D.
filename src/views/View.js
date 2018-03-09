@@ -117,13 +117,8 @@ class View {
 	 */
 	show(templateName) {
 		const T = this._TemplateHolder.template(templateName);
-		if(T) {
-			const block = T.properties.block;
-			if(block) {
-				this._PageBlock.changeTemplate(block, templateName);
-			} else {
-				T.html.hidden = false;
-			}
+		if(T && !this._PageBlock.changeTemplate(templateName)) {
+			T.html.hidden = false;
 		}
 	}
 

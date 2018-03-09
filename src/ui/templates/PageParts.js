@@ -59,41 +59,60 @@ class PageParts {
 		}
 	}
 
+	/**
+	 * Add html template to block on page.
+	 * 
+	 * @param {string} id Id of block in which we add template.
+	 * @param {HTMLElement} element Html template which we add to block.
+	 * @returns {boolean} False if block not found. True in other case.
+	 */
 	addToBlock(id, element) {
+		if(!this.block(id)) {
+			return false;
+		}
 		element.classList.add('template-disabled');
 		this.block(id).root.appendChild(element);
+		return true;
 	}
 
 	/**
 	 * Change current visible template in block. And show block if it's hidden.
 	 * 
-	 * @param {string} id Id of block in which we change template.
-	 * @param {string} newTemplateName Name of template to show in block.
+	 * @param {string} templateName Name of template to show in block.
+	 * @returns {boolean} False if template not found or template has not link to block. True in other case.
 	 */
-	changeTemplate(id, newTemplateName) {
+	changeTemplate(templateName) {
+		const templateObject = this._TemplateHolder.template(templateName);
+		if(!templateObject || !templateObject.block) {
+			return false;
+		}
+		
+		const id = templateObject.block;
+
 		this.block(id).hideOnShow.forEach(block => {
 			this.disableViewBlock(block);
 		});
 
 		const currentTemplate = this.block(id).currentTemplate;
+		const T = this._TemplateHolder.template(currentTemplate);
 
-		let T = this._TemplateHolder.template(currentTemplate);
-		if(T && currentTemplate !== newTemplateName) {
+		if(T && currentTemplate !== templateName) {
 			T.html.classList.add('template-disabled');
 			T.html.classList.remove('template-active');
 			T.html.hidden = true;
 		}
-		this.block(id).currentTemplate = newTemplateName;
 
-		T = this._TemplateHolder.template(newTemplateName);
-		
+		this.block(id).currentTemplate = templateName;
 		this.activateViewBlock(id);
+
+		return true;
 	}
 
 	/**
+	 * Add block to which we should hide when other block gonna be shown.
 	 * 
-	 * @param {*} id Id of block which will hide.
-	 * @param {*} blockToHide Id of block which will be hided.
+	 * @param {strig} id Id of block which will hide.
+	 * @param {string} blockToHide Id of block which will be hided.
 	 */
 	_addBlockTohide(id, blockToHide) {
 		this.block(id).hideOnShow.push(blockToHide);
