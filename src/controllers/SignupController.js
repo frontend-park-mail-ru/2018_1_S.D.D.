@@ -1,21 +1,21 @@
 'use strict';
 
 import Controller from './Controller';
-import LoginModel from '../models/LoginModel';
-import LoginView from '../views/LoginView';
+import SignupModel from '../models/SignupModel';
+import SignupView from '../views/SignupView';
 
-class LoginController extends Controller {
+class SignupController extends Controller {
 	/**
-	 * Creates instance of LoginController
+	 * Creates instance of SignupController
 	 */
 	constructor() {
 		super();
-		this._Model = new LoginModel();
-		this._View = new LoginView();
+		this._Model = new SignupModel();
+		this._View = new SignupView();
 		this.addActions();
 		this.data = {
-			'LoginForm': this._Model.getLoginForm(
-				() => this._ServiceManager.Router.go('/login/submit', false)
+			'SignupForm': this._Model.getSignupForm(
+				() => this._ServiceManager.Router.go('/signup/submit', false)
 			)
 		};
 	}
@@ -29,7 +29,7 @@ class LoginController extends Controller {
 	}
 
 	/**
-	 * Common action. Show login form.
+	 * Common action. Show signup form.
 	 */
 	actionIndex() {
 		this._View.constructPage(this.data);
@@ -57,22 +57,11 @@ class LoginController extends Controller {
 		}
 
 		if(noValidationError) {
-			this._Model.authenticate(
-				submitData,
-				() => {
-					// success behaviour here
-				},
-				errors => {
-					for(let e in errors) {
-						this._View.addFormError(e, errors[e]);
-					}
-					this.go('/login');
-				}
-			);
+			// SignUp action
 		} else {
-			this.go('/login');
+			this.go('/signup');
 		}
 	}
 }
 
-export default LoginController;
+export default SignupController;

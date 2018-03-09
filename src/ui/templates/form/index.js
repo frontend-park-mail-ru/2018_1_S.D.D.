@@ -29,6 +29,12 @@ export default {
 	 * @returns {boolean} True id error added, false if input not found.
 	 */
 	addError: (input, message, html = document) => {
+		// If we adding error that means request completed
+		// So we need to hide animation loader
+		html.querySelector('.form__btn_submit__text').hidden = false;
+		html.querySelector('.loader').hidden = true;
+
+		// If it's input error - looking for input to color it
 		if (input !== 'general') {
 			const inputElement = html.querySelector('[name="' + input + '"]');
 			if(!inputElement) {
@@ -36,6 +42,8 @@ export default {
 			}
 			inputElement.classList.add('input-error');
 		}
+
+		// Show error message
 		const inputMessage = html.querySelector('.error-' + input);
 		inputMessage.classList.add('error-message-active');
 		inputMessage.innerHTML = message;
@@ -54,19 +62,32 @@ export default {
 			activeError.classList.remove('error-message-active');
 			activeError.innerHTML = '';
 		}
-		
+
+		// Render template
 		const elem = document.createElement('div');
 		elem.innerHTML = template(params);
+
+		// Submit form handler
 		const form = elem.querySelector('form');
 		form.addEventListener('submit', event => {
 			event.preventDefault();
+
+			// Hide general error
 			disableError('.error-general');
+
+			// Show loader animation and hide button text
+			elem.querySelector('.form__btn_submit__text').hidden = true;
+			elem.querySelector('.loader').hidden = false;
+
+			// Submit form
 			if(params.onSubmit) {
 				params.onSubmit();
 			} else {
 				form.submit();
 			}
 		});
+
+		// Hide errors on field focus
 		const inputs = elem.querySelectorAll('input');
 		inputs.forEach(input => {
 			input.addEventListener('focus', () => {

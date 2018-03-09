@@ -58,6 +58,14 @@
     color: #fff;
 }
 
+.form__btn_submit__text {
+    -o-transition:.0s;
+    -ms-transition:.0s;
+    -moz-transition:.0s;
+    -webkit-transition:.0s;
+    transition:.0s;
+}
+
 .form__btn_social {
     width: 50%;
     display: inline-block;
@@ -170,4 +178,129 @@
 	.error-message {
 		max-width: 90%;
 	}
+}
+
+/* CSS LOADER */
+
+.loader {
+    width:100%;
+    height: 21px;
+    margin:auto;
+    text-align: center;
+}
+
+.circleG {
+	background-color:rgb(221,221,221);
+	display: inline-block;
+	height:21px;
+	margin: 0 15px;
+	width:21px;
+	animation-name:bounce_circleG;
+		-o-animation-name:bounce_circleG;
+		-ms-animation-name:bounce_circleG;
+		-webkit-animation-name:bounce_circleG;
+		-moz-animation-name:bounce_circleG;
+	animation-duration:1.24s;
+		-o-animation-duration:1.24s;
+		-ms-animation-duration:2.24s;
+		-webkit-animation-duration:2.24s;
+		-moz-animation-duration:2.24s;
+	animation-iteration-count:infinite;
+		-o-animation-iteration-count:infinite;
+		-ms-animation-iteration-count:infinite;
+		-webkit-animation-iteration-count:infinite;
+		-moz-animation-iteration-count:infinite;
+	animation-direction:normal;
+		-o-animation-direction:normal;
+		-ms-animation-direction:normal;
+		-webkit-animation-direction:normal;
+		-moz-animation-direction:normal;
+	border-radius:20px;
+		-o-border-radius:20px;
+		-ms-border-radius:20px;
+		-webkit-border-radius:20px;
+		-moz-border-radius:20px;
+}
+
+.circleG_1 {
+	animation-delay:0.45s;
+		-o-animation-delay:0.45s;
+		-ms-animation-delay:0.45s;
+		-webkit-animation-delay:0.45s;
+		-moz-animation-delay:0.45s;
+}
+
+.circleG_2 {
+	animation-delay:1.05s;
+		-o-animation-delay:1.05s;
+		-ms-animation-delay:1.05s;
+		-webkit-animation-delay:1.05s;
+		-moz-animation-delay:1.05s;
+}
+
+.circleG_3 {
+	animation-delay:1.35s;
+		-o-animation-delay:1.35s;
+		-ms-animation-delay:1.35s;
+		-webkit-animation-delay:1.35s;
+		-moz-animation-delay:1.35s;
+}
+
+
+
+@keyframes bounce_circleG {
+	0% {}
+
+	50% {
+		background-color:rgb(97,69,133);
+	}
+
+	100% {}
+}
+
+@-o-keyframes bounce_circleG {
+	0% {}
+
+	50% {
+		background-color:rgb(97,69,133);
+	}
+
+	100% {}
+}
+
+@-ms-keyframes bounce_circleG {
+	0% {}
+
+	50% {
+		background-color:rgb(97,69,133);
+	}
+
+	100% {}
+}
+
+@-webkit-keyframes bounce_circleG {
+	0% {}
+
+	50% {
+		background-color:rgb(97,69,133);
+	}
+
+	100% {}
+}
+
+@-moz-keyframes bounce_circleG {
+	0% {}
+
+	50% {
+		background-color:rgb(97,69,133);
+	}
+
+	100% {}
+}
+
+@media screen and (max-width: 1200px) {
+    .circleG {
+        height:15px;
+        width: 15px;
+    }
 }

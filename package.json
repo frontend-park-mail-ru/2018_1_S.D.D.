@@ -4,12 +4,12 @@
   "description": "The player moves around the field and paints the cells.",
   "main": "app.js",
   "scripts": {
+    "start": "npm run build-heroku && npm run server",
     "start-dev": "npm run build-dev && npm run server",
-    "start-heroku": "npm run build-heroku && npm run server",
     "server": "node server/app.js",
+    "build-heroku": "webpack --config webpack.heroku.js",
     "build-dev": "webpack --config webpack.dev.js",
     "build-dev-watch": "webpack --config webpack.dev.js --watch",
-    "build-heroku": "webpack --config webpack.heroku.js",
     "lint-fix": "eslint ./ --fix"
   },
   "devDependencies": {
