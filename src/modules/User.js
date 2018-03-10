@@ -20,6 +20,19 @@ class User {
 	}
 
 	/**
+	 * Set data to null and loggedIn value into false.
+	 */
+	reset() {
+		this._avatar = null;
+		this._nickname = null;
+		this._email = null;
+		this._rating = null;
+		this._gamesCount = null;
+		this._winsCount = null;
+		this._loggedIn = false;
+	}
+
+	/**
 	 * Checks if user is logined or not.
 	 * 
 	 * @returns {boolean} True if user logined, false if he isn't.
@@ -42,7 +55,11 @@ class User {
 				this._nickname = data.nickname;
 				this._email = data.email;
 				this._rating = data.rating;
+				this._gamesCount = data.countGames;
+				this._winsCount = data.countWins;
 				this._loggedIn = true;
+			} else {
+				this.reset();
 			}
 			return serverResponse;
 		});
@@ -77,7 +94,11 @@ class User {
 	}
 
 	logout() {
-
+		const serverResponse = this._API.POST('user/signout');
+		return serverResponse.then(() => {
+			this.reset();
+			return serverResponse;
+		});
 	}
 
 	get nickname() {
@@ -98,6 +119,14 @@ class User {
 
 	get rating() {
 		return this._rating;
+	}
+
+	get games() {
+		return this._gamesCount;
+	}
+
+	get wins() {
+		return this._winsCount;
 	}
 
 }

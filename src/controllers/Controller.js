@@ -47,8 +47,8 @@ class Controller {
 	 * 
 	 * @param {string} url Page url.
 	 */
-	go(url) {
-		this._ServiceManager.Router.go(url);
+	go(url, history = true) {
+		this._ServiceManager.Router.go(url, history);
 	}
 }
 
