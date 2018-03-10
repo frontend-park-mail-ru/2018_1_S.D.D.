@@ -2,6 +2,7 @@
 
 import View from './View';
 import HeaderTemplate from '../ui/templates/header/';
+import ProfileTemplate from '../ui/templates/profile/';
 
 /**
  * Creates instance of SignupView
@@ -18,12 +19,14 @@ class SignupView extends View {
 	}
 	
 	/**
-	 * Load all required templates.
+	 * Load all required templates for profile page.
 	 * 
 	 * @param {Object} data Data for template rendering.
 	 */
-	constructPage(data = {}) {
+	constructProfile(data = {}) {
 		this._data = data;
+		this.load('Header', HeaderTemplate, { appendFirst: true });
+		this.load('Profile', ProfileTemplate, { block: 'left', reload: true });
 	}
 
 	/**
@@ -31,15 +34,17 @@ class SignupView extends View {
 	 * 
 	 * @param {Object} data Data for template rendering.
 	 */
-	reconstructPage(data = {}) {
+	constructLogout(data = {}) {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
 	}
 
 	/**
-	 * Display reuired templates.
+	 * Display reuired templates for profile page.
 	 */
-	showPage() {
+	showProfile() {
+		this.show('Header');
+		this.show('Profile');
 	}
 }
 

@@ -24,6 +24,17 @@ class ErrorView extends View {
 		this.load('Header', HeaderTemplate, { appendFirst: true });
 	}
 
+	/**
+	 * This method gonna be called only when user isn't authorized. So we reload header.
+	 * 
+	 * @param {Object} data Data for templates rendering
+	 */
+	construct403(data = {}) {
+		this._data = data;
+		this.load('Error', ErrorTemplate, { block: 'main', reload: true });
+		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
+	}
+
 	showPage() {
 		this.show('Header');
 		this.show('Error');

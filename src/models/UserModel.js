@@ -16,6 +16,17 @@ class UserModel extends Model {
 		super();
 	}
 
+	getProfileData(backUrl = '/') {
+		const User = this._ServiceManager.User;
+		return {
+			url: backUrl,
+			nickname: User.nickname,
+			gamesCount: User.games,
+			winsCount: User.wins,
+			rating: User.rating,
+		};
+	}
+
 
 	logout(onSuccessCallback, onErrorCallback) {
 		const User = this._ServiceManager.User;

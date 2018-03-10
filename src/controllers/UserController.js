@@ -13,9 +13,6 @@ class UserController extends Controller {
 		this._Model = new UserModel();
 		this._View = new UserView();
 		this.addActions();
-		this.data = {
-			'Header': this._Model.getHeaderData()
-		};
 	}
 
 	/**
@@ -23,6 +20,7 @@ class UserController extends Controller {
 	 */
 	addActions() {
 		this.addAction('index', this.actionIndex);
+		this.addAction('profile', this.actionProfile);
 		this.addAction('logout', this.actionLogout);
 	}
 
@@ -30,7 +28,23 @@ class UserController extends Controller {
 	 * Common action doesn't exists. Show 404.
 	 */
 	actionIndex() {
-		this.go('/404', false);
+		this.go('/error/404', false);
+	}
+
+	actionProfile() {
+		this._Model.onAuth(
+			() => {
+				const data = {
+					'Header': this._Model.getHeaderData(),
+					'Profile': this._Model.getProfileData('/')
+				};
+				this._View.constructProfile(data);
+				this._View.showProfile();
+			},
+			() => {
+				this.go('/error/403', false);
+			}
+		);
 	}
 
 	/**
@@ -42,7 +56,7 @@ class UserController extends Controller {
 				const reconstructData = {
 					'Header': this._Model.getHeaderData()
 				};
-				this._View.reconstructPage(reconstructData);
+				this._View.constructLogout(reconstructData);
 				this.go('/');
 			},
 			() => {

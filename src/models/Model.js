@@ -16,6 +16,28 @@ class Model {
 		this._ServiceManager = new ServiceManager();
 	}
 
+	/**
+	 * Use this function if you need special behaviour depended on login state.
+	 * 
+	 * @param {*} authCallback Callback if user logged in
+	 * @param {*} noAauthCallback Callback if user not logged in
+	 * @returns {Promise} Promise without.
+	 */
+	onAuth(authCallback, noAauthCallback, preCallback = () => {}) {
+		return this._ServiceManager.User.loadUser()
+			.then(response => {
+				preCallback();
+				if(this._ServiceManager.ApiService.responseSuccess(response)) {
+					authCallback();
+				} else {
+					noAauthCallback();
+				}
+			})
+			.catch(() => {
+				this._ServiceManager.Router.go('/error/503', false);
+			});
+	}
+
 	getHeaderData() {
 		const User = this._ServiceManager.User;
 		return {
@@ -25,6 +47,7 @@ class Model {
 			avatar: User.avatar,
 			menuItems: [
 				{ link:'/user/profile', text:'PROFILE' },
+				{ link:'/user/settings', text:'SETTINGS' },
 				{ link:'/user/logout', text:'LOG OUT', nohistory: 'true' }
 			]
 		};

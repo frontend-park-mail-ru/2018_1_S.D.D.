@@ -19,9 +19,22 @@ class ErrorController extends Controller {
 	 * Add actions to controller.
 	 */
 	addActions() {
+		this.addAction('403', this.action403);
 		this.addAction('404', this.action404);
 		this.addAction('index', this.action404);
 		this.addAction('503', this.action503);
+	}
+
+	/**
+	 * Login required.
+	 */
+	action403() {
+		const data = {
+			'Error': this._Model.get403Message(),
+			'Header': this._Model.getHeaderData()
+		};
+		this._View.construct403(data);
+		this._View.showPage();
 	}
 
 	/**

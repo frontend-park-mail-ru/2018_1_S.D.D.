@@ -15,6 +15,20 @@ class ErrorModel extends Model {
 	constructor() {
 		super();
 	}
+
+	/**
+	 * Get 403 error message.
+	 * 
+	 * @returns {Object} 403 error message.
+	 */
+	get403Message() {
+		const url = this._ServiceManager.Router.getNewUrlPath();
+		return {
+			Code: '403',
+			Header: 'This place is strictly forbidden for guys like you!',
+			Message: 'You should sign in first to look on ' + url
+		};
+	}
 	
 	/**
 	 * Get 404 error message.
