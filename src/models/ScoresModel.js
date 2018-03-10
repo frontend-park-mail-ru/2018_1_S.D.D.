@@ -16,51 +16,58 @@ class ScoresModel extends Model {
 		super();
 	}
 	
-	/**
-	 * Get menu links
-	 * 
-	 * @returns {Object} Object contains menu links.
-	 */
-	getMenuItems() {
-		return {
-			menuItems: [
-				{ link:'/play', text:'PLAY' },
-				{ link:'/scores', text:'SCORES' },
-				{ link:'/rules', text:'RULES' },
-				{ link:'/about', text:'ABOUT' }
-			]
-		};
-	}
 
 	/**
 	* Get user scores
 	*
 	* @returns {Object} Object contains user scores
 	*/
-	getUserScores(pageNumber = 0, countUsers = 5) {
+	getUserScores(onClickCallback,pageNumber = 0, countUsers = 5) {
 		const pages = pageNumber;
 		const users = countUsers;
 
-		if ((pages < 0) || (users < 0)) {
-			return false;
-		}
-		return {
-			userScores: [
-				{ name: 'Vasya', score: 100},
-				{ name: 'Anya', score: 200},
-				{ name: 'Zhenya', score: 300},
-				{ name: 'Anzhela', score: 400},
-				{ name: 'Karolina', score: 500}
-			]
-		};
+
+		const API = this._ServiceManager.ApiService;
+		const serverResponse = API.GET('user/get_users');
+		if (serverResponse) {
+			return serverResponse.then(response => {
+			if(API.responseSuccess(response)) {
+				const data = response.data;
+			}
+			return serverResponse;
+			});
+		} 
+		/*return {
+			"errors": {},
+			"data": {
+			"userViewList": [
+				{
+					"nickname": "da2",
+					"email": "emao@emai1111111dd111122.cd",
+					"rating": 2.4,
+					"avatar": null
+				},
+				{
+					"nickname": "dat2",
+					"email": "emao@emai1111111dd1111212.cd",
+					"rating": 0.08888888888888889,
+					"avatar": null
+				}
+			],
+			"size": 2
+			}
+		}*/
+
 	}
 
 	getUserScoresCount() {
 		return 5;
 	}
 
-	getUserScoresTable() {
-
+	getUserScoresTable(onClickCallback) {
+		return this.defaultScoresTable = {
+			onClick: () => onClickCallback()
+		};
 	}
 }
 

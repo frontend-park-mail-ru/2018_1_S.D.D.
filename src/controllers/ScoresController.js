@@ -15,7 +15,8 @@ class ScoresController extends Controller {
 
 		this.addActions();
 		this.data = {
-			'Scores': this._Model.getUserScores()
+			'Scores': this._Model.getUserScores(
+				() => this._ServiceManager.Router.go('/scores', false))
 		};
 	}
 
