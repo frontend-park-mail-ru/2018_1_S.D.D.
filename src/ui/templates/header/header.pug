@@ -14,7 +14,11 @@ header.header
 					ul.submenu
 						each item in menuItems
 							li.submenu__item
-								a(href=item.link).submenu__item__link #{item.text}
+								if item.nohistory === undefined
+									- nohistory = 'false'
+								else
+									- nohistory = item.nohistory
+								a(href=item.link, nohistory=nohistory).submenu__item__link #{item.text}
 		else
 			ul.header__list.list
 				li.list__item.list__item_hor

@@ -62,7 +62,8 @@ class LoginModel extends Model {
 		const API = this._ServiceManager.ApiService;
 		const User = this._ServiceManager.User;
 
-		User.login(formData)
+		const resp = User.login(formData);
+		resp
 			.then(response => {
 				if(API.responseSuccess(response)) {
 					onSuccessCallback();

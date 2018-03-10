@@ -57,11 +57,12 @@ class View {
 	listenLinks(html) {
 		const links = html.querySelectorAll('a');
 		[].forEach.call(links, link => {
+			const appendInHistory = !(link.getAttribute('nohistory') === 'true');
 			if(!link.getAttribute('target')) {
 				link.addEventListener('click', event => {
 					event.preventDefault();
 					const route = link.getAttribute('href');
-					this._ServiceManager.Router.go(route);
+					this._ServiceManager.Router.go(route, appendInHistory);
 				});
 			}
 		});

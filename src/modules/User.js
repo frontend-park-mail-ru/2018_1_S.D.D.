@@ -44,7 +44,8 @@ class User {
 				this._rating = data.rating;
 				this._loggedIn = true;
 			}
-		}).catch(() => {});
+			return serverResponse;
+		});
 	}
 
 	/**
@@ -58,7 +59,9 @@ class User {
 		return serverResponse.then(response => {
 			if(this._API.responseSuccess(response)) {
 				this._loggedIn = true;
-				return this.loadUser().catch(() => {});
+				return this.loadUser();
+			} else {
+				return serverResponse;
 			}
 		}).catch(() => {});
 	}

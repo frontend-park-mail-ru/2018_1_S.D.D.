@@ -25,7 +25,7 @@ class Model {
 			avatar: User.avatar,
 			menuItems: [
 				{ link:'/user/profile', text:'PROFILE' },
-				{ link:'/user/logout', text:'LOG OUT' }
+				{ link:'/user/logout', text:'LOG OUT', nohistory: 'true' }
 			]
 		};
 	}

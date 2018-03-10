@@ -61,7 +61,11 @@ class LoginController extends Controller {
 			this._Model.authenticate(
 				submitData,
 				() => {
-					// success behaviour here
+					const reconstructData = {
+						'Header': this._Model.getHeaderData()
+					};
+					this._View.reconstructPage(reconstructData);
+					this.go('/');
 				},
 				errors => {
 					for(let e in errors) {
