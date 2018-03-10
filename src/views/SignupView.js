@@ -64,7 +64,6 @@ class SignupView extends View {
 		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
 		this.remove('SignupForm');
 		this.remove('LoginForm');
-
 	}
 
 	/**

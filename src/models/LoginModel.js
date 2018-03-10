@@ -65,7 +65,6 @@ class LoginModel extends Model {
 		User.login(formData)
 			.then(response => {
 				if(API.responseSuccess(response)) {
-					User.loadUser();
 					onSuccessCallback();
 				} else {
 					onErrorCallback(response.errors);
