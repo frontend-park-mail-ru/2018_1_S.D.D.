@@ -1,6 +1,8 @@
 'use strict';
 
 import Controller from './Controller';
+import ScoresModel from '../models/ScoresModel';
+import ScoresView from '../views/ScoresView';
 
 class ScoresController extends Controller {
 	/**
@@ -8,6 +10,8 @@ class ScoresController extends Controller {
 	 */
 	constructor() {
 		super();
+		this._Model = new ScoresModel();
+		this._View = new ScoresView();
 
 		this.addActions();
 		this.data = {
