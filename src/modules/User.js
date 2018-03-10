@@ -77,7 +77,15 @@ class User {
 	}
 
 	logout() {
-
+		const serverResponse = this._API.POST('user/signout');
+		return serverResponse.then(() => {
+			this._avatar = null;
+			this._nickname = null;
+			this._email = null;
+			this._rating = null;
+			this._loggedIn = false;
+			return serverResponse;
+		});
 	}
 
 	get nickname() {

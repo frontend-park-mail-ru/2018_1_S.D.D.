@@ -91,6 +91,7 @@
     transition: .5s ease-in-out;
     list-style: none;
     margin: auto;
+    height: 0px;
 }
 
 .submenu__item {
@@ -112,6 +113,7 @@
 .user_section > li:hover .submenu {
     opacity: 1;
     transform: scaleY(1);
+    height: auto;
 }
 
 @media screen and (max-width: 1080px) {
