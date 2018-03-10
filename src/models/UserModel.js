@@ -27,6 +27,43 @@ class UserModel extends Model {
 		};
 	}
 
+	getSettingsData(onSubmitCallback) {
+		const User = this._ServiceManager.User;
+		return this.defaultLoginForm = {
+			header: 'EDIT PROFILE',
+			social: false,
+			formAction: '/user/edit',
+			onSubmit: () => onSubmitCallback(),
+			formInputs: [
+				{
+					type: 'text',
+					name: 'nickname',
+					placeholder: User.nickname
+				},
+				{
+					type: 'text',
+					name: 'email',
+					placeholder: User.email
+				},
+				{
+					type: 'password',
+					name: 'oldPassword',
+					placeholder: 'Old password'
+				},
+				{
+					type: 'password',
+					name: 'password',
+					placeholder: 'New password'
+				},
+				{
+					type: 'password',
+					name: 'passwordCheck',
+					placeholder: 'Confirm password'
+				}
+			],
+			button: 'CHANGE MYSELF!'
+		};
+	}
 
 	logout(onSuccessCallback, onErrorCallback) {
 		const User = this._ServiceManager.User;

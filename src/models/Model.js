@@ -19,8 +19,9 @@ class Model {
 	/**
 	 * Use this function if you need special behaviour depended on login state.
 	 * 
-	 * @param {*} authCallback Callback if user logged in
-	 * @param {*} noAauthCallback Callback if user not logged in
+	 * @param {Function} authCallback Callback if user logged in
+	 * @param {Function} noAauthCallback Callback if user not logged in
+	 * @param {Function} preCallback Callback to execute before other callbacks
 	 * @returns {Promise} Promise without.
 	 */
 	onAuth(authCallback, noAauthCallback, preCallback = () => {}) {

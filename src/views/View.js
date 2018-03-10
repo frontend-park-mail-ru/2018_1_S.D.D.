@@ -135,6 +135,11 @@ class View {
 		}
 	}
 
+	/**
+	 * Remove template from holder and DOM.
+	 * 
+	 * @param {string} templateName Name of template to remove.
+	 */
 	remove(templateName) {
 		this._PageBlock.disconnectViewBlock(templateName);
 		this._TemplateHolder.delete(templateName);
