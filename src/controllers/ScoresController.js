@@ -15,7 +15,7 @@ class ScoresController extends Controller {
 
 		this.addActions();
 		this.data = {
-
+			'Scores': this._Model.getUserScores()
 		};
 	}
 

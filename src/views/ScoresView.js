@@ -3,6 +3,7 @@
 import View from './View';
 import HeaderTemplate from '../ui/templates/header/';
 import LogoTemplate from '../ui/templates/logo/';
+import ScoresTemplate from '../ui/templates/scores/';
 
 /**
  * Creates instance of LoginView
@@ -26,7 +27,8 @@ class ScoresView extends View {
 	constructPage(data = {}) {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('Logo', LogoTemplate, { block: 'right' });
+		this.load('Logo', LogoTemplate, { block: 'left' });
+		this.load('Scores', ScoresTemplate, { block: 'right' });
 	}
 
 	/**
@@ -35,6 +37,7 @@ class ScoresView extends View {
 	showPage() {
 		this.show('Header');
 		this.show('Logo');
+		this.show('Scores');
 	}
 }
 

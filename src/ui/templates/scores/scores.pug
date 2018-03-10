@@ -1,3 +1,10 @@
 a(href='/').return-link ← Back to menu
 h2.scores__header #{header}
-.table
+table
+	each user in userScores
+		tr
+			td #{user.name}
+			td #{user.score}
+div
+	button ← Previous page
+	button ← Next page

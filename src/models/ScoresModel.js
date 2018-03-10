@@ -46,17 +46,21 @@ class ScoresModel extends Model {
 		}
 		return {
 			userScores: [
-				{ user: 'Vasya', score: 100},
-				{ user: 'Anya', score: 200},
-				{ user: 'Zhenya', score: 300},
-				{ user: 'Anzhela', score: 400},
-				{ user: 'Karolina', score: 500}
+				{ name: 'Vasya', score: 100},
+				{ name: 'Anya', score: 200},
+				{ name: 'Zhenya', score: 300},
+				{ name: 'Anzhela', score: 400},
+				{ name: 'Karolina', score: 500}
 			]
 		};
 	}
 
 	getUserScoresCount() {
 		return 5;
+	}
+
+	getUserScoresTable() {
+
 	}
 }
 
