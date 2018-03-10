@@ -40,6 +40,10 @@ class ScoresModel extends Model {
 	getUserScores(pageNumber = 0, countUsers = 5) {
 		const pages = pageNumber;
 		const users = countUsers;
+
+		if ((pages < 0) || (users < 0)) {
+			return false;
+		}
 		return {
 			userScores: [
 				{ user: 'Vasya', score: 100},
