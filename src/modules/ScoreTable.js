@@ -29,6 +29,7 @@ class ScoresTable {
 		return serverResponse.then(response => {
 			if(this._API.responseSuccess(response)) {
 				const data = response.data;
+				return data;
 			}
 			return serverResponse;
 		});

@@ -22,19 +22,19 @@ class ScoresModel extends Model {
 	*
 	* @returns {Object} Object contains user scores
 	*/
-	getUserScores(onClickCallback,pageNumber = 0, countUsers = 5) {
-		const pages = pageNumber;
-		const users = countUsers;
-
+	getUserScores(onClickCallback) {
 
 		const API = this._ServiceManager.ApiService;
 		const serverResponse = API.GET('user/get_users');
 		if (serverResponse) {
 			return serverResponse.then(response => {
-			if(API.responseSuccess(response)) {
-				const data = response.data;
-			}
-			return serverResponse;
+				if(API.responseSuccess(response)) {
+					const data = response.data;
+					data.onClick = onClickCallback;
+					return data;
+				}
+				serverResponse.onClick = onClickCallback;
+				return serverResponse;
 			});
 		} 
 		/*return {
