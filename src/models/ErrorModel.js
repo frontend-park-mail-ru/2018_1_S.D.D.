@@ -29,6 +29,19 @@ class ErrorModel extends Model {
 			Message: 'Are you sure that "' + url + '" is correct addres?'
 		};
 	}
+
+	/**
+	 * Get 503 error message.
+	 * 
+	 * @returns {Object} 503 error message.
+	 */
+	get503Message() {
+		return {
+			Code: '503',
+			Header: 'Backend server not responding. We are sorry about that!',
+			Message: 'You still can play offline if you want...'
+		};
+	}
 }
 
 export default ErrorModel;

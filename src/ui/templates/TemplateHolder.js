@@ -32,8 +32,12 @@ class TemplateHolder {
 			this._parts[templateName] = {
 				'html': templateHTML, 
 				'reload': false,
-				properties
 			};
+
+			for(let propertyName in properties) {
+				this._parts[templateName][propertyName] = properties[propertyName];
+			}
+			
 			return true;
 		}
 		return false;
@@ -86,6 +90,7 @@ class TemplateHolder {
 		if(!this._parts[templateName]) {
 			return false;
 		}
+		this._parts[templateName].html.remove();
 		delete this._parts[templateName];
 	}
 

@@ -14,6 +14,24 @@ class Api {
 	}
 
 	/**
+	 * Checks if operation was success or not.
+	 * 
+	 * @param {Object} response Data recived from server.
+	 * @returns {boolean} True if success, false in other case.
+	 */
+	responseSuccess(response) {
+		const errorsList = response.errors;
+		if (errorsList) {
+			for (var error in errorsList) {
+				if (errorsList.hasOwnProperty(error)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * GET request
 	 * 
 	 * @param {string} path Path to api method.

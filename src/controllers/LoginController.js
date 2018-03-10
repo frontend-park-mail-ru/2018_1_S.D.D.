@@ -16,7 +16,8 @@ class LoginController extends Controller {
 		this.data = {
 			'LoginForm': this._Model.getLoginForm(
 				() => this._ServiceManager.Router.go('/login/submit', false)
-			)
+			),
+			'Header': this._Model.getHeaderData()
 		};
 	}
 
@@ -60,7 +61,11 @@ class LoginController extends Controller {
 			this._Model.authenticate(
 				submitData,
 				() => {
-					// success behaviour here
+					const reconstructData = {
+						'Header': this._Model.getHeaderData()
+					};
+					this._View.reconstructPage(reconstructData);
+					this.go('/');
 				},
 				errors => {
 					for(let e in errors) {

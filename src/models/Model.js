@@ -16,23 +16,20 @@ class Model {
 		this._ServiceManager = new ServiceManager();
 	}
 
-	/**
-	 * Checks if operation was success or not.
-	 * 
-	 * @param {Object} response Data recived from server.
-	 * @returns {boolean} True if success, false in other case.
-	 */
-	responseSuccess(response) {
-		const errorsList = response.errors;
-		if (errorsList) {
-			for (var error in errorsList) {
-				if (errorsList.hasOwnProperty(error)) {
-					return false;
-				}
-			}
-		}
-		return true;
+	getHeaderData() {
+		const User = this._ServiceManager.User;
+		return {
+			loggedIn: User.isLogged(),
+			nickname: User.nickname,
+			defaultAvatar: User.defaultAvatar,
+			avatar: User.avatar,
+			menuItems: [
+				{ link:'/user/profile', text:'PROFILE' },
+				{ link:'/user/logout', text:'LOG OUT', nohistory: 'true' }
+			]
+		};
 	}
+	
 }
 
 export default Model;

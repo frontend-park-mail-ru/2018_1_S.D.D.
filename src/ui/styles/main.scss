@@ -8,6 +8,12 @@
     transition:.5s;
 }
 
+.clearfix {
+    content: "";
+    clear: both;
+    display: block;
+}
+
 .tempalte-active {
     opacity: 1;
     visibility: visible;

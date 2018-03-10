@@ -44,10 +44,7 @@ class Router {
 	 * @param {string} urlPath Url path to page 
 	 */
 	go(urlPath, pushState = true) {
-		if (urlPath === this.getCurrentUrlPath()) {
-			return;
-		}
-		if(pushState) {
+		if (urlPath !== this.getCurrentUrlPath() && pushState) {
 			window.history.pushState({}, '', urlPath);
 		}
 		this.loadPage(urlPath);

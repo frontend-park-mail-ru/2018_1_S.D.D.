@@ -10,7 +10,7 @@ class MenuController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Menu = new MenuModel();
+		this._Model = new MenuModel();
 		this._View = new MenuView();
 		this.addActions();
 	}
@@ -27,7 +27,8 @@ class MenuController extends Controller {
 	 */
 	actionIndex() {
 		const data = {
-			'Menu': this._Menu.getMenuItems()
+			'Menu': this._Model.getMenuItems(),
+			'Header': this._Model.getHeaderData()
 		};	
 		this._View.constructPage(data);
 		this._View.showPage();

@@ -4,7 +4,6 @@
 }
 
 .header__container {
-    width: 350px;
     height: 80px;
     padding: 0px 20px;
 }
@@ -38,6 +37,83 @@
     color: #16174e;
 }
 
+.sub_btn {
+    display: block;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: rgba(162, 169, 211, 0.2);
+    border-radius: 50px;
+}
+
+.sub_btn:hover {
+    background: rgba(162, 169, 211, 0.5);
+}
+
+.user_section {
+    display: block;
+}
+
+.user_section__avatar {
+    height: 45px;
+    float: left;
+}
+
+.user_section__nickname {
+    float: right;
+    margin: auto;
+    display: block;
+    padding: 12px 8px;
+    font-size: 18px;
+    -o-transition: .0s;
+    -ms-transition: .0s;
+    -moz-transition: .0s;
+    -webkit-transition: .0s;
+    transition: .0s;
+}
+
+.user_secction__nickname__arrow {
+    display: block;
+    float: right;
+    font-size: 10px;
+    padding: 5px 8px;
+}
+
+.submenu {
+    position: relative;
+    left: 0;
+    top: 100%;
+    z-index: 5;
+    width: 180px;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin :0 0;
+    transition: .5s ease-in-out;
+    list-style: none;
+    margin: auto;
+}
+
+.submenu__item {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.submenu__item__link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
+.submenu__item:hover {
+    background: rgba(162, 169, 211, 0.5);
+}
+
+.user_section > li:hover .submenu {
+    opacity: 1;
+    transform: scaleY(1);
+}
+
 @media screen and (max-width: 1080px) {
     .header {
         height: 40px;
@@ -45,5 +121,19 @@
 
     .header__link {
         font-size: 12px;
-	}
+    }
+    
+    .header__container {
+        padding: 0px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .submenu__item {
+        background: rgba(162, 169, 211, 0.7);
+    }
+    
+    .submenu__item:hover {
+        background: rgba(162, 169, 211, 0.8);
+    }
 }
