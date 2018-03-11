@@ -21,6 +21,18 @@ export default {
 	},
 
 	/**
+	 * Gets data from multipart form.
+	 * 
+	 * @param {HTMLElement} html Html block with form.
+	 * @returns {Object} Serialized data from inputs.
+	 */
+	serializeMultipart: html => {
+		const form = html.querySelector('form');
+		const data = new FormData(form);
+		return data;
+	},
+
+	/**
 	 * Adds error mesage to input.
 	 * 
 	 * @param {string} input Name of input to add error.

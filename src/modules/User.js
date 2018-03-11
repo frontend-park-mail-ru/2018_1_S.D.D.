@@ -77,9 +77,8 @@ class User {
 			if(this._API.responseSuccess(response)) {
 				this._loggedIn = true;
 				return this.loadUser();
-			} else {
-				return serverResponse;
 			}
+			return serverResponse;
 		});
 	}
 
@@ -91,6 +90,22 @@ class User {
 	 */
 	signup(data) {
 		return this._API.POST('user/signup', data);
+	}
+
+	/**
+	 * Upload users avatar
+	 * 
+	 * @param {Object} data Avatar
+	 * @returns {Promise} Server response.
+	 */
+	uploadAvatar(data) {
+		const serverResponse = this._API.POST('user/update_avatar', data, false);
+		return serverResponse.then(response => {
+			if(this._API.responseSuccess(response)) {
+				return this.loadUser(); // replace this with: this.avatar = data.file;
+			}
+			return serverResponse;
+		});
 	}
 
 	/**

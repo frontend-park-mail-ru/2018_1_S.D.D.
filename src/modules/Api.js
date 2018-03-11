@@ -60,21 +60,28 @@ class Api {
 	 * @param {string} httpMethod Http method type (GET/POST/etc)
 	 * @param {string} path Path to api method.
 	 * @param {Object} data Data to send to server.
+	 * @param {boolean} json Flag if body is json.
 	 * @returns {Promise} Promise with server response.
 	 */
-	_request(httpMethod, path, data = null, contentType = 'application/json') {
+	_request(httpMethod, path, data = null, json = true) {
 		const requestSettings = {
 			method: httpMethod,
 			headers: {
-				'Content-Type': contentType,
 				'Accept-Language': 'en-US'
 			},
 			credentials: 'include', // send user cookies, auth (etc) for cross-origin calls.
 			mode: 'cors' // allow cross-domain request
 		};
 
+		if(json) {
+			requestSettings.headers['Content-Type'] = 'application/json';
+		}
+
 		if(data) {
-			requestSettings.body = JSON.stringify(data);
+			if(json) {
+				data = JSON.stringify(data);
+			}
+			requestSettings.body = data;
 		}
 
 		return fetch(`${this.serverAddress}/api/${path}`, requestSettings).then(

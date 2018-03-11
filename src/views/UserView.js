@@ -3,7 +3,7 @@
 import View from './View';
 import HeaderTemplate from '../ui/templates/header/';
 import ProfileTemplate from '../ui/templates/profile/';
-import AvatarTemplate from '../ui/templates/logo/';
+import AvatarTemplate from '../ui/templates/avatar/';
 import FormTemplate from '../ui/templates/form/';
 
 /**
@@ -32,6 +32,19 @@ class UserView extends View {
 			return false;
 		}
 		return FormTemplate.serialize(form);
+	}
+
+	/**
+	 * Serealize avatar form.
+	 * 
+	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
+	 */
+	serializeAvatar() {
+		const form = this.load('UploadAvatar');
+		if(!form) {
+			return false;
+		}
+		return FormTemplate.serializeMultipart(form);
 	}
 
 	/**
@@ -72,6 +85,14 @@ class UserView extends View {
 		this.load('Header', HeaderTemplate, { reload: true });
 		this.show('Header');
 	}
+
+	reloadAvatar(data = {}) {
+		this._data = data;
+		this.reloadHeader(data);
+		this.reloadForm('UploadAvatar', data);
+		this.load('Avatar', AvatarTemplate, { reload: true });
+		this.show('Avatar');
+	}
 	
 	
 	/**
@@ -93,12 +114,15 @@ class UserView extends View {
 	constructSettings(data = {}) {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('ChangeAvatar', AvatarTemplate, { block: 'left' });
 
-		const connected = ['EditNickname', 'EditEmail', 'EditPassword'];
-		this.load('EditNickname', FormTemplate, { block: 'right', connected: connected });
-		this.load('EditEmail', FormTemplate, { block: 'right', connected: connected });
-		this.load('EditPassword', FormTemplate, { block: 'right', connected: connected });
+		const connectedLeft = ['Avatar', 'UploadAvatar'];
+		this.load('Avatar', AvatarTemplate, { block: 'left', connected: connectedLeft });
+		this.load('UploadAvatar', FormTemplate, { block: 'left', connected: connectedLeft });
+
+		const connectedRight = ['EditNickname', 'EditEmail', 'EditPassword'];
+		this.load('EditNickname', FormTemplate, { block: 'right', connected: connectedRight });
+		this.load('EditEmail', FormTemplate, { block: 'right', connected: connectedRight });
+		this.load('EditPassword', FormTemplate, { block: 'right', connected: connectedRight });
 	}
 
 	/**
@@ -113,6 +137,8 @@ class UserView extends View {
 		this.remove('EditNickname');
 		this.remove('EditEmail');
 		this.remove('EditPassword');
+		this.remove('Avatar');
+		this.remove('UploadAvatar');
 	}
 
 	/**
@@ -128,7 +154,8 @@ class UserView extends View {
 	 */
 	showSettings() {
 		this.show('Header');
-		this.show('ChangeAvatar');
+		this.show('Avatar');
+		this.show('UploadAvatar');
 		this.show('EditNickname');
 		this.show('EditEmail');
 		this.show('EditPassword');

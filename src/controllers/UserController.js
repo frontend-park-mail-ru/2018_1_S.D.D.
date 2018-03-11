@@ -23,6 +23,7 @@ class UserController extends Controller {
 		this.addAction('profile', this.actionProfile);
 		this.addAction('settings', this.actionSettings);
 		this.addAction('edit', this.actionEdit);
+		this.addAction('uploadavatar', this.actionUploadAvatar);
 		this.addAction('logout', this.actionLogout);
 	}
 
@@ -61,6 +62,44 @@ class UserController extends Controller {
 				const data = this._getSettingsData();
 				this._View.constructSettings(data);
 				this._View.showSettings();
+			},
+			() => {
+				this.go('/error/403', false);
+			}
+		);
+	}
+
+	/**
+	 * Upload users avatar.
+	 */
+	actionUploadAvatar() {
+		this._Model.onAuth(
+			() => {
+				let submitData = this._View.serializeAvatar();
+				if(!submitData) {
+					const data = this._getSettingsData();
+					this._View.constructPage(data);
+					submitData = this._View.serializeAvatar();
+				}
+				
+				this._Model.uploadAvatar(
+					submitData,
+					() => {
+						const data = {
+							'Header': this._Model.getHeaderData(),
+							'UploadAvatar': this._Model.getUploadAvatar(() => {
+								this._ServiceManager.Router.go('/user/uploadavatar', false);
+							}),
+							'Avatar': this._Model.getAvatar()
+						};
+						this._View.reloadAvatar(data);
+					},
+					errors => {
+						for(let e in errors) {
+							this._View.addFormError('UploadAvatar', e, errors[e]);
+						}
+					}
+				);
 			},
 			() => {
 				this.go('/error/403', false);
@@ -214,7 +253,11 @@ class UserController extends Controller {
 			}),
 			'EditPassword': this._Model.getEditPassword(() => {
 				this._ServiceManager.Router.go('/user/edit/password', false);
-			})
+			}),
+			'UploadAvatar': this._Model.getUploadAvatar(() => {
+				this._ServiceManager.Router.go('/user/uploadavatar', false);
+			}),
+			'Avatar': this._Model.getAvatar()
 		};
 	}
 

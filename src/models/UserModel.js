@@ -30,7 +30,7 @@ class UserModel extends Model {
 
 	getEditNickname(onSubmitCallback) {
 		const User = this._ServiceManager.User;
-		return this.defaultLoginForm = {
+		return {
 			back: true,
 			header: false,
 			social: false,
@@ -49,7 +49,7 @@ class UserModel extends Model {
 
 	getEditEmail(onSubmitCallback) {
 		const User = this._ServiceManager.User;
-		return this.defaultLoginForm = {
+		return {
 			header: false,
 			social: false,
 			formAction: '/user/edit/email',
@@ -66,7 +66,7 @@ class UserModel extends Model {
 	}
 
 	getEditPassword(onSubmitCallback) {
-		return this.defaultLoginForm = {
+		return {
 			header: false,
 			social: false,
 			formAction: '/user/edit/password',
@@ -89,6 +89,31 @@ class UserModel extends Model {
 				}
 			],
 			button: 'CHANGE PASSWORD!'
+		};
+	}
+
+	getUploadAvatar(onSubmitCallback) {
+		return {
+			header: false,
+			social: false,
+			formAction: '/user/uploadavatar',
+			onSubmit: () => onSubmitCallback(),
+			formInputs: [
+				{
+					type: 'file',
+					name: 'file',
+					placeholder: 'Photo upload'
+				}
+			],
+			button: 'UPLOAD PHOTO!'
+		};
+	}
+
+	getAvatar() {
+		const User = this._ServiceManager.User;
+		return {
+			defaultAvatar: User.defaultAvatar,
+			avatar: User.avatar
 		};
 	}
 
@@ -128,6 +153,30 @@ class UserModel extends Model {
 			password: validation.password(formData.password, formData.passwordCheck),
 			passwordCheck: validation.password(formData.passwordCheck, formData.password)
 		};
+	}
+
+	/**
+	 * Upload users avatar to server.
+	 * 
+	 * @param {Object} formData Avatar
+	 * @param {Function} onSuccessCallback What we do after editing
+	 * @param {Function} onErrorCallback What we do if request returned error
+	 */
+	uploadAvatar(formData, onSuccessCallback, onErrorCallback) {
+		const API = this._ServiceManager.ApiService;
+		const User = this._ServiceManager.User;
+
+		User.uploadAvatar(formData)
+			.then(response => {
+				if(API.responseSuccess(response)) {
+					onSuccessCallback();
+				} else {
+					onErrorCallback(response.errors);
+				}
+			})
+			.catch(error => {
+				onErrorCallback({'general': error});
+			});
 	}
 
 	/**
