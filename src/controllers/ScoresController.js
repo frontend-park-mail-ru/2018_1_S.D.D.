@@ -27,7 +27,7 @@ class ScoresController extends Controller {
 	 * Common action. Show scores table
 	 */
 	actionIndex(params = []) {
-		let page = params[0] ? params[0] : 1;
+		let page = (params[0] >= 1) ? params[0] : this.go(`/scores/show/1`);;
 		
 		this._Model.getUserScores(
 			page,

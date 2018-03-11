@@ -23,7 +23,7 @@ class ScoresModel extends Model {
 	* @returns {Object} Object contains user scores
 	*/
 	getUserScores(page, onSuccessCallback, onErrorCallback) {
-		const limit = 1;
+		const limit = 5;
 		const offset = page * limit - limit;
 
 		const API = this._ServiceManager.ApiService;
