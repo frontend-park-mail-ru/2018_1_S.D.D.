@@ -42,7 +42,8 @@ class UserController extends Controller {
 			() => {
 				const data = {
 					'Header': this._Model.getHeaderData(),
-					'Profile': this._Model.getProfileData('/')
+					'Profile': this._Model.getProfileData('/'),
+					'ProfileAvatar': this._Model.getAvatar()
 				};
 				this._View.constructProfile(data);
 				this._View.showProfile();
