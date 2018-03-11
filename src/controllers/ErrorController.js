@@ -33,8 +33,11 @@ class ErrorController extends Controller {
 			'Error': this._Model.get403Message(),
 			'Header': this._Model.getHeaderData()
 		};
-		this._View.construct403(data);
+		this._View.constructPage(data);
 		this._View.showPage();
+
+		// if session was gone we need to clear our templates
+		this.go('/user/logout/quietly', false);
 	}
 
 	/**

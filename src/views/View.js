@@ -76,11 +76,12 @@ class View {
 	 * @param {Object} properties Some custom properties.
 	 * @param properties.block View block in wich template will be placed.
 	 * @param properties.reload Even if template already exists - we render it.
+	 * @param properties.connected Array of templates names which won't be hide in block.
 	 * @param properties.appendFirst Flag - insert before or after existing content.
 	 * @returns {HTMLElement|boolean} Rendered html or false if not templateObject specified (and not found).
 	 */
 	load(templateName, templateObject = null, properties = {}) {
-		const T = this._TemplateHolder.template(templateName);
+		let T = this._TemplateHolder.template(templateName);
 		const renderData = this._data[templateName];
 
 		if(!T || T.reload || properties.reload) {
@@ -92,16 +93,23 @@ class View {
 			this.listenLinks(html);
 
 			// if(T) -> it's reload
-			if(T) {
+			const doReload = T;
+
+			let block = null;
+			if(doReload) {
 				this._TemplateHolder.update(templateName, html, properties);
+				block = T.block;
 			} else {
 				this._TemplateHolder.save(templateName, html, properties);
+				block = properties.block;
 			}
 
-			if(properties.block && this._PageBlock.block(properties.block)) {
-				this._PageBlock.addToBlock(templateName);
+			T = this._TemplateHolder.template(templateName);
+
+			if(block && this._PageBlock.block(block)) {
+				this._PageBlock.addToBlock(templateName, !doReload);
 			} else {
-				if(properties.appendFirst) {
+				if(T.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);
 				} else {
 					this._body.appendChild(html);

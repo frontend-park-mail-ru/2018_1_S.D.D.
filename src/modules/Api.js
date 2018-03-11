@@ -22,7 +22,7 @@ class Api {
 	responseSuccess(response) {
 		const errorsList = response.errors;
 		if (errorsList) {
-			for (var error in errorsList) {
+			for (let error in errorsList) {
 				if (errorsList.hasOwnProperty(error)) {
 					return false;
 				}

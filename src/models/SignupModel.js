@@ -25,6 +25,7 @@ class SignupModel extends Model {
 	 */
 	getSignupForm(onSubmitCallback) {
 		return {
+			back: true,
 			header: 'HI STRANGER!',
 			social: false,
 			formAction: '/signup/submit',

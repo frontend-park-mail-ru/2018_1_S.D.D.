@@ -84,9 +84,10 @@ class PageParts {
 	 * Add html template to block on page.
 	 * 
 	 * @param {string} templateName Id of template to add in block.
+	 * @param {boolean} insertInDomFlag Flag if we need insert template in SOM.
 	 * @returns {boolean} False if block not found. True in other case.
 	 */
-	addToBlock(templateName) {
+	addToBlock(templateName, insertInDomFlag = true) {
 		const templateObject = this._TemplateHolder.template(templateName);
 		if(!templateObject || !templateObject.block) {
 			return false;
@@ -96,7 +97,9 @@ class PageParts {
 		}
 		templateObject.html.classList.add('template-disabled');
 		templateObject.html.hidden = true;
-		this.block(templateObject.block).root.appendChild(templateObject.html);
+		if(insertInDomFlag) {
+			this.block(templateObject.block).root.appendChild(templateObject.html);
+		}
 		return true;
 	}
 
