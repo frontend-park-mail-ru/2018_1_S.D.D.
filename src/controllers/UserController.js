@@ -22,6 +22,7 @@ class UserController extends Controller {
 		this.addAction('index', this.actionIndex);
 		this.addAction('profile', this.actionProfile);
 		this.addAction('settings', this.actionSettings);
+		this.addAction('edit', this.actionEdit);
 		this.addAction('logout', this.actionLogout);
 	}
 
@@ -59,11 +60,111 @@ class UserController extends Controller {
 			() => {
 				const data = {
 					'Header': this._Model.getHeaderData(),
-					'Settings1': this._Model.getSettingsData('/'),
-					'Settings2': this._Model.getSettingsData('/')
+					'EditNickname': this._Model.getEditNickname(() => this._ServiceManager.Router.go('/user/edit/nickname', false)),
+					'EditEmail': this._Model.getEditEmail(() => this._ServiceManager.Router.go('/user/edit/email', false)),
+					'EditPassword': this._Model.getEditPassword(() => this._ServiceManager.Router.go('/user/edit/password', false))
 				};
 				this._View.constructSettings(data);
 				this._View.showSettings();
+			},
+			() => {
+				this.go('/error/403', false);
+			}
+		);
+	}
+
+	/**
+	 * Submit action. Edit user settings. Validate form and submit data to server if ok.
+	 * 
+	 * @param {string[]} parameters Contains what to edit
+	 */
+	actionEdit(parameters = []) {
+		this._Model.onAuth(
+			() => {
+				const editParam = parameters[0];
+				if(!editParam) {
+					this.go('/error/404', false);
+				}
+
+				const formTemplate = this._getTemplate(editParam);
+
+				let submitData = this._View.serializeForm(formTemplate);
+				if(!submitData) {
+					const data = {
+						'Header': this._Model.getHeaderData(),
+						'EditNickname': this._Model.getEditNickname(() => this._ServiceManager.Router.go('/user/edit/nickname', false)),
+						'EditEmail': this._Model.getEditEmail(() => this._ServiceManager.Router.go('/user/edit/email', false)),
+						'EditPassword': this._Model.getEditPassword(() => this._ServiceManager.Router.go('/user/edit/password', false))
+					};
+					this._View.constructPage(data);
+					submitData = this._View.serializeForm(formTemplate);
+				}
+
+				const validation = this._validateData(editParam, submitData);
+
+				let noValidationError = true;
+				for(let input in validation) {
+					if(validation[input]) {
+						this._View.addFormError(formTemplate, input, validation[input]);
+						noValidationError = false;
+					}
+				}
+
+				const errorCallback = errors => {
+					for(let e in errors) {
+						this._View.addFormError(formTemplate, e, errors[e]);
+					}
+					this.go('/user/settings');
+				};
+				
+				if(noValidationError) {
+					switch(editParam) {
+					case 'nickname':
+						this._Model.editNickname(
+							submitData,
+							() => {
+								const data = {
+									'EditNickname': this._Model.getEditNickname(
+										() => this._ServiceManager.Router.go('/user/edit/nickname', false)
+									)
+								};
+								this._View.reloadForm('EditNickname', data);
+							},
+							errorCallback
+						);
+						break;
+					case 'email':
+						this._Model.editEmail(
+							submitData,
+							() => {
+								const data = {
+									'EditEmail': this._Model.getEditEmail(
+										() => this._ServiceManager.Router.go('/user/edit/email', false)
+									)
+								};
+								this._View.reloadForm('EditEmail', data);
+							},
+							errorCallback
+						);
+						break;
+					case 'password':
+						this._Model.editPassword(
+							submitData,
+							() => {
+								const data = {
+									'EditPassword': this._Model.getEditPassword(
+										() => this._ServiceManager.Router.go('/user/edit/password', false)
+									)
+								};
+								this._View.reloadForm('EditPassword', data);
+							},
+							errorCallback
+						);
+						break;
+					}
+				} else {
+					this.go('/user/settings');
+				}
 			},
 			() => {
 				this.go('/error/403', false);
@@ -87,6 +188,44 @@ class UserController extends Controller {
 				this.go('/error/503', false);
 			}
 		);
+	}
+
+	/**
+	 * Get form template name depends on url parameter.
+	 * 
+	 * @param {string} param Url parameter.
+	 * @returns {string} Form template name.
+	 */
+	_getTemplate(param) {
+		switch(param) {
+		case 'nickname':
+			return 'EditNickname';
+		case 'email':
+			return 'EditEmail';
+		case 'password':
+			return 'EditPassword';
+		default:
+			this.go('/error/404', false);
+		}
+	}
+
+	/**
+	 * Validate form data depends on url parameter.
+	 * 
+	 * @param {string} param Url parameter.
+	 * @returns {Object} Validated data.
+	 */
+	_validateData(param, submitData) {
+		switch(param) {
+		case 'nickname':
+			return this._Model.validateNickname(submitData);
+		case 'email':
+			return this._Model.validateEmail(submitData);
+		case 'password':
+			return this._Model.validatePassword(submitData);
+		default:
+			this.go('/error/404', false);
+		}
 	}
 }
 

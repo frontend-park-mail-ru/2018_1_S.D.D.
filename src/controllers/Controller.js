@@ -31,14 +31,15 @@ class Controller {
 	 * Searches for action and executes it.
 	 * 
 	 * @param {string} action Action name.
+	 * @param {string[]} parameters Parameters for action.
 	 * @returns {boolean} True if action executed. False if bot found (404).
 	 */
-	action(action) {
+	action(action, parameters = []) {
 		const callback = this._actions[action];
 		if(!callback) {
 			return false;
 		}
-		callback();
+		callback(parameters);
 		return true;
 	}
 

@@ -18,17 +18,18 @@ class Route {
 	 * Creates instance to render current page
 	 * 
 	 * @param {string} action Action to be called in controller.
+	 * @param {string[]} params Parameters for action. 
 	 * @returns {boolean} False if action not found (404), true in other case.
 	 */
-	load(action = 'index') {
+	load(action = 'index', params = []) {
 		if (action === '') {
 			action = 'index';
 		}
-		if (this.instance == null) {
+		if (!this.instance) {
 			this.instance = new this.controller();
 		}
 
-		if(this.instance.action(action.toLowerCase())) {
+		if(this.instance.action(action.toLowerCase(), params)) {
 			return true;
 		}
 		return false;

@@ -80,7 +80,7 @@ class User {
 			} else {
 				return serverResponse;
 			}
-		}).catch(() => {});
+		});
 	}
 
 	/**
@@ -93,6 +93,52 @@ class User {
 		return this._API.POST('user/signup', data);
 	}
 
+	/**
+	 * Edit users nickname
+	 * 
+	 * @param {Object} data Nickname
+	 * @returns {Promise} Server response.
+	 */
+	editNickname(data) {
+		const serverResponse = this._API.POST('user/update_nickname', data);
+		return serverResponse.then(response => {
+			if(this._API.responseSuccess(response)) {
+				this._nickname = data.nickname;
+			}
+			return serverResponse;
+		});
+	}
+
+	/**
+	 * Edit users email
+	 * 
+	 * @param {Object} data Email
+	 * @returns {Promise} Server response.
+	 */
+	editEmail(data) {
+		const serverResponse = this._API.POST('user/update_email', data);
+		return serverResponse.then(response => {
+			if(this._API.responseSuccess(response)) {
+				this._email = data.email;
+			}
+			return serverResponse;
+		});
+	}
+
+	/**
+	 * Edit users password
+	 * 
+	 * @param {Object} data Password
+	 * @returns {Promise} Server response.
+	 */
+	editPassword(data) {
+		return this._API.POST('user/update_password', data);
+	}
+
+	/**
+	 * Logout user.
+	 * @returns {Promise} Server response.
+	 */
 	logout() {
 		const serverResponse = this._API.POST('user/signout');
 		return serverResponse.then(() => {

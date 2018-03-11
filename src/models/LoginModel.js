@@ -25,6 +25,7 @@ class LoginModel extends Model {
 	 */
 	getLoginForm(onSubmitCallback) {
 		return this.defaultLoginForm = {
+			back: true,
 			header: 'COME IN!',
 			social: true,
 			formAction: '/login/submit',

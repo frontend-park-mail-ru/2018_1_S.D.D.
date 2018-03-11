@@ -20,13 +20,18 @@
 }
 
 .template-disabled {
+    -o-transition:.0s;
+    -ms-transition:.0s;
+    -moz-transition:.0s;
+    -webkit-transition:.0s;
+    transition:.0s;
     opacity: 0;
     visibility: hidden;
 }
 
 $duration: 0.8s;
 
-.template-disabled, .template-active {
+.template-active {
     -o-transition: $duration;
     -ms-transition: $duration;
     -moz-transition: $duration;

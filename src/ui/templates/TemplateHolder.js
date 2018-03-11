@@ -47,17 +47,20 @@ class TemplateHolder {
 	 * Update template properties in holder.
 	 * 
 	 * @param {string} templateName Template ID in holder.
+	 * @param {HTMLElement} templateHTML Rendered template.
 	 * @param {Object} properties Asociated array with properties.
 	 * @returns {boolean} Flse if template not found, true if ok.
 	 */
-	update(templateName, templateHTML = null, properties = {}) {
+	update(templateName, templateHTML, properties = {}) {
 		if(!this._parts[templateName]) {
 			return false;
 		}
 		
 		if(templateHTML) {
+			const parent = this._parts[templateName].html.parentNode;
+			const newTemplate = parent.insertBefore(templateHTML, this._parts[templateName].html);
 			this._parts[templateName].html.remove();
-			this._parts[templateName].html = templateHTML;
+			this._parts[templateName].html = newTemplate;
 		}
 
 		for(let propertyName in properties) {

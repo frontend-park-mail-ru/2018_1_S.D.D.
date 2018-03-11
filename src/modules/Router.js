@@ -100,8 +100,10 @@ class Router {
 		}
 		
 		this.currentRoute = route;
-		
-		if(!this.currentRoute.load(action)) {
+
+		newUrlPath.splice(0, 3);
+
+		if(!this.currentRoute.load(action, newUrlPath)) {
 			route = this.notFound();
 			this.currentRoute = route;
 			this.currentRoute.load('404');
