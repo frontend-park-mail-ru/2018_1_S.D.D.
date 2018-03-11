@@ -81,7 +81,7 @@ class View {
 	 * @returns {HTMLElement|boolean} Rendered html or false if not templateObject specified (and not found).
 	 */
 	load(templateName, templateObject = null, properties = {}) {
-		const T = this._TemplateHolder.template(templateName);
+		let T = this._TemplateHolder.template(templateName);
 		const renderData = this._data[templateName];
 
 		if(!T || T.reload || properties.reload) {
@@ -93,8 +93,10 @@ class View {
 			this.listenLinks(html);
 
 			// if(T) -> it's reload
+			const doReload = T;
+
 			let block = null;
-			if(T) {
+			if(doReload) {
 				this._TemplateHolder.update(templateName, html, properties);
 				block = T.block;
 			} else {
@@ -102,8 +104,10 @@ class View {
 				block = properties.block;
 			}
 
+			T = this._TemplateHolder.template(templateName);
+
 			if(block && this._PageBlock.block(block)) {
-				this._PageBlock.addToBlock(templateName, !T);
+				this._PageBlock.addToBlock(templateName, !doReload);
 			} else {
 				if(T.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);
