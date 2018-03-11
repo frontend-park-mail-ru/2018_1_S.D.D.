@@ -1,0 +1,36 @@
+.table__btn {
+    height: 46px;
+    border: 0px;
+    font-size: 22px;
+}
+
+.table__btn_submit {
+    margin-top: 10px;
+    width: 48%;
+    border-radius: 8px;
+    margin: 0% 1%;
+    color: #ffffff;
+    background: linear-gradient(90deg, #2f164e, #7db9fd);
+}
+
+.scores__table__th {
+	border: 1px solid #dddddd;
+    text-align: center;
+    font-weight: 700px;
+    color: #ffffff;
+    padding: 8px;
+    width: 33%;
+    max-width: 33%;
+}
+.scores__table__td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    color: #ffffff;
+    padding: 8px;
+    width: 33%;
+    max-width: 33%;
+}
+
+.scores__table__tr:nth-child(even) {
+    background-color: #2f164e;
+}

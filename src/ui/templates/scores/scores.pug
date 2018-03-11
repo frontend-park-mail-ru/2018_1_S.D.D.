@@ -1,0 +1,14 @@
+a(href='/').return-link ← Back to menu
+h2.scores__header #{header}
+table.scores__table
+	th.scores__table__th Nickname
+	th.scores__table__th Email
+	th.scores__table__th Rating
+	each user in data.userViewList
+		tr.scores__table__tr
+			td.scores__table__td #{user.nickname}
+			td.scores__table__td #{user.email}
+			td.scores__table__td #{user.rating}
+div
+	button.table__btn.table__btn_submit ← Previous
+	button.table__btn.table__btn_submit → Next
