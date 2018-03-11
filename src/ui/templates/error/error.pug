@@ -1,0 +1,11 @@
+.error
+	.error_wrapper
+		img(src='/' + require('../../images/' + Code + '.svg')).error__smile
+		h1.error__header 
+			| OOPS!
+		h2.error__message 
+			| LOOKS LIKE #{Code} ERROR.
+		.error__description
+			.error__description__header #{Header}
+			| #{Message}
+		a(href='/').btn.error__link.error__link_btn Back to menu

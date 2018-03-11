@@ -1,0 +1,24 @@
+if back
+	a(href='/').return-link ← Back to menu
+.form
+	if header
+		h1.form__header #{header}
+	if social
+		button(href='http://vk.com/').btn.form__btn.form__btn_social.form__btn_social-vk
+			img(src='/' + require('../../images/vk.svg'))
+			|  VK
+		button(href='http://google.com/').btn.form__btn.form__btn_social.form__btn_social-google
+			span.gp G+
+			|  Google
+	form(action=formAction)
+		each input in formInputs
+			.input__holder
+				input(type=input.type, placeholder=input.placeholder,name=input.name).form__input
+				span(class='error-'+input.name).error-message
+		button(type='submit').btn.form__btn.form__btn_submit 
+			span.form__btn_submit__text #{button}
+			.loader(hidden='true')
+				.circleG_1.circleG
+				.circleG_2.circleG
+				.circleG_3.circleG
+		span.error-message.error-general
