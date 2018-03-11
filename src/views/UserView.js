@@ -82,7 +82,7 @@ class UserView extends View {
 	constructProfile(data = {}) {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('Profile', ProfileTemplate, { block: 'left', reload: true });
+		this.load('Profile', ProfileTemplate, { block: 'main', reload: true });
 	}
 
 	/**

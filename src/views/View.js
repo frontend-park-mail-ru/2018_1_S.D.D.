@@ -105,7 +105,7 @@ class View {
 			if(block && this._PageBlock.block(block)) {
 				this._PageBlock.addToBlock(templateName, !T);
 			} else {
-				if(properties.appendFirst) {
+				if(T.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);
 				} else {
 					this._body.appendChild(html);
