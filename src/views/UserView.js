@@ -103,7 +103,10 @@ class UserView extends View {
 	constructProfile(data = {}) {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('Profile', ProfileTemplate, { block: 'main', reload: true });
+
+		const connected = ['ProfileAvatar', 'Profile'];
+		this.load('ProfileAvatar', AvatarTemplate, { block: 'main', reload: true, connected: connected });
+		this.load('Profile', ProfileTemplate, { block: 'main', reload: true, connected: connected });
 	}
 
 	/**
@@ -139,6 +142,7 @@ class UserView extends View {
 		this.remove('EditPassword');
 		this.remove('Avatar');
 		this.remove('UploadAvatar');
+		this.remove('ProfileAvatar');
 	}
 
 	/**
@@ -147,6 +151,7 @@ class UserView extends View {
 	showProfile() {
 		this.show('Header');
 		this.show('Profile');
+		this.show('ProfileAvatar');
 	}
 
 	/**
