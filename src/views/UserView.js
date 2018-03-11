@@ -50,11 +50,29 @@ class UserView extends View {
 		return FormTemplate.addError(input, message, form);
 	}
 
+	/**
+	 * Reloading form in DOM.
+	 * 
+	 * @param {strng} formTemplateName Name of form template to reload
+	 * @param {Object} data Data for template rendering
+	 */
 	reloadForm(formTemplateName, data = {}) {
 		this._data = data;
 		this.load(formTemplateName, FormTemplate, { reload: true });
 		this.show(formTemplateName);
 	}
+
+	/**
+	 * Reloading header in DOM.
+	 * 
+	 * @param {Object} data Data for template rendering
+	 */
+	reloadHeader(data = {}) {
+		this._data = data;
+		this.load('Header', HeaderTemplate, { reload: true });
+		this.show('Header');
+	}
+	
 	
 	/**
 	 * Load all required templates for profile page.

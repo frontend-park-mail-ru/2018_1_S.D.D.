@@ -124,11 +124,13 @@ class UserController extends Controller {
 							submitData,
 							() => {
 								const data = {
+									'Header': this._Model.getHeaderData(),
 									'EditNickname': this._Model.getEditNickname(
 										() => this._ServiceManager.Router.go('/user/edit/nickname', false)
 									)
 								};
 								this._View.reloadForm('EditNickname', data);
+								this._View.reloadHeader(data);
 							},
 							errorCallback
 						);
