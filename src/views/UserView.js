@@ -92,7 +92,9 @@ class UserView extends View {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
 		this.remove('Profile');
-		this.remove('Settings');
+		this.remove('EditNickname');
+		this.remove('EditEmail');
+		this.remove('EditPassword');
 	}
 
 	/**

@@ -174,15 +174,20 @@ class UserController extends Controller {
 
 	/**
 	 * Logout action. Delete user from current session. Delete user templates.
+	 * 
+	 * @param parameters Contains flag if we need go to menu page.
 	 */
-	actionLogout() {
+	actionLogout(parameters = []) {
+		const goToMenu = parameters[0] !== 'quietly';
 		this._Model.logout(
 			() => {
 				const reconstructData = {
 					'Header': this._Model.getHeaderData()
 				};
 				this._View.constructLogout(reconstructData);
-				this.go('/');
+				if(goToMenu) {
+					this.go('/');
+				}
 			},
 			() => {
 				this.go('/error/503', false);
