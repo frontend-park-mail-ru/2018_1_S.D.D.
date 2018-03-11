@@ -40,7 +40,8 @@ class UserView extends View {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
 		this.load('ChangeAvatar', AvatarTemplate, { block: 'left', reload: true });
-		this.load('Settings', FormTemplate, { block: 'right', reload: true });
+		this.load('Settings1', FormTemplate, { block: 'right', reload: true, connected: ['Settings2'] });
+		this.load('Settings2', FormTemplate, { block: 'right', reload: true, connected: ['Settings1'] });
 	}
 
 	/**
@@ -69,7 +70,8 @@ class UserView extends View {
 	showSettings() {
 		this.show('Header');
 		this.show('ChangeAvatar');
-		this.show('Settings');
+		this.show('Settings1');
+		this.show('Settings2');
 	}
 }
 

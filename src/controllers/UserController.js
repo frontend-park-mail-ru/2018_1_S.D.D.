@@ -59,7 +59,8 @@ class UserController extends Controller {
 			() => {
 				const data = {
 					'Header': this._Model.getHeaderData(),
-					'Settings': this._Model.getSettingsData('/')
+					'Settings1': this._Model.getSettingsData('/'),
+					'Settings2': this._Model.getSettingsData('/')
 				};
 				this._View.constructSettings(data);
 				this._View.showSettings();
