@@ -58,12 +58,7 @@ class UserController extends Controller {
 	actionSettings() {
 		this._Model.onAuth(
 			() => {
-				const data = {
-					'Header': this._Model.getHeaderData(),
-					'EditNickname': this._Model.getEditNickname(() => this._ServiceManager.Router.go('/user/edit/nickname', false)),
-					'EditEmail': this._Model.getEditEmail(() => this._ServiceManager.Router.go('/user/edit/email', false)),
-					'EditPassword': this._Model.getEditPassword(() => this._ServiceManager.Router.go('/user/edit/password', false))
-				};
+				const data = this._getSettingsData();
 				this._View.constructSettings(data);
 				this._View.showSettings();
 			},
@@ -90,12 +85,7 @@ class UserController extends Controller {
 
 				let submitData = this._View.serializeForm(formTemplate);
 				if(!submitData) {
-					const data = {
-						'Header': this._Model.getHeaderData(),
-						'EditNickname': this._Model.getEditNickname(() => this._ServiceManager.Router.go('/user/edit/nickname', false)),
-						'EditEmail': this._Model.getEditEmail(() => this._ServiceManager.Router.go('/user/edit/email', false)),
-						'EditPassword': this._Model.getEditPassword(() => this._ServiceManager.Router.go('/user/edit/password', false))
-					};
+					const data = this._getSettingsData();
 					this._View.constructPage(data);
 					submitData = this._View.serializeForm(formTemplate);
 				}
@@ -118,52 +108,7 @@ class UserController extends Controller {
 				};
 				
 				if(noValidationError) {
-					switch(editParam) {
-					case 'nickname':
-						this._Model.editNickname(
-							submitData,
-							() => {
-								const data = {
-									'Header': this._Model.getHeaderData(),
-									'EditNickname': this._Model.getEditNickname(
-										() => this._ServiceManager.Router.go('/user/edit/nickname', false)
-									)
-								};
-								this._View.reloadForm('EditNickname', data);
-								this._View.reloadHeader(data);
-							},
-							errorCallback
-						);
-						break;
-					case 'email':
-						this._Model.editEmail(
-							submitData,
-							() => {
-								const data = {
-									'EditEmail': this._Model.getEditEmail(
-										() => this._ServiceManager.Router.go('/user/edit/email', false)
-									)
-								};
-								this._View.reloadForm('EditEmail', data);
-							},
-							errorCallback
-						);
-						break;
-					case 'password':
-						this._Model.editPassword(
-							submitData,
-							() => {
-								const data = {
-									'EditPassword': this._Model.getEditPassword(
-										() => this._ServiceManager.Router.go('/user/edit/password', false)
-									)
-								};
-								this._View.reloadForm('EditPassword', data);
-							},
-							errorCallback
-						);
-						break;
-					}
+					this._editUserData(editParam, submitData, errorCallback);
 				} else {
 					this.go('/user/settings');
 				}
@@ -195,6 +140,82 @@ class UserController extends Controller {
 				this.go('/error/503', false);
 			}
 		);
+	}
+
+	/**
+	 * Request to server to edit user data.
+	 * 
+	 * @param {string} editParam Parameter from url - property to edit.
+	 * @param {Object} submitData Serialized data from form.
+	 * @param {Function} onErrorCallback What to do if there will be errors in request.
+	 */
+	_editUserData(editParam, submitData, onErrorCallback) {
+		switch(editParam) {
+			case 'nickname':
+				this._Model.editNickname(
+					submitData,
+					() => {
+						const data = {
+							'Header': this._Model.getHeaderData(),
+							'EditNickname': this._Model.getEditNickname(
+								() => this._ServiceManager.Router.go('/user/edit/nickname', false)
+							)
+						};
+						this._View.reloadForm('EditNickname', data);
+						this._View.reloadHeader(data);
+					},
+					onErrorCallback
+				);
+				break;
+			case 'email':
+				this._Model.editEmail(
+					submitData,
+					() => {
+						const data = {
+							'EditEmail': this._Model.getEditEmail(
+								() => this._ServiceManager.Router.go('/user/edit/email', false)
+							)
+						};
+						this._View.reloadForm('EditEmail', data);
+					},
+					onErrorCallback
+				);
+				break;
+			case 'password':
+				this._Model.editPassword(
+					submitData,
+					() => {
+						const data = {
+							'EditPassword': this._Model.getEditPassword(
+								() => this._ServiceManager.Router.go('/user/edit/password', false)
+							)
+						};
+						this._View.reloadForm('EditPassword', data);
+					},
+					onErrorCallback
+				);
+				break;
+		}
+	}
+
+	/**
+	 * Get data for settings page rendering.
+	 * 
+	 * @returns {Object} Data for rendering.
+	 */
+	_getSettingsData() {
+		return {
+			'Header': this._Model.getHeaderData(),
+			'EditNickname': this._Model.getEditNickname(() => {
+				this._ServiceManager.Router.go('/user/edit/nickname', false)
+			}),
+			'EditEmail': this._Model.getEditEmail(() => {
+				this._ServiceManager.Router.go('/user/edit/email', false)
+			}),
+			'EditPassword': this._Model.getEditPassword(() => {
+				this._ServiceManager.Router.go('/user/edit/password', false)
+			})
+		};
 	}
 
 	/**
