@@ -22,42 +22,20 @@ class ScoresModel extends Model {
 	*
 	* @returns {Object} Object contains user scores
 	*/
-	getUserScores(onClickCallback) {
+	getUserScores(page, onSuccessCallback, onErrorCallback) {
+		const limit = 1;
+		const offset = page * limit - limit;
 
 		const API = this._ServiceManager.ApiService;
-		const serverResponse = API.GET('user/get_users', {limit: 5, offset: 0});
-		if (serverResponse) {
-			return serverResponse.then(response => {
-				if(API.responseSuccess(response)) {
-					const data = response.data;
-					data.onClick = onClickCallback;
-					return data;
-				}
-				serverResponse.onClick = onClickCallback;
-				return serverResponse;
-			});
-		} 
-		/*return {
-			"errors": {},
-			"data": {
-			"userViewList": [
-				{
-					"nickname": "da2",
-					"email": "emao@emai1111111dd111122.cd",
-					"rating": 2.4,
-					"avatar": null
-				},
-				{
-					"nickname": "dat2",
-					"email": "emao@emai1111111dd1111212.cd",
-					"rating": 0.08888888888888889,
-					"avatar": null
-				}
-			],
-			"size": 2
+		const serverResponse = API.GET(`user/get_users?limit=1&offset=${offset}`);
+		return serverResponse.then(response => {
+			if(API.responseSuccess(response)) {
+				onSuccessCallback(response.data);
+			} else {
+				onErrorCallback();
 			}
-		}*/
-
+			return serverResponse;
+		}).catch(onErrorCallback());
 	}
 
 	getUserScoresCount() {

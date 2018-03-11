@@ -12,12 +12,7 @@ class ScoresController extends Controller {
 		super();
 		this._Model = new ScoresModel();
 		this._View = new ScoresView();
-
 		this.addActions();
-		this.data = {
-			'Scores': this._Model.getUserScores(
-				() => this._ServiceManager.Router.go('/scores', false))
-		};
 	}
 
 	/**
@@ -25,14 +20,38 @@ class ScoresController extends Controller {
 	 */
 	addActions() {
 		this.addAction('index', this.actionIndex);
+		this.addAction('show', this.actionIndex);
 	}
 
 	/**
 	 * Common action. Show scores table
 	 */
-	actionIndex() {
-		this._View.constructPage(this.data);
-		this._View.showPage();
+	actionIndex(params = []) {
+		let page = params[0] ? params[0] : 1;
+		
+		this._Model.getUserScores(
+			page,
+			result => {
+				const data = {
+					'Scores': {
+						data: result,
+						onClickPrev: () => {
+							page--;
+							this.go(`/scores/show/${page}`);
+						},
+						onClickNext: () => {
+							page++;
+							this.go(`/scores/show/${page}`);
+						}
+					}
+				};
+				this._View.constructPage(data);
+				this._View.showPage();
+			},
+			() => {
+				
+			}
+		);
 	}
 
 	
