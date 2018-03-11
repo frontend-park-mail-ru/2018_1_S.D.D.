@@ -52,8 +52,8 @@ class ErrorModel extends Model {
 	get503Message() {
 		return {
 			Code: '503',
-			Header: 'Backend server not responding. We are sorry about that!',
-			Message: 'You still can play offline if you want...'
+			Header: 'Application not responding. We are sorry about that!',
+			Message: 'You still can (probably) play offline if you want...'
 		};
 	}
 }

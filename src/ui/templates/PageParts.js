@@ -54,7 +54,7 @@ class PageParts {
 				root: element,
 				active: false,
 				hideOnShow: hideOnShowList,
-				currentTemplate: null
+				currentTemplates: []
 			};
 		}
 	}
@@ -69,8 +69,14 @@ class PageParts {
 		if(!templateObject || !templateObject.block) {
 			return;
 		}
-		if(this.block(templateObject.block).currentTemplate === templateName) {
-			this.block(templateObject.block).currentTemplate = null;
+
+		const currentTemplates = this.block(templateObject.block).currentTemplates;
+		const idx = currentTemplates.findIndex(template => {
+			return template === templateName;
+		});
+
+		if (idx !== -1) {
+			this.block(templateObject.block).currentTemplates.splice(idx, 1);
 		}
 	}
 
@@ -89,6 +95,7 @@ class PageParts {
 			return false;
 		}
 		templateObject.html.classList.add('template-disabled');
+		templateObject.html.hidden = true;
 		this.block(templateObject.block).root.appendChild(templateObject.html);
 		return true;
 	}
@@ -101,6 +108,7 @@ class PageParts {
 	 */
 	changeTemplate(templateName) {
 		const templateObject = this._TemplateHolder.template(templateName);
+
 		if(!templateObject || !templateObject.block) {
 			return false;
 		}
@@ -111,16 +119,25 @@ class PageParts {
 			this.disableViewBlock(block);
 		});
 
-		const currentTemplate = this.block(id).currentTemplate;
-		const T = this._TemplateHolder.template(currentTemplate);
+		const currentTemplates = this.block(id).currentTemplates;
+		this.block(id).currentTemplates = currentTemplates.filter(tName => {
+			if(tName !== templateName) {
+				const doHide = !templateObject.connected || templateObject.connected.findIndex(connectedTemplate => {
+					return connectedTemplate === tName;
+				}) === -1;
+	
+				const T = this._TemplateHolder.template(tName);
+				if(T && doHide) {
+					T.html.classList.add('template-disabled');
+					T.html.classList.remove('template-active');
+					T.html.hidden = true;
+					return false;
+				}
+			}
+			return true;
+		});
 
-		if(T && currentTemplate !== templateName) {
-			T.html.classList.add('template-disabled');
-			T.html.classList.remove('template-active');
-			T.html.hidden = true;
-		}
-
-		this.block(id).currentTemplate = templateName;
+		this.block(id).currentTemplates.push(templateName);
 		this.activateViewBlock(id);
 
 		return true;
@@ -146,19 +163,20 @@ class PageParts {
 			this.block(id).root.hidden = false;
 			this.block(id).active = true;
 		}
-		const currentTemplate = this.block(id).currentTemplate;
-		const T = this._TemplateHolder.load(currentTemplate);
-
-		if(T) {
-			T.hidden = false;
-			// if there is some CSS transition on .template-activate block
-			// we need to set timeout after disable visibility hidden
-			// or it's transition wont work
-			setTimeout(() => {
-				T.classList.add('template-active');
-				T.classList.remove('template-disabled');
-			}, 50);	
-		}		
+		const currentTemplates = this.block(id).currentTemplates;
+		currentTemplates.forEach(tName => {
+			const T = this._TemplateHolder.load(tName);
+			if(T) {
+				T.hidden = false;
+				// if there is some CSS transition on .template-activate block
+				// we need to set timeout after disable visibility hidden
+				// or it's transition wont work
+				setTimeout(() => {
+					T.classList.add('template-active');
+					T.classList.remove('template-disabled');
+				}, 50);	
+			}	
+		});	
 	}
 
 	/**

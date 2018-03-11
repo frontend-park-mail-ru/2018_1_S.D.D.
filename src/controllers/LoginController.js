@@ -103,9 +103,6 @@ class LoginController extends Controller {
 	 */
 	_loginCallback() {
 		const data = {
-			'LoginForm': this._Model.getLoginForm(
-				() => this._ServiceManager.Router.go('/login/submit', false)
-			),
 			'Header': this._Model.getHeaderData()
 		};
 		this._View.reconstructPage(data);

@@ -21,6 +21,7 @@ class UserController extends Controller {
 	addActions() {
 		this.addAction('index', this.actionIndex);
 		this.addAction('profile', this.actionProfile);
+		this.addAction('settings', this.actionSettings);
 		this.addAction('logout', this.actionLogout);
 	}
 
@@ -31,6 +32,9 @@ class UserController extends Controller {
 		this.go('/error/404', false);
 	}
 
+	/**
+	 * Show user profile.
+	 */
 	actionProfile() {
 		this._Model.onAuth(
 			() => {
@@ -40,6 +44,26 @@ class UserController extends Controller {
 				};
 				this._View.constructProfile(data);
 				this._View.showProfile();
+			},
+			() => {
+				this.go('/error/403', false);
+			}
+		);
+	}
+
+	/**
+	 * Show form with user`s settings
+	 */
+	actionSettings() {
+		this._Model.onAuth(
+			() => {
+				const data = {
+					'Header': this._Model.getHeaderData(),
+					'Settings1': this._Model.getSettingsData('/'),
+					'Settings2': this._Model.getSettingsData('/')
+				};
+				this._View.constructSettings(data);
+				this._View.showSettings();
 			},
 			() => {
 				this.go('/error/403', false);
