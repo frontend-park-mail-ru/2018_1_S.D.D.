@@ -27,7 +27,7 @@ class ScoresModel extends Model {
 		const offset = page * limit - limit;
 
 		const API = this._ServiceManager.ApiService;
-		const serverResponse = API.GET(`user/get_users?limit=1&offset=${offset}`);
+		const serverResponse = API.GET(`user/get_users?limit=${limit}&offset=${offset}`);
 		return serverResponse.then(response => {
 			if(API.responseSuccess(response)) {
 				onSuccessCallback(response.data);
