@@ -20,11 +20,12 @@ $ npm run start-dev
 
 ## Деплой на хероку:
 
-- [COLORIT-APP](https://color-it.herokuapp.com)
+- [FRONTEND](https://color-it.herokuapp.com)
+- [BACKEND](https://color-it-back.herokuapp.com)
 
-## Backend сервер:
+## Backend репозиторий:
 
-- [BACKEND SERVER](https://github.com/java-park-mail-ru/S.D.D.-02-2018)
+- [S.D.D.-02-2018](https://github.com/java-park-mail-ru/S.D.D.-02-2018)
 
 ## Описание API:
 
