@@ -14,6 +14,24 @@ class Api {
 	}
 
 	/**
+	 * Checks if operation was success or not.
+	 * 
+	 * @param {Object} response Data recived from server.
+	 * @returns {boolean} True if success, false in other case.
+	 */
+	responseSuccess(response) {
+		const errorsList = response.errors;
+		if (errorsList) {
+			for (let error in errorsList) {
+				if (errorsList.hasOwnProperty(error)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * GET request
 	 * 
 	 * @param {string} path Path to api method.
@@ -42,21 +60,28 @@ class Api {
 	 * @param {string} httpMethod Http method type (GET/POST/etc)
 	 * @param {string} path Path to api method.
 	 * @param {Object} data Data to send to server.
+	 * @param {boolean} json Flag if body is json.
 	 * @returns {Promise} Promise with server response.
 	 */
-	_request(httpMethod, path, data = null, contentType = 'application/json') {
+	_request(httpMethod, path, data = null, json = true) {
 		const requestSettings = {
 			method: httpMethod,
 			headers: {
-				'Content-Type': contentType,
 				'Accept-Language': 'en-US'
 			},
 			credentials: 'include', // send user cookies, auth (etc) for cross-origin calls.
 			mode: 'cors' // allow cross-domain request
 		};
 
+		if(json) {
+			requestSettings.headers['Content-Type'] = 'application/json';
+		}
+
 		if(data) {
-			requestSettings.body = JSON.stringify(data);
+			if(json) {
+				data = JSON.stringify(data);
+			}
+			requestSettings.body = data;
 		}
 
 		return fetch(`${this.serverAddress}/api/${path}`, requestSettings).then(

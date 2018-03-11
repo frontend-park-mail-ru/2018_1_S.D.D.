@@ -25,7 +25,7 @@ class ScoresModel extends Model {
 	getUserScores(onClickCallback) {
 
 		const API = this._ServiceManager.ApiService;
-		const serverResponse = API.GET('user/get_users');
+		const serverResponse = API.GET('user/get_users', {limit: 5, offset: 0});
 		if (serverResponse) {
 			return serverResponse.then(response => {
 				if(API.responseSuccess(response)) {

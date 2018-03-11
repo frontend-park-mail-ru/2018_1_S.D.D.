@@ -24,9 +24,10 @@ class SignupModel extends Model {
 	 * @returns {Object} Inputs and header.
 	 */
 	getSignupForm(onSubmitCallback) {
-		return this.defaultSignupForm = {
+		return {
+			back: true,
 			header: 'HI STRANGER!',
-			social: true,
+			social: false,
 			formAction: '/signup/submit',
 			onSubmit: () => onSubmitCallback(),
 			formInputs: [
@@ -36,7 +37,7 @@ class SignupModel extends Model {
 					placeholder: 'Login'
 				},
 				{
-					type: 'email',
+					type: 'text',
 					name: 'email',
 					placeholder: 'Email'
 				},
@@ -68,6 +69,33 @@ class SignupModel extends Model {
 			passwordCheck: validation.password(formData.passwordCheck, formData.password),
 			email: validation.email(formData.email)
 		};
+	}
+
+	signup(formData, onSuccessCallback, onErrorCallback) {
+		const API = this._ServiceManager.ApiService;
+		const User = this._ServiceManager.User;
+
+		User.signup(formData)
+			.then(response => {
+				if(API.responseSuccess(response)) {
+					const loginData = {
+						nickname: formData.nickname,
+						password: formData.password
+					};
+					User.login(loginData)
+						.then(() => {
+							onSuccessCallback();
+						})
+						.catch(error => {
+							onErrorCallback({'general': error});
+						});
+				} else {
+					onErrorCallback(response.errors);
+				}
+			})
+			.catch(error => {
+				onErrorCallback({'general': error});
+			});
 	}
 
 }

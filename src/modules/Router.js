@@ -44,10 +44,7 @@ class Router {
 	 * @param {string} urlPath Url path to page 
 	 */
 	go(urlPath, pushState = true) {
-		if (urlPath === this.getCurrentUrlPath()) {
-			return;
-		}
-		if(pushState) {
+		if (urlPath !== this.getCurrentUrlPath() && pushState) {
 			window.history.pushState({}, '', urlPath);
 		}
 		this.loadPage(urlPath);
@@ -103,8 +100,10 @@ class Router {
 		}
 		
 		this.currentRoute = route;
-		
-		if(!this.currentRoute.load(action)) {
+
+		newUrlPath.splice(0, 3);
+
+		if(!this.currentRoute.load(action, newUrlPath)) {
 			route = this.notFound();
 			this.currentRoute = route;
 			this.currentRoute.load('404');

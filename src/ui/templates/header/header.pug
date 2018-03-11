@@ -1,7 +1,27 @@
 header.header
 	.header__container.header__container_right
-		ul.header__list.list
-			li.list__item.list__item_hor
-				a(href='/login').header__link.header__link_btn.btn LOGIN
-			li.list__item.list__item_hor
-				a(href='/signup').header__link SIGN UP
+		if loggedIn
+			ul.header__list.list.user_section
+				li.list__item.list__item_hor
+					.sub_btn
+						if defaultAvatar
+							img(src='/' + require('../../images/avatars/1.svg')).user_section__avatar
+						else
+							img(src=avatar).user_section__avatar
+						span.user_section__nickname #{nickname}
+							span.user_secction__nickname__arrow ▼
+						.clearfix
+					ul.submenu
+						each item in menuItems
+							li.submenu__item
+								if item.nohistory === undefined
+									- nohistory = 'false'
+								else
+									- nohistory = item.nohistory
+								a(href=item.link, nohistory=nohistory).submenu__item__link #{item.text}
+		else
+			ul.header__list.list
+				li.list__item.list__item_hor
+					a(href='/login').header__link.header__link_btn.btn LOGIN
+				li.list__item.list__item_hor
+					a(href='/signup').header__link SIGN UP

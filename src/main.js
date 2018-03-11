@@ -5,6 +5,7 @@ import MenuController from './controllers/MenuController';
 import LoginController from './controllers/LoginController';
 import SignupController from './controllers/SignupController';
 import ScoresController from './controllers/ScoresController';
+import UserController from './controllers/UserController';
 
 const SM = new ServiceManager();
 
@@ -15,3 +16,12 @@ SM.Router.addRoute('login', LoginController);
 SM.Router.addRoute('signup', SignupController);
 SM.Router.addRoute('scores', ScoresController);
 SM.Router.loadPage();
+SM.Router.addRoute('user', UserController);
+
+SM.User.loadUser()
+	.then(() => {
+		SM.Router.loadPage();
+	})
+	.catch(() => {
+		SM.Router.go('/error/503', false);
+	});

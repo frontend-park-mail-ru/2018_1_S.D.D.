@@ -54,41 +54,103 @@ class PageParts {
 				root: element,
 				active: false,
 				hideOnShow: hideOnShowList,
-				currentTemplate: null
+				currentTemplates: []
 			};
 		}
 	}
 
 	/**
+	 * If incoming template is current template in it's block, set current block to null.
+	 * 
+	 * @param {string} templateName Id of template to disconnect.
+	 */
+	disconnectViewBlock(templateName) {
+		const templateObject = this._TemplateHolder.template(templateName);
+		if(!templateObject || !templateObject.block) {
+			return;
+		}
+
+		const currentTemplates = this.block(templateObject.block).currentTemplates;
+		const idx = currentTemplates.findIndex(template => {
+			return template === templateName;
+		});
+
+		if (idx !== -1) {
+			this.block(templateObject.block).currentTemplates.splice(idx, 1);
+		}
+	}
+
+	/**
+	 * Add html template to block on page.
+	 * 
+	 * @param {string} templateName Id of template to add in block.
+	 * @param {boolean} insertInDomFlag Flag if we need insert template in SOM.
+	 * @returns {boolean} False if block not found. True in other case.
+	 */
+	addToBlock(templateName, insertInDomFlag = true) {
+		const templateObject = this._TemplateHolder.template(templateName);
+		if(!templateObject || !templateObject.block) {
+			return false;
+		}
+		if(!this.block(templateObject.block)) {
+			return false;
+		}
+		templateObject.html.classList.add('template-disabled');
+		templateObject.html.hidden = true;
+		if(insertInDomFlag) {
+			this.block(templateObject.block).root.appendChild(templateObject.html);
+		}
+		return true;
+	}
+
+	/**
 	 * Change current visible template in block. And show block if it's hidden.
 	 * 
-	 * @param {string} id Id of block in which we change template.
-	 * @param {string} newTemplateName Name of template to show in block.
+	 * @param {string} templateName Name of template to show in block.
+	 * @returns {boolean} False if template not found or template has not link to block. True in other case.
 	 */
-	changeTemplate(id, newTemplateName) {
+	changeTemplate(templateName) {
+		const templateObject = this._TemplateHolder.template(templateName);
+
+		if(!templateObject || !templateObject.block) {
+			return false;
+		}
+		
+		const id = templateObject.block;
+
 		this.block(id).hideOnShow.forEach(block => {
 			this.disableViewBlock(block);
 		});
 
-		const currentTemplate = this.block(id).currentTemplate;
+		const currentTemplates = this.block(id).currentTemplates;
+		this.block(id).currentTemplates = currentTemplates.filter(tName => {
+			if(tName !== templateName) {
+				const doHide = !templateObject.connected || templateObject.connected.findIndex(connectedTemplate => {
+					return connectedTemplate === tName;
+				}) === -1;
+	
+				const T = this._TemplateHolder.template(tName);
+				if(T && doHide) {
+					T.html.classList.add('template-disabled');
+					T.html.classList.remove('template-active');
+					T.html.hidden = true;
+					return false;
+				}
+			}
+			return true;
+		});
 
-		let T = this._TemplateHolder.template(currentTemplate);
-		if(T && currentTemplate !== newTemplateName) {
-			T.html.hidden = true;
-		}
-		this.block(id).currentTemplate = newTemplateName;
-
-		T = this._TemplateHolder.template(newTemplateName);
-		T.html.classList.add('template-disabled');
-		T.html.hidden = true;
-		
+		this.block(id).currentTemplates.push(templateName);
 		this.activateViewBlock(id);
+
+		return true;
 	}
 
 	/**
+	 * Add block to which we should hide when other block gonna be shown.
 	 * 
-	 * @param {*} id Id of block which will hide.
-	 * @param {*} blockToHide Id of block which will be hided.
+	 * @param {strig} id Id of block which will hide.
+	 * @param {string} blockToHide Id of block which will be hided.
 	 */
 	_addBlockTohide(id, blockToHide) {
 		this.block(id).hideOnShow.push(blockToHide);
@@ -104,19 +166,20 @@ class PageParts {
 			this.block(id).root.hidden = false;
 			this.block(id).active = true;
 		}
-		const currentTemplate = this.block(id).currentTemplate;
-		const T = this._TemplateHolder.load(currentTemplate);
-
-		if(T) {
-			T.hidden = false;
-			// if there is some CSS transition on .template-activate block
-			// we need to set timeout after disable visibility hidden
-			// or it's transition wont work
-			setTimeout(() => {
-				T.classList.add('template-active');
-				T.classList.remove('template-disabled');
-			}, 50);	
-		}		
+		const currentTemplates = this.block(id).currentTemplates;
+		currentTemplates.forEach(tName => {
+			const T = this._TemplateHolder.load(tName);
+			if(T) {
+				T.hidden = false;
+				// if there is some CSS transition on .template-activate block
+				// we need to set timeout after disable visibility hidden
+				// or it's transition wont work
+				setTimeout(() => {
+					T.classList.add('template-active');
+					T.classList.remove('template-disabled');
+				}, 50);	
+			}	
+		});	
 	}
 
 	/**
@@ -126,13 +189,12 @@ class PageParts {
 	 */
 	disableViewBlock(id) {
 		if(this.block(id).active) {
-			const currentTemplate = this.block(id).currentTemplate;
-			const T = this._TemplateHolder.load(currentTemplate);
-			if(T) {
-				T.hidden = true;
-				T.classList.add('template-disabled');
-				T.classList.remove('template-active');
-			}
+			const loadedTemplates = this.block(id).root.childNodes;
+			[].forEach.call(loadedTemplates, template => {
+				template.hidden = true;
+				template.classList.add('template-disabled');
+				template.classList.remove('template-active');
+			});
 			this.block(id).root.hidden = true;
 			this.block(id).active = false;
 		}

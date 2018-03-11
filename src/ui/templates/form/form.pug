@@ -1,6 +1,8 @@
-a(href='/').return-link ← Back to menu
+if back
+	a(href='/').return-link ← Back to menu
 .form
-	h1.form__header #{header}
+	if header
+		h1.form__header #{header}
 	if social
 		button(href='http://vk.com/').btn.form__btn.form__btn_social.form__btn_social-vk
 			img(src='/' + require('../../images/vk.svg'))

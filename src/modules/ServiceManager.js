@@ -4,6 +4,7 @@
 
 import Router from './Router';
 import Api from './Api';
+import User from './User';
 
 /** Service manager object - container of major application objects */
 class ServiceManager {
@@ -16,9 +17,9 @@ class ServiceManager {
 		}   
 		ServiceManager._instance = this;
      
-		//this._User = new User();
 		this._Router = new Router();
 		this._ApiService = new Api(API_SERVER_ADDRESS);
+		this._User = new User();
 	}
     
 	/**

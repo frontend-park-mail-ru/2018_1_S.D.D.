@@ -31,14 +31,15 @@ class Controller {
 	 * Searches for action and executes it.
 	 * 
 	 * @param {string} action Action name.
+	 * @param {string[]} parameters Parameters for action.
 	 * @returns {boolean} True if action executed. False if bot found (404).
 	 */
-	action(action) {
+	action(action, parameters = []) {
 		const callback = this._actions[action];
 		if(!callback) {
 			return false;
 		}
-		callback();
+		callback(parameters);
 		return true;
 	}
 
@@ -47,8 +48,8 @@ class Controller {
 	 * 
 	 * @param {string} url Page url.
 	 */
-	go(url) {
-		this._ServiceManager.Router.go(url);
+	go(url, history = true) {
+		this._ServiceManager.Router.go(url, history);
 	}
 }
 

@@ -15,7 +15,7 @@ export default {
 		if(password.length < 6) {
 			return 'Password should be at least 6 characters in length!';
 		}
-		if(passwordCheck && password !== passwordCheck) {
+		if(passwordCheck !== null && password !== passwordCheck) {
 			return 'Different passwords were entered!';
 		}
 		return false;
@@ -31,8 +31,8 @@ export default {
 		if(email === '') {
 			return 'You should fill email field!';
 		}
-		const re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/;
-		if(!re.test(email)) {
+		const emailPattern = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/i;
+		if(!emailPattern.test(email)) {
 			return 'That\'s not valid email!';
 		}
 		

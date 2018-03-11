@@ -57,11 +57,12 @@ class View {
 	listenLinks(html) {
 		const links = html.querySelectorAll('a');
 		[].forEach.call(links, link => {
+			const appendInHistory = !(link.getAttribute('nohistory') === 'true');
 			if(!link.getAttribute('target')) {
 				link.addEventListener('click', event => {
 					event.preventDefault();
 					const route = link.getAttribute('href');
-					this._ServiceManager.Router.go(route);
+					this._ServiceManager.Router.go(route, appendInHistory);
 				});
 			}
 		});
@@ -75,11 +76,12 @@ class View {
 	 * @param {Object} properties Some custom properties.
 	 * @param properties.block View block in wich template will be placed.
 	 * @param properties.reload Even if template already exists - we render it.
+	 * @param properties.connected Array of templates names which won't be hide in block.
 	 * @param properties.appendFirst Flag - insert before or after existing content.
 	 * @returns {HTMLElement|boolean} Rendered html or false if not templateObject specified (and not found).
 	 */
 	load(templateName, templateObject = null, properties = {}) {
-		const T = this._TemplateHolder.template(templateName);
+		let T = this._TemplateHolder.template(templateName);
 		const renderData = this._data[templateName];
 
 		if(!T || T.reload || properties.reload) {
@@ -91,16 +93,23 @@ class View {
 			this.listenLinks(html);
 
 			// if(T) -> it's reload
-			if(T) {
+			const doReload = T;
+
+			let block = null;
+			if(doReload) {
 				this._TemplateHolder.update(templateName, html, properties);
+				block = T.block;
 			} else {
 				this._TemplateHolder.save(templateName, html, properties);
+				block = properties.block;
 			}
 
-			if(properties.block && this._PageBlock.block(properties.block)) {
-				this._PageBlock.block(properties.block).root.appendChild(html);
+			T = this._TemplateHolder.template(templateName);
+
+			if(block && this._PageBlock.block(block)) {
+				this._PageBlock.addToBlock(templateName, !doReload);
 			} else {
-				if(properties.appendFirst) {
+				if(T.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);
 				} else {
 					this._body.appendChild(html);
@@ -117,13 +126,8 @@ class View {
 	 */
 	show(templateName) {
 		const T = this._TemplateHolder.template(templateName);
-		if(T) {
-			const block = T.properties.block;
-			if(block) {
-				this._PageBlock.changeTemplate(block, templateName);
-			} else {
-				T.html.hidden = false;
-			}
+		if(T && !this._PageBlock.changeTemplate(templateName)) {
+			T.html.hidden = false;
 		}
 	}
 
@@ -137,6 +141,16 @@ class View {
 		if(T) {
 			T.html.hidden = true;
 		}
+	}
+
+	/**
+	 * Remove template from holder and DOM.
+	 * 
+	 * @param {string} templateName Name of template to remove.
+	 */
+	remove(templateName) {
+		this._PageBlock.disconnectViewBlock(templateName);
+		this._TemplateHolder.delete(templateName);
 	}
 
 }
