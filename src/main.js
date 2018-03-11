@@ -15,7 +15,6 @@ SM.Router.addRoute('', MenuController);
 SM.Router.addRoute('login', LoginController);
 SM.Router.addRoute('signup', SignupController);
 SM.Router.addRoute('scores', ScoresController);
-SM.Router.loadPage();
 SM.Router.addRoute('user', UserController);
 
 SM.User.loadUser()
