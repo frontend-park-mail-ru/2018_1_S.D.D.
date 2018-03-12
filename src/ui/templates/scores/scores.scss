@@ -1,8 +1,15 @@
-.return-link {
+.return-link-scores {
     text-align: left;
     padding: 0;
     margin: 0 1%;
 }
+
+.pagination {
+    width: 50%;
+    text-align: center;
+    margin: auto;
+}
+
 .table__btn {
     height: 46px;
     border: 0px;
@@ -11,16 +18,22 @@
 
 .table__btn_submit {
     margin-top: 10px;
-    width: 48%;
-    border-radius: 8px;
-    margin: 0% 1%;
-    color: #ffffff;
-    background: linear-gradient(90deg, #2f164e, #7db9fd);
+    width: 200px;
+    border-radius: 50px;
+    margin: 10px;
+    color: #2f164e;
+    background: #7db9fd;
+    outline: none;
+    cursor: pointer;
+}
+
+.table__btn_submit:hover {
+    background: #fff;
 }
 
 .scores__table {
-    width: 100%;
-    padding: 1%;
+    width: 90%;
+    margin: 20px auto;
     table-layout: fixed;
 }
 
@@ -29,23 +42,23 @@
     color: #ffffff;
     text-align: center;
     position: center;
-    width: 100%;
-    padding: 1%;
+    width: 90%;
+    margin: auto;
 }
 .scores__table__th {
-	border: 1px solid #dddddd;
     text-align: center;
     font-weight: 700px;
-    color: #000000;
+    color: #fff;
     padding: 8px;
     width: 20%;
     min-width: 20%;
     max-width: 20%;
     white-space: nowrap; 
     overflow: hidden;
+    height: 35px;
+    border-bottom: 3px solid #fff;
 }
 .scores__table__td {
-    border: 1px solid #dddddd;
     text-align: center;
     color: #ffffff;
     padding: 8px;
@@ -54,8 +67,25 @@
     max-width: 20%;
     white-space: nowrap; 
     overflow: hidden;
+    height: 30px;
+    font-weight: bold;
 }
 
-.scores__table__tr:nth-child(even) {
-    background-color: #2f164e;
+.rating {
+    padding: 7px;
+    border-radius: 50px;
+}
+
+.rating_positive {
+    background: #19802a;
+    font-weight: bold;
+}
+
+.rating_negative {
+    background: #801919;
+    font-weight: bold;
+}
+
+.scores__table__tr:hover {
+    background-color:rgba(162, 169, 211, 0.5);
 }

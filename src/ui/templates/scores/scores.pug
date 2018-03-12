@@ -1,4 +1,4 @@
-a(href='/').return-link ← Back to menu
+a(href='/').return-link.return-link-scores ← Back to menu
 h2.scores__header Leaderboard
 table.scores__table
 	if data.userViewList
@@ -13,7 +13,11 @@ table.scores__table
 				td.scores__table__td #{user.email}
 				td.scores__table__td #{user.countGames}
 				td.scores__table__td #{user.countWins}
-				td.scores__table__td #{user.rating}
-div
+				td.scores__table__td
+					if user.rating > 0
+						span.rating.rating_positive #{user.rating}
+					else
+						span.rating.rating_negative #{user.rating}
+.pagination
 	button.table__btn.table__btn_submit.prev ← Previous
-	button.table__btn.table__btn_submit.next → Next
+	button.table__btn.table__btn_submit.next Next →

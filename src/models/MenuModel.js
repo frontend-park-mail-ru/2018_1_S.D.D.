@@ -25,7 +25,7 @@ class MenuModel extends Model {
 		return {
 			menuItems: [
 				{ link:'/play', text:'PLAY' },
-				{ link:'/scores', text:'SCORES' },
+				{ link:'/scores/show', text:'SCORES' },
 				{ link:'/rules', text:'RULES' },
 				{ link:'/about', text:'ABOUT' }
 			]

@@ -20,38 +20,50 @@ class ScoresController extends Controller {
 	 */
 	addActions() {
 		this.addAction('index', this.actionIndex);
-		this.addAction('show', this.actionIndex);
+		this.addAction('show', this.actionShow);
+	}
+
+	/**
+	 * Defalt action not exists. 404.
+	 */
+	actionIndex() {
+		this.go('/error/404/', false);
 	}
 
 	/**
 	 * Common action. Show scores table
 	 */
-	actionIndex(params = []) {
-		let page = (params[0] >= 1) ? params[0] : this.go('/scores/show/1');
-		
-		this._Model.getUserScores(
-			page,
-			result => {
-				const data = {
-					'Scores': {
-						data: result,
-						onClickPrev: () => {
-							page--;
-							this.go(`/scores/show/${page}`);
-						},
-						onClickNext: () => {
-							page++;
-							this.go(`/scores/show/${page}`);
+	actionShow(params = []) {
+		let page = params[0] ? params[0] : 1;
+		if(page < 1) {
+			this.go('/error/404', false);
+		} else {
+			this._Model.getUserScores(
+				page,
+				result => {
+					const data = {
+						'Scores': {
+							data: result,
+							onClickPrev: () => {
+								if(page > 1) {
+									page--;
+									this.go(`/scores/show/${page}`);
+								}
+							},
+							onClickNext: () => {
+								page++;
+								this.go(`/scores/show/${page}`);
+							}
 						}
-					}
-				};
-				this._View.constructPage(data);
-				this._View.showPage();
-			},
-			() => {
-				
-			}
-		);
+					};
+					this._View.constructPage(data);
+					this._View.showPage();
+				},
+				() => {
+					this.go('/error/503', false);
+				}
+			);
+		}
 	}
 
 	
