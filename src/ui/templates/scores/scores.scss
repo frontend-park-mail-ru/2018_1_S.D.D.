@@ -1,0 +1,61 @@
+.return-link {
+    text-align: left;
+    padding: 0;
+    margin: 0 1%;
+}
+.table__btn {
+    height: 46px;
+    border: 0px;
+    font-size: 22px;
+}
+
+.table__btn_submit {
+    margin-top: 10px;
+    width: 48%;
+    border-radius: 8px;
+    margin: 0% 1%;
+    color: #ffffff;
+    background: linear-gradient(90deg, #2f164e, #7db9fd);
+}
+
+.scores__table {
+    width: 100%;
+    padding: 1%;
+    table-layout: fixed;
+}
+
+.scores__header {
+    font-weight: 700px;
+    color: #ffffff;
+    text-align: center;
+    position: center;
+    width: 100%;
+    padding: 1%;
+}
+.scores__table__th {
+	border: 1px solid #dddddd;
+    text-align: center;
+    font-weight: 700px;
+    color: #000000;
+    padding: 8px;
+    width: 20%;
+    min-width: 20%;
+    max-width: 20%;
+    white-space: nowrap; 
+    overflow: hidden;
+}
+.scores__table__td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    color: #ffffff;
+    padding: 8px;
+    width: 20%;
+    min-width: 20%;
+    max-width: 20%;
+    white-space: nowrap; 
+    overflow: hidden;
+}
+
+.scores__table__tr:nth-child(even) {
+    background-color: #2f164e;
+}

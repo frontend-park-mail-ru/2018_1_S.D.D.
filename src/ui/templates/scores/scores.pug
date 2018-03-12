@@ -1,0 +1,19 @@
+a(href='/').return-link ← Back to menu
+h2.scores__header Leaderboard
+table.scores__table
+	if data.userViewList
+		th.scores__table__th Nickname
+		th.scores__table__th Email
+		th.scores__table__th Games
+		th.scores__table__th Wins
+		th.scores__table__th Rating
+		each user in data.userViewList
+			tr.scores__table__tr
+				td.scores__table__td #{user.nickname}
+				td.scores__table__td #{user.email}
+				td.scores__table__td #{user.countGames}
+				td.scores__table__td #{user.countWins}
+				td.scores__table__td #{user.rating}
+div
+	button.table__btn.table__btn_submit.prev ← Previous
+	button.table__btn.table__btn_submit.next → Next

@@ -1,0 +1,20 @@
+.profile_wrapper
+	.nickname #{nickname}
+	.info_holder
+		span.info_key GAMES PLAYED
+		span.info_value
+			span.marker #{gamesCount}
+	.info_holder
+		span.info_key WINS COUNT
+		span.info_value  
+			span.marker #{winsCount}
+	.info_holder
+		span.info_key RATING
+		span.info_value
+			if rating > 0
+				span.info_value_good.marker #{rating}
+			else
+				span.info_value_bad.marker #{rating}
+
+.profile_close
+	a(href=url).btn.profile__link_close Close

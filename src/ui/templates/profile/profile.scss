@@ -1,0 +1,83 @@
+.profile_wrapper {
+	width: 400px;
+	margin: auto;
+	text-align: center;
+}
+
+.avatar {
+	margin: 30px auto;
+	width: 250px;
+}
+
+.avatar__img {
+	width: 100%;
+	border-radius: 200px;
+}
+
+.nickname {
+	display: block;
+	text-align: center;
+	font-size: 32px;
+	font-weight: bold;
+	color: #fff;
+	margin: 40px 0;
+}
+
+.info_holder {
+	font-size: 22px;
+	color: #fff;
+	height: auto;
+	margin: auto;
+	margin-bottom: 5px;
+}
+
+.info_holder:hover {
+	background: rgba(162, 169, 211, 0.5);
+}
+
+.info_holder > span {
+	width: 190px;
+	display: inline-block;
+	padding: 15px 0px;
+}
+
+.info_key {
+	margin-left: 10px;
+	text-align: left;
+}
+
+.info_value {
+	font-weight: bold;
+	text-align: right;
+}
+
+.info_value_good {
+	background: rgb(25, 128, 42);
+}
+
+.info_value_bad {
+	background: rgb(128, 25, 25);
+}
+
+.marker {
+	border-radius: 100px;
+	padding: 6px 12px;
+}
+
+.profile_close {
+	width: 100px;
+	text-align: center;
+	margin: auto;
+}
+
+.profile__link_close {
+    color: #16174e;
+	text-decoration: none;
+	background: #7db9fd;
+	margin: 20px auto;
+}
+
+.profile__link_close:hover {
+	text-decoration: none;
+	background: #fff;
+}
