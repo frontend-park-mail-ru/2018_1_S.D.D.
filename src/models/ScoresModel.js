@@ -35,7 +35,9 @@ class ScoresModel extends Model {
 				onErrorCallback();
 			}
 			return serverResponse;
-		}).catch(onErrorCallback());
+		}).catch(() => {
+			onErrorCallback()
+		});
 	}
 }
 
