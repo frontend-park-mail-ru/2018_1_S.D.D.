@@ -54,7 +54,8 @@ class ScoresController extends Controller {
 								page++;
 								this.go(`/scores/show/${page}`);
 							}
-						}
+						},
+						'Header': this._Model.getHeaderData()
 					};
 					this._View.constructPage(data);
 					this._View.showPage();

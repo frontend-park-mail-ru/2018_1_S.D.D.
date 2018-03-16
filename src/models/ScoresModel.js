@@ -37,16 +37,6 @@ class ScoresModel extends Model {
 			return serverResponse;
 		}).catch(onErrorCallback());
 	}
-
-	getUserScoresCount() {
-		return 5;
-	}
-
-	getUserScoresTable(onClickCallback) {
-		return this.defaultScoresTable = {
-			onClick: () => onClickCallback()
-		};
-	}
 }
 
 export default ScoresModel;
