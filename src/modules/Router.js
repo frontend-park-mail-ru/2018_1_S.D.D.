@@ -49,6 +49,16 @@ class Router {
 		}
 		this.loadPage(urlPath);
 	}
+
+	/**
+	 * Redirect to new page specified by urlPath without saving previous page.
+	 * 
+	 * @param {string} urlPath Url path to page
+	 */
+	re(urlPath) {
+		window.history.replaceState({}, '', urlPath);
+		this.loadPage(urlPath);
+	}
     
 	/**
 	 * Checks path for valid and returns new path
@@ -76,15 +86,43 @@ class Router {
 	}
 
 	/**
+	 * Get controller name from url.
+	 * 
+	 * @param {string} url Url path.
+	 */
+	getController(url) {
+		return url.split('/')[1];
+	}
+
+	/**
+	 * Get action name from url.
+	 * 
+	 * @param {string} url Url path.
+	 */
+	getAction(url) {
+		return url.split('/')[2];
+	}
+
+	/**
+	 * Get params from url.
+	 * 
+	 * @param {string} url Url path.
+	 */
+	getParams(url) {
+		const params = url.split('/');
+		params.splice(0, 3);
+		return params;
+	}
+
+	/**
 	 * Loads page associated with url 
 	 * 
 	 * @param {string} urlPath Url path to page
 	 */
 	loadPage(urlPath) {
 		let newUrlPath = this.getNewUrlPath(urlPath);
-		newUrlPath = newUrlPath.split('/');
 		let route = this.routes.find(routeIterator => {
-			return routeIterator.urlPath == newUrlPath[1];
+			return routeIterator.urlPath == this.getController(newUrlPath);
 		});
 
 		if (this.currentRoute != null) {
@@ -96,14 +134,14 @@ class Router {
 			route = this.notFound();
 			action = '404';
 		} else {
-			action = newUrlPath[2];
+			action = this.getAction(newUrlPath);
 		}
 		
 		this.currentRoute = route;
 
-		newUrlPath.splice(0, 3);
+		const params = this.getParams(newUrlPath);
 
-		if(!this.currentRoute.load(action, newUrlPath)) {
+		if(!this.currentRoute.load(action, params)) {
 			route = this.notFound();
 			this.currentRoute = route;
 			this.currentRoute.load('404');

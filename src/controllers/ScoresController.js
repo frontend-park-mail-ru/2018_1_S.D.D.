@@ -10,8 +10,8 @@ class ScoresController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Model = new ScoresModel();
-		this._View = new ScoresView();
+		this.ScoresModel = new ScoresModel();
+		this.ScoresView = new ScoresView();
 		this.addActions();
 	}
 
@@ -38,12 +38,12 @@ class ScoresController extends Controller {
 		if(page < 1) {
 			this.go('/error/404', false);
 		} else {
-			this._Model.getUserScores(
+			this.ScoresModel.getUserScores(
 				page,
 				result => {
 					const data = {
 						'Scores': {
-							data: result,
+							data: result.users_list,
 							onClickPrev: () => {
 								if(page > 1) {
 									page--;
@@ -55,10 +55,10 @@ class ScoresController extends Controller {
 								this.go(`/scores/show/${page}`);
 							}
 						},
-						'Header': this._Model.getHeaderData()
+						'Header': this.getHeaderData()
 					};
-					this._View.constructPage(data);
-					this._View.showPage();
+					this.ScoresView.constructPage(data);
+					this.ScoresView.showPage();
 				},
 				() => {
 					this.go('/error/503', false);

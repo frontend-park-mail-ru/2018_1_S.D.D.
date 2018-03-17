@@ -26,17 +26,15 @@ class ScoresModel extends Model {
 		const limit = 5;
 		const offset = page * limit - limit;
 
-		const API = this._ServiceManager.ApiService;
-		const serverResponse = API.GET(`user/get_users?limit=${limit}&offset=${offset}`);
-		return serverResponse.then(response => {
+		const API = this.ServiceManager.ApiService;
+		API.GET(`user/get_users?limit=${limit}&offset=${offset}`).then(response => {
 			if(API.responseSuccess(response)) {
 				onSuccessCallback(response.data);
 			} else {
 				onErrorCallback();
 			}
-			return serverResponse;
 		}).catch(() => {
-			onErrorCallback()
+			onErrorCallback();
 		});
 	}
 }

@@ -17,10 +17,5 @@ SM.Router.addRoute('signup', SignupController);
 SM.Router.addRoute('scores', ScoresController);
 SM.Router.addRoute('user', UserController);
 
-SM.User.loadUser()
-	.then(() => {
-		SM.Router.loadPage();
-	})
-	.catch(() => {
-		SM.Router.go('/error/503', false);
-	});
+// Check for user logged in and then load current page
+SM.Router.go('/user', false);

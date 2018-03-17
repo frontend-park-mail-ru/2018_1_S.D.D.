@@ -10,7 +10,7 @@ export default {
 	 * @param {HTMLElement} html Html block with form.
 	 * @returns {Object} Serialized data from inputs.
 	 */
-	serialize: html => {
+	serialize: function(html) {
 		const inputs = html.querySelectorAll('input');
 		const inputsArray = Array.from(inputs);
 		let serialized = {};
@@ -26,7 +26,7 @@ export default {
 	 * @param {HTMLElement} html Html block with form.
 	 * @returns {Object} Serialized data from inputs.
 	 */
-	serializeMultipart: html => {
+	serializeMultipart: function(html) {
 		const form = html.querySelector('form');
 		const data = new FormData(form);
 		return data;
@@ -40,7 +40,7 @@ export default {
 	 * @param {HTMLElement} html Html block with form.
 	 * @returns {boolean} True id error added, false if input not found.
 	 */
-	addError: (input, message, html = document) => {
+	addError: function(input, message, html = document) {
 		// If we adding error that means request completed
 		// So we need to hide animation loader
 		html.querySelector('.form__btn_submit__text').hidden = false;
@@ -48,7 +48,7 @@ export default {
 
 		// If it's input error - looking for input to color it
 		if (input !== 'general') {
-			const inputElement = html.querySelector('[name="' + input + '"]');
+			const inputElement = html.querySelector(`[name="${input}"]`);
 			if(!inputElement) {
 				return false;
 			}
@@ -56,7 +56,7 @@ export default {
 		}
 
 		// Show error message
-		const inputMessage = html.querySelector('.error-' + input);
+		const inputMessage = html.querySelector(`.error-${input}`);
 		inputMessage.classList.add('error-message-active');
 		inputMessage.innerHTML = message;
 		return true;
@@ -68,7 +68,7 @@ export default {
 	 * @param {Object} params Data for render and submit action.
 	 * @returns {HTMLElement} Html block with form.
 	 */
-	render: params => {
+	render: function(params) {
 		function disableError(selector) {
 			const activeError = elem.querySelector(selector);
 			activeError.classList.remove('error-message-active');
@@ -78,6 +78,16 @@ export default {
 		// Render template
 		const elem = document.createElement('div');
 		elem.innerHTML = template(params);
+
+		// Hide errors on field focus
+		const inputs = elem.querySelectorAll('input');
+		inputs.forEach(input => {
+			input.addEventListener('focus', () => {
+				input.classList.remove('input-error');
+				disableError(`.error-${input.name}`);
+				disableError('.error-general');
+			});
+		});
 
 		// Submit form handler
 		const form = elem.querySelector('form');
@@ -91,22 +101,33 @@ export default {
 			elem.querySelector('.form__btn_submit__text').hidden = true;
 			elem.querySelector('.loader').hidden = false;
 
+			// Validate fields
+			let validated = true;
+			params.formInputs.forEach(input => {
+				const fields = input.validateFields;
+				if(fields) {
+					const fieldsValues = [];
+					fields.forEach(field => {
+						fieldsValues.push(form.querySelector(`[name="${field}"]`).value);
+					});
+					const validationError = input.validateMethod(...fieldsValues);
+					if(validationError) {
+						validated = false;
+						this.addError(input.name, validationError, form);
+					}
+				}
+			});
+			
+			if(!validated) {
+				return;
+			}
+
 			// Submit form
 			if(params.onSubmit) {
 				params.onSubmit();
 			} else {
 				form.submit();
 			}
-		});
-
-		// Hide errors on field focus
-		const inputs = elem.querySelectorAll('input');
-		inputs.forEach(input => {
-			input.addEventListener('focus', () => {
-				input.classList.remove('input-error');
-				disableError('.error-' + input.name);
-				disableError('.error-general');
-			});
 		});
 		return elem;
 	}

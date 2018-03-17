@@ -3,6 +3,7 @@
 import Controller from './Controller';
 import UserModel from '../models/UserModel';
 import UserView from '../views/UserView';
+import validation from '../modules/validations';
 
 class UserController extends Controller {
 	/**
@@ -10,8 +11,8 @@ class UserController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Model = new UserModel();
-		this._View = new UserView();
+		this.UserModel = new UserModel();
+		this.UserView = new UserView();
 		this.addActions();
 	}
 
@@ -31,26 +32,45 @@ class UserController extends Controller {
 	 * Common action doesn't exists. Show 404.
 	 */
 	actionIndex() {
-		this.go('/error/404', false);
+		const onCheckCallback = () => {
+			const Router = this.ServiceManager.Router;
+			const currentUrl = Router.getCurrentUrlPath();
+			const currentControler = Router.getController(currentUrl);
+
+			// If user typed in url /user - we need to redirect him to menu
+			if(currentControler === 'user') {
+				const currentAction = Router.getAction(currentUrl);
+				if(!currentAction || currentAction === 'index' || currentAction === '') {
+					Router.re('/');
+					return;
+				}
+			}
+			Router.loadPage();
+		};
+
+		this.UserModel.loadUser(
+			onCheckCallback,
+			onCheckCallback,
+			() => this.go('/error/503', false)
+		);
 	}
 
 	/**
 	 * Show user profile.
 	 */
 	actionProfile() {
-		this._Model.onAuth(
+		this.UserModel.loadUser(
 			() => {
 				const data = {
-					'Header': this._Model.getHeaderData(),
-					'Profile': this._Model.getProfileData('/'),
-					'ProfileAvatar': this._Model.getAvatar()
+					'Header': this.getHeaderData(),
+					'Profile': this.getProfileData(),
+					'ProfileAvatar': this.getAvatar()
 				};
-				this._View.constructProfile(data);
-				this._View.showProfile();
+				this.UserView.constructProfile(data);
+				this.UserView.showProfile();
 			},
-			() => {
-				this.go('/error/403', false);
-			}
+			() => this.go('/error/403', false),
+			() => this.go('/error/503', false)
 		);
 	}
 
@@ -58,15 +78,14 @@ class UserController extends Controller {
 	 * Show form with user`s settings
 	 */
 	actionSettings() {
-		this._Model.onAuth(
+		this.UserModel.loadUser(
 			() => {
 				const data = this._getSettingsData();
-				this._View.constructSettings(data);
-				this._View.showSettings();
+				this.UserView.constructSettings(data);
+				this.UserView.showSettings();
 			},
-			() => {
-				this.go('/error/403', false);
-			}
+			() => this.go('/error/403', false),
+			() => this.go('/error/503', false)
 		);
 	}
 
@@ -74,37 +93,34 @@ class UserController extends Controller {
 	 * Upload users avatar.
 	 */
 	actionUploadAvatar() {
-		this._Model.onAuth(
+		this.UserModel.loadUser(
 			() => {
-				let submitData = this._View.serializeAvatar();
+				let submitData = this.UserView.serializeAvatar();
 				if(!submitData) {
 					const data = this._getSettingsData();
-					this._View.constructPage(data);
-					submitData = this._View.serializeAvatar();
+					this.UserView.constructPage(data);
+					submitData = this.UserView.serializeAvatar();
 				}
 				
-				this._Model.uploadAvatar(
+				this.UserModel.uploadAvatar(
 					submitData,
 					() => {
 						const data = {
-							'Header': this._Model.getHeaderData(),
-							'UploadAvatar': this._Model.getUploadAvatar(() => {
-								this._ServiceManager.Router.go('/user/uploadavatar', false);
-							}),
-							'Avatar': this._Model.getAvatar()
+							'Header': this.getHeaderData(),
+							'UploadAvatar': this.getUploadAvatar(),
+							'Avatar': this.getAvatar()
 						};
-						this._View.reloadAvatar(data);
+						this.UserView.reloadAvatar(data);
 					},
 					errors => {
 						for(let e in errors) {
-							this._View.addFormError('UploadAvatar', e, errors[e]);
+							this.UserView.addFormError('UploadAvatar', e, errors[e]);
 						}
 					}
 				);
 			},
-			() => {
-				this.go('/error/403', false);
-			}
+			() => this.go('/error/403', false),
+			() => this.go('/error/403', false)
 		);
 	}
 
@@ -114,7 +130,7 @@ class UserController extends Controller {
 	 * @param {string[]} parameters Contains what to edit
 	 */
 	actionEdit(parameters = []) {
-		this._Model.onAuth(
+		this.UserModel.loadUser(
 			() => {
 				const editParam = parameters[0];
 				if(!editParam) {
@@ -123,39 +139,25 @@ class UserController extends Controller {
 
 				const formTemplate = this._getTemplate(editParam);
 
-				let submitData = this._View.serializeForm(formTemplate);
+				let submitData = this.UserView.serializeForm(formTemplate);
 				if(!submitData) {
 					const data = this._getSettingsData();
-					this._View.constructPage(data);
-					submitData = this._View.serializeForm(formTemplate);
-				}
-
-				const validation = this._validateData(editParam, submitData);
-
-				let noValidationError = true;
-				for(let input in validation) {
-					if(validation[input]) {
-						this._View.addFormError(formTemplate, input, validation[input]);
-						noValidationError = false;
-					}
+					this.UserView.constructPage(data);
+					submitData = this.UserView.serializeForm(formTemplate);
 				}
 
 				const errorCallback = errors => {
 					for(let e in errors) {
-						this._View.addFormError(formTemplate, e, errors[e]);
+						this.UserView.addFormError(formTemplate, e, errors[e]);
 					}
 					this.go('/user/settings');
 				};
 				
-				if(noValidationError) {
-					this._editUserData(editParam, submitData, errorCallback);
-				} else {
-					this.go('/user/settings');
-				}
+				this._editUserData(editParam, submitData, errorCallback);
+
 			},
-			() => {
-				this.go('/error/403', false);
-			}
+			() => this.go('/error/403', false),
+			() => this.go('/error/503', false)
 		);
 	}
 
@@ -166,19 +168,17 @@ class UserController extends Controller {
 	 */
 	actionLogout(parameters = []) {
 		const goToMenu = parameters[0] !== 'quietly';
-		this._Model.logout(
+		this.UserModel.logout(
 			() => {
 				const reconstructData = {
-					'Header': this._Model.getHeaderData()
+					'Header': this.getHeaderData()
 				};
-				this._View.constructLogout(reconstructData);
+				this.UserView.constructLogout(reconstructData);
 				if(goToMenu) {
 					this.go('/');
 				}
 			},
-			() => {
-				this.go('/error/503', false);
-			}
+			() => this.go('/error/503', false)
 		);
 	}
 
@@ -192,74 +192,44 @@ class UserController extends Controller {
 	_editUserData(editParam, submitData, onErrorCallback) {
 		switch(editParam) {
 		case 'nickname':
-			this._Model.editNickname(
+			this.UserModel.editNickname(
 				submitData,
 				() => {
 					const data = {
-						'Header': this._Model.getHeaderData(),
-						'EditNickname': this._Model.getEditNickname(
-							() => this._ServiceManager.Router.go('/user/edit/nickname', false)
-						)
+						'Header': this.getHeaderData(),
+						'EditNickname': this.getEditNickname()
 					};
-					this._View.reloadForm('EditNickname', data);
-					this._View.reloadHeader(data);
+					this.UserView.reloadForm('EditNickname', data);
+					this.UserView.reloadHeader(data);
 				},
 				onErrorCallback
 			);
 			break;
 		case 'email':
-			this._Model.editEmail(
+			this.UserModel.editEmail(
 				submitData,
 				() => {
 					const data = {
-						'EditEmail': this._Model.getEditEmail(
-							() => this._ServiceManager.Router.go('/user/edit/email', false)
-						)
+						'EditEmail': this.getEditEmail()
 					};
-					this._View.reloadForm('EditEmail', data);
+					this.UserView.reloadForm('EditEmail', data);
 				},
 				onErrorCallback
 			);
 			break;
 		case 'password':
-			this._Model.editPassword(
+			this.UserModel.editPassword(
 				submitData,
 				() => {
 					const data = {
-						'EditPassword': this._Model.getEditPassword(
-							() => this._ServiceManager.Router.go('/user/edit/password', false)
-						)
+						'EditPassword': this.getEditPassword()
 					};
-					this._View.reloadForm('EditPassword', data);
+					this.UserView.reloadForm('EditPassword', data);
 				},
 				onErrorCallback
 			);
 			break;
 		}
-	}
-
-	/**
-	 * Get data for settings page rendering.
-	 * 
-	 * @returns {Object} Data for rendering.
-	 */
-	_getSettingsData() {
-		return {
-			'Header': this._Model.getHeaderData(),
-			'EditNickname': this._Model.getEditNickname(() => {
-				this._ServiceManager.Router.go('/user/edit/nickname', false);
-			}),
-			'EditEmail': this._Model.getEditEmail(() => {
-				this._ServiceManager.Router.go('/user/edit/email', false);
-			}),
-			'EditPassword': this._Model.getEditPassword(() => {
-				this._ServiceManager.Router.go('/user/edit/password', false);
-			}),
-			'UploadAvatar': this._Model.getUploadAvatar(() => {
-				this._ServiceManager.Router.go('/user/uploadavatar', false);
-			}),
-			'Avatar': this._Model.getAvatar()
-		};
 	}
 
 	/**
@@ -282,22 +252,159 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Validate form data depends on url parameter.
+	 * Get data for settings page rendering.
 	 * 
-	 * @param {string} param Url parameter.
-	 * @returns {Object} Validated data.
+	 * @returns {Object} Data for rendering.
 	 */
-	_validateData(param, submitData) {
-		switch(param) {
-		case 'nickname':
-			return this._Model.validateNickname(submitData);
-		case 'email':
-			return this._Model.validateEmail(submitData);
-		case 'password':
-			return this._Model.validatePassword(submitData);
-		default:
-			this.go('/error/404', false);
-		}
+	_getSettingsData() {
+		return {
+			'Header': this.getHeaderData(),
+			'EditNickname': this.getEditNickname(),
+			'EditEmail': this.getEditEmail(),
+			'EditPassword': this.getEditPassword(),
+			'UploadAvatar': this.getUploadAvatar(),
+			'Avatar': this.getAvatar()
+		};
+	}
+
+	/**
+	 * Get data for rendering profile template.
+	 * 
+	 * @returns {Object} Contains data for template rendering.
+	 */
+	getProfileData() {
+		const UserStorage = this.ServiceManager.UserStorage;
+		return {
+			url: '/',
+			nickname: UserStorage.nickname,
+			gamesCount: UserStorage.games,
+			winsCount: UserStorage.wins,
+			rating: UserStorage.rating,
+		};
+	}
+
+	/**
+	 * If user uploaded avatar will contain path to this avatar.
+	 * 
+	 * @returns {Object} Contains flag of default avatar and path to users avatar.
+	 */
+	getAvatar() {
+		const UserStorage = this.ServiceManager.UserStorage;
+		return {
+			defaultAvatar: UserStorage.defaultAvatar,
+			avatar: UserStorage.avatar
+		};
+	}
+
+	/**
+	 * Get data for rendering nickname form.
+	 * 
+	 * @returns {Object} Contains data for template rendering.
+	 */
+	getEditNickname() {
+		const UserStorage = this.ServiceManager.UserStorage;
+		return {
+			back: true,
+			header: false,
+			social: false,
+			formAction: '/user/edit/nickname',
+			onSubmit: () => this.go('/user/edit/nickname', false),
+			formInputs: [
+				{
+					type: 'text',
+					name: 'nickname',
+					placeholder: UserStorage.nickname,
+					validateMethod: validation.login,
+					validateFields: ['nickname']
+				}
+			],
+			button: 'CHANGE NICKNAME!'
+		};
+	}
+
+	/**
+	 * Get data for rendering email form.
+	 * 
+	 * @returns {Object} Contains data for template rendering.
+	 */
+	getEditEmail() {
+		const UserStorage = this.ServiceManager.UserStorage;
+		return {
+			header: false,
+			social: false,
+			formAction: '/user/edit/email',
+			onSubmit: () => this.go('/user/edit/email', false),
+			formInputs: [
+				{
+					type: 'text',
+					name: 'email',
+					placeholder: UserStorage.email,
+					validateMethod: validation.email,
+					validateFields: ['email']
+				}
+			],
+			button: 'CHANGE EMAIL!'
+		};
+	}
+
+	/**
+	 * Get data for rendering password form.
+	 * 
+	 * @returns {Object} Contains data for template rendering.
+	 */
+	getEditPassword() {
+		return {
+			header: false,
+			social: false,
+			formAction: '/user/edit/password',
+			onSubmit: () => this.go('/user/edit/password', false),
+			formInputs: [
+				{
+					type: 'password',
+					name: 'oldPassword',
+					placeholder: 'Old password',
+					validateMethod: validation.password,
+					validateFields: ['oldPassword']
+				},
+				{
+					type: 'password',
+					name: 'password',
+					placeholder: 'New password',
+					validateMethod: validation.password,
+					validateFields: ['password', 'passwordCheck']
+				},
+				{
+					type: 'password',
+					name: 'passwordCheck',
+					placeholder: 'Confirm password',
+					validateMethod: validation.password,
+					validateFields: ['passwordCheck', 'password']
+				}
+			],
+			button: 'CHANGE PASSWORD!'
+		};
+	}
+
+	/**
+	 * Get data for rendering avatar form.
+	 * 
+	 * @returns {Object} Contains data for template rendering.
+	 */
+	getUploadAvatar() {
+		return {
+			header: false,
+			social: false,
+			formAction: '/user/uploadavatar',
+			onSubmit: () => this.go('/user/uploadavatar', false),
+			formInputs: [
+				{
+					type: 'file',
+					name: 'file',
+					placeholder: 'Photo upload'
+				}
+			],
+			button: 'UPLOAD PHOTO!'
+		};
 	}
 }
 

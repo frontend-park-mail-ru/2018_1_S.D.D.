@@ -1,8 +1,9 @@
 'use strict';
 
 import Controller from './Controller';
-import LoginModel from '../models/LoginModel';
+import UserModel from '../models/UserModel';
 import LoginView from '../views/LoginView';
+import validation from '../modules/validations';
 
 class LoginController extends Controller {
 	/**
@@ -10,8 +11,8 @@ class LoginController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Model = new LoginModel();
-		this._View = new LoginView();
+		this.UserModel = new UserModel();
+		this.LoginView = new LoginView();
 		this.addActions();
 	}
 
@@ -27,19 +28,18 @@ class LoginController extends Controller {
 	 * Common action. Show login form.
 	 */
 	actionIndex() {
-		this._Model.onAuth(
+		this.UserModel.loadUser(
 			() => {
 				this._loginCallback();
 			},
 			() => {
 				const data = {
-					'LoginForm': this._Model.getLoginForm(
-						() => this._ServiceManager.Router.go('/login/submit', false)
-					),
-					'Header': this._Model.getHeaderData()
+					'LoginForm': this.getLoginForm(),
+					'Header': this.getHeaderData()
 				};
-				this._View.constructPage(data);
-				this._View.showPage();
+				
+				this.LoginView.constructPage(data);
+				this.LoginView.showPage();
 			}
 		);
 	}
@@ -48,52 +48,36 @@ class LoginController extends Controller {
 	 * Submit action. Validate form and submit data to server if ok.
 	 */
 	actionSubmit() {
-		this._Model.onAuth(
+		this.UserModel.loadUser(
 			this._loginCallback,
 			() => {
 				const data = {
-					'LoginForm': this._Model.getLoginForm(
-						() => this._ServiceManager.Router.go('/login/submit', false)
-					),
-					'Header': this._Model.getHeaderData()
+					'LoginForm': this.getLoginForm(),
+					'Header': this.getHeaderData()
 				};
 				
-				let submitData = this._View.serializeForm();
+				let submitData = this.LoginView.serializeForm();
 				if(!submitData) {
-					this._View.constructPage(data);
-					submitData = this._View.serializeForm();
+					this.LoginView.constructPage(data);
+					submitData = this.LoginView.serializeForm();
 				}
-		
-				const validation = this._Model.validate(submitData);
-		
-				let noValidationError = true;
-				for(let input in validation) {
-					if(validation[input]) {
-						this._View.addFormError(input, validation[input]);
-						noValidationError = false;
-					}
-				}
-		
-				if(noValidationError) {
-					this._Model.authenticate(
-						submitData,
-						() => {
-							const reconstructData = {
-								'Header': this._Model.getHeaderData()
-							};
-							this._View.reconstructPage(reconstructData);
-							this.go('/');
-						},
-						errors => {
-							for(let e in errors) {
-								this._View.addFormError(e, errors[e]);
-							}
-							this.go('/login');
+
+				this.UserModel.login(
+					submitData,
+					() => {
+						const reconstructData = {
+							'Header': this.getHeaderData()
+						};
+						this.LoginView.reconstructPage(reconstructData);
+						this.go('/');
+					},
+					errors => {
+						for(let e in errors) {
+							this.LoginView.addFormError(e, errors[e]);
 						}
-					);
-				} else {
-					this.go('/login');
-				}
+						this.go('/login');
+					}
+				);
 			}
 		);
 	}
@@ -103,10 +87,42 @@ class LoginController extends Controller {
 	 */
 	_loginCallback() {
 		const data = {
-			'Header': this._Model.getHeaderData()
+			'Header': this.getHeaderData()
 		};
-		this._View.reconstructPage(data);
+		this.LoginView.reconstructPage(data);
 		this.go('/');
+	}
+
+	/**
+	 * Get data for rendering login form.
+	 * 
+	 * @returns {Object} Contains data for template rendering.
+	 */
+	getLoginForm() {
+		return {
+			back: true,
+			header: 'COME IN!',
+			social: true,
+			formAction: '/login/submit',
+			onSubmit: () => this.go('/login/submit', false),
+			formInputs: [
+				{
+					type: 'text',
+					name: 'nickname',
+					placeholder: 'Login',
+					validateMethod: validation.login,
+					validateFields: ['nickname']
+				},
+				{
+					type: 'password',
+					name: 'password',
+					placeholder: 'Password',
+					validateMethod: validation.login,
+					validateFields: ['password']
+				}
+			],
+			button: 'LOG IN'
+		};
 	}
 
 }

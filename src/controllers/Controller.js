@@ -11,7 +11,7 @@ class Controller {
 	 * Creates instance if Controller
 	 */
 	constructor() {
-		this._ServiceManager = new ServiceManager();
+		this.ServiceManager = new ServiceManager();
 		this._actions = {
 			index: () => {},
 			close: () => {}
@@ -49,7 +49,26 @@ class Controller {
 	 * @param {string} url Page url.
 	 */
 	go(url, history = true) {
-		this._ServiceManager.Router.go(url, history);
+		this.ServiceManager.Router.go(url, history);
+	}
+
+	/**
+	 * Get data for header rendering
+	 */
+	getHeaderData() {
+		const User = this.ServiceManager.UserStorage;
+		
+		return {
+			loggedIn: User.isLogged(),
+			nickname: User.nickname,
+			defaultAvatar: User.defaultAvatar,
+			avatar: User.avatar,
+			menuItems: [
+				{ link:'/user/profile', text:'PROFILE' },
+				{ link:'/user/settings', text:'SETTINGS' },
+				{ link:'/user/logout', text:'LOG OUT', nohistory: 'true' }
+			]
+		};
 	}
 }
 

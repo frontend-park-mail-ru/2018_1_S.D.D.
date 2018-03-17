@@ -47,11 +47,11 @@ class Api {
 	 * 
 	 * @param {string} path Path to api method.
 	 * @param {Object} data Data to send to server.
-	 * @param {string} contentType 'Content-Type' header.
+	 * @param {string} json Is content type JSON format?
 	 * @returns {Promise} Promise with server response.
 	 */
-	POST(path, data = null, contentType = 'application/json') {
-		return this._request('POST', path, data, contentType);
+	POST(path, data = null, json = true) {
+		return this._request('POST', path, data, json);
 	}
 
 	/**
