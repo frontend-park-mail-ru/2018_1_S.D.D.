@@ -39,7 +39,7 @@ class Controller {
 		if(!callback) {
 			return false;
 		}
-		callback(parameters);
+		callback(...parameters);
 		return true;
 	}
 

@@ -1,23 +1,29 @@
-a(href='/').return-link.return-link-scores ← Back to menu
-h2.scores__header Leaderboard
+h2.scores__header LEADERBOARD
 table.scores__table
 	if data.userViewList
-		th.scores__table__th Nickname
-		th.scores__table__th Email
-		th.scores__table__th Games
+		th.scores__table__th #
+		th.scores__table__th.scores__table_big Nickname
+		th.scores__table__th.scores__table_big.scores__table_email Email
+		th.scores__table__th.scores__table_games Games
 		th.scores__table__th Wins
 		th.scores__table__th Rating
 		each user in data.userViewList
 			tr.scores__table__tr
-				td.scores__table__td #{user.nickname}
-				td.scores__table__td #{user.email}
-				td.scores__table__td #{user.countGames}
+				td.scores__table__td 
+					if user.place == 1
+						img(src='/' + require('../../images/gold.svg')).scores__medal
+					else if user.place == 2
+						img(src='/' + require('../../images/silver.svg')).scores__medal
+					else if user.place == 3
+						img(src='/' + require('../../images/bronze.svg')).scores__medal
+					else
+						| #{user.place}
+				td.scores__table__td.scores__table_big #{user.nickname}
+				td.scores__table__td.scores__table_big.scores__table_email #{user.email}
+				td.scores__table__td.scores__table_games #{user.countGames}
 				td.scores__table__td #{user.countWins}
 				td.scores__table__td
 					if user.rating > 0
-						span.rating.rating_positive #{user.rating}
+						span.rating.rating_positive &nbsp;#{user.rating}&nbsp;
 					else
-						span.rating.rating_negative #{user.rating}
-.pagination
-	button.table__btn.table__btn_submit.prev ← Previous
-	button.table__btn.table__btn_submit.next Next →
+						span.rating.rating_negative &nbsp;#{user.rating}&nbsp;

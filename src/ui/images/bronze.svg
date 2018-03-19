@@ -1,0 +1,32 @@
+<svg width="300.439" height="300.439" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="302.439" width="302.439" y="-1" x="-1"/>
+ </g>
+
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_1" stroke="null">
+   <path id="svg_2" fill="#BF392C" d="m277.967,0l-84.498,0l-122.054,178.385l84.498,0l122.054,-178.385z" stroke="null"/>
+   <path id="svg_3" fill="#E2574C" d="m24.472,0l84.498,0l122.053,178.385l-84.498,0l-122.053,-178.385z" stroke="null"/>
+   <path id="svg_4" fill="#c47046" d="m155.914,93.887c57.271,0 103.276,46.005 103.276,103.276s-46.005,103.276 -103.276,103.276s-103.276,-46.005 -103.276,-103.276s46.005,-103.276 103.276,-103.276z" stroke="null"/>
+   <path id="svg_5" fill="#7f4627" d="m155.914,122.053c-41.31,0 -75.11,33.799 -75.11,75.11s33.799,75.11 75.11,75.11s75.11,-33.799 75.11,-75.11s-33.8,-75.11 -75.11,-75.11zm0,131.442c-30.983,0 -56.332,-25.35 -56.332,-56.332s25.35,-56.332 56.332,-56.332s56.332,25.35 56.332,56.332s-25.35,56.332 -56.332,56.332z" stroke="null"/>
+  </g>
+  <g id="svg_6"/>
+  <g id="svg_7"/>
+  <g id="svg_8"/>
+  <g id="svg_9"/>
+  <g id="svg_10"/>
+  <g id="svg_11"/>
+  <g id="svg_12"/>
+  <g id="svg_13"/>
+  <g id="svg_14"/>
+  <g id="svg_15"/>
+  <g id="svg_16"/>
+  <g id="svg_17"/>
+  <g id="svg_18"/>
+  <g id="svg_19"/>
+  <g id="svg_20"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="101" id="svg_30" y="233.219513" x="127.719482" stroke-width="0" fill="#442211">3</text>
+ </g>
+</svg>

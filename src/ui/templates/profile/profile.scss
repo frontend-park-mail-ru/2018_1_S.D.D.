@@ -1,20 +1,10 @@
-.profile_wrapper {
+.profile__wrapper {
 	width: 400px;
 	margin: auto;
 	text-align: center;
 }
 
-.avatar {
-	margin: 30px auto;
-	width: 250px;
-}
-
-.avatar__img {
-	width: 100%;
-	border-radius: 200px;
-}
-
-.nickname {
+.profile__nickname {
 	display: block;
 	text-align: center;
 	font-size: 32px;
@@ -23,7 +13,7 @@
 	margin: 40px 0;
 }
 
-.info_holder {
+.profile__info-holder {
 	font-size: 22px;
 	color: #fff;
 	height: auto;
@@ -31,53 +21,53 @@
 	margin-bottom: 5px;
 }
 
-.info_holder:hover {
+.profile__info-holder:hover {
 	background: rgba(162, 169, 211, 0.5);
 }
 
-.info_holder > span {
+.profile__info-holder__row {
 	width: 190px;
 	display: inline-block;
 	padding: 15px 0px;
 }
 
-.info_key {
+.info__key {
 	margin-left: 10px;
 	text-align: left;
 }
 
-.info_value {
+.info__value {
 	font-weight: bold;
 	text-align: right;
 }
 
-.info_value_good {
+.info__value_good {
 	background: rgb(25, 128, 42);
 }
 
-.info_value_bad {
+.info__value_bad {
 	background: rgb(128, 25, 25);
 }
 
-.marker {
+.info__value_marker {
 	border-radius: 100px;
 	padding: 6px 12px;
 }
 
-.profile_close {
+.profile__close {
 	width: 100px;
 	text-align: center;
 	margin: auto;
 }
 
-.profile__link_close {
+.profile__close__link {
     color: #16174e;
 	text-decoration: none;
 	background: #7db9fd;
 	margin: 20px auto;
 }
 
-.profile__link_close:hover {
+.profile__close__link:hover {
 	text-decoration: none;
 	background: #fff;
 }

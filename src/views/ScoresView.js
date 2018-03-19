@@ -3,6 +3,7 @@
 import View from './View';
 import HeaderTemplate from '../ui/templates/header/';
 import ScoresTemplate from '../ui/templates/scores/';
+import PaginationTemplate from '../ui/templates/pagination/';
 
 /**
  * Creates instance of LoginView
@@ -26,7 +27,10 @@ class ScoresView extends View {
 	constructPage(data = {}) {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('Scores', ScoresTemplate, { block: 'main', reload: true });
+
+		const connected = ['Scores', 'ScoresPagination'];
+		this.load('Scores', ScoresTemplate, { block: 'main', reload: true, connected: connected });
+		this.load('ScoresPagination', PaginationTemplate, { block: 'main', connected: connected });
 	}
 
 	/**
@@ -36,6 +40,7 @@ class ScoresView extends View {
 		this.show('Header');
 		HeaderTemplate.showLogo();
 		this.show('Scores');
+		this.show('ScoresPagination');
 	}
 }
 

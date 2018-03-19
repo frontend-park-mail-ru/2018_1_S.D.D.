@@ -24,8 +24,8 @@ class UserStorage {
 		this.nickname = data.nickname;
 		this.email = data.email;
 		this.rating = data.rating;
-		this.gamesCount = data.countGames;
-		this.winsCount = data.countWins;
+		this.games = data.countGames;
+		this.wins = data.countWins;
 		this._loggedIn = true;
 	}
 

@@ -1,0 +1,36 @@
+.pagination {
+    width: 90%;
+    text-align: right;
+    margin: auto;
+}
+
+.pagination__btn {
+    border: 0px;
+    font-size: 18px;
+    margin-top: 10px;
+    padding: 7px 8px;
+    border-radius: 50px;
+    margin: 10px;
+    outline: none;
+	display: inline-block;
+}
+
+.pagination__btn_disabled {
+	color: #707070;
+	background: #bdbec0;
+	cursor: not-allowed;
+}
+
+.pagination__btn_active {
+	color: #2f164e;
+	background: #7db9fd;
+	cursor: pointer;
+}
+
+.pagination__btn:hover {
+    background: #fff;
+}
+
+.pages {
+	display: inline-block;
+}

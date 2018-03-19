@@ -21,7 +21,7 @@
 	font-weight: bold;
 	color: #fff;
 	text-align: center;
-	margin: 15px;
+	margin: 20px 10px;
 }
 
 .header__logo_hided {
@@ -42,6 +42,10 @@
 
 .header__link:hover {
     text-decoration: underline;
+}
+
+.auth_menu {
+    padding: 8px 0;
 }
 
 .header__list {
@@ -68,7 +72,7 @@
 .sub_btn {
     display: block;
     color: #fff;
-    padding: 10px 20px;
+    padding: 2px 10px;
     cursor: pointer;
     background: rgba(162, 169, 211, 0.2);
     border-radius: 50px;
@@ -83,8 +87,9 @@
 }
 
 .user_section__avatar {
-    height: 45px;
-    width: 45px;
+    padding: 6px;
+    height: 40px;
+    width: 40px;
     border-radius: 100px;
     float: left;
 }
@@ -93,7 +98,7 @@
     float: right;
     margin: auto;
     display: block;
-    padding: 12px 8px;
+    padding: 15px 8px;
     font-size: 18px;
     -o-transition: .0s;
     -ms-transition: .0s;
@@ -162,10 +167,35 @@
 
 @media screen and (max-width: 640px) {
     .submenu__item {
-        background: rgba(162, 169, 211, 0.7);
+        background-color:rgba(208, 212, 235, 0.6);
     }
     
     .submenu__item:hover {
-        background: rgba(162, 169, 211, 0.8);
+        background-color:rgba(208, 212, 235, 1);
+    }
+
+}
+
+@media screen and (max-width: 520px) {
+    .header__logo {
+        font-size: 30px;
+        margin: 25px 5px;
+    }
+    
+    .header__logo__smile {
+        width: 30px;
+        height: 30px;
+        position: relative;
+    }
+
+    .user_section__avatar {
+        padding: 6px;
+        height: 30px;
+        width: 30px;
+    }
+    
+    .user_section__nickname {
+        padding: 12px 8px;
+        font-size: 16px;
     }
 }

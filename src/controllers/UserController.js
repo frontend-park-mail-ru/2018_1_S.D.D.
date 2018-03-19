@@ -127,25 +127,25 @@ class UserController extends Controller {
 	/**
 	 * Submit action. Edit user settings. Validate form and submit data to server if ok.
 	 * 
-	 * @param {string[]} parameters Contains what to edit
+	 * @param {string} editParam Contains what to edit
 	 */
-	actionEdit(parameters = []) {
+	actionEdit(editParam) {
 		this.UserModel.loadUser(
 			() => {
-				const editParam = parameters[0];
-				if(!editParam) {
+				if(!editParam || editParam === '') {
 					this.go('/error/404', false);
+					return;
 				}
-
+				
 				const formTemplate = this._getTemplate(editParam);
 
 				let submitData = this.UserView.serializeForm(formTemplate);
 				if(!submitData) {
 					const data = this._getSettingsData();
-					this.UserView.constructPage(data);
+					this.UserView.constructSettings(data);
 					submitData = this.UserView.serializeForm(formTemplate);
 				}
-
+				
 				const errorCallback = errors => {
 					for(let e in errors) {
 						this.UserView.addFormError(formTemplate, e, errors[e]);
@@ -164,10 +164,10 @@ class UserController extends Controller {
 	/**
 	 * Logout action. Delete user from current session. Delete user templates.
 	 * 
-	 * @param parameters Contains flag if we need go to menu page.
+	 * @param goToMenu Contains flag if we need go to menu page.
 	 */
-	actionLogout(parameters = []) {
-		const goToMenu = parameters[0] !== 'quietly';
+	actionLogout(goToMenu) {
+		goToMenu = goToMenu !== 'quietly';
 		this.UserModel.logout(
 			() => {
 				const reconstructData = {

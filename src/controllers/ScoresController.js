@@ -32,33 +32,39 @@ class ScoresController extends Controller {
 
 	/**
 	 * Common action. Show scores table
+	 * 
+	 * @param {number} page Number of page to display (pagination)
 	 */
-	actionShow(params = []) {
-		let page = params[0] ? params[0] : 1;
-		if(page < 1) {
+	actionShow(page = 1) {
+		if(page === '' || page < 1) {
 			this.go('/error/404', false);
 		} else {
-			this.ScoresModel.getUserScores(
-				page,
-				result => {
-					const data = {
-						'Scores': {
-							data: result.users_list,
-							onClickPrev: () => {
-								if(page > 1) {
-									page--;
-									this.go(`/scores/show/${page}`);
-								}
-							},
-							onClickNext: () => {
-								page++;
-								this.go(`/scores/show/${page}`);
-							}
+			this.ScoresModel.getUserCount(
+				usersCount => {
+					this.ScoresModel.getUserScores(
+						page,
+						usersList => {
+							const data = {
+								'Scores': {
+									data: usersList
+								},
+								'ScoresPagination': {
+									usersCount: usersCount,
+									limit: this.ScoresModel.limit,
+									currentPage: page,
+									onPaginate: p => {
+										this.go(`/scores/show/${p}`);
+									}
+								},
+								'Header': this.getHeaderData()
+							};
+							this.ScoresView.constructPage(data);
+							this.ScoresView.showPage();
 						},
-						'Header': this.getHeaderData()
-					};
-					this.ScoresView.constructPage(data);
-					this.ScoresView.showPage();
+						() => {
+							this.go('/error/503', false);
+						}
+					);
 				},
 				() => {
 					this.go('/error/503', false);
@@ -66,7 +72,6 @@ class ScoresController extends Controller {
 			);
 		}
 	}
-
 	
 }
 

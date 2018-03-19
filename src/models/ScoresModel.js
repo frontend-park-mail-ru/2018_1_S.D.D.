@@ -14,6 +14,20 @@ class ScoresModel extends Model {
 	 */
 	constructor() {
 		super();
+		this._usersPerPage = 5;
+	}
+
+	getUserCount(onSuccessCallback, onErrorCallback) {
+		const API = this.ServiceManager.ApiService;
+		API.GET('user/get_users_count').then(response => {
+			if(API.responseSuccess(response)) {
+				onSuccessCallback(response.data.count_users);
+			} else {
+				onErrorCallback();
+			}
+		}).catch(() => {
+			onErrorCallback();
+		});
 	}
 	
 
@@ -23,19 +37,26 @@ class ScoresModel extends Model {
 	* @returns {Object} Object contains user scores
 	*/
 	getUserScores(page, onSuccessCallback, onErrorCallback) {
-		const limit = 5;
+		const limit = this.limit;
 		const offset = page * limit - limit;
 
 		const API = this.ServiceManager.ApiService;
-		API.GET(`user/get_users?limit=${limit}&offset=${offset}`).then(response => {
-			if(API.responseSuccess(response)) {
-				onSuccessCallback(response.data);
+		API.GET(`user/get_users?limit=${limit}&offset=${offset}`).then(responseUsers => {
+			if(API.responseSuccess(responseUsers)) {
+				responseUsers.data.users_list.userViewList.forEach((user, index) => {
+					user.place = offset + index + 1;
+				});
+				onSuccessCallback(responseUsers.data.users_list);
 			} else {
 				onErrorCallback();
 			}
 		}).catch(() => {
 			onErrorCallback();
 		});
+	}
+
+	get limit() {
+		return this._usersPerPage;
 	}
 }
 

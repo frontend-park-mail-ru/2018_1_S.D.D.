@@ -1,75 +1,54 @@
-.return-link-scores {
-    text-align: left;
-    padding: 0;
-    margin: 0 1%;
-}
-
-.pagination {
-    width: 50%;
-    text-align: center;
-    margin: auto;
-}
-
-.table__btn {
-    height: 46px;
-    border: 0px;
-    font-size: 22px;
-}
-
-.table__btn_submit {
-    margin-top: 10px;
-    width: 200px;
-    border-radius: 50px;
-    margin: 10px;
-    color: #2f164e;
-    background: #7db9fd;
-    outline: none;
-    cursor: pointer;
-}
-
-.table__btn_submit:hover {
-    background: #fff;
-}
-
 .scores__table {
     border-collapse: collapse;
-    width: 90%;
-    margin: 20px auto;
+    margin: 40px auto;
     table-layout: fixed;
+    width: 90%;
+    border-bottom: 3px solid #fff;
 }
 
 .scores__header {
-    font-weight: 700px;
+    font-weight: bold;
     color: #ffffff;
     text-align: center;
     position: center;
     width: 90%;
-    margin: auto;
+    margin: 30px auto;
 }
+
 .scores__table__th {
+    background: #fff;
     text-align: center;
-    font-weight: 700px;
-    color: #fff;
-    padding: 8px;
-    width: 20%;
-    min-width: 20%;
-    max-width: 20%;
+    font-weight: bold;
+    color: #2f164e;
     white-space: nowrap; 
     overflow: hidden;
     height: 35px;
-    border-bottom: 3px solid #fff;
+    border-bottom: 5px solid rgba(255, 255, 255, 0);;
+    padding: 8px;
+    width: 10%;
+    min-width: 50px;
 }
+
 .scores__table__td {
     text-align: center;
-    color: #ffffff;
-    padding: 8px;
-    width: 20%;
-    min-width: 20%;
-    max-width: 20%;
+    color: #fff;
     white-space: nowrap; 
     overflow: hidden;
-    height: 30px;
+    height: 40px;
     font-weight: bold;
+    padding: 8px;
+    width: 10%;
+    min-width: 50px;
+}
+
+.scores__table_big {
+    width: 30%;
+    padding: 8px 20px;
+}
+
+.scores__medal {
+    width: 35px;
+    margin: auto;
 }
 
 .rating {
@@ -88,5 +67,17 @@
 }
 
 .scores__table__tr:hover {
-    background-color:rgba(162, 169, 211, 0.5);
+    background-color:rgba(208, 212, 235, 0.5);
+}
+
+@media screen and (max-width: 750px) {
+    .scores__table_email {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .scores__table_games {
+        display: none;
+    }
 }

@@ -1,20 +1,20 @@
-.profile_wrapper
-	.nickname #{nickname}
-	.info_holder
-		span.info_key GAMES PLAYED
-		span.info_value
-			span.marker #{gamesCount}
-	.info_holder
-		span.info_key WINS COUNT
-		span.info_value  
-			span.marker #{winsCount}
-	.info_holder
-		span.info_key RATING
-		span.info_value
+.profile__wrapper
+	.profile__nickname #{nickname}
+	.profile__info-holder
+		span.profile__info-holder__row.info__key GAMES PLAYED
+		span.profile__info-holder__row.info__value
+			span.info__value_marker #{gamesCount}
+	.profile__info-holder
+		span.profile__info-holder__row.info__key WINS COUNT
+		span.profile__info-holder__row.info__value  
+			span.info__value_marker #{winsCount}
+	.profile__info-holder
+		span.profile__info-holder__row.info__key RATING
+		span.profile__info-holder__row.info__value
 			if rating > 0
-				span.info_value_good.marker #{rating}
+				span.info__value_good.info__value_marker #{rating}
 			else
-				span.info_value_bad.marker #{rating}
+				span.info__value_bad.info__value_marker #{rating}
 
-.profile_close
-	a(href=url).btn.profile__link_close Close
+.profile__close
+	a(href=url).btn.profile__close__link Close
