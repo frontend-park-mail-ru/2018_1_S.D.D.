@@ -76,6 +76,7 @@ class SignupView extends View {
 	 */
 	showPage() {
 		this.show('Header');
+		HeaderTemplate.hideLogo();
 		this.show('Logo');
 		this.show('SignupForm');
 	}

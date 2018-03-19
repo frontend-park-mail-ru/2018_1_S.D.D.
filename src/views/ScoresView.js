@@ -34,6 +34,7 @@ class ScoresView extends View {
 	 */
 	showPage() {
 		this.show('Header');
+		HeaderTemplate.showLogo();
 		this.show('Scores');
 	}
 }

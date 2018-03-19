@@ -29,7 +29,7 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Common action doesn't exists. Show 404.
+	 * Load user if logged in.
 	 */
 	actionIndex() {
 		const onCheckCallback = () => {

@@ -8,8 +8,36 @@
     padding: 0px 20px;
 }
 
+.header__container_left {
+    float: left;
+}
+
 .header__container_right {
     float: right;
+}
+
+.header__logo {
+	font-size: 40px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	margin: 15px;
+}
+
+.header__logo_hided {
+    opacity: 0;
+}
+
+.header__logo__link {
+	text-decoration: none;
+	display: block;
+	color: #fff;
+}
+
+.header__logo__smile {
+	width: 40px;
+	height: 40px;
+	position: relative;
 }
 
 .header__link:hover {

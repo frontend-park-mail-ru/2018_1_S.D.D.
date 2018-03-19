@@ -28,6 +28,7 @@ class MenuView extends View {
 
 	showPage() {
 		this.show('Header');
+		HeaderTemplate.hideLogo();
 		this.show('Logo');
 		this.show('Menu');
 	}

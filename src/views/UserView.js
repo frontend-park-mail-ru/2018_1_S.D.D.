@@ -84,6 +84,7 @@ class UserView extends View {
 		this._data = data;
 		this.load('Header', HeaderTemplate, { reload: true });
 		this.show('Header');
+		HeaderTemplate.showLogo();
 	}
 
 	reloadAvatar(data = {}) {
@@ -150,6 +151,7 @@ class UserView extends View {
 	 */
 	showProfile() {
 		this.show('Header');
+		HeaderTemplate.showLogo();
 		this.show('Profile');
 		this.show('ProfileAvatar');
 	}
@@ -159,6 +161,7 @@ class UserView extends View {
 	 */
 	showSettings() {
 		this.show('Header');
+		HeaderTemplate.showLogo();
 		this.show('Avatar');
 		this.show('UploadAvatar');
 		this.show('EditNickname');
