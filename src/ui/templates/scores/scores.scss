@@ -24,9 +24,6 @@
     overflow: hidden;
     height: 35px;
     border-bottom: 5px solid rgba(255, 255, 255, 0);;
-    padding: 8px;
-    width: 10%;
-    min-width: 50px;
 }
 
 .scores__table__td {
@@ -36,14 +33,16 @@
     overflow: hidden;
     height: 40px;
     font-weight: bold;
-    padding: 8px;
-    width: 10%;
-    min-width: 50px;
 }
 
 .scores__table_big {
     width: 30%;
     padding: 8px 20px;
+}
+
+.scores__table_small {
+    width: 10%;
+    padding: 8px;
 }
 
 .scores__table_nodata {
@@ -80,10 +79,30 @@
     .scores__table_email {
         display: none;
     }
+
+    .scores__table_big {
+        width: 43%;
+    }
+
+    .scores__table_small {
+        width: 15%;
+    }
+
+    .scores__table_nodata {
+        font-size: 18px;
+    }
 }
 
 @media screen and (max-width: 500px) {
     .scores__table_games {
         display: none;
+    }
+
+    .scores__table_small {
+        width: 19%;
+    }
+
+    .scores__table {
+        font-size: 14px;
     }
 }

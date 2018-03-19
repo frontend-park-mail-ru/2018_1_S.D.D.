@@ -4,7 +4,6 @@
 }
 
 .header__container {
-    height: 80px;
     padding: 0px 20px;
 }
 
@@ -197,5 +196,20 @@
     .user_section__nickname {
         padding: 12px 8px;
         font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .header__container_left {
+        float: none;
+    }
+
+    .header__logo {
+        margin: 10px auto;
+    }
+    
+    .header__container_right {
+        float: none;
+        height: auto;
     }
 }
