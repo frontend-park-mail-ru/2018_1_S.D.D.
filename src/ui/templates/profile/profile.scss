@@ -1,5 +1,4 @@
 .profile__wrapper {
-	width: 400px;
 	margin: auto;
 	text-align: center;
 }
@@ -70,4 +69,19 @@
 .profile__close__link:hover {
 	text-decoration: none;
 	background: #fff;
+}
+
+@media screen and (max-width: 750px) {
+	.profile__nickname {
+		font-size: 26px;
+		margin: 10px auto;
+	}
+
+	.profile__info-holder__row {
+		width: 140px;
+	}
+
+    .profile__info-holder {
+		font-size: 18px;
+	}
 }
