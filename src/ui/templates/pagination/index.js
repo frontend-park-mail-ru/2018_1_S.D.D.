@@ -15,13 +15,13 @@ export default {
 	},
 
 	checkToDisable: function(page, pagesCount, btnPrev, btnNext) {
-		if(page === 1) {
+		if(page == 1) {
 			this.makeDisabled(btnPrev);
 		} else {
 			this.makeAktive(btnPrev);
 		}
 
-		if(page === pagesCount) {
+		if(page >= pagesCount) {
 			this.makeDisabled(btnNext);
 		} else {
 			this.makeAktive(btnNext);
@@ -42,13 +42,7 @@ export default {
 			pagesCount++;
 		}
 
-		if(page == 1) {
-			this.makeDisabled(btnPrev);
-		}
-
-		if(page == pagesCount) {
-			this.makeDisabled(btnNext);
-		}
+		this.checkToDisable(page, pagesCount, btnPrev, btnNext);
 
 		btnPrev.addEventListener('click', event => {
 			event.preventDefault();
