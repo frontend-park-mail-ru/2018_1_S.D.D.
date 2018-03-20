@@ -1,0 +1,77 @@
+.about-us {
+	margin: 20px auto;
+	text-align: center;
+}
+
+.about-us__header {
+	color: #fff;
+	font-weight: bold;
+	font-size: 22px;
+}
+
+.about-us__members {
+	margin: 20px auto;
+}
+
+.team-member {
+	display: inline-block;
+	margin: 50px 50px 0 50px;
+}
+
+.team-member__img {
+	width: 200px;
+	height: 200px;
+	border-radius: 500px;
+	border: 2px solid #fff;
+	border-bottom: 7px solid #fff;
+}
+
+.team-member__description {
+	color: #fff;
+}
+
+.team-member__description__name {
+	font-size: 32px;
+	margin: 20px 0 10px 0;
+}
+
+.team-member__description__work {
+	font-size: 16px;
+}
+
+.about__link {
+    color: #16174e;
+    text-decoration: none;
+}
+
+.about__link_btn {
+    background: #7db9fd;
+}
+
+.about__link_btn:hover {
+    background: #fff;
+}
+
+.contakt-link {
+	display: inline-block;
+	text-decoration: none;
+	height: 32px;
+	width: 32px;
+	margin: 20px;
+}
+
+.contakt-link:hover {
+	text-decoration: underline;
+}
+
+.contact-link__icon {
+	height: 32px;
+}
+
+@media screen and (max-width: 750px) {
+
+}
+
+@media screen and (max-width: 600px) {
+
+}

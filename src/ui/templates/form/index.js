@@ -89,6 +89,29 @@ export default {
 			});
 		});
 
+		// Display file name in type file input
+		const fileApi = (window.File && window.FileReader && window.FileList && window.Blob ) ? true : false;
+		const fileHolders = elem.querySelectorAll('.file-upload');
+		fileHolders.forEach(holder => {
+			const input = holder.querySelector('[name="file"]');
+			input.addEventListener('change', () => {
+				let fileName = '';
+				if(fileApi && input.files[0]) {
+					fileName = input.files[0].name;
+				}
+				else {
+					fileName = input.value.replace('C:\\fakepath\\', '');
+				}
+
+				if(!fileName.length ) {
+					return;
+				}
+
+				const pathContainer = holder.querySelector('.file-upload__path');
+				pathContainer.innerHTML = fileName;
+			});
+		});
+
 		// Submit form handler
 		const form = elem.querySelector('form');
 		form.addEventListener('submit', event => {

@@ -30,7 +30,7 @@ class MenuController extends Controller {
 					{ link:'/play', text:'PLAY' },
 					{ link:'/scores/show', text:'SCORES' },
 					{ link:'/rules', text:'RULES' },
-					{ link:'/about', text:'ABOUT' }
+					{ link:'/about', text:'DEVELOPERS' }
 				]
 			},
 			'Header': this.getHeaderData()

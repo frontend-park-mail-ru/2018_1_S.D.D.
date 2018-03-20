@@ -38,13 +38,13 @@ class View {
 		this._PageBlock.addViewBlock(
 			'left',
 			document.querySelector('main'),
-			['block', 'block-inline', 'block_w50p'],
+			['block', 'block-inline', 'block_w60p'],
 			['main']
 		);
 		this._PageBlock.addViewBlock(
 			'right',
 			document.querySelector('main'),
-			['block', 'block-inline', 'block_w50p'],
+			['block', 'block-inline', 'block_w40p'],
 			['main']
 		);
 	}

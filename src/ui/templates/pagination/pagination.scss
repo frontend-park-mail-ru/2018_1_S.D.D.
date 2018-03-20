@@ -34,3 +34,16 @@
 .pages {
 	display: inline-block;
 }
+
+.pagination__link {
+    color: #16174e;
+    text-decoration: none;
+}
+
+.pagination__link_btn {
+    background: #7db9fd;
+}
+
+.pagination__link_btn:hover {
+    background: #fff;
+}
