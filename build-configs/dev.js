@@ -1,9 +1,13 @@
 const webpack = require('webpack');
+const serverUrl = 'http://localhost:8080';
 
 module.exports = {
-	plugins: [
-		new webpack.DefinePlugin({
-			API_SERVER_ADDRESS: JSON.stringify('http://localhost:8080')
-		}),
-	]
+	serverUrl: serverUrl,
+	dev: {
+		plugins: [
+			new webpack.DefinePlugin({
+				API_SERVER_ADDRESS: JSON.stringify(serverUrl)
+			}),
+		]
+	},
 };

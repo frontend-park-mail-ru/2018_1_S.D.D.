@@ -1,6 +1,8 @@
 const webpack = require('webpack-merge');
+const buildConfigHeroku = require('./build-configs/heroku');
 
 module.exports = webpack([
 	require('./build-configs/common'),
-	require('./build-configs/heroku')
+	buildConfigHeroku.dev,
+	require('./build-configs/render')(buildConfigHeroku.serverUrl)
 ]);

@@ -1,9 +1,13 @@
 const webpack = require('webpack');
+const serverUrl = 'https://color-it-back.herokuapp.com';
 
 module.exports = {
-	plugins: [
-		new webpack.DefinePlugin({
-			API_SERVER_ADDRESS: JSON.stringify('https://color-it-back.herokuapp.com')
-		}),
-	]
+	serverUrl: serverUrl,
+	dev: {
+		plugins: [
+			new webpack.DefinePlugin({
+				API_SERVER_ADDRESS: JSON.stringify(serverUrl)
+			}),
+		]
+	},
 };
