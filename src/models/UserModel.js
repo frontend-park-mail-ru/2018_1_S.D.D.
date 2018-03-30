@@ -17,6 +17,39 @@ class UserModel extends Model {
 	}
 
 	/**
+	 * Reset user in local storage.
+	 */
+	resetUser() {
+		const UserStorage = this.ServiceManager.UserStorage;
+
+		UserStorage.setData('loggedin', false);
+		UserStorage.setData('avatar', '');
+		UserStorage.setData('nickname', '');
+		UserStorage.setData('email', '');
+		UserStorage.setData('rating', '');
+		UserStorage.setData('countGames', '');
+		UserStorage.setData('countWins', '');
+	}
+
+	/**
+	 * Fill local storage with user data.
+	 * 
+	 * @param {Object} response Server response.
+	 */
+	fillUser(response) {
+		const UserStorage = this.ServiceManager.UserStorage;
+		const user = response.data.current_user;
+
+		UserStorage.setData('avatar', user.avatar);
+		UserStorage.setData('nickname', user.nickname);
+		UserStorage.setData('email', user.email);
+		UserStorage.setData('rating', user.rating);
+		UserStorage.setData('countGames', user.countGames);
+		UserStorage.setData('countWins', user.countWins);
+		UserStorage.setData('loggedin', true);
+	}
+
+	/**
 	 * Sign up user. If success - login user.
 	 * 
 	 * @param {Object} formData Sign up data.
@@ -28,7 +61,7 @@ class UserModel extends Model {
 
 		API.POST('user/signup', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
+				if (API.responseSuccess(response)) {
 					const loginData = {
 						nickname: formData.nickname,
 						password: formData.password
@@ -47,49 +80,56 @@ class UserModel extends Model {
 	 * Login user.
 	 * 
 	 * @param {Object} formData Login and password.
-	 * @param {Function} onSuccessCallback What we do after login.
-	 * @param {Function} onErrorCallback What we do if request returned error.
 	 */
-	login(formData, onSuccessCallback, onErrorCallback) {
+	login(formData) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 
 		API.POST('user/signin', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					this.loadUser(onSuccessCallback, onErrorCallback, onErrorCallback);
+				if (API.responseSuccess(response)) {
+					this.loadUser(false);
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('loginerror', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('loginerror', {'general': error});
 			});
 	}
 
 	/**
 	 * Get user info from server if user logged in.
 	 * 
-	 * @param {Function} onLoginCallback What we do if user filled.
-	 * @param {Function} onGuestCalback What we do if user is not logged in.
-	 * @param {Function} onErrorCallback What we do if request returned error.
+	 * @param {boolean} useStorageFirst Use local storage or connect to server.
 	 */
-	loadUser(onLoginCallback = () => {}, onGuestCalback = () => {}, onErrorCallback = () => {}) {
+	loadUser(useStorageFirst = true) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 		const UserStorage = this.ServiceManager.UserStorage;
+		const loggedin = UserStorage.getBooleanData('loggedin');
 
-		API.GET('user/info')
-			.then(response => {
-				if(API.responseSuccess(response)) {
-					UserStorage.fill(response.data.current_user);
-					onLoginCallback();
-				} else {
-					UserStorage.reset();
-					onGuestCalback(response.errors);
-				}
-			})
-			.catch(error => {
-				onErrorCallback({'general': error});
-			});
+		if (loggedin === null || !useStorageFirst) {
+			API.GET('user/info')
+				.then(response => {
+					if (API.responseSuccess(response)) {
+						this.fillUser(response);
+						EventBus.emit('login');
+					} else {
+						this.resetUser();
+						EventBus.emit('logout');
+					}
+				})
+				.catch(() => {
+					EventBus.emit('error:noresponse');
+				});
+		} else {
+			if (loggedin) {
+				EventBus.emit('login');
+			} else {
+				EventBus.emit('logout');
+			}
+		}
 	}
 
 	/**
@@ -105,7 +145,7 @@ class UserModel extends Model {
 
 		API.POST('user/update_avatar', formData, false)
 			.then(response => {
-				if(API.responseSuccess(response)) {
+				if (API.responseSuccess(response)) {
 					UserStorage.avatar = response.data.avatar;
 					onSuccessCallback();
 				} else {
@@ -130,7 +170,7 @@ class UserModel extends Model {
 
 		API.POST('user/update_nickname', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
+				if (API.responseSuccess(response)) {
 					UserStorage.nickname = formData.nickname;
 					onSuccessCallback();
 				} else {
@@ -155,7 +195,7 @@ class UserModel extends Model {
 		
 		API.POST('user/update_email', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
+				if (API.responseSuccess(response)) {
 					UserStorage.email = formData.email;
 					onSuccessCallback();
 				} else {
@@ -179,7 +219,7 @@ class UserModel extends Model {
 
 		API.POST('user/update_password', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
+				if (API.responseSuccess(response)) {
 					onSuccessCallback();
 				} else {
 					onErrorCallback(response.errors);
@@ -192,25 +232,23 @@ class UserModel extends Model {
 
 	/**
 	 * Logout user.
-	 * 
-	 * @param {Function} onSuccessCallback What to do when user is logged out.
-	 * @param {Function} onErrorCallback What to do if we got error.
 	 */
-	logout(onSuccessCallback, onErrorCallback) {
+	logout() {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 		const UserStorage = this.ServiceManager.UserStorage;
 
-		if(UserStorage.isLogged()) {
+		if (UserStorage.getData('loggedin')) {
 			API.POST('user/signout')
 				.then(() => {
-					UserStorage.reset();
-					onSuccessCallback();
+					this.resetUser();
+					EventBus.emit('logout');
 				})
 				.catch(() => {
-					onErrorCallback();
+					EventBus.emit('error:noresponse');
 				});
 		} else {
-			onSuccessCallback();
+			EventBus.emit('logout');
 		}
 	}
 

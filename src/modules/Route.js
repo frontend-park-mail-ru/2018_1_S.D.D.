@@ -29,7 +29,7 @@ class Route {
 			this.instance = new this.controller();
 		}
 
-		if(this.instance.action(action.toLowerCase(), params)) {
+		if (this.instance.action(action.toLowerCase(), params)) {
 			return true;
 		}
 		return false;

@@ -28,7 +28,7 @@ class UserView extends View {
 	 */
 	serializeForm(formTemplate) {
 		const form = this.load(formTemplate);
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.serialize(form);
@@ -41,7 +41,7 @@ class UserView extends View {
 	 */
 	serializeAvatar() {
 		const form = this.load('UploadAvatar');
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.serializeMultipart(form);
@@ -57,7 +57,7 @@ class UserView extends View {
 	 */
 	addFormError(formTemplate, input, message) {
 		const form = this.load(formTemplate);
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.addError(input, message, form);
@@ -87,6 +87,11 @@ class UserView extends View {
 		HeaderTemplate.showLogo();
 	}
 
+	/**
+	 * Reloading avatars after loading new profile picture.
+	 * 
+	 * @param {Object} data Data for template rendering
+	 */
 	reloadAvatar(data = {}) {
 		this._data = data;
 		this.reloadHeader(data);
@@ -130,7 +135,19 @@ class UserView extends View {
 	}
 
 	/**
-	 * Reload and delete all required templates after logout.
+	 * Reload header and delete forms after login.
+	 * 
+	 * @param {Object} data Data for template rendering.
+	 */
+	constructLogin(data = {}) {
+		this._data = data;
+		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
+		this.remove('SignupForm');
+		this.remove('LoginForm');
+	}
+
+	/**
+	 * Reload header and delete all required templates after logout.
 	 * 
 	 * @param {Object} data Data for template rendering.
 	 */

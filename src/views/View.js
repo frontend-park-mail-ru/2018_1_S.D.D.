@@ -58,7 +58,7 @@ class View {
 		const links = html.querySelectorAll('a');
 		[].forEach.call(links, link => {
 			const appendInHistory = !(link.getAttribute('nohistory') === 'true');
-			if(!link.getAttribute('target')) {
+			if (!link.getAttribute('target')) {
 				link.addEventListener('click', event => {
 					event.preventDefault();
 					const route = link.getAttribute('href');
@@ -84,7 +84,7 @@ class View {
 		let T = this._TemplateHolder.template(templateName);
 		const renderData = this._data[templateName];
 
-		if(!T || T.reload || properties.reload) {
+		if (!T || T.reload || properties.reload) {
 			if (!templateObject) {
 				return false;
 			}
@@ -96,7 +96,7 @@ class View {
 			const doReload = T;
 
 			let block = null;
-			if(doReload) {
+			if (doReload) {
 				this._TemplateHolder.update(templateName, html, properties);
 				block = T.block;
 			} else {
@@ -106,10 +106,10 @@ class View {
 
 			T = this._TemplateHolder.template(templateName);
 
-			if(block && this._PageBlock.block(block)) {
+			if (block && this._PageBlock.block(block)) {
 				this._PageBlock.addToBlock(templateName, !doReload);
 			} else {
-				if(T.appendFirst) {
+				if (T.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);
 				} else {
 					this._body.appendChild(html);
@@ -126,7 +126,7 @@ class View {
 	 */
 	show(templateName) {
 		const T = this._TemplateHolder.template(templateName);
-		if(T && !this._PageBlock.changeTemplate(templateName)) {
+		if (T && !this._PageBlock.changeTemplate(templateName)) {
 			T.html.hidden = false;
 		}
 	}
@@ -138,7 +138,7 @@ class View {
 	 */
 	hide(templateName) {
 		const T = this._TemplateHolder.template(templateName);
-		if(T) {
+		if (T) {
 			T.html.hidden = true;
 		}
 	}

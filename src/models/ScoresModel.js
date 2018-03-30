@@ -20,7 +20,7 @@ class ScoresModel extends Model {
 	getUserCount(onSuccessCallback, onErrorCallback) {
 		const API = this.ServiceManager.ApiService;
 		API.GET('user/get_users_count').then(response => {
-			if(API.responseSuccess(response)) {
+			if (API.responseSuccess(response)) {
 				onSuccessCallback(response.data.count_users);
 			} else {
 				onErrorCallback();
@@ -42,7 +42,7 @@ class ScoresModel extends Model {
 
 		const API = this.ServiceManager.ApiService;
 		API.GET(`user/get_users?limit=${limit}&offset=${offset}`).then(responseUsers => {
-			if(API.responseSuccess(responseUsers)) {
+			if (API.responseSuccess(responseUsers)) {
 				responseUsers.data.users_list.userViewList.forEach((user, index) => {
 					user.place = offset + index + 1;
 				});

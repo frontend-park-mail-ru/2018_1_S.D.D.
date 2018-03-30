@@ -56,7 +56,7 @@ class SignupController extends Controller {
 				};
 
 				let submitData = this.SignupView.serializeForm();
-				if(!submitData) {
+				if (!submitData) {
 					this.SignupView.constructPage(data);
 					submitData = this.SignupView.serializeForm();
 				}
@@ -71,7 +71,7 @@ class SignupController extends Controller {
 						this.go('/');
 					},
 					errors => {
-						for(let e in errors) {
+						for (let e in errors) {
 							this.SignupView.addFormError(e, errors[e]);
 						}
 						this.go('/signup');

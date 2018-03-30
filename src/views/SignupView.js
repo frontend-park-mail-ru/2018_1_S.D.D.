@@ -26,7 +26,7 @@ class SignupView extends View {
 	 */
 	serializeForm() {
 		const form = this.load('SignupForm');
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.serialize(form);
@@ -41,7 +41,7 @@ class SignupView extends View {
 	 */
 	addFormError(input, message) {
 		const form = this.load('SignupForm');
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.addError(input, message, form);

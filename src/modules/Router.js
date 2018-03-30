@@ -100,7 +100,11 @@ class Router {
 	 * @param {string} url Url path.
 	 */
 	getAction(url) {
-		return url.split('/')[2];
+		let action = url.split('/')[2];
+		if (!action) {
+			action = 'index';
+		}
+		return action;
 	}
 
 	/**
@@ -141,7 +145,7 @@ class Router {
 
 		const params = this.getParams(newUrlPath);
 
-		if(!this.currentRoute.load(action, params)) {
+		if (!this.currentRoute.load(action, params)) {
 			route = this.notFound();
 			this.currentRoute = route;
 			this.currentRoute.load('404');

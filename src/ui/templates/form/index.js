@@ -49,7 +49,7 @@ export default {
 		// If it's input error - looking for input to color it
 		if (input !== 'general') {
 			const inputElement = html.querySelector(`[name="${input}"]`);
-			if(!inputElement) {
+			if (!inputElement) {
 				return false;
 			}
 			inputElement.classList.add('input-error');
@@ -96,14 +96,14 @@ export default {
 			const input = holder.querySelector('[name="file"]');
 			input.addEventListener('change', () => {
 				let fileName = '';
-				if(fileApi && input.files[0]) {
+				if (fileApi && input.files[0]) {
 					fileName = input.files[0].name;
 				}
 				else {
 					fileName = input.value.replace('C:\\fakepath\\', '');
 				}
 
-				if(!fileName.length ) {
+				if (!fileName.length ) {
 					return;
 				}
 
@@ -128,25 +128,25 @@ export default {
 			let validated = true;
 			params.formInputs.forEach(input => {
 				const fields = input.validateFields;
-				if(fields) {
+				if (fields) {
 					const fieldsValues = [];
 					fields.forEach(field => {
 						fieldsValues.push(form.querySelector(`[name="${field}"]`).value);
 					});
 					const validationError = input.validateMethod(...fieldsValues);
-					if(validationError) {
+					if (validationError) {
 						validated = false;
 						this.addError(input.name, validationError, form);
 					}
 				}
 			});
 			
-			if(!validated) {
+			if (!validated) {
 				return;
 			}
 
 			// Submit form
-			if(params.onSubmit) {
+			if (params.onSubmit) {
 				params.onSubmit();
 			} else {
 				form.submit();

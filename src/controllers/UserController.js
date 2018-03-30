@@ -29,30 +29,66 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Load user if logged in.
+	 * Set login/logout callbacks and load user if logged in.
 	 */
 	actionIndex() {
-		const onCheckCallback = () => {
-			const Router = this.ServiceManager.Router;
-			const currentUrl = Router.getCurrentUrlPath();
-			const currentControler = Router.getController(currentUrl);
+		const UserStorage = this.ServiceManager.UserStorage;
+		const EventBus = this.ServiceManager.EventBus;
 
-			// If user typed in url /user - we need to redirect him to menu
-			if(currentControler === 'user') {
-				const currentAction = Router.getAction(currentUrl);
-				if(!currentAction || currentAction === 'index' || currentAction === '') {
-					Router.re('/');
-					return;
+		if (!EventBus.eventExists('login') && !EventBus.eventExists('logout')) {
+			EventBus.subscribe('login', this.onLoginAction, this);
+			EventBus.subscribe('logout', this.onLogoutAction, this);
+
+			UserStorage.onChange('loggedin', () => {
+				const EventBus = this.ServiceManager.EventBus;		
+				const loggedin = this.ServiceManager.UserStorage.getBooleanData('loggedin');
+				if (loggedin) {
+					EventBus.emit('login');
+				} else {
+					EventBus.emit('logout');
 				}
-			}
-			Router.loadPage();
-		};
+			}, this);
+		}
+		this.UserModel.loadUser();
+	}
 
-		this.UserModel.loadUser(
-			onCheckCallback,
-			onCheckCallback,
-			() => this.go('/error/503', false)
-		);
+	onLoginAction() {
+		const Router = this.ServiceManager.Router;
+		const currentUrl = Router.getCurrentUrlPath();
+		const currentControler = Router.getController(currentUrl);
+		const currentAction = Router.getAction(currentUrl);
+
+		const data = {
+			'Header': this.getHeaderData(),
+		};
+		this.UserView.constructLogin(data);
+
+		if (
+			currentControler === 'login' || 
+			currentControler === 'signup' ||
+			(currentControler === 'user' && currentAction === 'index')
+		) {
+			Router.re('/');
+		} else {
+			Router.loadPage();
+		}
+	}
+
+	onLogoutAction() {
+		const Router = this.ServiceManager.Router;
+		const currentUrl = Router.getCurrentUrlPath();
+		const currentControler = Router.getController(currentUrl);
+
+		const data = {
+			'Header': this.getHeaderData(),
+		};
+		this.UserView.constructLogout(data);
+
+		if (currentControler === 'user') {
+			Router.re('/');
+		} else {
+			Router.loadPage();
+		}
 	}
 
 	/**
@@ -96,7 +132,7 @@ class UserController extends Controller {
 		this.UserModel.loadUser(
 			() => {
 				let submitData = this.UserView.serializeAvatar();
-				if(!submitData) {
+				if (!submitData) {
 					const data = this._getSettingsData();
 					this.UserView.constructPage(data);
 					submitData = this.UserView.serializeAvatar();
@@ -113,7 +149,7 @@ class UserController extends Controller {
 						this.UserView.reloadAvatar(data);
 					},
 					errors => {
-						for(let e in errors) {
+						for (let e in errors) {
 							this.UserView.addFormError('UploadAvatar', e, errors[e]);
 						}
 					}
@@ -132,7 +168,7 @@ class UserController extends Controller {
 	actionEdit(editParam) {
 		this.UserModel.loadUser(
 			() => {
-				if(!editParam || editParam === '') {
+				if (!editParam || editParam === '') {
 					this.go('/error/404', false);
 					return;
 				}
@@ -140,14 +176,14 @@ class UserController extends Controller {
 				const formTemplate = this._getTemplate(editParam);
 
 				let submitData = this.UserView.serializeForm(formTemplate);
-				if(!submitData) {
+				if (!submitData) {
 					const data = this._getSettingsData();
 					this.UserView.constructSettings(data);
 					submitData = this.UserView.serializeForm(formTemplate);
 				}
 				
 				const errorCallback = errors => {
-					for(let e in errors) {
+					for (let e in errors) {
 						this.UserView.addFormError(formTemplate, e, errors[e]);
 					}
 					this.go('/user/settings');
@@ -174,7 +210,7 @@ class UserController extends Controller {
 					'Header': this.getHeaderData()
 				};
 				this.UserView.constructLogout(reconstructData);
-				if(goToMenu) {
+				if (goToMenu) {
 					this.go('/');
 				}
 			},
@@ -190,7 +226,7 @@ class UserController extends Controller {
 	 * @param {Function} onErrorCallback What to do if there will be errors in request.
 	 */
 	_editUserData(editParam, submitData, onErrorCallback) {
-		switch(editParam) {
+		switch (editParam) {
 		case 'nickname':
 			this.UserModel.editNickname(
 				submitData,
@@ -239,7 +275,7 @@ class UserController extends Controller {
 	 * @returns {string} Form template name.
 	 */
 	_getTemplate(param) {
-		switch(param) {
+		switch (param) {
 		case 'nickname':
 			return 'EditNickname';
 		case 'email':
