@@ -14,6 +14,7 @@ class UserController extends Controller {
 		this.UserModel = new UserModel();
 		this.UserView = new UserView();
 		this.addActions();
+		this.reloadHeaderOnChange();
 	}
 
 	/**
@@ -29,29 +30,56 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Defines header reload actions after users data changes.
+	 */
+	reloadHeaderOnChange() {
+		const EventBus = this.ServiceManager.EventBus;
+		const UserStorage = this.ServiceManager.UserStorage;
+		
+		const reloadHeader = () => {
+			const data = {
+				'Header': this.getHeaderData()
+			};
+			this.UserView.reloadHeader(data);
+		};
+
+		EventBus.subscribe('nicknameChanged', reloadHeader, this);
+		UserStorage.onChange('nickname', () => {
+			EventBus.emit('nicknameChanged');
+		});
+
+		EventBus.subscribe('avatarUploaded', reloadHeader, this);
+		UserStorage.onChange('avatar', () => {
+			EventBus.emit('avatarUploaded');
+		});
+	}
+
+	/**
 	 * Set login/logout callbacks and load user if logged in.
 	 */
 	actionIndex() {
 		const UserStorage = this.ServiceManager.UserStorage;
 		const EventBus = this.ServiceManager.EventBus;
 
-		if (!EventBus.eventExists('login') && !EventBus.eventExists('logout')) {
-			EventBus.subscribe('login', this.onLoginAction, this);
-			EventBus.subscribe('logout', this.onLogoutAction, this);
+		EventBus.subscribe('login', this.onLoginAction, this);
+		EventBus.subscribe('logout', this.onLogoutAction, this);
 
-			UserStorage.onChange('loggedin', () => {
-				const EventBus = this.ServiceManager.EventBus;		
-				const loggedin = this.ServiceManager.UserStorage.getBooleanData('loggedin');
-				if (loggedin) {
-					EventBus.emit('login');
-				} else {
-					EventBus.emit('logout');
-				}
-			}, this);
-		}
+		UserStorage.onChange('loggedin', () => {
+			const EventBus = this.ServiceManager.EventBus;		
+			const loggedin = this.ServiceManager.UserStorage.getBooleanData('loggedin');
+			if (loggedin) {
+				EventBus.emit('login');
+			} else {
+				EventBus.emit('logout');
+			}
+		}, this);
+		
 		this.UserModel.loadUser();
 	}
 
+	/**
+	 * What to do after user logged in.
+	 */
 	onLoginAction() {
 		const Router = this.ServiceManager.Router;
 		const currentUrl = Router.getCurrentUrlPath();
@@ -74,6 +102,9 @@ class UserController extends Controller {
 		}
 	}
 
+	/**
+	 * What to do after user logged out.
+	 */
 	onLogoutAction() {
 		const Router = this.ServiceManager.Router;
 		const currentUrl = Router.getCurrentUrlPath();
@@ -95,69 +126,72 @@ class UserController extends Controller {
 	 * Show user profile.
 	 */
 	actionProfile() {
-		this.UserModel.loadUser(
-			() => {
-				const data = {
-					'Header': this.getHeaderData(),
-					'Profile': this.getProfileData(),
-					'ProfileAvatar': this.getAvatar()
-				};
-				this.UserView.constructProfile(data);
-				this.UserView.showProfile();
-			},
-			() => this.go('/error/403', false),
-			() => this.go('/error/503', false)
-		);
+		const data = {
+			'Header': this.getHeaderData(),
+			'Profile': this.getProfileData(),
+			'ProfileAvatar': this.getAvatar()
+		};
+
+		this.UserView.constructProfile(data);
+		this.UserView.showProfile();
 	}
 
 	/**
 	 * Show form with user`s settings
 	 */
 	actionSettings() {
-		this.UserModel.loadUser(
-			() => {
-				const data = this._getSettingsData();
-				this.UserView.constructSettings(data);
-				this.UserView.showSettings();
-			},
-			() => this.go('/error/403', false),
-			() => this.go('/error/503', false)
-		);
+		const data = this._getSettingsData();
+		const EventBus = this.ServiceManager.EventBus;
+		const UserStorage = this.ServiceManager.UserStorage;
+
+		EventBus.subscribe('nicknameChanged', () => {
+			const data = this._getSettingsData();
+			this.UserView.reloadForm('EditNickname', data);
+		}, this);
+
+		EventBus.subscribe('avatarUploaded', () => {
+			const data = this._getSettingsData();
+			this.UserView.reloadAvatar(data);
+		}, this);
+
+		EventBus.subscribe('emailChanged', () => {
+			const data = this._getSettingsData();
+			this.UserView.reloadForm('EditEmail', data);
+		}, this);
+		UserStorage.onChange('email', () => {
+			EventBus.emit('emailChanged');
+		});
+
+		EventBus.subscribe('passwordChanged', () => {
+			const data = this._getSettingsData();
+			this.UserView.reloadForm('EditPassword', data);
+		}, this);
+
+		this.UserView.constructSettings(data);
+		this.UserView.showSettings();
 	}
 
 	/**
 	 * Upload users avatar.
 	 */
 	actionUploadAvatar() {
-		this.UserModel.loadUser(
-			() => {
-				let submitData = this.UserView.serializeAvatar();
-				if (!submitData) {
-					const data = this._getSettingsData();
-					this.UserView.constructPage(data);
-					submitData = this.UserView.serializeAvatar();
+		let submitData = this.UserView.serializeAvatar();
+		if (!submitData) {
+			const data = this._getSettingsData();
+			this.UserView.constructPage(data);
+			submitData = this.UserView.serializeAvatar();
+		}
+
+		const EventBus = this.ServiceManager.EventBus;
+		if (!EventBus.eventExists('avatarUploadingError')) {
+			EventBus.subscribe('avatarUploadingError', errors => {
+				for (let e in errors) {
+					this.UserView.addFormError('UploadAvatar', e, errors[e]);
 				}
-				
-				this.UserModel.uploadAvatar(
-					submitData,
-					() => {
-						const data = {
-							'Header': this.getHeaderData(),
-							'UploadAvatar': this.getUploadAvatar(),
-							'Avatar': this.getAvatar()
-						};
-						this.UserView.reloadAvatar(data);
-					},
-					errors => {
-						for (let e in errors) {
-							this.UserView.addFormError('UploadAvatar', e, errors[e]);
-						}
-					}
-				);
-			},
-			() => this.go('/error/403', false),
-			() => this.go('/error/403', false)
-		);
+			}, this);
+		}
+
+		this.UserModel.uploadAvatar(submitData);
 	}
 
 	/**
@@ -166,125 +200,60 @@ class UserController extends Controller {
 	 * @param {string} editParam Contains what to edit
 	 */
 	actionEdit(editParam) {
-		this.UserModel.loadUser(
-			() => {
-				if (!editParam || editParam === '') {
-					this.go('/error/404', false);
-					return;
-				}
-				
-				const formTemplate = this._getTemplate(editParam);
+		if (!editParam || editParam === '') {
+			this.go('/error/404', false);
+			return;
+		}
+		
+		let formTemplate = '';
+		switch (editParam) {
+		case 'nickname':
+			formTemplate = 'EditNickname';
+			break;
+		case 'email':
+			formTemplate = 'EditEmail';
+			break;
+		case 'password':
+			formTemplate =  'EditPassword';
+			break;
+		default:
+			this.go('/error/404', false);
+			return;
+		}
 
-				let submitData = this.UserView.serializeForm(formTemplate);
-				if (!submitData) {
-					const data = this._getSettingsData();
-					this.UserView.constructSettings(data);
-					submitData = this.UserView.serializeForm(formTemplate);
-				}
-				
-				const errorCallback = errors => {
-					for (let e in errors) {
-						this.UserView.addFormError(formTemplate, e, errors[e]);
-					}
-					this.go('/user/settings');
-				};
-				
-				this._editUserData(editParam, submitData, errorCallback);
-
-			},
-			() => this.go('/error/403', false),
-			() => this.go('/error/503', false)
-		);
+		let submitData = this.UserView.serializeForm(formTemplate);
+		if (!submitData) {
+			const data = this._getSettingsData();
+			this.UserView.constructSettings(data);
+			submitData = this.UserView.serializeForm(formTemplate);
+		}
+		
+		const EventBus = this.ServiceManager.EventBus;
+		EventBus.subscribe(`edit${editParam}Error`, errors => {
+			for (let e in errors) {
+				this.UserView.addFormError(formTemplate, e, errors[e]);
+			}
+			this.go('/user/settings');
+		}, this);
+		
+		switch (editParam) {
+		case 'nickname':
+			this.UserModel.editNickname(submitData);
+			break;
+		case 'email':
+			this.UserModel.editEmail(submitData);
+			break;
+		case 'password':
+			this.UserModel.editPassword(submitData);
+			break;
+		}
 	}
 
 	/**
 	 * Logout action. Delete user from current session. Delete user templates.
-	 * 
-	 * @param goToMenu Contains flag if we need go to menu page.
 	 */
-	actionLogout(goToMenu) {
-		goToMenu = goToMenu !== 'quietly';
-		this.UserModel.logout(
-			() => {
-				const reconstructData = {
-					'Header': this.getHeaderData()
-				};
-				this.UserView.constructLogout(reconstructData);
-				if (goToMenu) {
-					this.go('/');
-				}
-			},
-			() => this.go('/error/503', false)
-		);
-	}
-
-	/**
-	 * Request to server to edit user data.
-	 * 
-	 * @param {string} editParam Parameter from url - property to edit.
-	 * @param {Object} submitData Serialized data from form.
-	 * @param {Function} onErrorCallback What to do if there will be errors in request.
-	 */
-	_editUserData(editParam, submitData, onErrorCallback) {
-		switch (editParam) {
-		case 'nickname':
-			this.UserModel.editNickname(
-				submitData,
-				() => {
-					const data = {
-						'Header': this.getHeaderData(),
-						'EditNickname': this.getEditNickname()
-					};
-					this.UserView.reloadForm('EditNickname', data);
-					this.UserView.reloadHeader(data);
-				},
-				onErrorCallback
-			);
-			break;
-		case 'email':
-			this.UserModel.editEmail(
-				submitData,
-				() => {
-					const data = {
-						'EditEmail': this.getEditEmail()
-					};
-					this.UserView.reloadForm('EditEmail', data);
-				},
-				onErrorCallback
-			);
-			break;
-		case 'password':
-			this.UserModel.editPassword(
-				submitData,
-				() => {
-					const data = {
-						'EditPassword': this.getEditPassword()
-					};
-					this.UserView.reloadForm('EditPassword', data);
-				},
-				onErrorCallback
-			);
-			break;
-		}
-	}
-
-	/**
-	 * Get form template name depends on url parameter.
-	 * 
-	 * @param {string} param Url parameter.
-	 * @returns {string} Form template name.
-	 */
-	_getTemplate(param) {
-		switch (param) {
-		case 'nickname':
-			return 'EditNickname';
-		case 'email':
-			return 'EditEmail';
-		case 'password':
-			return 'EditPassword';
-		default:
-			this.go('/error/404', false);
-		}
+	actionLogout() {
+		this.UserModel.logout();
 	}
 
 	/**
@@ -312,10 +281,10 @@ class UserController extends Controller {
 		const UserStorage = this.ServiceManager.UserStorage;
 		return {
 			url: '/',
-			nickname: UserStorage.nickname,
-			gamesCount: UserStorage.games,
-			winsCount: UserStorage.wins,
-			rating: UserStorage.rating,
+			nickname: UserStorage.getData('nickname'),
+			gamesCount: UserStorage.getData('countGames'),
+			winsCount: UserStorage.getData('countWins'),
+			rating: UserStorage.getData('rating'),
 		};
 	}
 
@@ -327,8 +296,8 @@ class UserController extends Controller {
 	getAvatar() {
 		const UserStorage = this.ServiceManager.UserStorage;
 		return {
-			defaultAvatar: UserStorage.defaultAvatar,
-			avatar: UserStorage.avatar
+			defaultAvatar: UserStorage.getData('avatar') === 'null',
+			avatar: UserStorage.getData('avatar'),
 		};
 	}
 
@@ -349,7 +318,7 @@ class UserController extends Controller {
 				{
 					type: 'text',
 					name: 'nickname',
-					placeholder: UserStorage.nickname,
+					placeholder: UserStorage.getData('nickname'),
 					validateMethod: validation.login,
 					validateFields: ['nickname']
 				}
@@ -374,7 +343,7 @@ class UserController extends Controller {
 				{
 					type: 'text',
 					name: 'email',
-					placeholder: UserStorage.email,
+					placeholder: UserStorage.getData('email'),
 					validateMethod: validation.email,
 					validateFields: ['email']
 				}

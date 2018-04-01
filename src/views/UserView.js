@@ -71,8 +71,10 @@ class UserView extends View {
 	 */
 	reloadForm(formTemplateName, data = {}) {
 		this._data = data;
-		this.load(formTemplateName, FormTemplate, { reload: true });
-		this.show(formTemplateName);
+		const visible = this.isVisible(formTemplateName);
+		if (this.load(formTemplateName, FormTemplate, { reload: true }) && visible) {
+			this.show(formTemplateName);
+		}
 	}
 
 	/**
@@ -82,9 +84,12 @@ class UserView extends View {
 	 */
 	reloadHeader(data = {}) {
 		this._data = data;
+		const doShowLogo = HeaderTemplate.logoVisibility(this.load('Header'));
 		this.load('Header', HeaderTemplate, { reload: true });
 		this.show('Header');
-		HeaderTemplate.showLogo();
+		if (doShowLogo) {
+			HeaderTemplate.showLogo();
+		}
 	}
 
 	/**
@@ -95,9 +100,11 @@ class UserView extends View {
 	reloadAvatar(data = {}) {
 		this._data = data;
 		this.reloadHeader(data);
+		const visible = this.isVisible('Avatar');
 		this.reloadForm('UploadAvatar', data);
-		this.load('Avatar', AvatarTemplate, { reload: true });
-		this.show('Avatar');
+		if (this.load('Avatar', AvatarTemplate, { reload: true }) && visible) {
+			this.show('Avatar');
+		}
 	}
 	
 	
@@ -111,8 +118,8 @@ class UserView extends View {
 		this.load('Header', HeaderTemplate, { appendFirst: true });
 
 		const connected = ['ProfileAvatar', 'Profile'];
-		this.load('ProfileAvatar', AvatarTemplate, { block: 'main', reload: true, connected: connected });
-		this.load('Profile', ProfileTemplate, { block: 'main', reload: true, connected: connected });
+		this.load('ProfileAvatar', AvatarTemplate, { block: 'main', connected: connected });
+		this.load('Profile', ProfileTemplate, { block: 'main', connected: connected });
 	}
 
 	/**

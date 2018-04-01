@@ -60,18 +60,6 @@ class LoginView extends View {
 	}
 
 	/**
-	 * Reload and delete all required templates after login.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
-	reconstructPage(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
-		this.remove('SignupForm');
-		this.remove('LoginForm');
-	}
-
-	/**
 	 * Display reuired templates.
 	 */
 	showPage() {

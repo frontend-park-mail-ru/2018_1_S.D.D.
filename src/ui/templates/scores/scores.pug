@@ -12,11 +12,11 @@ table.scores__table
 				tr.scores__table__tr
 					td.scores__table__td.scores__table_small 
 						if user.place == 1
-							img(src='/' + require('../../images/gold.svg')).scores__medal
+							img(src=require('../../images/gold.svg')).scores__medal
 						else if user.place == 2
-							img(src='/' + require('../../images/silver.svg')).scores__medal
+							img(src=require('../../images/silver.svg')).scores__medal
 						else if user.place == 3
-							img(src='/' + require('../../images/bronze.svg')).scores__medal
+							img(src=require('../../images/bronze.svg')).scores__medal
 						else
 							| #{user.place}
 					td.scores__table__td.scores__table_big.scores__table_nickname #{user.nickname}

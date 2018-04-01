@@ -119,6 +119,21 @@ class View {
 		return T.html;
 	}
 
+	/**
+	 * Check if template is visible or not.
+	 * 
+	 * @param {string} templateName Name of template to check on visibility.
+	 * @returns {boolean} True if visible, false in other case.
+	 */
+	isVisible(templateName) {
+		const T = this._TemplateHolder.template(templateName);
+		if (T) {
+			return !T.html.hidden;
+		} else {
+			return false;
+		}
+	}
+
 	/** 
 	 * Display element.
 	 * 

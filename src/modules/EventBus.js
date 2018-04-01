@@ -21,6 +21,10 @@ class EventBus {
 	 * @param {array} args Arguments to callbacks.
 	 */
 	emit(key, args = []) {
+		if (!Array.isArray(args)) {
+			args = [args];
+		}
+		
 		const events = this._eventsList[key];
 		if (events) {
 			events.forEach(e => {
@@ -35,21 +39,21 @@ class EventBus {
 	 * @param {string} key Event name.
 	 * @param {Function} callback Function to be executed on event emit.
 	 * @param {Object} context Function context.
-	 * @returns {string} Function id in subscribtion list.
 	 */
 	subscribe(key, callback, context = this) {
-		if (!this._eventsList[key]) {
+		if (!this.eventExists(key)) {
 			this._eventsList[key] = [];
 		}
-
-		const id = Math.random().toString(36);
-		this._eventsList[key].push({
-			callback: callback,
-			context: context,
-			id: id, // generate random id
+		// avoid duplicate callbacks
+		const prev = this._eventsList[key].find(event => {
+			return (event.callback.toString() === callback.toString());
 		});
-
-		return id;
+		if (!prev) {
+			this._eventsList[key].push({
+				callback: callback,
+				context: context,
+			});
+		}
 	}
 
 	/**
@@ -58,10 +62,10 @@ class EventBus {
 	 * @param {string} key Event name.
 	 * @param {string} callbackId Id of function to remove from subscribtion.
 	 */
-	unSubscribe(key, callbackId) {
-		if (this._eventsList[key]) {
-			this._eventsList[key] = this._eventsList[key].filter(callback => {
-				callback.id != callbackId;
+	unSubscribe(key, callback, context) {
+		if (this.eventExists(key)) {
+			this._eventsList[key] = this._eventsList[key].filter(event => {
+				event.callback != callback || event.context != context;
 			});
 		}
 	}

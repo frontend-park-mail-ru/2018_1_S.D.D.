@@ -53,7 +53,7 @@ class LoginController extends Controller {
 		}
 
 		const EventBus = this.ServiceManager.EventBus;
-		EventBus.subscribe('loginerror', errors => {
+		EventBus.subscribe('loginError', errors => {
 			for (let e in errors) {
 				this.LoginView.addFormError(e, errors[e]);
 			}
