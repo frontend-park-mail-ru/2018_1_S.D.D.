@@ -55,21 +55,20 @@ class EventBus {
 			this._eventsList[key] = [];
 		}
 
-		const unSubscribe = () => {
-			this.unSubscribe(key, callback, context);
-		};
-		if (doSubscribeFirst) {
-			this._eventsList[key].unshift({
-				callback: callback,
-				context: context,
-			});
-		} else {
+		if (!doSubscribeFirst || this._eventsList[key].length === 0) {
 			this._eventsList[key].push({
 				callback: callback,
 				context: context,
 			});
+		} else {
+			this._eventsList[key].unshift({
+				callback: callback,
+				context: context,
+			});
 		}
-		return unSubscribe;
+		return () => {
+			this.unSubscribe(key, callback, context);
+		};
 	}
 
 	/**

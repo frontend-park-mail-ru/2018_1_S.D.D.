@@ -17,8 +17,6 @@ class ProfileUserController extends Controller {
 
 		this.UserModel = new UserModel();
 		this.UserView = new ProfileUserView();
-
-		this.subscribeProfileActions();
 	}
 
 	/**
@@ -69,24 +67,25 @@ class ProfileUserController extends Controller {
 
 		EventBus.subscribe('logout', () => {
 			this.UserView.destroyProfile();
+			this.subscribed = false;
 		}, this);
+
+		this.subscribed = true;
 	}
 
 	/**
 	 * Show user profile.
 	 */
 	actionIndex() {
-		const EventBus = this.ServiceManager.EventBus;
+		if (!this.subscribed) {
+			this.subscribeProfileActions();
+		}
 
 		const data = {
 			'Header': this.getHeaderData(),
 			'Profile': this.getProfileData(),
 			'ProfileAvatar': this.getAvatar()
 		};
-
-		EventBus.subscribe('logout', () => {
-			this.UserView.destroyProfile();
-		}, this);
 
 		this.UserView.constructProfile(data);
 		this.UserView.showProfile();

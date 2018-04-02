@@ -18,8 +18,6 @@ class SettingsUserController extends Controller {
 
 		this.UserModel = new UserModel();
 		this.UserView = new SettingsUserView();
-		
-		this.subscribeSettingsActions();
 	}
 
 	/**
@@ -34,12 +32,18 @@ class SettingsUserController extends Controller {
 			this.UserView.reloadForm('EditNickname', data);
 		}, this);
 		EventBus.subscribe('logout', nicknameChangedOff, this, true);
+		UserStorage.onChange('nickname', () => {
+			EventBus.emit('nicknameChanged');
+		});
 
 		const avatarUploadedOff = EventBus.subscribe('avatarUploaded', () => {
 			const data = this._getSettingsData();
 			this.UserView.reloadAvatar(data);
 		}, this);
 		EventBus.subscribe('logout', avatarUploadedOff, this, true);
+		UserStorage.onChange('avatar', () => {
+			EventBus.emit('avatarChanged');
+		});
 
 		const emailChangedOff = EventBus.subscribe('emailChanged', () => {
 			const data = this._getSettingsData();
@@ -55,16 +59,26 @@ class SettingsUserController extends Controller {
 			this.UserView.reloadForm('EditPassword', data);
 		}, this);
 		EventBus.subscribe('logout', passwordChangedOff, this, true);
+		UserStorage.onChange('password', () => {
+			EventBus.emit('passwordChanged');
+		});
 
 		EventBus.subscribe('logout', () => {
 			this.UserView.destroySettings();
+			this.subscribed = false;
 		}, this);
+
+		this.subscribed = true;
 	}
 
 	/**
 	 * Show form with user`s settings
 	 */
 	actionIndex() {
+		if (!this.subscribed) {
+			this.subscribeSettingsActions();
+		}
+		
 		const data = this._getSettingsData();
 		this.UserView.constructSettings(data);
 		this.UserView.showSettings();
