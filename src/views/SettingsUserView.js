@@ -84,10 +84,10 @@ class SettingsUserView extends View {
 	 */
 	reloadAvatar(data = {}) {
 		this._data = data;
-		this.reloadHeader(data);
 		const visible = this.isVisible('Avatar');
 		this.reloadForm('UploadAvatar', data);
-		if (this.load('Avatar', AvatarTemplate, { reload: true }) && visible) {
+		if (this.load('Avatar') && visible) {
+			this.load('Avatar', AvatarTemplate, { reload: true });
 			this.show('Avatar');
 		}
 	}

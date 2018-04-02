@@ -27,7 +27,8 @@ class ProfileUserView extends View {
 	reloadAvatar(data = {}) {
 		this._data = data;
 		const visible = this.isVisible('ProfileAvatar');
-		if (this.load('ProfileAvatar', AvatarTemplate, { reload: true }) && visible) {
+		if (this.load('ProfileAvatar') && visible) {
+			this.load('ProfileAvatar', AvatarTemplate, { reload: true });
 			this.show('ProfileAvatar');
 		}
 	}
