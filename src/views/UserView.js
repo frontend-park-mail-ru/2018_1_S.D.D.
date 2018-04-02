@@ -2,9 +2,6 @@
 
 import View from './View';
 import HeaderTemplate from '../ui/templates/header/';
-import ProfileTemplate from '../ui/templates/profile/';
-import AvatarTemplate from '../ui/templates/avatar/';
-import FormTemplate from '../ui/templates/form/';
 
 /**
  * Creates instance of UserView
@@ -21,63 +18,6 @@ class UserView extends View {
 	}
 
 	/**
-	 * Serealize nickname form.
-	 * 
-	 * @param {string} formTemplate Form to serialize.
-	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
-	 */
-	serializeForm(formTemplate) {
-		const form = this.load(formTemplate);
-		if (!form) {
-			return false;
-		}
-		return FormTemplate.serialize(form);
-	}
-
-	/**
-	 * Serealize avatar form.
-	 * 
-	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
-	 */
-	serializeAvatar() {
-		const form = this.load('UploadAvatar');
-		if (!form) {
-			return false;
-		}
-		return FormTemplate.serializeMultipart(form);
-	}
-
-	/**
-	 * Add error message to input in nickname form.
-	 * 
-	 * @param {string} formTemplate Form to serialize.
-	 * @param {string} input Input name.
-	 * @param {string} message Error message.
-	 * @returns {boolean} True if ok, false if form or input not found.
-	 */
-	addFormError(formTemplate, input, message) {
-		const form = this.load(formTemplate);
-		if (!form) {
-			return false;
-		}
-		return FormTemplate.addError(input, message, form);
-	}
-
-	/**
-	 * Reloading form in DOM.
-	 * 
-	 * @param {strng} formTemplateName Name of form template to reload
-	 * @param {Object} data Data for template rendering
-	 */
-	reloadForm(formTemplateName, data = {}) {
-		this._data = data;
-		const visible = this.isVisible(formTemplateName);
-		if (this.load(formTemplateName, FormTemplate, { reload: true }) && visible) {
-			this.show(formTemplateName);
-		}
-	}
-
-	/**
 	 * Reloading header in DOM.
 	 * 
 	 * @param {Object} data Data for template rendering
@@ -85,60 +25,11 @@ class UserView extends View {
 	reloadHeader(data = {}) {
 		this._data = data;
 		const doShowLogo = HeaderTemplate.logoVisibility(this.load('Header'));
-		this.load('Header', HeaderTemplate, { reload: true });
+		this.load('Header', HeaderTemplate, { reload: true, appendFirst: true });
 		this.show('Header');
 		if (doShowLogo) {
 			HeaderTemplate.showLogo();
 		}
-	}
-
-	/**
-	 * Reloading avatars after loading new profile picture.
-	 * 
-	 * @param {Object} data Data for template rendering
-	 */
-	reloadAvatar(data = {}) {
-		this._data = data;
-		this.reloadHeader(data);
-		const visible = this.isVisible('Avatar');
-		this.reloadForm('UploadAvatar', data);
-		if (this.load('Avatar', AvatarTemplate, { reload: true }) && visible) {
-			this.show('Avatar');
-		}
-	}
-	
-	
-	/**
-	 * Load all required templates for profile page.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
-	constructProfile(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-
-		const connected = ['ProfileAvatar', 'Profile'];
-		this.load('ProfileAvatar', AvatarTemplate, { block: 'main', connected: connected });
-		this.load('Profile', ProfileTemplate, { block: 'main', connected: connected });
-	}
-
-	/**
-	 * Load all required templates for profile page.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
-	constructSettings(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-
-		const connectedLeft = ['Avatar', 'UploadAvatar'];
-		this.load('Avatar', AvatarTemplate, { block: 'left', connected: connectedLeft });
-		this.load('UploadAvatar', FormTemplate, { block: 'left', connected: connectedLeft });
-
-		const connectedRight = ['EditNickname', 'EditEmail', 'EditPassword'];
-		this.load('EditNickname', FormTemplate, { block: 'right', connected: connectedRight });
-		this.load('EditEmail', FormTemplate, { block: 'right', connected: connectedRight });
-		this.load('EditPassword', FormTemplate, { block: 'right', connected: connectedRight });
 	}
 
 	/**
@@ -151,46 +42,6 @@ class UserView extends View {
 		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
 		this.remove('SignupForm');
 		this.remove('LoginForm');
-	}
-
-	/**
-	 * Reload header and delete all required templates after logout.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
-	constructLogout(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
-		this.remove('Profile');
-		this.remove('EditNickname');
-		this.remove('EditEmail');
-		this.remove('EditPassword');
-		this.remove('Avatar');
-		this.remove('UploadAvatar');
-		this.remove('ProfileAvatar');
-	}
-
-	/**
-	 * Display required templates for profile page.
-	 */
-	showProfile() {
-		this.show('Header');
-		HeaderTemplate.showLogo();
-		this.show('Profile');
-		this.show('ProfileAvatar');
-	}
-
-	/**
-	 * Display required templates for settings page.
-	 */
-	showSettings() {
-		this.show('Header');
-		HeaderTemplate.showLogo();
-		this.show('Avatar');
-		this.show('UploadAvatar');
-		this.show('EditNickname');
-		this.show('EditEmail');
-		this.show('EditPassword');
 	}
 }
 

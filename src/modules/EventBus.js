@@ -19,6 +19,7 @@ class EventBus {
 	 * 
 	 * @param {string} key Event name.
 	 * @param {array} args Arguments to callbacks.
+	 * @returns {Promise} Promise.
 	 */
 	emit(key, args = []) {
 		if (!Array.isArray(args)) {
@@ -26,11 +27,18 @@ class EventBus {
 		}
 		
 		const events = this._eventsList[key];
-		if (events) {
-			events.forEach(e => {
-				e.callback.bind(e.context, ...args)();
-			});
+		if (events && events.length > 0) {
+			return events.reduce((prevEvent, curEvent) => {
+				return prevEvent.then(() => {
+					return new Promise(resolve => {
+						resolve(curEvent.callback.bind(curEvent.context, ...args)());
+					});	
+				});
+			}, new Promise(resolve => {
+				resolve(events[0].callback.bind(events[0].context, ...args)());
+			}));
 		}
+		return new Promise(resolve => resolve(null));
 	}
 
 	/**
@@ -39,28 +47,37 @@ class EventBus {
 	 * @param {string} key Event name.
 	 * @param {Function} callback Function to be executed on event emit.
 	 * @param {Object} context Function context.
+	 * @param {boolean} doSubscribeFirst Adding event in begin of queue or in end.
+	 * @returns {Function} Function to unsubscribe event.
 	 */
-	subscribe(key, callback, context = this) {
+	subscribe(key, callback, context = this, doSubscribeFirst = false) {
 		if (!this.eventExists(key)) {
 			this._eventsList[key] = [];
 		}
-		// avoid duplicate callbacks
-		const prev = this._eventsList[key].find(event => {
-			return (event.callback.toString() === callback.toString());
-		});
-		if (!prev) {
+
+		const unSubscribe = () => {
+			this.unSubscribe(key, callback, context);
+		};
+		if (doSubscribeFirst) {
+			this._eventsList[key].unshift({
+				callback: callback,
+				context: context,
+			});
+		} else {
 			this._eventsList[key].push({
 				callback: callback,
 				context: context,
 			});
 		}
+		return unSubscribe;
 	}
 
 	/**
 	 * Remove function from subscribtion.
 	 * 
 	 * @param {string} key Event name.
-	 * @param {string} callbackId Id of function to remove from subscribtion.
+	 * @param {Function} callback Function to remove from subscribtion.
+	 * @param {Object} context Context of function to remove from subscribtion.
 	 */
 	unSubscribe(key, callback, context) {
 		if (this.eventExists(key)) {

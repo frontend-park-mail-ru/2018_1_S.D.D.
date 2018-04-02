@@ -5,8 +5,15 @@ import './header.scss';
 
 export default {
 	logoVisibility: (template = document) => {
+		if (!template) {
+			return false;
+		}
+		
 		const header = template.querySelector('.header__logo');
-		return !header.hidden;
+		if (header) {
+			return !header.hidden;
+		}
+		return false;
 	},
 
 	hideLogo: (time = 500, template = document) => {
