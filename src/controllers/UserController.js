@@ -58,7 +58,6 @@ class UserController extends Controller {
 	 */
 	reloadHeaderOnChange() {
 		const EventBus = this.ServiceManager.EventBus;
-		const UserStorage = this.ServiceManager.UserStorage;
 		
 		const reloadHeader = () => {
 			const data = {
@@ -68,14 +67,7 @@ class UserController extends Controller {
 		};
 
 		EventBus.subscribe('nicknameChanged', reloadHeader, this);
-		UserStorage.onChange('nickname', () => {
-			EventBus.emit('nicknameChanged');
-		});
-
-		EventBus.subscribe('avatarUploaded', reloadHeader, this);
-		UserStorage.onChange('avatar', () => {
-			EventBus.emit('avatarUploaded');
-		});
+		EventBus.subscribe('avatarChanged', reloadHeader, this);
 
 		EventBus.subscribe('login', reloadHeader, this);
 		EventBus.subscribe('logout', reloadHeader, this);
@@ -91,9 +83,8 @@ class UserController extends Controller {
 		EventBus.subscribe('login', this.onLoginAction, this);
 		EventBus.subscribe('logout', this.onLogoutAction, this);
 
-		UserStorage.onChange('loggedin', () => {
-			const EventBus = this.ServiceManager.EventBus;		
-			const loggedin = this.ServiceManager.UserStorage.getBooleanData('loggedin');
+		UserStorage.onChange('loggedin', () => {	
+			const loggedin = UserStorage.getBooleanData('loggedin');
 			if (loggedin) {
 				EventBus.emit('login');
 			} else {

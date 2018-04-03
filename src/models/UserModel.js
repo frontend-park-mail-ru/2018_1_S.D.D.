@@ -142,7 +142,7 @@ class UserModel extends Model {
 			.then(response => {
 				if (API.responseSuccess(response)) {
 					UserStorage.setData('avatar', response.data.avatar);
-					EventBus.emit('avatarUploaded');
+					EventBus.emit('avatarChanged');
 				} else {
 					EventBus.emit('avatarUploadingError', response.errors);
 				}

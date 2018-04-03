@@ -1,6 +1,7 @@
 'use strict';
 
 import EventBus from './EventBus';
+import ServiceManager from './ServiceManager';
 
 /**
  * Creates instance of Storage
@@ -19,8 +20,12 @@ class Storage {
 		Storage._instance = this;
 
 		this._storage = new EventBus();
+		this._EventBus = new ServiceManager().EventBus;
 		window.addEventListener('storage', e => {
 			this._storage.emit(e.key, [e]);
+		});
+		Object.keys(localStorage).forEach(key => {
+			this.emitEventBus(key);
 		});
 	}
 
@@ -75,6 +80,9 @@ class Storage {
 	 * @param {string} value Data value in localStorage.
 	 */
 	setData(key, value) {
+		if (!this.getData(key)) {
+			this.emitEventBus(key);
+		}
 		localStorage.setItem(key, value);
 	}
 
@@ -92,6 +100,17 @@ class Storage {
 	 */
 	clear() {
 		localStorage.clear();
+	}
+
+	/**
+	 * Emit keyChanged event in EventBus.
+	 * 
+	 * @param {string} key Changed item.
+	 */
+	emitEventBus(key) {
+		this.onChange(key, () => {
+			this._EventBus.emit(`${key}Changed`);
+		});
 	}
 
 

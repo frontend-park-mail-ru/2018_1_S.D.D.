@@ -25,44 +25,33 @@ class ProfileUserController extends Controller {
 	subscribeProfileActions() {
 		const EventBus = this.ServiceManager.EventBus;
 
-		const nicknameChangedOff = EventBus.subscribe('nicknameChanged', () => {
+		const reloadProfile = () => {
 			const data = {
 				'Profile': this.getProfileData()
 			};
 			this.UserView.reloadProfile(data);
-		}, this);
-		EventBus.subscribe('logout', nicknameChangedOff, this, true);
+		};
 
-		const avatarUploadedOff = EventBus.subscribe('avatarUploaded', () => {
+		const reloadAvatar = () => {
 			const data = {
 				'ProfileAvatar': this.getAvatar()
 			};
 			this.UserView.reloadAvatar(data);
-		}, this);
-		EventBus.subscribe('logout', avatarUploadedOff, this, true);
+		};
 
-		const gamesChangedOff = EventBus.subscribe('countGamesChanged', () => {
-			const data = {
-				'Profile': this.getProfileData()
-			};
-			this.UserView.reloadProfile(data);
-		}, this);
+		const nicknameChangedOff = EventBus.subscribe('nicknameChanged', reloadProfile, this);
+		EventBus.subscribe('logout', nicknameChangedOff, this, true);
+
+		const avatarChangedOff = EventBus.subscribe('avatarChanged', reloadAvatar, this);
+		EventBus.subscribe('logout', avatarChangedOff, this, true);
+
+		const gamesChangedOff = EventBus.subscribe('countGamesChanged', reloadProfile, this);
 		EventBus.subscribe('logout', gamesChangedOff, this, true);
 
-		const winsChangedOff = EventBus.subscribe('countWinsChanged', () => {
-			const data = {
-				'Profile': this.getProfileData()
-			};
-			this.UserView.reloadProfile(data);
-		}, this);
+		const winsChangedOff = EventBus.subscribe('countWinsChanged', reloadProfile, this);
 		EventBus.subscribe('logout', winsChangedOff, this, true);
 
-		const ratingChangedOff = EventBus.subscribe('ratingChanged', () => {
-			const data = {
-				'Profile': this.getProfileData()
-			};
-			this.UserView.reloadProfile(data);
-		}, this);
+		const ratingChangedOff = EventBus.subscribe('ratingChanged', reloadProfile, this);
 		EventBus.subscribe('logout', ratingChangedOff, this, true);
 
 		EventBus.subscribe('logout', () => {

@@ -25,33 +25,23 @@ class SettingsUserController extends Controller {
 	 */
 	subscribeSettingsActions() {
 		const EventBus = this.ServiceManager.EventBus;
-		const UserStorage = this.ServiceManager.UserStorage;
 
 		const nicknameChangedOff = EventBus.subscribe('nicknameChanged', () => {
 			const data = this._getSettingsData();
 			this.UserView.reloadForm('EditNickname', data);
 		}, this);
 		EventBus.subscribe('logout', nicknameChangedOff, this, true);
-		UserStorage.onChange('nickname', () => {
-			EventBus.emit('nicknameChanged');
-		});
 
-		const avatarUploadedOff = EventBus.subscribe('avatarUploaded', () => {
+		const avatarChangedOff = EventBus.subscribe('avatarChanged', () => {
 			const data = this._getSettingsData();
 			this.UserView.reloadAvatar(data);
 		}, this);
-		EventBus.subscribe('logout', avatarUploadedOff, this, true);
-		UserStorage.onChange('avatar', () => {
-			EventBus.emit('avatarChanged');
-		});
+		EventBus.subscribe('logout', avatarChangedOff, this, true);
 
 		const emailChangedOff = EventBus.subscribe('emailChanged', () => {
 			const data = this._getSettingsData();
 			this.UserView.reloadForm('EditEmail', data);
 		}, this);
-		UserStorage.onChange('email', () => {
-			EventBus.emit('emailChanged');
-		});
 		EventBus.subscribe('logout', emailChangedOff, this, true);
 
 		const passwordChangedOff = EventBus.subscribe('passwordChanged', () => {
@@ -59,9 +49,6 @@ class SettingsUserController extends Controller {
 			this.UserView.reloadForm('EditPassword', data);
 		}, this);
 		EventBus.subscribe('logout', passwordChangedOff, this, true);
-		UserStorage.onChange('password', () => {
-			EventBus.emit('passwordChanged');
-		});
 
 		EventBus.subscribe('logout', () => {
 			this.UserView.destroySettings();
@@ -78,7 +65,7 @@ class SettingsUserController extends Controller {
 		if (!this.subscribed) {
 			this.subscribeSettingsActions();
 		}
-		
+
 		const data = this._getSettingsData();
 		this.UserView.constructSettings(data);
 		this.UserView.showSettings();
