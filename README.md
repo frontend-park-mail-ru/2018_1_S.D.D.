@@ -1,4 +1,4 @@
-# 2018_1_S.D.D.
+# 2018_1_S.D.D. [![Build Status](https://travis-ci.org/frontend-park-mail-ru/2018_1_S.D.D..svg?branch=master)](https://travis-ci.org/frontend-park-mail-ru/2018_1_S.D.D.)
 
 COLOR IT - простая, но интересная аркада :)
 

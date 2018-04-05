@@ -17,29 +17,61 @@ class UserModel extends Model {
 	}
 
 	/**
+	 * Reset user in local storage.
+	 */
+	resetUser() {
+		const UserStorage = this.ServiceManager.UserStorage;
+
+		UserStorage.setData('loggedin', false);
+		UserStorage.setData('avatar', '');
+		UserStorage.setData('nickname', '');
+		UserStorage.setData('email', '');
+		UserStorage.setData('rating', '');
+		UserStorage.setData('countGames', '');
+		UserStorage.setData('countWins', '');
+	}
+
+	/**
+	 * Fill local storage with user data.
+	 * 
+	 * @param {Object} response Server response.
+	 */
+	fillUser(response) {
+		const UserStorage = this.ServiceManager.UserStorage;
+		const user = response.data.current_user;
+
+		UserStorage.setData('avatar', user.avatar);
+		UserStorage.setData('nickname', user.nickname);
+		UserStorage.setData('email', user.email);
+		UserStorage.setData('rating', user.rating);
+		UserStorage.setData('countGames', user.countGames);
+		UserStorage.setData('countWins', user.countWins);
+		UserStorage.setData('loggedin', true);
+	}
+
+	/**
 	 * Sign up user. If success - login user.
 	 * 
 	 * @param {Object} formData Sign up data.
-	 * @param {Function} onSuccessCallback What we do after login.
-	 * @param {Function} onErrorCallback What we do if request returned error.
 	 */
-	signup(formData, onSuccessCallback, onErrorCallback) {
+	signup(formData) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 
 		API.POST('user/signup', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
+				if (API.responseSuccess(response)) {
 					const loginData = {
 						nickname: formData.nickname,
 						password: formData.password
 					};
-					this.login(loginData, onSuccessCallback, onErrorCallback);
+					this.login(loginData, true);
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('signupError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('signupError', {'general': error});
 			});
 	}
 
@@ -47,48 +79,52 @@ class UserModel extends Model {
 	 * Login user.
 	 * 
 	 * @param {Object} formData Login and password.
-	 * @param {Function} onSuccessCallback What we do after login.
-	 * @param {Function} onErrorCallback What we do if request returned error.
+	 * @param {boolean} signup Flag if current action is signup.
 	 */
-	login(formData, onSuccessCallback, onErrorCallback) {
+	login(formData, signup = false) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+
+		const errorHandler = (error) => {
+			if (signup) {
+				EventBus.emit('signupError', error);
+			} else {
+				EventBus.emit('loginError', error);
+			}
+		};
 
 		API.POST('user/signin', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					this.loadUser(onSuccessCallback, onErrorCallback, onErrorCallback);
+				if (API.responseSuccess(response)) {
+					this.loadUser();
 				} else {
-					onErrorCallback(response.errors);
+					errorHandler(response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				errorHandler({'general': error});
 			});
 	}
 
 	/**
 	 * Get user info from server if user logged in.
-	 * 
-	 * @param {Function} onLoginCallback What we do if user filled.
-	 * @param {Function} onGuestCalback What we do if user is not logged in.
-	 * @param {Function} onErrorCallback What we do if request returned error.
 	 */
-	loadUser(onLoginCallback = () => {}, onGuestCalback = () => {}, onErrorCallback = () => {}) {
+	loadUser() {
 		const API = this.ServiceManager.ApiService;
-		const UserStorage = this.ServiceManager.UserStorage;
+		const EventBus = this.ServiceManager.EventBus;
 
 		API.GET('user/info')
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					UserStorage.fill(response.data.current_user);
-					onLoginCallback();
+				if (API.responseSuccess(response)) {
+					this.fillUser(response);
+					EventBus.emit('login');
 				} else {
-					UserStorage.reset();
-					onGuestCalback(response.errors);
+					this.resetUser();
+					EventBus.emit('logout');
 				}
 			})
-			.catch(error => {
-				onErrorCallback({'general': error});
+			.catch(() => {
+				EventBus.emit('error:noresponse');
 			});
 	}
 
@@ -96,121 +132,109 @@ class UserModel extends Model {
 	 * Upload users avatar to server.
 	 * 
 	 * @param {Object} formData Avatar
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	uploadAvatar(formData, onSuccessCallback, onErrorCallback) {
+	uploadAvatar(formData) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 		const UserStorage = this.ServiceManager.UserStorage;
 
 		API.POST('user/update_avatar', formData, false)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					UserStorage.avatar = response.data.avatar;
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					UserStorage.setData('avatar', response.data.avatar);
+					EventBus.emit('avatarChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('avatarUploadingError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('avatarUploadingError', {'general': error});
 			});
 	}
 
 	/**
 	 * Edit nickname with incoming data.
-	 * 
-	 * @param {Object} formData Serialized form values
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	editNickname(formData, onSuccessCallback, onErrorCallback) {
+	editNickname(formData) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 		const UserStorage = this.ServiceManager.UserStorage;
 
 		API.POST('user/update_nickname', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					UserStorage.nickname = formData.nickname;
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					UserStorage.setData('nickname', formData.nickname);
+					EventBus.emit('nicknameChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('editnicknameError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('editnicknameError', {'general': error});
 			});
 	}
 
 	/**
 	 * Edit email with incoming data.
-	 * 
-	 * @param {Object} formData Serialized form values
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	editEmail(formData, onSuccessCallback, onErrorCallback) {
+	editEmail(formData) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 		const UserStorage = this.ServiceManager.UserStorage;
 		
 		API.POST('user/update_email', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					UserStorage.email = formData.email;
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					UserStorage.setData('email', formData.email);
+					EventBus.emit('emailChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('editemailError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('editemailError', {'general': error});
 			});
 	}
 
 	/**
 	 * Edit password with incoming data.
-	 * 
-	 * @param {Object} formData Serialized form values
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	editPassword(formData, onSuccessCallback, onErrorCallback) {
+	editPassword(formData) {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 
 		API.POST('user/update_password', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					EventBus.emit('passwordChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('editpasswordError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('editpasswordError', {'general': error});
 			});
 	}
 
 	/**
 	 * Logout user.
-	 * 
-	 * @param {Function} onSuccessCallback What to do when user is logged out.
-	 * @param {Function} onErrorCallback What to do if we got error.
 	 */
-	logout(onSuccessCallback, onErrorCallback) {
+	logout() {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 		const UserStorage = this.ServiceManager.UserStorage;
 
-		if(UserStorage.isLogged()) {
+		if (UserStorage.getData('loggedin')) {
 			API.POST('user/signout')
 				.then(() => {
-					UserStorage.reset();
-					onSuccessCallback();
+					this.resetUser();
+					EventBus.emit('logout');
 				})
 				.catch(() => {
-					onErrorCallback();
+					EventBus.emit('error:noresponse');
 				});
 		} else {
-			onSuccessCallback();
+			EventBus.emit('logout');
 		}
 	}
 

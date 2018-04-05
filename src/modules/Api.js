@@ -73,12 +73,12 @@ class Api {
 			mode: 'cors' // allow cross-domain request
 		};
 
-		if(json) {
+		if (json) {
 			requestSettings.headers['Content-Type'] = 'application/json';
 		}
 
-		if(data) {
-			if(json) {
+		if (data) {
+			if (json) {
 				data = JSON.stringify(data);
 			}
 			requestSettings.body = data;

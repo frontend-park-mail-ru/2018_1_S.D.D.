@@ -13,7 +13,7 @@ class PageParts {
 	 * Creates instance of PageParts.
 	 */
 	constructor() {
-		if(PageParts._instance) {
+		if (PageParts._instance) {
 			return PageParts._instance;
 		}
 		PageParts._instance = this;
@@ -41,7 +41,7 @@ class PageParts {
 	 * @param {string[]} hideOnShowList Id of blocks which should be hided when this block is visible.
 	 */
 	addViewBlock(id, root, classes = [], hideOnShowList = []) {
-		if(!this.block(id)) {
+		if (!this.block(id)) {
 			const element = document.createElement('div');
 			element.hidden = true;
 			element.id = id;
@@ -66,7 +66,7 @@ class PageParts {
 	 */
 	disconnectViewBlock(templateName) {
 		const templateObject = this._TemplateHolder.template(templateName);
-		if(!templateObject || !templateObject.block) {
+		if (!templateObject || !templateObject.block) {
 			return;
 		}
 
@@ -89,15 +89,15 @@ class PageParts {
 	 */
 	addToBlock(templateName, insertInDomFlag = true) {
 		const templateObject = this._TemplateHolder.template(templateName);
-		if(!templateObject || !templateObject.block) {
+		if (!templateObject || !templateObject.block) {
 			return false;
 		}
-		if(!this.block(templateObject.block)) {
+		if (!this.block(templateObject.block)) {
 			return false;
 		}
 		templateObject.html.classList.add('template-disabled');
 		templateObject.html.hidden = true;
-		if(insertInDomFlag) {
+		if (insertInDomFlag) {
 			this.block(templateObject.block).root.appendChild(templateObject.html);
 		}
 		return true;
@@ -112,7 +112,7 @@ class PageParts {
 	changeTemplate(templateName) {
 		const templateObject = this._TemplateHolder.template(templateName);
 
-		if(!templateObject || !templateObject.block) {
+		if (!templateObject || !templateObject.block) {
 			return false;
 		}
 		
@@ -124,13 +124,13 @@ class PageParts {
 
 		const currentTemplates = this.block(id).currentTemplates;
 		this.block(id).currentTemplates = currentTemplates.filter(tName => {
-			if(tName !== templateName) {
+			if (tName !== templateName) {
 				const doHide = !templateObject.connected || templateObject.connected.findIndex(connectedTemplate => {
 					return connectedTemplate === tName;
 				}) === -1;
 	
 				const T = this._TemplateHolder.template(tName);
-				if(T && doHide) {
+				if (T && doHide) {
 					T.html.classList.add('template-disabled');
 					T.html.classList.remove('template-active');
 					T.html.hidden = true;
@@ -162,14 +162,14 @@ class PageParts {
 	 * @param {string} id Id of block to activate.
 	 */
 	activateViewBlock(id) {
-		if(!this.block(id).active) {
+		if (!this.block(id).active) {
 			this.block(id).root.hidden = false;
 			this.block(id).active = true;
 		}
 		const currentTemplates = this.block(id).currentTemplates;
 		currentTemplates.forEach(tName => {
 			const T = this._TemplateHolder.load(tName);
-			if(T) {
+			if (T) {
 				T.hidden = false;
 				// if there is some CSS transition on .template-activate block
 				// we need to set timeout after disable visibility hidden
@@ -188,7 +188,7 @@ class PageParts {
 	 * @param {string} id Id of block to disable.
 	 */
 	disableViewBlock(id) {
-		if(this.block(id).active) {
+		if (this.block(id).active) {
 			const loadedTemplates = this.block(id).root.childNodes;
 			[].forEach.call(loadedTemplates, template => {
 				template.hidden = true;

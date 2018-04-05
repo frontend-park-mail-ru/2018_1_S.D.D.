@@ -4,6 +4,18 @@ import template from './header.pug';
 import './header.scss';
 
 export default {
+	logoVisibility: (template = document) => {
+		if (!template) {
+			return false;
+		}
+		
+		const header = template.querySelector('.header__logo');
+		if (header) {
+			return !header.hidden;
+		}
+		return false;
+	},
+
 	hideLogo: (time = 500, template = document) => {
 		const header = template.querySelector('.header__logo');
 		header.classList.add('header__logo_hided');

@@ -36,7 +36,7 @@ class ScoresController extends Controller {
 	 * @param {number} page Number of page to display (pagination)
 	 */
 	actionShow(page = 1) {
-		if(page === '' || page < 1) {
+		if (page === '' || page < 1) {
 			this.go('/error/404', false);
 		} else {
 			this.ScoresModel.getUserCount(

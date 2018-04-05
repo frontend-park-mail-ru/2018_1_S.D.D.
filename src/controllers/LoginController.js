@@ -28,69 +28,39 @@ class LoginController extends Controller {
 	 * Common action. Show login form.
 	 */
 	actionIndex() {
-		this.UserModel.loadUser(
-			() => {
-				this._loginCallback();
-			},
-			() => {
-				const data = {
-					'LoginForm': this.getLoginForm(),
-					'Header': this.getHeaderData()
-				};
-				
-				this.LoginView.constructPage(data);
-				this.LoginView.showPage();
-			}
-		);
+		const data = {
+			'LoginForm': this.getLoginForm(),
+			'Header': this.getHeaderData()
+		};
+		
+		this.LoginView.constructPage(data);
+		this.LoginView.showPage();
 	}
 
 	/**
 	 * Submit action. Validate form and submit data to server if ok.
 	 */
 	actionSubmit() {
-		this.UserModel.loadUser(
-			this._loginCallback,
-			() => {
-				const data = {
-					'LoginForm': this.getLoginForm(),
-					'Header': this.getHeaderData()
-				};
-				
-				let submitData = this.LoginView.serializeForm();
-				if(!submitData) {
-					this.LoginView.constructPage(data);
-					submitData = this.LoginView.serializeForm();
-				}
-
-				this.UserModel.login(
-					submitData,
-					() => {
-						const reconstructData = {
-							'Header': this.getHeaderData()
-						};
-						this.LoginView.reconstructPage(reconstructData);
-						this.go('/');
-					},
-					errors => {
-						for(let e in errors) {
-							this.LoginView.addFormError(e, errors[e]);
-						}
-						this.go('/login');
-					}
-				);
-			}
-		);
-	}
-
-	/**
-	 * What to do is user already logged in.
-	 */
-	_loginCallback() {
 		const data = {
+			'LoginForm': this.getLoginForm(),
 			'Header': this.getHeaderData()
 		};
-		this.LoginView.reconstructPage(data);
-		this.go('/');
+		
+		let submitData = this.LoginView.serializeForm();
+		if (!submitData) {
+			this.LoginView.constructPage(data);
+			submitData = this.LoginView.serializeForm();
+		}
+
+		const EventBus = this.ServiceManager.EventBus;
+		EventBus.subscribe('loginError', errors => {
+			for (let e in errors) {
+				this.LoginView.addFormError(e, errors[e]);
+			}
+			this.go('/login');
+		}, this);
+
+		this.UserModel.login(submitData);	
 	}
 
 	/**

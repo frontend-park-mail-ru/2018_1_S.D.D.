@@ -1,3 +1,6 @@
 #Dependency
 node_modules/
 public/
+
+#ide
+.vscode/

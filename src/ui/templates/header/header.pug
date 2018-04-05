@@ -1,11 +1,11 @@
 header.header
 	.header__container.header__container_left
-		.header__logo
+		.header__logo(hidden=true)
 			a(href='/').header__logo__link
 				| C
-				img(src='/' + require('../../images/smile.svg')).header__logo__smile
+				img(src=require('../../images/smile.svg')).header__logo__smile
 				| L
-				img(src='/' + require('../../images/smile_winked.svg')).header__logo__smile
+				img(src=require('../../images/smile_winked.svg')).header__logo__smile
 				| R&nbsp;&nbsp;IT
 	.header__container.header__container_right
 		if loggedIn
@@ -13,7 +13,7 @@ header.header
 				li.list__item.list__item_hor
 					.sub_btn
 						if defaultAvatar
-							img(src='/' + require('../../images/avatars/1.svg')).user_section__avatar
+							img(src=require('../../images/avatars/1.svg')).user_section__avatar
 						else
 							img(src=avatar).user_section__avatar
 						span.user_section__nickname #{nickname}

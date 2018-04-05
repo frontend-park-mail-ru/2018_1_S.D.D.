@@ -26,7 +26,7 @@ class SignupView extends View {
 	 */
 	serializeForm() {
 		const form = this.load('SignupForm');
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.serialize(form);
@@ -41,7 +41,7 @@ class SignupView extends View {
 	 */
 	addFormError(input, message) {
 		const form = this.load('SignupForm');
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.addError(input, message, form);
@@ -57,18 +57,6 @@ class SignupView extends View {
 		this.load('Header', HeaderTemplate, { appendFirst: true });
 		this.load('Logo', LogoTemplate, { block: 'left' });
 		this.load('SignupForm', FormTemplate, { block: 'right' });
-	}
-
-	/**
-	 * Reload and delete all required templates after login.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
-	reconstructPage(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
-		this.remove('SignupForm');
-		this.remove('LoginForm');
 	}
 
 	/**

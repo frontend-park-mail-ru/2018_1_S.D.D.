@@ -28,68 +28,39 @@ class SignupController extends Controller {
 	 * Common action. Show signup form.
 	 */
 	actionIndex() {
-		this.UserModel.loadUser(
-			() => {
-				this._loginCallback();
-			},
-			() => {
-				const data = {
-					'SignupForm': this.getSignupForm(),
-					'Header': this.getHeaderData()
-				};
-				this.SignupView.constructPage(data);
-				this.SignupView.showPage();
-			}
-		);
+		const data = {
+			'SignupForm': this.getSignupForm(),
+			'Header': this.getHeaderData()
+		};
+
+		this.SignupView.constructPage(data);
+		this.SignupView.showPage();
 	}
 
 	/**
 	 * Submit action. Validate form and submit data to server if ok.
 	 */
 	actionSubmit() {
-		this.UserModel.loadUser(
-			this._loginCallback,
-			() => {
-				const data = {
-					'SignupForm': this.getSignupForm(),
-					'Header': this.getHeaderData()
-				};
-
-				let submitData = this.SignupView.serializeForm();
-				if(!submitData) {
-					this.SignupView.constructPage(data);
-					submitData = this.SignupView.serializeForm();
-				}
-
-				this.UserModel.signup(
-					submitData,
-					() => {
-						const reconstructData = {
-							'Header': this.getHeaderData()
-						};
-						this.SignupView.reconstructPage(reconstructData);
-						this.go('/');
-					},
-					errors => {
-						for(let e in errors) {
-							this.SignupView.addFormError(e, errors[e]);
-						}
-						this.go('/signup');
-					}
-				);
-			}
-		);
-	}
-
-	/**
-	 * What to do is user already logged in.
-	 */
-	_loginCallback() {
 		const data = {
+			'SignupForm': this.getSignupForm(),
 			'Header': this.getHeaderData()
 		};
-		this.SignupView.reconstructPage(data);
-		this.go('/');
+
+		let submitData = this.SignupView.serializeForm();
+		if (!submitData) {
+			this.SignupView.constructPage(data);
+			submitData = this.SignupView.serializeForm();
+		}
+
+		const EventBus = this.ServiceManager.EventBus;
+		EventBus.subscribe('signupError', errors => {
+			for (let e in errors) {
+				this.SignupView.addFormError(e, errors[e]);
+			}
+			this.go('/signup');
+		}, this);
+		
+		this.UserModel.signup(submitData);
 	}
 
 	/**
