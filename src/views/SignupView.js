@@ -54,9 +54,15 @@ class SignupView extends View {
 	 */
 	constructPage(data = {}) {
 		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('Logo', LogoTemplate, { block: 'left' });
-		this.load('SignupForm', FormTemplate, { block: 'right' });
+		
+		return this.onLoad([
+			['Header', HeaderTemplate, { appendFirst: true }],
+			['Logo', LogoTemplate, { block: 'left' }],
+			['SignupForm', FormTemplate, { block: 'right' }]
+		])
+			.then(() => {
+				this.showPage();
+			});
 	}
 
 	/**

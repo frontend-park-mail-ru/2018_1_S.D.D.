@@ -17,16 +17,17 @@ class ScoresModel extends Model {
 		this._usersPerPage = 5;
 	}
 
-	getUserCount(onSuccessCallback, onErrorCallback) {
+	getUserCount() {
 		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 		API.GET('user/get_users_count').then(response => {
 			if (API.responseSuccess(response)) {
-				onSuccessCallback(response.data.count_users);
+				EventBus.emit('showPagination', response.data.count_users);
 			} else {
-				onErrorCallback();
+				EventBus.emit('error:noresponse');
 			}
 		}).catch(() => {
-			onErrorCallback();
+			EventBus.emit('error:noresponse');
 		});
 	}
 	
@@ -36,22 +37,23 @@ class ScoresModel extends Model {
 	*
 	* @returns {Object} Object contains user scores
 	*/
-	getUserScores(page, onSuccessCallback, onErrorCallback) {
+	getUserScores(page) {
 		const limit = this.limit;
 		const offset = page * limit - limit;
 
 		const API = this.ServiceManager.ApiService;
-		API.GET(`user/get_users?limit=${limit}&offset=${offset}`).then(responseUsers => {
-			if (API.responseSuccess(responseUsers)) {
-				responseUsers.data.users_list.userViewList.forEach((user, index) => {
+		const EventBus = this.ServiceManager.EventBus;
+		API.GET(`user/get_users?limit=${limit}&offset=${offset}`).then(response => {
+			if (API.responseSuccess(response)) {
+				response.data.users_list.userViewList.forEach((user, index) => {
 					user.place = offset + index + 1;
 				});
-				onSuccessCallback(responseUsers.data.users_list);
+				EventBus.emit('showScoresTable', response.data.users_list);
 			} else {
-				onErrorCallback();
+				EventBus.emit('error:noresponse');
 			}
 		}).catch(() => {
-			onErrorCallback();
+			EventBus.emit('error:noresponse');
 		});
 	}
 

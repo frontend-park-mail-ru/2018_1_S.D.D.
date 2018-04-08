@@ -34,7 +34,6 @@ class SignupController extends Controller {
 		};
 
 		this.SignupView.constructPage(data);
-		this.SignupView.showPage();
 	}
 
 	/**

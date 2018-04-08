@@ -36,7 +36,6 @@ class MenuController extends Controller {
 			'Header': this.getHeaderData()
 		};
 		this.MenuView.constructPage(data);
-		this.MenuView.showPage();
 	}
 }
 

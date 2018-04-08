@@ -32,10 +32,6 @@ class ErrorController extends Controller {
 			'Header': this.getHeaderData()
 		};
 		this.ErrorView.constructPage(data);
-		this.ErrorView.showPage();
-
-		// if session was gone we need to clear our templates
-		this.go('/user/logout/quietly', false);
 	}
 
 	/**
@@ -47,7 +43,6 @@ class ErrorController extends Controller {
 			'Header': this.getHeaderData()
 		};
 		this.ErrorView.constructPage(data);
-		this.ErrorView.showPage();
 	}
 
 	/**
@@ -59,7 +54,6 @@ class ErrorController extends Controller {
 			'Header': this.getHeaderData()
 		};
 		this.ErrorView.constructPage(data);
-		this.ErrorView.showPage();
 	}
 
 	/**
@@ -98,7 +92,7 @@ class ErrorController extends Controller {
 	get503Message() {
 		return {
 			Code: '503',
-			Header: 'Application not responding. We are sorry about that!',
+			Header: 'Application is not responding. We are sorry about that!',
 			Message: 'You still can (probably) play offline if you want...'
 		};
 	}

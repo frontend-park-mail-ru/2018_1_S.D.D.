@@ -34,7 +34,6 @@ class LoginController extends Controller {
 		};
 		
 		this.LoginView.constructPage(data);
-		this.LoginView.showPage();
 	}
 
 	/**

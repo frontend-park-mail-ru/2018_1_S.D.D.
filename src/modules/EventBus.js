@@ -30,15 +30,11 @@ class EventBus {
 		if (events && events.length > 0) {
 			return events.reduce((prevEvent, curEvent) => {
 				return prevEvent.then(() => {
-					return new Promise(resolve => {
-						resolve(curEvent.callback.bind(curEvent.context, ...args)());
-					});	
+					return Promise.resolve(curEvent.callback.bind(curEvent.context, ...args)());
 				});
-			}, new Promise(resolve => {
-				resolve(events[0].callback.bind(events[0].context, ...args)());
-			}));
+			}, Promise.resolve(events[0].callback.bind(events[0].context, ...args)()));
 		}
-		return new Promise(resolve => resolve(null));
+		return Promise.resolve();
 	}
 
 	/**
@@ -50,7 +46,7 @@ class EventBus {
 	 * @param {boolean} doSubscribeFirst Adding event in begin of queue or in end.
 	 * @returns {Function} Function to unsubscribe event.
 	 */
-	subscribe(key, callback, context = this, doSubscribeFirst = false) {
+	subscribe(key, callback = () => null, context = this, doSubscribeFirst = false) {
 		if (!this.eventExists(key)) {
 			this._eventsList[key] = [];
 		}
