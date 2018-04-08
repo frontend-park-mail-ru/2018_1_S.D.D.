@@ -19,9 +19,11 @@ class AboutView extends View {
 	}
     
 	constructPage(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('About', AboutTemplate, { block: 'left' });
+		setTimeout(() => {
+			this._data = data;
+			this.load('Header', HeaderTemplate, { appendFirst: true });
+			this.load('About', AboutTemplate, { block: 'left' });
+		}, 2000);
 	}
 
 	showPage() {
