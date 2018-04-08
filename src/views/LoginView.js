@@ -54,9 +54,15 @@ class LoginView extends View {
 	 */
 	constructPage(data = {}) {
 		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('Logo', LogoTemplate, { block: 'left' });
-		this.load('LoginForm', FormTemplate, { block: 'right' });
+
+		return this.onLoad([
+			['Header', HeaderTemplate, { appendFirst: true }],
+			['Logo', LogoTemplate, { block: 'left' }],
+			['LoginForm', FormTemplate, { block: 'right' }]
+		])
+			.then(() => {
+				this.showPage();
+			});
 	}
 
 	/**

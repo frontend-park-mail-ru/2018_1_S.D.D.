@@ -7,12 +7,19 @@ class GameView extends View {
 	constructor() {
 		super();
 	}
-    
+
 	constructPage() {
-	//	return new Promise(resolve => {
-        	this.load('Scene', SceneTemplate, { block: 'main' });
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-	//	}).thenтbind(this);      
+		return this.onLoad([
+			['Scene', SceneTemplate, { block: 'main' }],
+			['Header', HeaderTemplate, { appendFirst: true }]
+		])
+		.then(() => {
+			this.showPage();
+		});
+	}
+
+	getScene() {
+		return SceneTemplate.getScene(this.load('Scene'));
 	}
 
 	showPage() {

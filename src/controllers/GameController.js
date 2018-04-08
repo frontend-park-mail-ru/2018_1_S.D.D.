@@ -9,7 +9,6 @@ class GameController extends Controller {
 		super();
 		this.GameView = new GameView();
 		this.addActions();
-		this.game = new SinglePlayer(this.GameView.getScene());
 	}
 
 	addActions() {
@@ -17,8 +16,10 @@ class GameController extends Controller {
 	}
 
 	showScene() {
-		this.GameView.constructPage();
-		this.GameView.showPage();
+		this.GameView.constructPage().then(() => {
+			this.game = new SinglePlayer(this.GameView.getScene());
+			this.game.startGame();
+		});		
 	}
 }
 

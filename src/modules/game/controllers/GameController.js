@@ -17,6 +17,7 @@ class GameController {
 	}
 
 	startGame() {
+		console.log('here1');
 		if (this.scene.getContext) {
 			const ctx = this.scene.getContext('2d');
 			ctx.beginPath();

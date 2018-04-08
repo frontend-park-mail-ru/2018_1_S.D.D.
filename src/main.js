@@ -1,4 +1,5 @@
 'use strict';
+
 import ServiceManager from './modules/ServiceManager';
 import ErrorController from './controllers/ErrorController';
 import MenuController from './controllers/MenuController';

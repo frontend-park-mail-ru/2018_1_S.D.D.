@@ -26,10 +26,14 @@ class ProfileUserView extends View {
 	 */
 	reloadAvatar(data = {}) {
 		this._data = data;
-		const visible = this.isVisible('ProfileAvatar');
-		if (this.load('ProfileAvatar') && visible) {
-			this.load('ProfileAvatar', AvatarTemplate, { reload: true });
-			this.show('ProfileAvatar');
+
+		if (this.isVisible('ProfileAvatar')) {
+			this.onLoad([
+				['ProfileAvatar', AvatarTemplate, { reload: true }]
+			])
+				.then(() => {
+					this.show('ProfileAvatar');
+				});
 		}
 	}
 
@@ -41,8 +45,13 @@ class ProfileUserView extends View {
 	reloadProfile(data = {}) {
 		this._data = data;
 		const visible = this.isVisible('Profile');
-		if (this.load('Profile', ProfileTemplate, { reload: true }) && visible) {
-			this.show('Profile');
+		if (visible) {
+			this.onLoad([
+				['Profile', ProfileTemplate, { reload: true }]
+			])
+				.then(() => {
+					this.show('Profile');
+				});
 			
 		}
 	}
@@ -57,8 +66,13 @@ class ProfileUserView extends View {
 		this.load('Header', HeaderTemplate, { appendFirst: true });
 
 		const connected = ['ProfileAvatar', 'Profile'];
-		this.load('ProfileAvatar', AvatarTemplate, { block: 'main', connected: connected });
-		this.load('Profile', ProfileTemplate, { block: 'main', connected: connected });
+		this.onLoad([
+			['ProfileAvatar', AvatarTemplate, { block: 'main', connected: connected }],
+			['Profile', ProfileTemplate, { block: 'main', connected: connected }]
+		])
+			.then(() => {
+				this.showProfile();
+			});
 	}
 
 	/**

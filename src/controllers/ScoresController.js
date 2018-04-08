@@ -39,37 +39,35 @@ class ScoresController extends Controller {
 		if (page === '' || page < 1) {
 			this.go('/error/404', false);
 		} else {
-			this.ScoresModel.getUserCount(
-				usersCount => {
-					this.ScoresModel.getUserScores(
-						page,
-						usersList => {
-							const data = {
-								'Scores': {
-									data: usersList
-								},
-								'ScoresPagination': {
-									usersCount: usersCount,
-									limit: this.ScoresModel.limit,
-									currentPage: page,
-									onPaginate: p => {
-										this.go(`/scores/show/${p}`);
-									}
-								},
-								'Header': this.getHeaderData()
-							};
-							this.ScoresView.constructPage(data);
-							this.ScoresView.showPage();
-						},
-						() => {
-							this.go('/error/503', false);
+			const EventBus = this.ServiceManager.EventBus;
+			EventBus.subscribe('showScoresTable', usersList => {
+				const data = {
+					'Scores': {
+						data: usersList
+					},
+					'Header': this.getHeaderData()
+				};
+				this.ScoresView.constructPage(data);
+			}, this);
+
+			EventBus.subscribe('showPagination', usersCount => {
+				this.ScoresModel.getUserScores(page);
+				const data = {
+					'ScoresPagination': {
+						usersCount: usersCount,
+						limit: this.ScoresModel.limit,
+						currentPage: page,
+						onPaginate: p => {
+							this.go(`/scores/show/${p}`);
 						}
-					);
-				},
-				() => {
-					this.go('/error/503', false);
-				}
-			);
+					}
+				};
+
+				this.ScoresView.constuctPagintaion(data);
+				this.ScshowPagination();
+			}, this);
+
+			this.ScoresModel.getUserCount();
 		}
 	}
 	

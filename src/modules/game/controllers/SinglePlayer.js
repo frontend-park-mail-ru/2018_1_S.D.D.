@@ -13,12 +13,12 @@ class SinglePlayer extends GameController {
 
 	}
 
-	startGame() {
+	pauseGame() {
 
 	}
 
-	pauseGame() {
-
+	startGame() {
+		super.startGame();
 	}
 
 	stopGame() {
