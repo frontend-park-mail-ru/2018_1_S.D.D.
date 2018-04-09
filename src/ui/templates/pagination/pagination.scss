@@ -7,12 +7,14 @@
 .pagination__btn {
     border: 0px;
     font-size: 18px;
-    margin-top: 10px;
-    padding: 7px 8px;
+    padding: 7px 0;
+    text-align: center;
     border-radius: 50px;
-    margin: 10px;
+    margin: 0 20px 0 0;
     outline: none;
-	display: inline-block;
+    display: inline-block;
+    height: 38px;
+    width: 38px;
 }
 
 .pagination__btn_disabled {

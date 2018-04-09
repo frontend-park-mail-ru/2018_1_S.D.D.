@@ -70,10 +70,17 @@ class SettingsUserView extends View {
 	 */
 	reloadForm(formTemplateName, data = {}) {
 		this._data = data;
+		
 		const visible = this.isVisible(formTemplateName);
-		if (this.load(formTemplateName) && visible) {
-			this.load(formTemplateName, FormTemplate, { reload: true });
-			this.show(formTemplateName);
+		if (this.load(formTemplateName)) {
+			this.onLoad([
+				[formTemplateName, FormTemplate, { reload: true }]
+			])
+				.then(() => {
+					if (visible) {
+						this.show(formTemplateName);
+					}
+				});
 		}
 	}
 
@@ -84,11 +91,18 @@ class SettingsUserView extends View {
 	 */
 	reloadAvatar(data = {}) {
 		this._data = data;
-		const visible = this.isVisible('Avatar');
 		this.reloadForm('UploadAvatar', data);
-		if (this.load('Avatar') && visible) {
-			this.load('Avatar', AvatarTemplate, { reload: true });
-			this.show('Avatar');
+		const visible = this.isVisible('Avatar');
+
+		if (this.load('Avatar')) {
+			this.onLoad([
+				['Avatar', AvatarTemplate, { reload: true }]
+			])
+				.then(() => {
+					if (visible) {
+						this.show('Avatar');
+					}
+				});
 		}
 	}
 
@@ -99,16 +113,20 @@ class SettingsUserView extends View {
 	 */
 	constructSettings(data = {}) {
 		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-
 		const connectedLeft = ['Avatar', 'UploadAvatar'];
-		this.load('Avatar', AvatarTemplate, { block: 'left', connected: connectedLeft });
-		this.load('UploadAvatar', FormTemplate, { block: 'left', connected: connectedLeft });
-
 		const connectedRight = ['EditNickname', 'EditEmail', 'EditPassword'];
-		this.load('EditNickname', FormTemplate, { block: 'right', connected: connectedRight });
-		this.load('EditEmail', FormTemplate, { block: 'right', connected: connectedRight });
-		this.load('EditPassword', FormTemplate, { block: 'right', connected: connectedRight });
+
+		return this.onLoad([
+			['Header', HeaderTemplate, { appendFirst: true }],
+			['Avatar', AvatarTemplate, { block: 'left', connected: connectedLeft }],
+			['UploadAvatar', FormTemplate, { block: 'left', connected: connectedLeft }],
+			['EditNickname', FormTemplate, { block: 'right', connected: connectedRight }],
+			['EditEmail', FormTemplate, { block: 'right', connected: connectedRight }],
+			['EditPassword', FormTemplate, { block: 'right', connected: connectedRight }]
+		])
+			.then(() => {
+				this.showSettings();
+			});
 	}
 
 	/**

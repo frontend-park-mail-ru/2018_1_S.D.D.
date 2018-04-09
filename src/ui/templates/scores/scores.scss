@@ -26,6 +26,14 @@
     border-bottom: 5px solid rgba(255, 255, 255, 0);;
 }
 
+.scores__table__tr_you {
+    background-color:rgba(208, 212, 235, 0.274);
+}
+
+.scores__table__tr_additional {
+    border-top: 3px solid #fff;
+}
+
 .scores__table__td {
     text-align: center;
     color: #fff;

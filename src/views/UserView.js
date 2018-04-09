@@ -34,12 +34,8 @@ class UserView extends View {
 
 	/**
 	 * Reload header and delete forms after login.
-	 * 
-	 * @param {Object} data Data for template rendering.
 	 */
-	constructLogin(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
+	constructLogin() {
 		this.remove('SignupForm');
 		this.remove('LoginForm');
 	}

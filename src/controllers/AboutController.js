@@ -28,7 +28,6 @@ class AboutController extends Controller {
 			'Header': this.getHeaderData()
 		};
 		this.AboutView.constructPage(data);
-		this.AboutView.showPage();
 	}
 }
 

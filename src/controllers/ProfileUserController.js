@@ -77,7 +77,6 @@ class ProfileUserController extends Controller {
 		};
 
 		this.UserView.constructProfile(data);
-		this.UserView.showProfile();
 	}
 
 	/**

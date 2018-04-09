@@ -17,6 +17,7 @@ class ScoresView extends View {
 	 */
 	constructor() {
 		super();
+		this.connected = ['Scores', 'ScoresPagination'];
 	}
 
 	/**
@@ -24,22 +25,47 @@ class ScoresView extends View {
 	 * 
 	 * @param {Object} data Data for template rendering.
 	 */
-	constructPage(data = {}) {
+	constructScores(data = {}) {
 		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
 
-		const connected = ['Scores', 'ScoresPagination'];
-		this.load('Scores', ScoresTemplate, { block: 'main', reload: true, connected: connected });
-		this.load('ScoresPagination', PaginationTemplate, { block: 'main', connected: connected });
+		return this.onLoad([
+			['Header', HeaderTemplate, { appendFirst: true }],
+			['Scores', ScoresTemplate, { block: 'main', reload: true, connected: this.connected }]
+		])
+			.then(() => {
+				this.showScores();
+			});
 	}
 
 	/**
-	 * Display reuired templates.
+	 * Load pagination template.
+	 * 
+	 * @param {Object} data Data for template rendering.
 	 */
-	showPage() {
+	constructPagination(data = {}) {
+		this._data = data;
+
+		return this.onLoad([
+			['ScoresPagination', PaginationTemplate, { block: 'main', connected: this.connected }]
+		])
+			.then(() => {
+				this.showPagination();
+			});
+	}
+
+	/**
+	 * Display required templates.
+	 */
+	showScores() {
 		this.show('Header');
 		HeaderTemplate.showLogo();
 		this.show('Scores');
+	}
+
+	/**
+	 * Display pagination.
+	 */
+	showPagination() {
 		this.show('ScoresPagination');
 	}
 }

@@ -3,6 +3,8 @@
 import ServiceManager from '../modules/ServiceManager';
 import TemplateHolder from '../ui/templates/TemplateHolder';
 import PageParts from '../ui/templates/PageParts';
+
+import 'normalize.css';
 import '../ui/styles/main.scss';
 
 /**
@@ -117,6 +119,24 @@ class View {
 			}
 		}
 		return T.html;
+	}
+
+	/**
+	 * Loads all templates and provieds sunchronicly actions after.
+	 * 
+	 * @param {Object[]} templates Array of templates to load in dom.
+	 * @returns {Promise} Promise with result of each template loading.
+	 */
+	onLoad(templates = []) {
+		if (!Array.isArray(templates)) {
+			templates = [templates];
+		}
+
+		const loadPromises = templates.map(template => {
+			return Promise.resolve(this.load(...template));
+		});
+
+		return Promise.all(loadPromises);
 	}
 
 	/**

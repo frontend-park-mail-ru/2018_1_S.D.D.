@@ -68,7 +68,6 @@ class SettingsUserController extends Controller {
 
 		const data = this._getSettingsData();
 		this.UserView.constructSettings(data);
-		this.UserView.showSettings();
 	}
 
 	/**
