@@ -1,6 +1,6 @@
 'use strict';
 
-class GameController {
+class Game {
 	constructor (scene) {
 		this._players = [];
 		this.scene = scene;
@@ -17,7 +17,6 @@ class GameController {
 	}
 
 	startGame() {
-		console.log('here1');
 		if (this.scene.getContext) {
 			const ctx = this.scene.getContext('2d');
 			ctx.beginPath();
@@ -28,4 +27,4 @@ class GameController {
 	}
 }
 
-export default GameController;
+export default Game;

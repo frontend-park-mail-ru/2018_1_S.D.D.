@@ -13,9 +13,9 @@ class GameView extends View {
 			['Scene', SceneTemplate, { block: 'main' }],
 			['Header', HeaderTemplate, { appendFirst: true }]
 		])
-		.then(() => {
-			this.showPage();
-		});
+			.then(() => {
+				this.showPage();
+			});
 	}
 
 	getScene() {

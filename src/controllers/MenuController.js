@@ -27,7 +27,7 @@ class MenuController extends Controller {
 		const data = {
 			'Menu': {
 				menuItems: [
-					{ link:'/play', text:'PLAY' },
+					{ link:'/lobby', text:'PLAY' },
 					{ link:'/scores/show', text:'SCORES' },
 					{ link:'/rules', text:'RULES' },
 					{ link:'/about', text:'DEVELOPERS' }

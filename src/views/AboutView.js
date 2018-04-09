@@ -25,9 +25,9 @@ class AboutView extends View {
 			['Header', HeaderTemplate, { appendFirst: true }],
 			['About', AboutTemplate, { block: 'left' }]
 		])
-		.then(() => {
-			this.showPage();
-		});
+			.then(() => {
+				this.showPage();
+			});
 	}
 
 	showPage() {

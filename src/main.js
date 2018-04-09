@@ -9,6 +9,7 @@ import ScoresController from './controllers/ScoresController';
 import UserController from './controllers/UserController';
 import AboutController from './controllers/AboutController';
 import GameController from './controllers/GameController';
+import LobbyController from './controllers/LobbyController';
 
 const SM = new ServiceManager();
 
@@ -21,6 +22,7 @@ SM.Router.addRoute('scores', ScoresController);
 SM.Router.addRoute('user', UserController);
 SM.Router.addRoute('about', AboutController);
 SM.Router.addRoute('play', GameController);
+SM.Router.addRoute('lobby', LobbyController);
 
 // Check for user logged in and then load current page
 SM.Router.go('/user', false);

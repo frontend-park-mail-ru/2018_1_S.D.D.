@@ -1,7 +1,7 @@
 'use strict';
-import GameController from './GameController';
+import Game from './Game';
 
-class SinglePlayer extends GameController {
+class SinglePlayer extends Game {
 	constructor (scene) {
 		super(scene);
 		this._players = [];
