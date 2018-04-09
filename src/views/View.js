@@ -3,6 +3,8 @@
 import ServiceManager from '../modules/ServiceManager';
 import TemplateHolder from '../ui/templates/TemplateHolder';
 import PageParts from '../ui/templates/PageParts';
+
+import 'normalize.css';
 import '../ui/styles/main.scss';
 
 /**

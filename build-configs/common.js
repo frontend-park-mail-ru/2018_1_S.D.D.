@@ -14,7 +14,7 @@ module.exports = {
 				loader: 'pug-loader'
 			},
 			{
-				test: /\.scss$/,
+				test: /\.(scss|css)$/,
 				use: [
 					{
 						loader: 'style-loader'

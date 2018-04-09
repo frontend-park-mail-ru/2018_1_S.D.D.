@@ -9,10 +9,16 @@ class ScoresController extends Controller {
 	 * Creates instance of ScoresController
 	 */
 	constructor() {
+		if (ScoresController.__instance) {
+			return ScoresController.__instance;
+		}
 		super();
+		ScoresController.__instance = this;
+
 		this.ScoresModel = new ScoresModel();
 		this.ScoresView = new ScoresView();
 		this.addActions();
+		this.subscribeEvents();
 	}
 
 	/**
@@ -21,6 +27,16 @@ class ScoresController extends Controller {
 	addActions() {
 		this.addAction('index', this.actionIndex);
 		this.addAction('show', this.actionShow);
+	}
+
+	subscribeEvents() {
+		const EventBus = this.ServiceManager.EventBus;
+		EventBus.subscribe('showScoresTable', (usersList, userPosition) => { 
+			this.showScoresTable(usersList, userPosition);
+		}, this);
+		EventBus.subscribe('showPagination', usersCount => {
+			this.showPagination(usersCount);
+		} , this);
 	}
 
 	/**
@@ -39,36 +55,46 @@ class ScoresController extends Controller {
 		if (page === '' || page < 1) {
 			this.go('/error/404', false);
 		} else {
-			const EventBus = this.ServiceManager.EventBus;
-			EventBus.subscribe('showScoresTable', usersList => {
-				const data = {
-					'Scores': {
-						data: usersList
-					},
-					'Header': this.getHeaderData()
-				};
-				this.ScoresView.constructPage(data);
-			}, this);
-
-			EventBus.subscribe('showPagination', usersCount => {
-				this.ScoresModel.getUserScores(page);
-				const data = {
-					'ScoresPagination': {
-						usersCount: usersCount,
-						limit: this.ScoresModel.limit,
-						currentPage: page,
-						onPaginate: p => {
-							this.go(`/scores/show/${p}`);
-						}
-					}
-				};
-
-				this.ScoresView.constuctPagintaion(data);
-				this.ScshowPagination();
-			}, this);
-
-			this.ScoresModel.getUserCount();
+			this.page = page;
+			this.ScoresModel.getUserScores(page)
+				.then(() => {
+					this.ScoresModel.getUserCount();
+				});
 		}
+	}
+
+	showScoresTable(usersList, userPosition) {
+		const User = this.ServiceManager.UserStorage;
+		const data = {
+			'Scores': {
+				data: usersList,
+				me: {
+					'place': userPosition + 1,
+					'nickname': User.getData('nickname'),
+					'email':  User.getData('email'),
+					'countGames':  User.getData('countGames'),
+					'countWins':  User.getData('countWins'),
+					'rating':  User.getData('rating')
+				}
+			},
+			'Header': this.getHeaderData()
+		};
+		this.ScoresView.constructScores(data);
+	}
+
+	showPagination(usersCount) {
+		const data = {
+			'ScoresPagination': {
+				usersCount: usersCount,
+				limit: this.ScoresModel.limit,
+				currentPage: this.page,
+				onPaginate: p => {
+					this.go(`/scores/show/${p}`);
+				}
+			}
+		};
+		
+		this.ScoresView.constructPagination(data);
 	}
 	
 }

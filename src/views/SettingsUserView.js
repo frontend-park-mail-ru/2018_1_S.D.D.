@@ -71,12 +71,15 @@ class SettingsUserView extends View {
 	reloadForm(formTemplateName, data = {}) {
 		this._data = data;
 		
-		if (this.isVisible(formTemplateName)) {
+		const visible = this.isVisible(formTemplateName);
+		if (this.load(formTemplateName)) {
 			this.onLoad([
 				[formTemplateName, FormTemplate, { reload: true }]
 			])
 				.then(() => {
-					this.show(formTemplateName);
+					if (visible) {
+						this.show(formTemplateName);
+					}
 				});
 		}
 	}
@@ -89,13 +92,16 @@ class SettingsUserView extends View {
 	reloadAvatar(data = {}) {
 		this._data = data;
 		this.reloadForm('UploadAvatar', data);
+		const visible = this.isVisible('Avatar');
 
-		if (this.isVisible('Avatar')) {
+		if (this.load('Avatar')) {
 			this.onLoad([
 				['Avatar', AvatarTemplate, { reload: true }]
 			])
 				.then(() => {
-					this.show('Avatar');
+					if (visible) {
+						this.show('Avatar');
+					}
 				});
 		}
 	}
