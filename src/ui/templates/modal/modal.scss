@@ -1,0 +1,19 @@
+.modal-dialog__wrapper {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	z-index: 100;
+	background: rgba(50, 50, 70, 0.8);
+}
+
+.modal-dialog__close {
+	padding: 50px 50px 0 0;
+	font-size: 36px;
+	font-weight: bold;
+	text-align: right;
+	color: #ddd;
+}
+.modal-dialog__content {
+
+}

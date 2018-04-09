@@ -35,20 +35,21 @@ class View {
 			'main',
 			document.querySelector('main'),
 			['block'],
-			['left', 'right']
+			['left', 'right', 'modal']
 		);
 		this._PageBlock.addViewBlock(
 			'left',
 			document.querySelector('main'),
 			['block', 'block-inline', 'block_w60p'],
-			['main']
+			['main', 'modal']
 		);
 		this._PageBlock.addViewBlock(
 			'right',
 			document.querySelector('main'),
 			['block', 'block-inline', 'block_w40p'],
-			['main']
+			['main', 'modal']
 		);
+		this._PageBlock.addModalBlock('modal');
 	}
 
 	/**

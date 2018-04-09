@@ -1,6 +1,7 @@
 'use strict';
 
 import TemplateHolder from './TemplateHolder';
+import ModalTemplate from './modal/';
 
 /**
  * Creates instance of PageParts
@@ -33,6 +34,31 @@ class PageParts {
 	}
 
 	/**
+	 * Creates modal window on a page.
+	 * 
+	 * @param {string} id Id of element.
+	 * @param {HTMLElement} root Element where we insert new block.
+	 * @param {string[]} classes Element classes (for CSS or whatever).
+	 * @param {string[]} hideOnShowList Id of blocks which should be hided when this block is visible.
+	 */
+	addModalBlock(id) {
+		if (!this.block(id)) {
+			const element = ModalTemplate.render();
+			element.hidden = true;
+			element.id = id;
+			document.body.appendChild(element);
+
+			this._vb[id] = {
+				root: element,
+				content: element.querySelector('.content'),
+				active: false,
+				hideOnShow: [],
+				currentTemplates: []
+			};
+		}
+	}
+
+	/**
 	 * Creates new View Block on a page.
 	 * 
 	 * @param {string} id Id of element.
@@ -52,6 +78,7 @@ class PageParts {
 
 			this._vb[id] = {
 				root: element,
+				content: element,
 				active: false,
 				hideOnShow: hideOnShowList,
 				currentTemplates: []
@@ -98,7 +125,7 @@ class PageParts {
 		templateObject.html.classList.add('template-disabled');
 		templateObject.html.hidden = true;
 		if (insertInDomFlag) {
-			this.block(templateObject.block).root.appendChild(templateObject.html);
+			this.block(templateObject.block).content.appendChild(templateObject.html);
 		}
 		return true;
 	}
@@ -189,12 +216,15 @@ class PageParts {
 	 */
 	disableViewBlock(id) {
 		if (this.block(id).active) {
-			const loadedTemplates = this.block(id).root.childNodes;
-			[].forEach.call(loadedTemplates, template => {
-				template.hidden = true;
-				template.classList.add('template-disabled');
-				template.classList.remove('template-active');
-			});
+			const currentTemplates = this.block(id).currentTemplates;
+			currentTemplates.forEach(tName => {
+				const T = this._TemplateHolder.load(tName);
+				if (T) {
+					T.hidden = true;
+					T.classList.add('template-disabled');
+					T.classList.remove('template-active');
+				}	
+			});	
 			this.block(id).root.hidden = true;
 			this.block(id).active = false;
 		}
