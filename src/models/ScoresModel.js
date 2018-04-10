@@ -72,6 +72,7 @@ class ScoresModel extends Model {
 
 		const API = this.ServiceManager.ApiService;
 		const EventBus = this.ServiceManager.EventBus;
+		const User = this.ServiceManager.UserStorage;
 
 		return API.GET(`user/get_users?limit=${limit}&offset=${offset}`)
 			.then(response => {
@@ -79,7 +80,11 @@ class ScoresModel extends Model {
 					response.data.users_list.userViewList.forEach((user, index) => {
 						user.place = offset + index + 1;
 					});
-					return this.getUserPosition(response.data.users_list);
+					if (User.getBooleanData('loggedin')) {
+						return this.getUserPosition(response.data.users_list);
+					} else {
+						EventBus.emit('showScoresTable', [response.data.users_list, -1]);
+					}
 				} else {
 					EventBus.emit('error:noresponse');
 				}
