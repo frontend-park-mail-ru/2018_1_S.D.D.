@@ -1,3 +1,41 @@
+mixin info(user, additional)
+	- var you = '';
+	if user.place == me.place
+		- you = 'scores__table__tr_you'
+	if additional
+		tr
+			td.scores__table__td.scores__table_small ...
+			td.scores__table__td.scores__table_big.scores__table_nickname 
+			td.scores__table__td.scores__table_big.scores__table_email 
+			td.scores__table__td.scores__table_small.scores__table_games 
+			td.scores__table__td.scores__table_small 
+			td.scores__table__td.scores__table_small
+		- you += ' scores__table__tr_additional'
+	tr(class=you).scores__table__tr
+		td.scores__table__td.scores__table_small 
+			if user.place == 1
+				img(src=require('../../images/gold.svg')).scores__medal
+			else if user.place == 2
+				img(src=require('../../images/silver.svg')).scores__medal
+			else if user.place == 3
+				img(src=require('../../images/bronze.svg')).scores__medal
+			else
+				| #{user.place}
+		if user.place == me.place
+			td.scores__table__td.scores__table_big.scores__table_nickname 
+				| #{user.nickname} 
+				b (YOU)
+		else
+			td.scores__table__td.scores__table_big.scores__table_nickname #{user.nickname}
+		td.scores__table__td.scores__table_big.scores__table_email #{user.email}
+		td.scores__table__td.scores__table_small.scores__table_games #{user.countGames}
+		td.scores__table__td.scores__table_small #{user.countWins}
+		td.scores__table__td.scores__table_small
+			if me.rating > 0
+				span.rating.rating_positive &nbsp;#{user.rating}&nbsp;
+			else
+				span.rating.rating_negative &nbsp;#{user.rating}&nbsp;
+
 h2.scores__header LEADERBOARD
 table.scores__table
 	if data.userViewList
@@ -9,25 +47,12 @@ table.scores__table
 		th.scores__table__th.scores__table_small Rating
 		if data.userViewList.length > 0
 			each user in data.userViewList
-				tr.scores__table__tr
-					td.scores__table__td.scores__table_small 
-						if user.place == 1
-							img(src=require('../../images/gold.svg')).scores__medal
-						else if user.place == 2
-							img(src=require('../../images/silver.svg')).scores__medal
-						else if user.place == 3
-							img(src=require('../../images/bronze.svg')).scores__medal
-						else
-							| #{user.place}
-					td.scores__table__td.scores__table_big.scores__table_nickname #{user.nickname}
-					td.scores__table__td.scores__table_big.scores__table_email #{user.email}
-					td.scores__table__td.scores__table_small.scores__table_games #{user.countGames}
-					td.scores__table__td.scores__table_small #{user.countWins}
-					td.scores__table__td.scores__table_small
-						if user.rating > 0
-							span.rating.rating_positive &nbsp;#{user.rating}&nbsp;
-						else
-							span.rating.rating_negative &nbsp;#{user.rating}&nbsp;
+				+info(user, false)
+			if data.userViewList[0].place > me.place || data.userViewList[data.userViewList.length - 1].place < me.place
+				if me.place > 0
+					+info(me, true)
 		else
 			tr.scores__table__tr
 				td(colspan="6").scores__table__td.scores__table_nodata No users found :(
+			if me.place > 0
+				+info(me, true)

@@ -56,7 +56,7 @@ class ScoresView extends View {
 	/**
 	 * Display required templates.
 	 */
-	showPage() {
+	showScores() {
 		this.show('Header');
 		HeaderTemplate.showLogo();
 		this.show('Scores');

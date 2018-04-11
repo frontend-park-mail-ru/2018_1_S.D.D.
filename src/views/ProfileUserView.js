@@ -26,13 +26,16 @@ class ProfileUserView extends View {
 	 */
 	reloadAvatar(data = {}) {
 		this._data = data;
+		const visible = this.isVisible('ProfileAvatar');
 
-		if (this.isVisible('ProfileAvatar')) {
+		if (this.load('ProfileAvatar')) {
 			this.onLoad([
 				['ProfileAvatar', AvatarTemplate, { reload: true }]
 			])
 				.then(() => {
-					this.show('ProfileAvatar');
+					if (visible) {
+						this.show('ProfileAvatar');
+					}
 				});
 		}
 	}
@@ -45,12 +48,15 @@ class ProfileUserView extends View {
 	reloadProfile(data = {}) {
 		this._data = data;
 		const visible = this.isVisible('Profile');
-		if (visible) {
+
+		if (this.load('Profile')) {
 			this.onLoad([
 				['Profile', ProfileTemplate, { reload: true }]
 			])
 				.then(() => {
-					this.show('Profile');
+					if (visible) {
+						this.show('Profile');
+					}
 				});
 			
 		}

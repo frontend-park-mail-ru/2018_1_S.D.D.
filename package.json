@@ -48,5 +48,8 @@
   ],
   "pre-commit": {
     "run": "lint-fix"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.0"
   }
 }
