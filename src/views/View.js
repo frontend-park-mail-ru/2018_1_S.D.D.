@@ -189,6 +189,16 @@ class View {
 		this._TemplateHolder.delete(templateName);
 	}
 
+	/**
+	 * Get page block.
+	 * 
+	 * @param {string} id Id of block
+	 * @returns {HTMLElement} Block with content.
+	 */
+	getBlock(id) {
+		return this._PageBlock.getContentHolder(id);
+	}
+
 }
 
 export default View;

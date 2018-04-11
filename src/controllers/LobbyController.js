@@ -3,16 +3,13 @@
 import Controller from './Controller';
 import LobbyView from '../views/LobbyView';
 import LobbyModel from '../models/LobbyModel';
-import SinglePlayer from '../modules/game/controllers/SinglePlayer';
-//import MultiPlayer from '../modules/game/controllers/MultiPlayer';
-//import LobbyModel from '../models/LobbyModel';
 
 class LobbyController extends Controller {
 	constructor() {
+		super();	
 		if (LobbyController.__instance) {
 			return LobbyController.__instance;
-		}
-		super();		
+		}	
 		LobbyController.__instance = this;
 		
 		this.LobbyView = new LobbyView();
@@ -22,12 +19,16 @@ class LobbyController extends Controller {
 	}
 
 	addActions() {
-		this.addAction('index', this.actionShowLobbies);
+		this.addAction('index', this.actionStub);
 	}
 
 	subscribeEvents() {
 		const EventBus = this.ServiceManager.EventBus;
 		EventBus.subscribe('showLobbies', this.showLobbies, this);
+	}
+
+	actionStub() {
+		this.ServiceManager.Router.re('/play');
 	}
 
 	actionShowLobbies() {
@@ -40,13 +41,7 @@ class LobbyController extends Controller {
 		};
 		this.LobbyView.constructPage(pageData);
 	}
-
-	// showScene() {
-	// 	this.GameView.constructPage().then(() => {
-	// 		this.game = new SinglePlayer(this.GameView.getScene());
-	// 		this.game.startGame();
-	// 	});		
-	// }
+	
 }
 
 export default LobbyController;

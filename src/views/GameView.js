@@ -15,6 +15,10 @@ class GameView extends View {
 		])
 			.then(() => {
 				this.showPage();
+				SceneTemplate.setSize(this.load('Scene'), this.getBlock('main'));
+				window.addEventListener('resize', () => {
+					SceneTemplate.setSize(this.load('Scene'), this.getBlock('main'));
+				});
 			});
 	}
 

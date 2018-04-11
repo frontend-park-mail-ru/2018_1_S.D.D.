@@ -16,12 +16,11 @@ class LobbyModel extends Model {
 		super();
 	}
 
-    getLobbies() {
-        const API = this.ServiceManager.ApiService;
-        const EventBus = this.ServiceManager.EventBus;
-        const data = [{'lobbyId': 5, 'countPlayers': 4, 'additionalInfo': 'info'}];
-        EventBus.emit('showLobbies', data);
-    }
+	getLobbies() {
+		const EventBus = this.ServiceManager.EventBus;
+		const data = [{'lobbyId': 5, 'countPlayers': 4, 'additionalInfo': 'info'}];
+		EventBus.emit('showLobbies', data);
+	}
 }
 
 export default LobbyModel;
