@@ -1,29 +1,38 @@
+@import '../../styles/constants';
+
 .logo {
-	font-size: 100px;
+	font-size: $logo-size;
 	font-weight: bold;
-	color: #fff;
+	color: $color-light;
 	text-align: center;
 	margin: auto;
-}
 
-.logo__link {
-	text-decoration: none;
-	display: block;
-	color: #fff;
-}
-
-.logo__smile {
-	width: 100px;
-	height: 100px;
-	position: relative;
-}
-
-.logo__smile_first {
-	animation-name: jump;
-	animation-iteration-count: infinite;
-	animation-timing-function: linear;
-	animation-duration: 4s;
-	animation-delay: 2s;
+	&__fix {
+		// ¯\_(ツ)_/¯ just don't ask why
+		font-size: 1px;
+		height: 1px;
+		display: block;
+	}
+	
+	&__link {
+		text-decoration: none;
+		display: block;
+		color: $color-light;
+	}
+	
+	&__smile {
+		width: $logo-size;
+		height: $logo-size;
+		position: relative;
+	}
+	
+	&__smile_first {
+		animation-name: jump;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-duration: 4s;
+		animation-delay: 2s;
+	}
 }
 
 @keyframes jump {
@@ -58,12 +67,12 @@
 
 @media screen and (max-width: 1200px) {
 	.logo {
-		font-size: 50px;
-	}
+		font-size: $logo-size-small;
 
-	.logo__smile {
-		width: 50px;
-		height: 50px;
+		&__smile {
+			width: $logo-size-small;
+			height: $logo-size-small;
+		}
 	}
 }
 

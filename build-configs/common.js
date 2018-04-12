@@ -7,8 +7,36 @@ module.exports = {
 		path: path.resolve(__dirname, '../public'),
 		filename: 'bundle.js'
 	},
+	resolve: {
+		extensions: ['.ts', '.tsx', '.js']
+	},
 	module: {
 		rules: [
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: [['env', {
+								'targets': {
+									'browsers': ['last 2 versions']
+								}
+							}]]
+						}
+					}
+				]
+			},
+			{
+				test: /\.ts$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'ts-loader',
+					}
+				]
+			},
 			{
 				test: /\.pug$/,
 				loader: 'pug-loader'

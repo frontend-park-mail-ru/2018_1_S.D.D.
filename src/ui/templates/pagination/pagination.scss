@@ -1,51 +1,40 @@
+@import '../../styles/constants';
+
 .pagination {
     width: 90%;
     text-align: right;
     margin: auto;
-}
 
-.pagination__btn {
-    border: 0px;
-    font-size: 18px;
-    padding: 7px 0;
-    text-align: center;
-    border-radius: 50px;
-    margin: 0 20px 0 0;
-    outline: none;
-    display: inline-block;
-    height: 38px;
-    width: 38px;
-}
+    &__btn {
+        border: 0px;
+        font-size: 18px;
+        padding: 7px 0;
+        text-align: center;
+        border-radius: 50px;
+        margin: 0 20px 0 0;
+        outline: none;
+        display: inline-block;
+        height: 38px;
+        width: 38px;
+    }
+    
+    &__btn_disabled {
+        color: $btn-disabled-color;
+        background: $btn-disabled-bg;
+        cursor: not-allowed;
+    }
+    
+    &__btn_active {
+        color: $btn-color-common;
+        background: $btn-bg-common;
+        cursor: pointer;
 
-.pagination__btn_disabled {
-	color: #707070;
-	background: #bdbec0;
-	cursor: not-allowed;
-}
-
-.pagination__btn_active {
-	color: #2f164e;
-	background: #7db9fd;
-	cursor: pointer;
-}
-
-.pagination__btn:hover {
-    background: #fff;
+        &:hover {
+            background: $color-light;
+        }
+    }
 }
 
 .pages {
-	display: inline-block;
-}
-
-.pagination__link {
-    color: #16174e;
-    text-decoration: none;
-}
-
-.pagination__link_btn {
-    background: #7db9fd;
-}
-
-.pagination__link_btn:hover {
-    background: #fff;
+    display: inline-block;
 }

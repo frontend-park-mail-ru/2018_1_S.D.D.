@@ -1,30 +1,29 @@
-$menu-text-color: #fff;
-$menu-background-hovered: rgba(162, 169, 211, 0.5);
+@import '../../styles/constants';
 
 .menu {
-    font-size: 50px;
-    color: $menu-text-color;
+    font-size: $menu-font-size;
+    color: $color-light;
     text-align: center;
     max-width: 400px;
     cursor: pointer;
     margin: auto;
-}
 
-.menu__item {
-    padding: 5px 20px;
-}
-
-.menu__item:hover {
-    background: $menu-background-hovered;
-}
-
-.menu__item__link {
-    color: $menu-text-color;
-    text-decoration: none;
+    &__item {
+        padding: 5px 20px;
+    }
+    
+    &__item:hover {
+        background: $menu-background-hovered;
+    }
+    
+    &__item__link {
+        color: $color-light;
+        text-decoration: none;
+    }
 }
 
 @media screen and (max-width: 1080px) {
     .menu {
-        font-size: 30px;
+        font-size: $menu-font-size-small;
     }
 }

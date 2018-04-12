@@ -34,6 +34,16 @@ class PageParts {
 	}
 
 	/**
+	 * Get root element in which we store content.
+	 * 
+	 * @param {string} id Id of block
+	 * @returns {HTMLElement} Root element
+	 */
+	getContentHolder(id) {
+		return this._vb[id].content;
+	}
+
+	/**
 	 * Creates modal window on a page.
 	 * 
 	 * @param {string} id Id of element.
