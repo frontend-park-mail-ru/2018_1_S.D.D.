@@ -74,8 +74,6 @@ export default class Player {
             }  
         } 
 
-        console.log(this._direction);
-
         if (((this._position.x-50)%100 == 0) && ((this._position.y-50)%100 == 0)) {
             this.directionSwtich();
         }
