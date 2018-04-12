@@ -13,7 +13,7 @@ export default class MultiplayerMode extends Mode {
     }
 
     init(): void {
-        this.addPlayer(new Player(0));
+        this.addPlayer(new Player(1));
     }
 
     addPlayer(player: Player): void {

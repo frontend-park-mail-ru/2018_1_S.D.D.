@@ -42,7 +42,7 @@ export default class GameField {
         console.log( this._idsMatrix);
     }
 
-    private CheckArea(i, j: number, id: number): void {
+    private checkArea(i, j: number, id: number): void {
         let matrix = this._idsMatrix;
 
         const stack = [];
