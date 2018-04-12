@@ -1,25 +1,34 @@
 'use strict';
 import GameField from "./GameField";
 import Player from "./Player";
-import {FIELD_SIZE, PLAYER_MAP, CELL_COUNT} from "./defines";
+import {FIELD_SIZE, PLAYER_MAP, CELL_COUNT, CELL_COLOR_MAP} from "./defines";
 
 export default class SceneService {
 	private _scene: HTMLCanvasElement;
 	private _ctx: CanvasRenderingContext2D;
 	private readonly _palyerColor: Map<number, string>;
 	private readonly _cellCount: number;
+	private readonly _cellColor: Map<number, string>;
 
 	constructor(scene: HTMLCanvasElement) {
 		this._scene = scene;
 		this._ctx = scene.getContext('2d');
 		this._palyerColor = new Map();
+		this._cellColor = new Map();
 		this._cellCount = CELL_COUNT;
 		this.initPlayerColor();
+		this.initCellColor();
+	}
+
+	private initCellColor(): void {
+		CELL_COLOR_MAP.forEach((v, k) => {
+			this._cellColor.set(k, v);
+		})
 	}
 
 	private initPlayerColor(): void {
-		PLAYER_MAP.forEach((k, v) => {
-			this._palyerColor.set(v, k);
+		PLAYER_MAP.forEach((v, k) => {
+			this._palyerColor.set(k, v);
 		});
 	}
 
@@ -27,23 +36,13 @@ export default class SceneService {
 		this._ctx.clearRect(0, 0, this.width, this.height);
 	}
 
-	public drawField(): void {
+	public drawField(matrix: Array<Array<number>>): void {
 		const cellSize = this.height / this._cellCount;
 
 		const cells = [];
-		for (let i = 0; i < this._cellCount; i++) {
-			let row = [];
-			for (let j = 0; j < this._cellCount; j++) {
-				row.push({
-					color: '#ffffff'
-				})
-			}
-			cells.push(row);
-		}
-
-		cells.forEach((row, rowIndex) => {
+		matrix.forEach((row, rowIndex) => {
 			row.forEach((cell, colIndex) => {
-				this.drawCell(rowIndex, colIndex, cellSize, cell.color);
+				this.drawCell(rowIndex, colIndex, cellSize, this._cellColor.get(cell));
 			});
 		});
 	}
