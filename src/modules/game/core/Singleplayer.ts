@@ -14,24 +14,11 @@ export default class SingleplayerMode extends Mode {
         this.init();
     }
 
-    init(): void {
-        const Bus = GameEventBus;
-        Bus.subscribe('PRESSED:UP', () => {
-            console.log("YOU PRESSED UP");
-        }, this);
-        Bus.subscribe('PRESSED:DOWN', () => {
-            console.log("YOU PRESSED DOWN");
-        }, this);
-        Bus.subscribe('PRESSED:LEFT', () => {
-            console.log("YOU PRESSED LEFT");
-        }, this);
-        Bus.subscribe('PRESSED:RIGHT', () => {
-            console.log("YOU PRESSED RIGHT");
-        }, this);
+    private init(): void {
         this.addPlayer(new Player());
     }
 
-    addPlayer(player: Player): void {
+    public addPlayer(player: Player): void {
         this._players.push(player);
     }
 

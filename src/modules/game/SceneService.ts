@@ -1,14 +1,24 @@
 'use strict';
-
 import GameField from "./GameField";
+import Player from "./Player";
+import {FIELD_SIZE, PLAYER_MAP} from "./defines";
 
 export default class SceneService {
-	_scene: HTMLCanvasElement;
-	_ctx: CanvasRenderingContext2D;
-
+	private _scene: HTMLCanvasElement;
+	private _ctx: CanvasRenderingContext2D;
+	private readonly _palyerColor: Map<number, string>;
 	constructor(scene: HTMLCanvasElement) {
 		this._scene = scene;
 		this._ctx = scene.getContext('2d');
+		this._palyerColor = new Map();
+		this.initPlayerColor();
+	}
+
+	private initPlayerColor(): void {
+		PLAYER_MAP.forEach((k, v) => {
+			this._palyerColor.set(v, k);
+		});
+		// console.log(this._palyerColor);
 	}
 
 	public clear(): void {
@@ -34,6 +44,15 @@ export default class SceneService {
 				this.drawCell(rowIndex, colIndex, cellSize, cell.color);
 			});
 		});
+	}
+
+	public drawPlayer(player: Player): void {
+		const point = player.position;
+		const scaleFactor = this.width > this.height ? this.height : this.width;
+		const scale = scaleFactor / FIELD_SIZE;
+		
+		point.x *= scale;
+		point.y *= scale;
 	}
 
 	private drawCell(row: number, col: number, size: number, color: string): void {

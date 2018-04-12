@@ -37,7 +37,7 @@ class EventBus {
 				});
 			}, Promise.resolve(events[0].callback.bind(events[0].context, ...args)()));
 		} else
-		return Promise.resolve();
+			return Promise.resolve();
 	}
 
 	/**
