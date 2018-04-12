@@ -51,7 +51,9 @@ export default class Player {
     }
 
     move () {
-        
+        let prevX = this._position.x;
+        let prevY = this._position.y;
+
         switch(this._direction) { 
             case Direction.UP: { 
                 this._position.y -= this._velocity;
@@ -76,12 +78,15 @@ export default class Player {
         } 
 
         const Bus = GameEventBus;
-        if (((this._position.x-50)%100 == 0) && ((this._position.y-50)%100 == 0)) {
+         if (((this._position.x-50)%100 == 0) && ((this._position.y-50)%100 == 0)) {
             // TODO: Change on define
             let x_idx = (this._position.x-50) / 100;
             let y_idx = (this._position.y-50) / 100;
 
-            Bus.emit('STEPPED',[this._id, x_idx, y_idx]);
+            if ((prevX != this._position.x) || (prevY != this._position.y)) {
+                Bus.emit('STEPPED',[this._id, x_idx, y_idx]);
+            }
+
             this.directionSwtich();
         }
     }

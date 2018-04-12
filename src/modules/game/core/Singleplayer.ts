@@ -22,7 +22,7 @@ export default class SingleplayerMode extends Mode {
     }
 
     private init(): void {
-        this.addPlayer(new Player(1));
+        this.addPlayer(new Player(2));
 
         //setInterval(this.gameModelTick.bind(this), this.tickDelay);
         this.startGame();

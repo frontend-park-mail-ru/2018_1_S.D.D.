@@ -18,6 +18,11 @@ export default class GameField {
         //this._levelMatrix.fill(undefined).map(() => Array<number>(range).fill(0)); 
         this._idsMatrix = Array(range).fill([]).map(() => Array(range).fill(0));
 
+        this._idsMatrix[0][0] = 1;
+        this._idsMatrix[0][7] = 2;
+        this._idsMatrix[7][7] = 3;
+        this._idsMatrix[7][0] = 4;
+
         const Bus = GameEventBus;
         Bus.subscribe('STEPPED',(id, x_idx, y_idx) => { this.markGameFieldCell(y_idx, x_idx, id) }, this);
     }
@@ -28,10 +33,22 @@ export default class GameField {
 
     public markGameFieldCell(i, j: number, id: number): void {
         console.log(i,j,id);
-        this._idsMatrix[i][j] = id;
+        if (this._idsMatrix[i][j] != id) {
+            this._idsMatrix[i][j] = id;
+        } else {
+            this.checkArea(i,j, id);
+        }
+            
         console.log( this._idsMatrix);
     }
 
+    private CheckArea(i, j: number, id: number): void {
+        let matrix = this._idsMatrix;
+
+        const stack = [];
+
+
+    }
     /** 
      * Maps ids matrix to color matrix (maybe not here)
      * 
