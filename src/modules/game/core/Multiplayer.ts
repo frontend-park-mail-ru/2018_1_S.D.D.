@@ -6,18 +6,9 @@ import GameField from '../GameField';
 import Timer from '../Timer';
 import InitialPlayerData from '../InitialPlayerData';
 
-export default class SingleplayerMode extends Mode {
-    readonly _players: Array<Player>;
-    readonly _GameField: GameField;
-    readonly _Timer: Timer;
-    gameFieldRange: number;
-
+export default class MultiplayerMode extends Mode {
     constructor (gameFieldRange: number = 8) {
-        super()
-        this.gameFieldRange = gameFieldRange;
-        this._players = new Array<Player>();
-        this._Timer = new Timer();
-        this._GameField = new GameField(this.gameFieldRange);
+        super(gameFieldRange);
         this.init();
     }
 

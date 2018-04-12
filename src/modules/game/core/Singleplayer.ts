@@ -7,17 +7,9 @@ import GameField from '../GameField';
 import Timer from '../Timer';
 
 export default class SingleplayerMode extends Mode {
-    _players: Array<Player>;
-    _GameField: GameField;
-    _Timer: Timer;
-    gameFieldRange: number; 
     
     constructor (Scene: Scene, gameFieldRange: number = 8) {
-        super();
-        this.gameFieldRange = gameFieldRange;
-        this._players = new Array<Player>();
-        this._Timer = new Timer();
-        this._GameField = new GameField(this.gameFieldRange);
+        super(gameFieldRange);
         this.init();
     }
 

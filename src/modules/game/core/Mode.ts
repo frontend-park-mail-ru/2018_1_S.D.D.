@@ -4,11 +4,15 @@ import GameField from '../GameField';
 import Timer from '../Timer';
 
 export default abstract class Mode {
-    readonly _players: Array<Player>;
-    readonly _GameField: GameField;
-    readonly _Timer: Timer;
+    protected readonly _players: Array<Player>;
+    protected readonly _GameField: GameField;
+    protected readonly _Timer: Timer;
+    protected gameFieldRange: number;
 
-    constructor() {
-        
+    constructor (gameFieldRange: number) {
+        this.gameFieldRange = gameFieldRange;
+        this._players = new Array<Player>();
+        this._Timer = new Timer();
+        this._GameField = new GameField(this.gameFieldRange);
     }
 }
