@@ -12,7 +12,7 @@ export default class Player {
         this._score = 0;
     }
 
-    set score (score: number) {
+    set score (score: number): void {
         this._score = score;
     }
 
