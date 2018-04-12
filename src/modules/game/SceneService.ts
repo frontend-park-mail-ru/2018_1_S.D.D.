@@ -49,18 +49,20 @@ export default class SceneService {
 	}
 
 	public drawPlayer(player: Player): void {
+		this._ctx.strokeStyle = this._palyerColor.get(player.id);
 		const point = player.position;
 		const scaleFactor = this.width > this.height ? this.height : this.width;
 		const scale = scaleFactor / FIELD_SIZE;
 		
-		const x = point.x * scale;
-		const y = point.y * scale;
+		const x = point.x * scale-3;
+		const y = point.y * scale-3;
 
 		const radius = this.height / (this._cellCount * 2) * scale;
 		const color = this._palyerColor.get(player.id);
 
+		this._ctx.beginPath(); 
 		this._ctx.arc(x, y, radius, 0, 2 * Math.PI);
-		this._ctx.stroke();
+		this._ctx.fill();
 	}
 
 	private drawCell(row: number, col: number, size: number, color: string): void {
