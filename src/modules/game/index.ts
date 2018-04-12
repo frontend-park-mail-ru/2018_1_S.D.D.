@@ -1,23 +1,24 @@
 'use strict';
 
-import IMode from './core/IMode';
+import IMode from './core/Mode';
 import SingleplayerMode from './core/Singleplayer';
-import MultiplayerMode from './core/Multiplayer';
-import SceneService from './core/SceneService';
+//import MultiplayerMode from './core/Multiplayer';
+import SceneService from './SceneService';
 
 export default class GameManager {
 	_Scene: SceneService;
 	_mode: IMode;
 
 	constructor(scene: HTMLCanvasElement, room: string) {
-		this._Scene = new SceneService(scene);
+		const Scene = new SceneService(scene);
+		this._Scene = Scene;
 
 		if (!room || room === '') {
-			this._mode = new SingleplayerMode();
+			this._mode = new SingleplayerMode(Scene);
 		} else {
-			this._mode = new MultiplayerMode();
+			//this._mode = new MultiplayerMode(Scene);
 		}
 
-		this._Scene.clear();
+		this._Scene.drawField();
 	}
 }
