@@ -1,4 +1,5 @@
 'use strict';
+import GameField from "./GameField";
 
 export default class SceneService {
 	_scene: HTMLCanvasElement;
