@@ -5,6 +5,7 @@ import Player from '../Player';
 import Scene from '../SceneService';
 import GameField from '../GameField';
 import Timer from '../Timer';
+import GameEventBus from '../GameEventBus';
 
 export default class SingleplayerMode extends Mode {
     
@@ -14,6 +15,19 @@ export default class SingleplayerMode extends Mode {
     }
 
     init(): void {
+        const Bus = GameEventBus;
+        Bus.subscribe('PRESSED:UP', () => {
+            console.log("YOU PRESSED UP");
+        }, this);
+        Bus.subscribe('PRESSED:DOWN', () => {
+            console.log("YOU PRESSED DOWN");
+        }, this);
+        Bus.subscribe('PRESSED:LEFT', () => {
+            console.log("YOU PRESSED LEFT");
+        }, this);
+        Bus.subscribe('PRESSED:RIGHT', () => {
+            console.log("YOU PRESSED RIGHT");
+        }, this);
         this.addPlayer(new Player());
     }
 

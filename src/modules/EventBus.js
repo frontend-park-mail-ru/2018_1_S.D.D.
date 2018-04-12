@@ -28,12 +28,15 @@ class EventBus {
 		
 		const events = this._eventsList[key];
 		if (events && events.length > 0) {
+			if (events.length === 1) {
+				return Promise.resolve(events[0].callback.bind(events[0].context, ...args)());
+			}
 			return events.reduce((prevEvent, curEvent) => {
 				return prevEvent.then(() => {
 					return Promise.resolve(curEvent.callback.bind(curEvent.context, ...args)());
 				});
 			}, Promise.resolve(events[0].callback.bind(events[0].context, ...args)()));
-		}
+		} else
 		return Promise.resolve();
 	}
 

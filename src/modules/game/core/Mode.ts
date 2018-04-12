@@ -2,6 +2,7 @@
 import Player from '../Player';
 import GameField from '../GameField';
 import Timer from '../Timer';
+import InputController from '../InputController';
 
 export default abstract class Mode {
     protected readonly _players: Array<Player>;
@@ -14,5 +15,6 @@ export default abstract class Mode {
         this._players = new Array<Player>();
         this._Timer = new Timer();
         this._GameField = new GameField(this.gameFieldRange);
+        new InputController();
     }
 }
