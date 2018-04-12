@@ -1,6 +1,6 @@
 'use strict';
 
-export default class InitialPlayerData {
+export default interface InitialPlayerData {
     id: number;
     color: string;
 };

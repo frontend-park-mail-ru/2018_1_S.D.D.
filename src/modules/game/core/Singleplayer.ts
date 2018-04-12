@@ -10,8 +10,23 @@ export default class SingleplayerMode extends Mode {
     _players: Array<Player>;
     _GameField: GameField;
     _Timer: Timer;
-
-    constructor(scene: Scene) {
+    gameFieldRange: number; 
+    
+    constructor (Scene: Scene, gameFieldRange: number = 8) {
         super();
+        this.gameFieldRange = gameFieldRange;
+        this._players = new Array<Player>();
+        this._Timer = new Timer();
+        this._GameField = new GameField(this.gameFieldRange);
+        this.init();
     }
+
+    init(): void {
+        this.addPlayer(new Player());
+    }
+
+    addPlayer(player: Player): void {
+        this._players.push(player);
+    }
+
 }

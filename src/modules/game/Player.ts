@@ -6,13 +6,11 @@ export default class Player {
     private _color: string;
     private _score: number;
 
-    constructor (initData: InitialPlayerData) {
-        this._id = initData.id;
-        this._color = initData.color;
+    constructor () {
         this._score = 0;
     }
 
-    set score (score: number) {
+    set score(score: number) {
         this._score = score;
     }
 

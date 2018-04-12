@@ -22,7 +22,7 @@ export default class SingleplayerMode extends Mode {
     }
 
     init(): void {
-        this.addPlayer(new Player(new InitialPlayerData()));
+        this.addPlayer(new Player());
     }
 
     addPlayer(player: Player): void {
