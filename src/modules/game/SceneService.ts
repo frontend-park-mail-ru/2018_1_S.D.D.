@@ -74,10 +74,10 @@ export default class SceneService {
 		this._ctx.closePath();
 		this._ctx.clip();
 
-		const imgSize = CELL_SIZE * scale;
+		const imgSize = radius * 2 - 4; 
+		const imgPosX = x - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2; 
+		const imgPosY = y - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
 		
-		const imgPosX = x - CELL_SIZE * scale / 2;
-		const imgPosY = y - CELL_SIZE * scale / 2;
 		this._ctx.drawImage(this.avatarImg, imgPosX, imgPosY, imgSize, imgSize);
 		this._ctx.restore();
 	}

@@ -1,5 +1,6 @@
 'use strict';
 import GameEventBus from './GameEventBus';
+import Point from './Point';
 
 export default class GameField {
     private _idsMatrix: Array<Array<number>>;
@@ -31,6 +32,39 @@ export default class GameField {
         return this._idsMatrix;
     }
 
+    // remember: Point(x,y) => x - col, y - row
+    private isDotValid(dotToCheck, id): boolean {
+        if ((dotToCheck.x > 0 && dotToCheck.x < 7) && // not on first or last col
+            (dotToCheck.y > 0 && dotToCheck.y < 7) && // not on first or last row
+            (this._idsMatrix[dotToCheck.y][dotToCheck.x] != id)) // not obtained by that player
+            return true;
+        else 
+            return false; 
+    }
+
+    private getArrayOfPointsToCheck(i, j, id) {
+        let array = [];
+
+        let dotToCheck: Point; // remember: Point(x,y) => x - col, y - row
+
+        // checking top left varint
+        //  *00
+        //  010
+        //  000
+        dotToCheck = new Point(j-1,i-1);
+        if (this.isDotValid(dotToCheck,id)) {
+
+        }
+
+
+    }
+
+    private checkArea(i, j: number, id: number): void {
+        let matrix = this._idsMatrix;
+
+        const stack = [];
+    }
+
     public markGameFieldCell(i, j: number, id: number): void {
         console.log(i,j,id);
         if (this._idsMatrix[i][j] != id) {
@@ -42,13 +76,7 @@ export default class GameField {
         console.log( this._idsMatrix);
     }
 
-    private CheckArea(i, j: number, id: number): void {
-        let matrix = this._idsMatrix;
-
-        const stack = [];
-
-
-    }
+    
     /** 
      * Maps ids matrix to color matrix (maybe not here)
      * 

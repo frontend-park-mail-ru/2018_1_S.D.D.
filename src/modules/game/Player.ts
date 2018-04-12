@@ -5,13 +5,13 @@ import GameEventBus from './GameEventBus';
 import {Direction} from './Direction';
 
 export default class Player {
-    private _id: number;
-    private _color: string;
-    private _score: number;
-    private _direction: Direction;
-    private _changeDirection: Direction;
-    private _position: Point;
-    private _velocity: number = 4;
+    protected _id: number;
+    protected _color: string;
+    protected _score: number;
+    protected _direction: Direction;
+    protected _changeDirection: Direction;
+    protected _position: Point;
+    protected _velocity: number = 4;
 
     constructor (id:number) {
         this._id = id;
@@ -37,7 +37,6 @@ export default class Player {
             this._position = new Point(50,750);
         }
 
-        this._changeDirection = this._direction;
 
         this.subscribeOnPlayerInput()
     }
