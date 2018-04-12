@@ -17,22 +17,22 @@ export default class Player {
         this._id = id;
         this._score = 0;
 
-        if (this._id == 0) {
+        if (this._id == 1) {
             this._direction = Direction.RIGHT;
             this._position = new Point(50,50);
         }
 
-        if (this._id == 1) {
+        if (this._id == 2) {
             this._direction = Direction.DOWN;
             this._position = new Point(750,50);
         }
 
-        if (this._id == 2) {
+        if (this._id == 3) {
             this._direction = Direction.LEFT;
             this._position = new Point(750,750);
         }
 
-        if (this._id == 3) {
+        if (this._id == 4) {
             this._direction = Direction.UP;
             this._position = new Point(50,750);
         }
@@ -51,6 +51,7 @@ export default class Player {
     }
 
     move () {
+        
         switch(this._direction) { 
             case Direction.UP: { 
                 this._position.y -= this._velocity;
@@ -74,9 +75,13 @@ export default class Player {
             }  
         } 
 
-        console.log(this._direction);
-
+        const Bus = GameEventBus;
         if (((this._position.x-50)%100 == 0) && ((this._position.y-50)%100 == 0)) {
+            // TODO: Change on define
+            let x_idx = (this._position.x-50) / 100;
+            let y_idx = (this._position.y-50) / 100;
+
+            Bus.emit('STEPPED',[this._id, x_idx, y_idx]);
             this.directionSwtich();
         }
     }

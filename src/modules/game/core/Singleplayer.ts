@@ -22,7 +22,7 @@ export default class SingleplayerMode extends Mode {
     }
 
     private init(): void {
-        this.addPlayer(new Player(0));
+        this.addPlayer(new Player(1));
 
         //setInterval(this.gameModelTick.bind(this), this.tickDelay);
         this.startGame();
@@ -44,7 +44,7 @@ export default class SingleplayerMode extends Mode {
         this._players[0].move();
 
         this.Scene.clear();
-        this.Scene.drawField();
+        this.Scene.drawField(this._GameField.getGameMatrix());
         this.Scene.drawPlayer(this._players[0]);
         
         //console.log(this._players[0].)

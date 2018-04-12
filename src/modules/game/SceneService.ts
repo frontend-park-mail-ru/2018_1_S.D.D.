@@ -42,7 +42,7 @@ export default class SceneService {
 		const cells = [];
 		matrix.forEach((row, rowIndex) => {
 			row.forEach((cell, colIndex) => {
-				this.drawCell(rowIndex, colIndex, cellSize, this._cellColor.get(cell));
+				this.drawCell(colIndex, rowIndex, cellSize, this._cellColor.get(cell));
 			});
 		});
 	}

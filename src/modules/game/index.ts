@@ -19,6 +19,6 @@ export default class GameManager {
 			//this._mode = new MultiplayerMode(Scene);
 		}
 
-		this._Scene.drawField();
+		//this._Scene.drawField();
 	}
 }
