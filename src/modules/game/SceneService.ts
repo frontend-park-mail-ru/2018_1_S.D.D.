@@ -50,14 +50,14 @@ export default class SceneService {
 		const cells = [];
 		matrix.forEach((row, rowIndex) => {
 			row.forEach((cell, colIndex) => {
-				this.drawCell(rowIndex, colIndex, cellSize, this._cellColor.get(cell));
+				this.drawCell(colIndex, rowIndex, cellSize, this._cellColor.get(cell));
 			});
 		});
 	}
 
 	public drawPlayer(player: Player): void {
 		const playerColor = this._palyerColor.get(player.id);
-		this._ctx.strokeStyle = playerColor;
+		this._ctx.fillStyle = playerColor;
 		this.bg(playerColor);
 		const point = player.position;
 		const scaleFactor = this.width > this.height ? this.height : this.width;
