@@ -13,6 +13,7 @@ class Router {
 	 */
 	constructor() {
 		this.routes = [];
+		this._confirm = false;
 		window.addEventListener('popstate', () => {
 			this.loadPage(location.pathname);
 		}, false);
@@ -38,16 +39,33 @@ class Router {
 		return window.location.pathname;
 	}
 
+	requestConfirm(message) {
+		this._confirm = true;
+		this._confirmMessage = message;
+	}
+
 	/**
 	 * Redirect to new page specified by urlPath
 	 * 
 	 * @param {string} urlPath Url path to page 
 	 */
 	go(urlPath, pushState = true) {
-		if (urlPath !== this.getCurrentUrlPath() && pushState) {
-			window.history.pushState({}, '', urlPath);
+		const go = () => {
+			if (urlPath !== this.getCurrentUrlPath() && pushState) {
+				window.history.pushState({}, '', urlPath);
+			}
+			this.loadPage(urlPath);
+		};
+
+		if (this._confirm) {
+			const c = confirm(this._confirmMessage);
+			if (c) {
+				this._confirm = false;
+				go();
+			}
+		} else {
+			go();
 		}
-		this.loadPage(urlPath);
 	}
 
 	/**
@@ -56,8 +74,20 @@ class Router {
 	 * @param {string} urlPath Url path to page
 	 */
 	re(urlPath) {
-		window.history.replaceState({}, '', urlPath);
-		this.loadPage(urlPath);
+		const go = () => {
+			window.history.replaceState({}, '', urlPath);
+			this.loadPage(urlPath);
+		};
+
+		if (this._confirm) {
+			const c = confirm(this._confirmMessage);
+			if (c) {
+				this._confirm = false;
+				go();
+			}
+		} else {
+			go();
+		}
 	}
     
 	/**

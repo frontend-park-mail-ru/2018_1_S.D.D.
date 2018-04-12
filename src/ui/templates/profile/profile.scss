@@ -1,79 +1,66 @@
-.profile__wrapper {
-	margin: auto;
-	text-align: center;
-}
+@import '../../styles/constants';
 
-.profile__nickname {
-	display: block;
-	text-align: center;
-	font-size: 32px;
-	font-weight: bold;
-	color: #fff;
-	margin: 40px 0;
-}
+.profile {
+	&__wrapper {
+		margin: auto;
+		text-align: center;
+	}
+	
+	&__nickname {
+		display: block;
+		text-align: center;
+		font-size: $font-size-big;
+		font-weight: bold;
+		color: $color-light;
+		margin: 40px 0;
+	}
+	
+	&__info-holder {
+		font-size: $font-size-common;
+		color: $color-light;
+		height: auto;
+		margin: auto;
+		margin-bottom: 5px;
 
-.profile__info-holder {
-	font-size: 22px;
-	color: #fff;
-	height: auto;
-	margin: auto;
-	margin-bottom: 5px;
-}
+		&:hover {
+			background: rgba(162, 169, 211, 0.5);
+		}
 
-.profile__info-holder:hover {
-	background: rgba(162, 169, 211, 0.5);
+		&__row {
+			width: 190px;
+			display: inline-block;
+			padding: 15px 0px;
+		}
+	}
 }
+.info {
+	&__key {
+		margin-left: 10px;
+		text-align: left;
+	}
+	
+	&__value {
+		font-weight: bold;
+		text-align: right;
+	
+		&_good {
+			background: $color-good;
+		}
+		
+		&_bad {
+			background: $color-bad;
+		}
 
-.profile__info-holder__row {
-	width: 190px;
-	display: inline-block;
-	padding: 15px 0px;
-}
-
-.info__key {
-	margin-left: 10px;
-	text-align: left;
-}
-
-.info__value {
-	font-weight: bold;
-	text-align: right;
-}
-
-.info__value_good {
-	background: rgb(25, 128, 42);
-}
-
-.info__value_bad {
-	background: rgb(128, 25, 25);
-}
-
-.info__value_marker {
-	border-radius: 100px;
-	padding: 6px 12px;
-}
-
-.profile__close {
-	width: 100px;
-	text-align: center;
-	margin: auto;
-}
-
-.profile__close__link {
-    color: #16174e;
-	text-decoration: none;
-	background: #7db9fd;
-	margin: 20px auto;
-}
-
-.profile__close__link:hover {
-	text-decoration: none;
-	background: #fff;
+		&_marker {
+			border-radius: 100px;
+			padding: 6px 12px;
+		}
+	}
 }
 
 @media screen and (max-width: 750px) {
 	.profile__nickname {
-		font-size: 26px;
+		font-size: $font-size-common;
 		margin: 10px auto;
 	}
 
@@ -82,6 +69,6 @@
 	}
 
     .profile__info-holder {
-		font-size: 18px;
+		font-size: $font-size-common;
 	}
 }
