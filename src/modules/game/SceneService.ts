@@ -60,6 +60,7 @@ export default class SceneService {
 		const color = this._palyerColor.get(player.id);
 
 		this._ctx.arc(x, y, radius, 0, 2 * Math.PI);
+		this._ctx.stroke();
 	}
 
 	private drawCell(row: number, col: number, size: number, color: string): void {
