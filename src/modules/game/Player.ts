@@ -37,6 +37,7 @@ export default class Player {
             this._position = new Point(50,750);
         }
 
+        this._changeDirection = this._direction;
 
         this.subscribeOnPlayerInput()
     }
