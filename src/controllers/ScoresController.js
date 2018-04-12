@@ -9,10 +9,10 @@ class ScoresController extends Controller {
 	 * Creates instance of ScoresController
 	 */
 	constructor() {
+		super();
 		if (ScoresController.__instance) {
 			return ScoresController.__instance;
 		}
-		super();
 		ScoresController.__instance = this;
 
 		this.ScoresModel = new ScoresModel();

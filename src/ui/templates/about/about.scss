@@ -1,71 +1,61 @@
+@import '../../styles/constants';
+
 .about-us {
 	margin: 20px auto;
 	text-align: center;
-}
 
-.about-us__header {
-	color: #fff;
-	font-weight: bold;
-	font-size: 22px;
-}
+	&__header {
+		color: $color-light;
+		font-weight: bold;
+		font-size: $font-size-big;
+	}
 
-.about-us__members {
-	margin: 20px auto;
+	&__members {
+		margin: 20px auto;
+	}
 }
 
 .team-member {
 	display: inline-block;
 	margin: 50px 50px 0 50px;
+
+	&__img {
+		width: $about-avatar-size;
+		height: $about-avatar-size;
+		border-radius: 500px;
+		border: 2px solid $color-light;
+		border-bottom: 7px solid $color-light;
+	}
+
+	&__description {
+		color: $color-light;
+	}
+
+	&__description__name {
+		font-size: $font-size-big;
+		margin: 20px 0 10px 0;
+	}
+
+	&__description__work {
+		font-size: $font-size-common;
+	}
 }
 
-.team-member__img {
-	width: 200px;
-	height: 200px;
-	border-radius: 500px;
-	border: 2px solid #fff;
-	border-bottom: 7px solid #fff;
-}
-
-.team-member__description {
-	color: #fff;
-}
-
-.team-member__description__name {
-	font-size: 32px;
-	margin: 20px 0 10px 0;
-}
-
-.team-member__description__work {
-	font-size: 16px;
-}
-
-.about__link {
-    color: #16174e;
-    text-decoration: none;
-}
-
-.about__link_btn {
-    background: #7db9fd;
-}
-
-.about__link_btn:hover {
-    background: #fff;
-}
-
-.contakt-link {
+.contact-link {
 	display: inline-block;
 	text-decoration: none;
-	height: 32px;
-	width: 32px;
+	height: $contact-size;
+	width: $contact-size;
 	margin: 20px;
-}
 
-.contakt-link:hover {
-	text-decoration: underline;
-}
 
-.contact-link__icon {
-	height: 32px;
+	.contakt-link:hover {
+		text-decoration: underline;
+	}
+
+	&__icon {
+		height: $contact-size;
+	}
 }
 
 @media screen and (max-width: 750px) {

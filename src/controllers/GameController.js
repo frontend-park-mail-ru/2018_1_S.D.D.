@@ -26,10 +26,12 @@ class GameController extends Controller {
 	}
 
 	actionIndex(room) {
-		this.GameView.constructPage().then(() => {
-			const scene = this.GameView.getScene();
-			this.GameManager = new Game(scene, room);
-		});
+		this.ServiceManager.Router.requestConfirm('Are you sure you wanna leave this page? Game results wont be save!');
+		this.GameView.constructPage()
+			.then(() => {
+				const scene = this.GameView.getScene();
+				this.GameManager = new Game(scene, room);
+			});
 	}
 	
 }

@@ -1,0 +1,45 @@
+// animation
+$animation-delay: .5s;
+$animation-disabled: .0s;
+$animation-template: .8s;
+
+//colors
+$bg-grad-start: rgb(47, 22, 78);
+$bg-grad-end: rgb(125, 185, 253);
+$color-light: rgb(255, 255, 255);
+$btn-bg-common: rgb(125, 185, 253);
+$btn-color-common: rgb(22, 23, 78);
+$header-loggedin-menu-btn: rgba(162, 169, 211, 0.2);
+$header-loggedin-menu-btn-hov: rgba(162, 169, 211, 0.5);
+$header-loggedin-submenu-btn-hov: rgba(162, 169, 211, 0.5);
+$header-loggedin-submenu-filled: rgba(208, 212, 235, 0.6);
+$header-loggedin-submenu-filled-hov: rgba(208, 212, 235, 1);
+$menu-background-hovered: rgba(162, 169, 211, 0.5);
+$btn-disabled-bg: rgb(189, 190, 192);
+$btn-disabled-color: rgb(112, 112, 112);
+$color-good: rgb(25, 128, 42);
+$color-bad: rgb(128, 25, 25);
+
+//sizes
+$header-height-big: 90px;
+$header-height-small: 80px;
+$about-avatar-size: 200px;
+$contact-size: 32px;
+$header-logo-size: 40px;
+$header-logo-size-small: 30px;
+$header-logo-y-margins: 20px;
+$header-logo-y-margins-small: 25px;
+$header-avatar-size: 40px;
+$header-avatar-size-small: 40px;
+$logo-size: 100px;
+$logo-size-small: 50px;
+$menu-font-size: 50px;
+$menu-font-size-small: 30px;
+$avatar-size: 300px;
+$avatar-size-small: 150px;
+
+//fonts
+$font-family: Arial, Helvetica, sans-serif;
+$font-size-big: 32px;
+$font-size-common: 18px;
+$font-size-small: 12px;
