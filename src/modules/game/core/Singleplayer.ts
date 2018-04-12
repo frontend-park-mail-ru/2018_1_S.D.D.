@@ -13,11 +13,11 @@ export default class SingleplayerMode extends Mode {
         this.init();
     }
 
-    init(): void {
+    private init(): void {
         this.addPlayer(new Player());
     }
 
-    addPlayer(player: Player): void {
+    public addPlayer(player: Player): void {
         this._players.push(player);
     }
 

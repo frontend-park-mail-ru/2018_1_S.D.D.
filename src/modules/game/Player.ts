@@ -19,6 +19,14 @@ export default class Player {
         this._score = score;
     }
 
+    get position(): Point {
+        return this._position;
+    }
+
+    get id(): number {
+        return _id;
+    }
+
     get score (): number {
         return this._score;
     }

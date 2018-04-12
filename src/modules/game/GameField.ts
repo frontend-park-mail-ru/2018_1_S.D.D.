@@ -10,7 +10,7 @@ export default class GameField {
         this.init(range);
     }
 
-    public init (range: number = 8): void {
+    private init (range: number = 8): void {
         this._idsMatrix.fill(undefined).map(() => Array<number>(range).fill(0));
         // think
         this._levelMatrix.fill(undefined).map(() => Array<number>(range).fill(0));        
