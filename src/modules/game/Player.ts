@@ -87,6 +87,14 @@ export default class Player {
         this._score = score;
     }
 
+    get velocity(): number {
+        return this._velocity;
+    }
+
+    set velocity(velocity: number) {
+        this._velocity = velocity;
+    }
+
     get position(): Point {
         return this._position;
     }
