@@ -1,6 +1,8 @@
 #Dependency
 node_modules/
-public/
+public/images/
+public/bundle.js
+public/index.html
 
 #ide
 .vscode/
