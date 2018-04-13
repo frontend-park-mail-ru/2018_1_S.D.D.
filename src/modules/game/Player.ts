@@ -12,11 +12,13 @@ export default class Player {
     protected _changeDirection: Direction;
     protected _position: Point;
     protected _velocity: number = 4;
+    protected _name: string;
 
-    constructor (id:number) {
+    constructor (id:number, name?: string) {
         this._id = id;
         this._score = 0;
-
+        this._name = name;
+        
         if (this._id == 1) {
             this._direction = Direction.RIGHT;
             this._position = new Point(50,50);
@@ -84,7 +86,7 @@ export default class Player {
             let y_idx = (this._position.y-50) / 100;
 
             if ((prevX != this._position.x) || (prevY != this._position.y)) {
-                Bus.emit('STEPPED',[this._id, x_idx, y_idx]);
+                Bus.emit('STEPPED', [this._id, x_idx, y_idx]);
             }
 
             this.directionSwtich();
@@ -99,6 +101,14 @@ export default class Player {
         this._score = score;
     }
 
+    get velocity(): number {
+        return this._velocity;
+    }
+
+    set velocity(velocity: number) {
+        this._velocity = velocity;
+    }
+
     get position(): Point {
         return this._position;
     }
@@ -109,5 +119,9 @@ export default class Player {
 
     get score (): number {
         return this._score;
+    }
+
+    get name(): string {
+        return this._name;
     }
 }
