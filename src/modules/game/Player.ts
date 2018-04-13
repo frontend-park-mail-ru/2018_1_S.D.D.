@@ -86,7 +86,7 @@ export default class Player {
             let y_idx = (this._position.y-50) / 100;
 
             if ((prevX != this._position.x) || (prevY != this._position.y)) {
-                Bus.emit('STEPPED',[this._id, x_idx, y_idx]);
+                Bus.emit('STEPPED', [this._id, x_idx, y_idx]);
             }
 
             this.directionSwtich();
@@ -99,6 +99,14 @@ export default class Player {
 
     set score(score: number) {
         this._score = score;
+    }
+
+    get velocity(): number {
+        return this._velocity;
+    }
+
+    set velocity(velocity: number) {
+        this._velocity = velocity;
     }
 
     get position(): Point {

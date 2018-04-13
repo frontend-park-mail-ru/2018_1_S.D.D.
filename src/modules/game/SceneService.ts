@@ -3,6 +3,8 @@ import GameField from "./GameField";
 import Player from "./Player";
 import {FIELD_SIZE, PLAYER_MAP, CELL_COUNT, CELL_SIZE, CELL_COLOR_MAP} from "./defines";
 import * as defaultAvatar from './bin/1.svg';
+import BonusObject from "./bonus/BonusObject";
+import Point from "./Point";
 
 export default class SceneService {
 	private _scene: HTMLCanvasElement;
@@ -64,7 +66,7 @@ export default class SceneService {
 		const x = point.x * scale-3;
 		const y = point.y * scale-3;
 
-		const radius = this.height / (this._cellCount * 2) * scale;
+		const radius = this.height / (this._cellCount * 2) * scale - 5;
 		const color = this._palyerColor.get(player.id);
 		
 		this._ctx.save();
@@ -74,10 +76,9 @@ export default class SceneService {
 		this._ctx.closePath();
 		this._ctx.clip();
 
-		const imgSize = radius * 2 - 4; 
-		const imgPosX = x - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2; 
+		const imgSize = radius * 2 - 4;
+		const imgPosX = x - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
 		const imgPosY = y - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
-		
 		this._ctx.drawImage(this.avatarImg, imgPosX, imgPosY, imgSize, imgSize);
 		this._ctx.restore();
 	}
@@ -118,10 +119,22 @@ export default class SceneService {
 			start += imgSize + maxNameHeight;
 		});
 	}
+	
+	public drawBonus(Bonus: BonusObject) {
+		if (Bonus.isActive()) {
+			const Coordinates = Bonus.position();
+			const scaleFactor = this.width > this.height ? this.height : this.width;
+			const scale = scaleFactor / FIELD_SIZE;
+			const imgSize = (this.height / (this._cellCount * 2) * scale - 5) * 1.3;
+			const imgPosX = Coordinates.x * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
+			const imgPosY = Coordinates.y * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
+			this._ctx.drawImage(Bonus.getSkin(), imgPosX, imgPosY, imgSize, imgSize);
+		}
+	}
 
 	private drawCell(row: number, col: number, size: number, color: string): void {
 		const drawingSize = size - 5;
-		this.bg(color, 0.7);
+		this.bg(color, 0.6);
 		this._ctx.fillRect(row * size, col * size, drawingSize, drawingSize);
 	}
 
