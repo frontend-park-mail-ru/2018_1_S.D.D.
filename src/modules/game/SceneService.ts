@@ -79,7 +79,9 @@ export default class SceneService {
 		const imgPosX = x-imgSize/2;
 		//const imgPosY = y - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
 		const imgPosY = y-imgSize/2;
-		this._ctx.drawImage(player.avatar, imgPosX, imgPosY, imgSize, imgSize);
+		if (player.avatar.naturalWidth !== 0) {
+			this._ctx.drawImage(player.avatar, imgPosX, imgPosY, imgSize, imgSize);
+		}
 		this._ctx.restore();
 	}
 
@@ -123,8 +125,10 @@ export default class SceneService {
 			this._ctx.fill();
 			this._ctx.closePath();
 			this._ctx.clip();
-			this._ctx.drawImage(player.avatar, startX - imgSize, start - maxNameHeight * 1.5, imgSize, imgSize);
-			this._ctx.restore();
+			if (player.avatar.naturalWidth !== 0) {
+				this._ctx.drawImage(player.avatar, startX - imgSize, start - maxNameHeight * 1.5, imgSize, imgSize);
+			}
+				this._ctx.restore();
 			this._ctx.fillText(player.name, startX + contentMargin, start);
 			this._ctx.fillText(player.score.toString(), startX + 2*contentMargin + maxTextWidth, start);
 
@@ -144,7 +148,9 @@ export default class SceneService {
 			const imgPosX = (Coordinates.x * CELL_SIZE + 17) * scale;
 			//const imgPosY = Coordinates.y * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
 			const imgPosY = (Coordinates.y * CELL_SIZE + 17) * scale;
-			this._ctx.drawImage(Bonus.getSkin(), imgPosX, imgPosY, imgSize, imgSize);
+			if (Bonus.getSkin().naturalWidth !== 0) {
+				this._ctx.drawImage(Bonus.getSkin(), imgPosX, imgPosY, imgSize, imgSize);
+			}
 		}
 	}
 
