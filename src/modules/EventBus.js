@@ -86,6 +86,18 @@ class EventBus {
 	}
 
 	/**
+	 * Remove all function from subscribtion.
+	 * 
+	 * @param {string} key Event name.
+	 */
+	unSubscribeAll() {
+		return Promise.resolve(() => {
+			delete this._eventsList;
+			this._eventsList = {};
+		});
+	}
+
+	/**
 	 * Check if event already exists in list.
 	 * 
 	 * @param {string} key Key of event to check.

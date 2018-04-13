@@ -12,10 +12,11 @@ export default class GameManager {
 
 	constructor(scene: HTMLCanvasElement, room: string) {
 		const userAvatar = new ServiceManager().UserStorage.getData('avatar');
-		this.Scene = new SceneService(scene, userAvatar);
+		this.Scene = new SceneService(scene);
 
 		if (!room || room === '') {
-			this.Mode = new SingleplayerMode(this.Scene);
+			const Users = [{'avatar': userAvatar}]
+			this.Mode = new SingleplayerMode(this.Scene, Users);
 		} else {
 			//this._mode = new MultiplayerMode(Scene);
 		}

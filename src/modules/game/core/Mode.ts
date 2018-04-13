@@ -5,16 +5,16 @@ import Timer from '../Timer';
 import InputController from '../InputController';
 
 export default abstract class Mode {
-    protected readonly _players: Array<Player>;
-    protected readonly _GameField: GameField;
+    static _players: Array<Player>;
+    static _GameField: GameField;
     protected readonly _Timer: Timer;
     protected gameFieldRange: number;
 
     constructor (gameFieldRange: number) {
         this.gameFieldRange = gameFieldRange;
-        this._players = new Array<Player>();
+        Mode._players = new Array<Player>();
         this._Timer = new Timer();
-        this._GameField = new GameField(this.gameFieldRange);
+        Mode._GameField = new GameField(this.gameFieldRange);
         new InputController();
     }
 }

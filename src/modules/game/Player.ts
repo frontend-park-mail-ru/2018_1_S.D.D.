@@ -3,23 +3,28 @@ import InitialPlayerData from './InitialPlayerData';
 import Point from './Point';
 import GameEventBus from './GameEventBus';
 import {Direction} from './Direction';
+import * as defaultAvatar from './bin/1.svg';
 
 export default class Player {
-    private _id: number;
-    private _color: string;
-    private _score: number;
-    private _direction: Direction;
-    private _changeDirection: Direction;
-    private _position: Point;
-    private _velocity: number = 4;
+    protected _id: number;
+    protected _color: string;
+    protected _score: number;
+    protected _direction: Direction;
+    protected _changeDirection: Direction;
+    protected _position: Point;
+    protected _velocity: number = 4;
+    protected _name: string;
+    protected _avatar: HTMLImageElement;
 
-    constructor (id:number) {
+    constructor (id:number, name?: string, UserProperties?: any) {
         this._id = id;
         this._score = 0;
-
+        this._name = name;
+        
         if (this._id == 1) {
             this._direction = Direction.RIGHT;
             this._position = new Point(50,50);
+            this._score = 0;
         }
 
         if (this._id == 2) {
@@ -37,17 +42,28 @@ export default class Player {
             this._position = new Point(50,750);
         }
 
+        this._avatar = new Image();
+        if (UserProperties && UserProperties.avatar && UserProperties.avatar.length !== 0) {
+            this._avatar.src = UserProperties.avatar;
+        } else {
+            this._avatar.src = defaultAvatar;
+        }
+
         this._changeDirection = this._direction;
 
-        this.subscribeOnPlayerInput()
+        this.subscribeOnEvents();
     }
 
-    subscribeOnPlayerInput () {
+    subscribeOnEvents () {
         const Bus = GameEventBus;
         Bus.subscribe('PRESSED:UP',() => { this._changeDirection = Direction.UP }, this);
         Bus.subscribe('PRESSED:DOWN',() => { this._changeDirection = Direction.DOWN }, this);
         Bus.subscribe('PRESSED:LEFT',() => { this._changeDirection = Direction.LEFT }, this);
         Bus.subscribe('PRESSED:RIGHT',() => { this._changeDirection = Direction.RIGHT }, this);
+
+        Bus.subscribe(`SCORED:${this._id}`, (id, score) => {
+            if (id == this._id) this.score += score;;
+        }, this);
     }
 
     move () {
@@ -78,13 +94,13 @@ export default class Player {
         } 
 
         const Bus = GameEventBus;
-         if (((this._position.x-50)%100 == 0) && ((this._position.y-50)%100 == 0)) {
+         if (((this._position.x-50) % 100 == 0) && ((this._position.y - 50) % 100 == 0)) {
             // TODO: Change on define
             let x_idx = (this._position.x-50) / 100;
             let y_idx = (this._position.y-50) / 100;
 
             if ((prevX != this._position.x) || (prevY != this._position.y)) {
-                Bus.emit('STEPPED',[this._id, x_idx, y_idx]);
+                Bus.emit('STEPPED', [this._id, x_idx, y_idx]);
             }
 
             this.directionSwtich();
@@ -99,6 +115,14 @@ export default class Player {
         this._score = score;
     }
 
+    get velocity(): number {
+        return this._velocity;
+    }
+
+    set velocity(velocity: number) {
+        this._velocity = velocity;
+    }
+
     get position(): Point {
         return this._position;
     }
@@ -109,5 +133,13 @@ export default class Player {
 
     get score (): number {
         return this._score;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get avatar(): HTMLImageElement {
+        return this._avatar;
     }
 }
