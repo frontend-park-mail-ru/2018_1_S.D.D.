@@ -37,10 +37,15 @@ export default class SingleplayerMode extends Mode {
     }
 
     private init(Users: Array<any>): void {
+        this.addPlayer(new Player(1, 'YOU', Users[0]));
+        this.addPlayer(new Bot(2, BOT_NAMES[0]));
+        this.addPlayer(new Bot(3, BOT_NAMES[1]));
+        this.addPlayer(new Bot(4, BOT_NAMES[2]));
+
         const Bus = GameEventBus;
         Bus.subscribe('PRESSED:SPACE', this.launchGame, this);
-        Bus.subscribe('START', () => { this.startGame(Users); }, this);
         Bus.subscribe('GAMEOVER', this.gameOver, this);
+        Bus.subscribe('START', () => { this.startGame(Users); }, this);
 
         this.Scene.awaitScreen();
     }
@@ -55,11 +60,6 @@ export default class SingleplayerMode extends Mode {
 
     startGame(Users): void {
         this.ticks = 0;
-        this.clearPlayers();
-        this.addPlayer(new Player(1, 'YOU', Users[0]));
-        this.addPlayer(new Bot(2, BOT_NAMES[0]));
-        this.addPlayer(new Bot(3, BOT_NAMES[1]));
-        this.addPlayer(new Bot(4, BOT_NAMES[2]));
 
         const Bus = GameEventBus;
         this.gameLoopReqId = requestAnimationFrame(this.gameModelTick.bind(this));

@@ -86,6 +86,17 @@ class EventBus {
 	}
 
 	/**
+	 * Remove all function from subscribtion.
+	 * 
+	 * @param {string} key Event name.
+	 */
+	unSubscribeAll(key) {
+		if (this.eventExists(key)) {
+			this._eventsList[key] = [];
+		}
+	}
+
+	/**
 	 * Check if event already exists in list.
 	 * 
 	 * @param {string} key Key of event to check.

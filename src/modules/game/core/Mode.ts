@@ -5,8 +5,8 @@ import Timer from '../Timer';
 import InputController from '../InputController';
 
 export default abstract class Mode {
-    static  _players: Array<Player>;
-    static  _GameField: GameField;
+    static _players: Array<Player>;
+    static _GameField: GameField;
     protected readonly _Timer: Timer;
     protected gameFieldRange: number;
 
