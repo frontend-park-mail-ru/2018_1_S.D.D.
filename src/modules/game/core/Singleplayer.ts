@@ -70,12 +70,10 @@ export default class SingleplayerMode extends Mode {
     }
 
     private gameModelTick(): void {
-        //this._players[0].move();
         this.ticks++;
         
         this.Scene.clear();
         this.Scene.drawField(SingleplayerMode._GameField.getGameMatrix());
-        this.Scene.drawPlayer(SingleplayerMode._players[0]);
         this.drawBonuses();
 
         SingleplayerMode._players.forEach(player => {

@@ -42,7 +42,7 @@ export default class Player {
 
         this._changeDirection = this._direction;
 
-        this.subscribeOnEvents()
+        this.subscribeOnEvents();
     }
 
     subscribeOnEvents () {
@@ -53,7 +53,7 @@ export default class Player {
         Bus.subscribe('PRESSED:RIGHT',() => { this._changeDirection = Direction.RIGHT }, this);
 
         console.log('subs',this._id);
-        Bus.subscribe('SCORED', (id, score) => { console.log('add',id, this._id,score,Math.random()); if (id == this._id) this.score += score/2; }, this);
+        Bus.subscribe('SCORED', (id, score) => { console.log('add',id, this._id,score,Math.random()); if (id == this._id) this.score += score/((id==1)?2:1); }, this);
     }
 
     move () {

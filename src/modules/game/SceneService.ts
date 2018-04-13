@@ -129,9 +129,13 @@ export default class SceneService {
 			const Coordinates = Bonus.position();
 			const scaleFactor = this.width > this.height ? this.height : this.width;
 			const scale = scaleFactor / FIELD_SIZE;
-			const imgSize = (this.height / (this._cellCount * 2) * scale - 5) * 1.3;
-			const imgPosX = Coordinates.x * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
-			const imgPosY = Coordinates.y * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
+
+			//const imgSize = (this.height / (this._cellCount * 2) * scale - 5) * 1.3;
+			const imgSize  = (CELL_SIZE-40) * scale;
+			//const imgPosX = Coordinates.x * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
+			const imgPosX = (Coordinates.x * CELL_SIZE + 17) * scale;
+			//const imgPosY = Coordinates.y * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
+			const imgPosY = (Coordinates.y * CELL_SIZE + 17) * scale;
 			this._ctx.drawImage(Bonus.getSkin(), imgPosX, imgPosY, imgSize, imgSize);
 		}
 	}
