@@ -9,6 +9,7 @@ import Timer from '../Timer';
 import GameEventBus from '../GameEventBus';
 import { BOT_NAMES } from '../defines';
 import SlownessBonus from '../bonus/SlownessBonus';
+import StackBonus from '../bonus/StackEnemiesBonus';
 import Point from '../Point';
 import BonusObject from '../bonus/BonusObject';
 
@@ -18,6 +19,7 @@ export default class SingleplayerMode extends Mode {
     private gameLoopReqId: number;
 
     public SlownessBonus: SlownessBonus;
+    public StackBonus: StackBonus;
     public Bonuses: Array<BonusObject> = [];
     public ticks: number = 0;
 
@@ -32,6 +34,7 @@ export default class SingleplayerMode extends Mode {
         this.tickDelay = 1000/ticksInSecond;
 
         this.Bonuses.push(new SlownessBonus());
+        this.Bonuses.push(new StackBonus());
         this.init(Users);
     }
 

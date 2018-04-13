@@ -18,7 +18,6 @@ export default abstract class BonusObject {
 					return Player.id == id;
 				})[0];
 
-				console.log(Mode._players)
 				if (Player) {
 					this.applied(Player, x_idx, id);
 				}
