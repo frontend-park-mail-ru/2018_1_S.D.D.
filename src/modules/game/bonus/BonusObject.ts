@@ -19,7 +19,7 @@ export default abstract class BonusObject {
 				})[0];
 
 				if (Player) {
-					this.applied(Player, x_idx, id);
+					this.applied(Player, x_idx, y_idx);
 				}
 			}
 		}, this);
@@ -30,6 +30,11 @@ export default abstract class BonusObject {
 		Players.forEach(Player => {
 			Bus.emit(this.getBonusName(), Player);
 		})
+	}
+
+	protected applyBonusToField(Player: Player, x: number, y: number) {
+		const Bus = GameEventBus;
+		Bus.emit(this.getBonusName(), [Mode._GameField, x , y, Player.id]);
 	}
 
 	protected applied(AppliedBy: Player, x: number = 0, y: number = 0) {

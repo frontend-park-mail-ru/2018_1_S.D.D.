@@ -10,6 +10,7 @@ import GameEventBus from '../GameEventBus';
 import { BOT_NAMES } from '../defines';
 import SlownessBonus from '../bonus/SlownessBonus';
 import StackBonus from '../bonus/StackEnemiesBonus';
+import ColorRowBonus from '../bonus/ColorRowBonus';
 import Point from '../Point';
 import BonusObject from '../bonus/BonusObject';
 
@@ -20,6 +21,7 @@ export default class SingleplayerMode extends Mode {
 
     public SlownessBonus: SlownessBonus;
     public StackBonus: StackBonus;
+    public ColorRowBonus: ColorRowBonus;
     public Bonuses: Array<BonusObject> = [];
     public ticks: number = 0;
 
@@ -35,6 +37,7 @@ export default class SingleplayerMode extends Mode {
 
         this.Bonuses.push(new SlownessBonus());
         this.Bonuses.push(new StackBonus());
+        this.Bonuses.push(new ColorRowBonus());
         this.init(Users);
     }
 
