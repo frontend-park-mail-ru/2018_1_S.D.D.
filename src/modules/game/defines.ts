@@ -8,4 +8,4 @@ export const CELL_COLOR_MAP = new Map<number, string>( [ [0, "#ffffff"],
 export const FIELD_SIZE = 800;
 export const CELL_COUNT = 8;
 export const CELL_SIZE = 100;
-export const BOT_NAMES = ['Dr. Jekyll', 'Mr. Hyde', 'Strange unknown'];
+export const BOT_NAMES = ['Dr. Killjoy', 'Admin', 'Unknown Stranger'];

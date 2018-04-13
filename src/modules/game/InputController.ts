@@ -6,6 +6,7 @@ const LEFT_KEY = 37;
 const UP_KEY = 38;
 const RIGHT_KEY = 39;
 const DOWN_KEY = 40;
+const SPACE_KEY = 32;
 
 export default class InputController {
 	constructor() {
@@ -24,6 +25,9 @@ export default class InputController {
 				break;
 			case DOWN_KEY:
 				Bus.emit('PRESSED:DOWN');
+				break;
+			case SPACE_KEY:
+				Bus.emit('PRESSED:SPACE');
 				break;
 			}
 		});

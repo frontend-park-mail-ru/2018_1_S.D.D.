@@ -3,6 +3,7 @@ import InitialPlayerData from './InitialPlayerData';
 import Point from './Point';
 import GameEventBus from './GameEventBus';
 import {Direction} from './Direction';
+import * as defaultAvatar from './bin/1.svg';
 
 export default class Player {
     protected _id: number;
@@ -13,8 +14,9 @@ export default class Player {
     protected _position: Point;
     protected _velocity: number = 4;
     protected _name: string;
+    protected _avatar: HTMLImageElement;
 
-    constructor (id:number, name?: string) {
+    constructor (id:number, name?: string, UserProperties?: any) {
         this._id = id;
         this._score = 0;
         this._name = name;
@@ -40,6 +42,13 @@ export default class Player {
             this._position = new Point(50,750);
         }
 
+        this._avatar = new Image();
+        if (UserProperties && UserProperties.avatar && UserProperties.avatar.length !== 0) {
+            this._avatar.src = UserProperties.avatar;
+        } else {
+            this._avatar.src = defaultAvatar;
+        }
+
         this._changeDirection = this._direction;
 
         this.subscribeOnEvents();
@@ -52,8 +61,9 @@ export default class Player {
         Bus.subscribe('PRESSED:LEFT',() => { this._changeDirection = Direction.LEFT }, this);
         Bus.subscribe('PRESSED:RIGHT',() => { this._changeDirection = Direction.RIGHT }, this);
 
-        console.log('subs',this._id);
-        Bus.subscribe('SCORED', (id, score) => { console.log('add',id, this._id,score,Math.random()); if (id == this._id) this.score += score/((id==1)?2:1); }, this);
+        Bus.subscribe('SCORED', (id, score) => {
+            if (id == this._id) this.score += score / ((id == 1) ? 2 : 1);
+        }, this);
     }
 
     move () {
@@ -84,7 +94,7 @@ export default class Player {
         } 
 
         const Bus = GameEventBus;
-         if (((this._position.x-50)%100 == 0) && ((this._position.y-50)%100 == 0)) {
+         if (((this._position.x-50) % 100 == 0) && ((this._position.y - 50) % 100 == 0)) {
             // TODO: Change on define
             let x_idx = (this._position.x-50) / 100;
             let y_idx = (this._position.y-50) / 100;
@@ -127,5 +137,9 @@ export default class Player {
 
     get name(): string {
         return this._name;
+    }
+
+    get avatar(): HTMLImageElement {
+        return this._avatar;
     }
 }

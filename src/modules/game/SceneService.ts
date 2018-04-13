@@ -2,25 +2,21 @@
 import GameField from "./GameField";
 import Player from "./Player";
 import {FIELD_SIZE, PLAYER_MAP, CELL_COUNT, CELL_SIZE, CELL_COLOR_MAP} from "./defines";
-import * as defaultAvatar from './bin/1.svg';
 import BonusObject from "./bonus/BonusObject";
 import Point from "./Point";
+import GameEventBus from "./GameEventBus";
 
 export default class SceneService {
 	private _scene: HTMLCanvasElement;
 	private _ctx: CanvasRenderingContext2D;
-	private avatarImg: HTMLImageElement;
 	private readonly _palyerColor: Map<number, string>;
 	private readonly _cellCount: number;
 	private readonly _cellColor: Map<number, string>;
 
-	constructor(scene: HTMLCanvasElement, userAvatar: string) {
+	constructor(scene: HTMLCanvasElement) {
 		this._scene = scene;
 		this._ctx = scene.getContext('2d');
-
-		this.avatarImg = new Image();
-		this.avatarImg.src = (userAvatar && userAvatar.length > 0) ? userAvatar : defaultAvatar;
-
+		this._ctx.font = "30px Arial";
 		this._palyerColor = new Map();
 		this._cellColor = new Map();
 		this._cellCount = CELL_COUNT;
@@ -42,6 +38,7 @@ export default class SceneService {
 
 	public clear(): void {
 		this._ctx.clearRect(0, 0, this.width, this.height);
+		this._ctx.font = "30px Arial";
 	}
 
 	public drawField(matrix: Array<Array<number>>): void {
@@ -82,12 +79,11 @@ export default class SceneService {
 		const imgPosX = x-imgSize/2;
 		//const imgPosY = y - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
 		const imgPosY = y-imgSize/2;
-
-		this._ctx.drawImage(this.avatarImg, imgPosX, imgPosY, imgSize, imgSize);
+		this._ctx.drawImage(player.avatar, imgPosX, imgPosY, imgSize, imgSize);
 		this._ctx.restore();
 	}
 
-	drawPlayerInfo(players: Player[]): void {
+	drawPlayerInfo(players: Player[], timer: number): void {
 		let infoFieldWidth = this.width - this.height;
 		let startPosition = this.height;
 		let imageSize = this.height / (this._cellCount);
@@ -101,7 +97,7 @@ export default class SceneService {
 			arrNames.push(player.name);
 		});
 
-		this._ctx.font = "30px Arial";
+		this._ctx.textAlign='left';
 		let maxName = arrNames.reduce((a, b) => { return a.length > b.length ? a : b; });
 		let maxTextWidth = this._ctx.measureText(maxName).width; 
 		let contextWidth = maxTextWidth;
@@ -115,8 +111,18 @@ export default class SceneService {
 		let contentMargin = 30;
 		let start = startY;
 		let startX = startPosition + marginLeft;
+		this.bg('#FFFFFF');
+		this._ctx.fillText(`Time left: ${timer.toString()}`, startX + contentMargin, start - 100);
 		players.forEach(player => {
-			this._ctx.drawImage(this.avatarImg, startX - imgSize, start - maxNameHeight * 1.5, imgSize, imgSize);
+			this.bg(this._palyerColor.get(player.id));
+			this._ctx.save();
+			this._ctx.beginPath(); 
+			this._ctx.arc(startX - imgSize / 2, start - maxNameHeight  / 2, imgSize / 2, 0, 2 * Math.PI);
+			this._ctx.fill();
+			this._ctx.closePath();
+			this._ctx.clip();
+			this._ctx.drawImage(player.avatar, startX - imgSize, start - maxNameHeight * 1.5, imgSize, imgSize);
+			this._ctx.restore();
 			this._ctx.fillText(player.name, startX + contentMargin, start);
 			this._ctx.fillText(player.score.toString(), startX + 2*contentMargin + maxTextWidth, start);
 
@@ -138,6 +144,58 @@ export default class SceneService {
 			const imgPosY = (Coordinates.y * CELL_SIZE + 17) * scale;
 			this._ctx.drawImage(Bonus.getSkin(), imgPosX, imgPosY, imgSize, imgSize);
 		}
+	}
+
+	public awaitScreen() {
+		this.text('PRESS SPACE TO START GAME');
+	}
+
+	public pauseScreen() {
+		this.bg('#FFFFFF', 0.2);
+		this._ctx.fillRect(0, 0, this.width, this.height);
+		this.text('PRESS SPACE TO RESUME GAME');
+	}
+
+	public gameOverScreen(Players: Array<Player>) {
+		let Winner = Players[0];
+		let youWon = true;
+		Players.forEach((Player, index) => {
+			if(Player.score > Winner.score) {
+				Winner = Player;
+				youWon = index == 0;
+			}
+		});
+
+		this.bg('#FFFFFF', 0.8);
+		this._ctx.fillRect(0, 0, this.width, this.height);
+		if (youWon) {
+			this.text('CONGRATULATIONS! YOU WON VS OUR SMART BOTS!', '#73DB56');
+		} else {
+			this.text('GAME OVER! \n YOU LOST! BETTER LUCK NEXT TIME', '#FF5A5A');
+		}
+	}
+
+	public prepareScreen() {
+		const Bus = GameEventBus;
+		let counter = 4;
+		this.clear();
+		this.text(`PREPARE: ${counter - 1}`);
+		const interval = setInterval(() => {
+			counter--;
+			this.clear();
+			this.text(`PREPARE: ${counter - 1}`);
+			if (counter == 1) {
+				clearInterval(interval);
+				Bus.emit('START');
+
+			}
+		}, 1000);
+	}
+
+	public text(txt: string, color: string = '#FFFFFF') {
+		this.bg(color);
+		this._ctx.textAlign='center';
+		this._ctx.fillText(txt, this.width / 2, this.height / 2);
 	}
 
 	private drawCell(row: number, col: number, size: number, color: string): void {
