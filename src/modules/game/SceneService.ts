@@ -84,7 +84,6 @@ export default class SceneService {
 	}
 
 	public drawBonus(Bonus: BonusObject) {
-		console.log(Bonus.isActive)
 		if (Bonus.isActive()) {
 			const Coordinates = Bonus.position();
 			const scaleFactor = this.width > this.height ? this.height : this.width;

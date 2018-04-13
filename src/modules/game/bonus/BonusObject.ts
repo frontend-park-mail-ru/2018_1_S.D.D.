@@ -7,7 +7,7 @@ import Point from '../Point';
 import Mode from '../core/Mode';
 
 export default abstract class BonusObject {
-	protected spawned: boolean;
+	protected spawned: boolean = false;
 	protected Coordinates: Point = new Point();
 
 	constructor() {
