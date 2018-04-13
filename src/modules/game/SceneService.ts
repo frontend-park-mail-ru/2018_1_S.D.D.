@@ -119,7 +119,7 @@ export default class SceneService {
 			this._ctx.save();
 			this._ctx.beginPath(); 
 			this._ctx.save();
-			this._ctx.arc(startX - imgSize / 2, (start - maxNameHeight  / (2 * scale)) * scale, imgSize / 2, 0, 2 * Math.PI);
+			this._ctx.arc(startX - imgSize / 2, start - maxNameHeight  / (2 * scale), imgSize / 2, 0, 2 * Math.PI);
 			this._ctx.fill();
 			this._ctx.closePath();
 			this._ctx.clip();
