@@ -3,9 +3,13 @@ import Player from './Player';
 import { Direction } from './Direction';
 
 export default class Bot extends Player {
+    private _stayOnCourseCount: number;
+
     constructor (id:number, name?: string) {
         super(id);
         this._name = name;
+
+        this._stayOnCourseCount = 0;
     }
 
     directionSwtich (): void {
@@ -14,7 +18,12 @@ export default class Bot extends Player {
         const max = Math.max.apply(null, directionValues);
         const min = Math.min.apply(null, directionValues);
 
-        this._direction = Math.floor(Math.random() * max) + min;
+        if (this._stayOnCourseCount == 0) {
+            this._direction = Math.floor(Math.random() * max) + min;
+            this._stayOnCourseCount = Math.floor(Math.random() * 4) + 2;
+        }
+        
+        this._stayOnCourseCount--;
     }
 }
 
