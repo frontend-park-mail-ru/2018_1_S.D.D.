@@ -6,11 +6,13 @@ export default class GameField {
     private _idsMatrix: Array<Array<number>>;
     private _levelMatrix: Array<Array<number>>; 
     private _range: number;
+    private _scoreAccuiered: Array<boolean>;
 
     constructor (range: number = 8) {
         this._idsMatrix = new Array<Array<number>>(range);
         this._levelMatrix = new Array<Array<number>>(range);
         this._range = range;
+        this._scoreAccuiered = [false, false, false, false];
         this.init(range);
     }
 
@@ -21,6 +23,7 @@ export default class GameField {
         //this._levelMatrix.fill(undefined).map(() => Array<number>(range).fill(0)); 
         this._idsMatrix = Array(range).fill([]).map(() => Array(range).fill(0));
 
+        // starting postitions for players
         this._idsMatrix[0][0] = 1;
         this._idsMatrix[0][7] = 2;
         this._idsMatrix[7][7] = 3;
@@ -155,18 +158,19 @@ export default class GameField {
         const stack = [];
 
 
-    /*
-    1. Поместить затравочный пиксел в стек;
-    2. Извлечь пиксел из стека;
-    3. Присвоить пикселу требуемое значение (цвет внутренней области);
-    4. Каждый окрестный пиксел добавить в стек, если он
-    4.1. Не является граничным;
-    4.2. Не обработан ранее (т.е. его цвет отличается от цвета границы или цвета внутренней области);
-    5. Если стек не пуст, перейти к шагу 2
+        /*
+        1. Поместить затравочный пиксел в стек;
+        2. Извлечь пиксел из стека;
+        3. Присвоить пикселу требуемое значение (цвет внутренней области);
+        4. Каждый окрестный пиксел добавить в стек, если он
+        4.1. Не является граничным;
+        4.2. Не обработан ранее (т.е. его цвет отличается от цвета границы или цвета внутренней области);
+        5. Если стек не пуст, перейти к шагу 2
 
-    */
+        */
         let isBadArea: boolean;
         let curAreaDots: Array<Point>;
+
         checkArray.forEach(startDot => {
             // dot mastnot be marked as prize (val=5) or badArea (val = 6)
             if (matrix[startDot.y][startDot.x] < 5) { 
@@ -197,34 +201,54 @@ export default class GameField {
                     }
                 }
 
+                // mark that player can get score on next step
+                if (!this._scoreAccuiered[id-1] && !isBadArea) this._scoreAccuiered[id-1] = true;
+
                 // after finishing area by current startingDot
                 // filling it with badArea (val = 6) (if it is bad)
                 // or filling with player id
-                console.log(this._idsMatrix);
                 let fillVal = isBadArea ? 6 : id;
                 while (curAreaDots.length>0) {
                     let dotToColor = curAreaDots.pop();
                     matrix[dotToColor.y][dotToColor.x] = fillVal;
                     if (!isBadArea) this._idsMatrix[dotToColor.y][dotToColor.x] = id;
                 }
-                console.log(matrix);
             }
 
-            console.log(matrix);
         });
 
-        console.log(matrix);
+    }
+
+    private _countScoresForPlayer(id:number): void {
+        let score: number = 0;
+
+        for (let i = 0; i < this._range; i++) {
+            for (let j = 0; j < this._range; j++) {
+                if (this._idsMatrix[i][j] == id) {
+                    score++;
+                    this._idsMatrix[i][j] = 0;
+                }
+            }
+        }
+
+        console.log(score);
+        const Bus = GameEventBus;
+        Bus.emit('SCORED', [id, score]);
     }
 
     public markGameFieldCell(i, j: number, id: number): void {
-        console.log(i,j,id);
+        // checking if we had scores for this id player
+        // to count them before new start
+        if (this._scoreAccuiered[id-1]) {
+            this._countScoresForPlayer(id);
+            this._scoreAccuiered[id-1] = false;
+        }
+        
         if (this._idsMatrix[i][j] != id) {
             this._idsMatrix[i][j] = id;
         } else {
             this.checkArea(i,j, id);
         }
-            
-        console.log( this._idsMatrix);
     }
 
     

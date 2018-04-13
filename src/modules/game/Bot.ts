@@ -15,7 +15,6 @@ export default class Bot extends Player {
         const min = Math.min.apply(null, directionValues);
 
         this._direction = Math.floor(Math.random() * max) + min;
-        console.log(this._id,this._direction);
     }
 }
 

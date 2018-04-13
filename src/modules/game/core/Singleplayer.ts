@@ -63,7 +63,6 @@ export default class SingleplayerMode extends Mode {
                 }
                 if (this.ticks % 200 == 0 && rC(0, 3) == 3) {
                     Bonus.spawn(rC(0,7), rC(0,7));
-                    console.log(Bonus)
                 }
             }
             this.Scene.drawBonus(Bonus);
@@ -85,8 +84,6 @@ export default class SingleplayerMode extends Mode {
         });
         this.Scene.drawPlayerInfo(SingleplayerMode._players);
         
-
-        //console.log(this._players[0].)
         this.gameLoopReqId = requestAnimationFrame(this.gameModelTick.bind(this));
     }
 }

@@ -22,6 +22,7 @@ export default class Player {
         if (this._id == 1) {
             this._direction = Direction.RIGHT;
             this._position = new Point(50,50);
+            this._score = 0;
         }
 
         if (this._id == 2) {
@@ -41,15 +42,17 @@ export default class Player {
 
         this._changeDirection = this._direction;
 
-        this.subscribeOnPlayerInput()
+        this.subscribeOnEvents()
     }
 
-    subscribeOnPlayerInput () {
+    subscribeOnEvents () {
         const Bus = GameEventBus;
         Bus.subscribe('PRESSED:UP',() => { this._changeDirection = Direction.UP }, this);
         Bus.subscribe('PRESSED:DOWN',() => { this._changeDirection = Direction.DOWN }, this);
         Bus.subscribe('PRESSED:LEFT',() => { this._changeDirection = Direction.LEFT }, this);
         Bus.subscribe('PRESSED:RIGHT',() => { this._changeDirection = Direction.RIGHT }, this);
+
+        Bus.subscribe('SCORED', (id, score) => { if (id == this._id) this.score += score; }, this);
     }
 
     move () {
