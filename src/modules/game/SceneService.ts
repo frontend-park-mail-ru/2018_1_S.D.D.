@@ -66,7 +66,8 @@ export default class SceneService {
 		const x = point.x * scale-3;
 		const y = point.y * scale-3;
 
-		const radius = this.height / (this._cellCount * 2) * scale - 5;
+		//const radius = this.height / (this._cellCount * 2) * scale - 5;
+		const radius = (CELL_SIZE/2-10)*scale;
 		const color = this._palyerColor.get(player.id);
 		
 		this._ctx.save();
@@ -76,9 +77,12 @@ export default class SceneService {
 		this._ctx.closePath();
 		this._ctx.clip();
 
-		const imgSize = radius * 2 - 4;
-		const imgPosX = x - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
-		const imgPosY = y - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
+		const imgSize = radius * 2 - 8;
+		//const imgPosX = x - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
+		const imgPosX = x-imgSize/2;
+		//const imgPosY = y - CELL_SIZE * scale / 2 + (CELL_SIZE * scale - imgSize) / 2;
+		const imgPosY = y-imgSize/2;
+
 		this._ctx.drawImage(this.avatarImg, imgPosX, imgPosY, imgSize, imgSize);
 		this._ctx.restore();
 	}

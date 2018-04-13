@@ -231,8 +231,9 @@ export default class GameField {
             }
         }
 
-        console.log(score);
+        
         const Bus = GameEventBus;
+        console.log('emit', id, score);
         Bus.emit('SCORED', [id, score]);
     }
 
