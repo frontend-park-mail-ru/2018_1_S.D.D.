@@ -111,7 +111,7 @@ export default class SceneService {
 		let contentHeight = (imgSize * 4 + maxNameHeight) * scale;
 		let startY = (this.height - contentHeight) / 2;
 		let contentMargin = 30  * scale;
-		let start = (startY + 100)  * scale;
+		let start = (startY)  * scale;
 		let startX = startPosition + marginLeft;
 		this.bg('#FFFFFF');
 		this._ctx.font = `${30 * scale}px Arial`;
@@ -138,6 +138,7 @@ export default class SceneService {
 	
 	public drawBonus(Bonus: BonusObject) {
 		if (Bonus.isActive()) {
+			this.bg('#FFFFFF');
 			const Coordinates = Bonus.position();
 			const scaleFactor = this.width > this.height ? this.height : this.width;
 			const scale = scaleFactor / FIELD_SIZE;
@@ -155,6 +156,7 @@ export default class SceneService {
 	}
 
 	public awaitScreen() {
+		this.clear();
 		this.text('PRESS SPACE TO START GAME');
 	}
 

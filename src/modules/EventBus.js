@@ -91,9 +91,11 @@ class EventBus {
 	 * @param {string} key Event name.
 	 */
 	unSubscribeAll(key) {
-		if (this.eventExists(key)) {
-			this._eventsList[key] = [];
-		}
+		return Promise.resolve(() => {
+			if (this.eventExists(key)) {
+				this._eventsList[key] = [];
+			}
+		});
 	}
 
 	/**

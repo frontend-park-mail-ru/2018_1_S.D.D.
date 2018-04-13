@@ -33,19 +33,32 @@ export default class SingleplayerMode extends Mode {
 
         this.Bonuses.push(new SlownessBonus());
 
+        const Bus = GameEventBus;
+        Bus.subscribe('PRESSED:SPACE', this.launchGame, this);
+        Bus.subscribe('GAMEOVER', this.gameOver, this);
+
         this.init(Users);
     }
 
     private init(Users: Array<any>): void {
+        window.cancelAnimationFrame(this.gameLoopReqId);
+        this.gameLoopReqId = undefined;
+        this.ticks = 0;
+        this.over = false;
+        Mode._GameField.init(this.gameFieldRange)
+        SingleplayerMode._players.splice(0, SingleplayerMode._players.length)
         this.addPlayer(new Player(1, 'YOU', Users[0]));
         this.addPlayer(new Bot(2, BOT_NAMES[0]));
         this.addPlayer(new Bot(3, BOT_NAMES[1]));
         this.addPlayer(new Bot(4, BOT_NAMES[2]));
 
         const Bus = GameEventBus;
-        Bus.subscribe('PRESSED:SPACE', this.launchGame, this);
-        Bus.subscribe('GAMEOVER', this.gameOver, this);
-        Bus.subscribe('START', () => { this.startGame(Users); }, this);
+        Bus.unSubscribeAll('START').then(() => {
+            Bus.subscribe('START', () => { this.startGame(); }, this);
+        });
+        Bus.unSubscribeAll('RESTART').then(() => {
+            Bus.subscribe('RESTART', () => { this.init(Users); }, this);
+        });
 
         this.Scene.awaitScreen();
     }
@@ -54,15 +67,10 @@ export default class SingleplayerMode extends Mode {
         SingleplayerMode._players.push(player);
     }
 
-    public clearPlayers(): void {
-        SingleplayerMode._players = [];
-    }
-
-    startGame(Users): void {
-        this.ticks = 0;
-
-        const Bus = GameEventBus;
-        this.gameLoopReqId = requestAnimationFrame(this.gameModelTick.bind(this));
+    startGame(): void {
+        if(!this.gameLoopReqId) {
+            this.gameLoopReqId = requestAnimationFrame(this.gameModelTick.bind(this));
+        }
     }
 
     private logic() {
@@ -89,25 +97,29 @@ export default class SingleplayerMode extends Mode {
             Bus.emit('GAMEOVER');
         }
         
-        this.Scene.clear();
-        this.Scene.drawField(SingleplayerMode._GameField.getGameMatrix());
-        this.Bonuses.forEach(Bonus => {
-            this.Scene.drawBonus(Bonus);
-        });
-        SingleplayerMode._players.forEach(player => {
-            this.Scene.drawPlayer(player);
-        });
-        this.Scene.drawPlayerInfo(SingleplayerMode._players, 60 - Math.round(this.ticks / 50));
-        
-        if (this.started && !this.paused) {
-            setTimeout(() => {
-                this.logic();
+        if (this.gameLoopReqId) {
+            this.Scene.clear();
+            this.Scene.drawField(SingleplayerMode._GameField.getGameMatrix());
+            this.Bonuses.forEach(Bonus => {
+                this.Scene.drawBonus(Bonus);
             });
-        } else {
-            if (this.over) {
-                this.Scene.gameOverScreen(SingleplayerMode._players);
+            SingleplayerMode._players.forEach(player => {
+                this.Scene.drawPlayer(player);
+            });
+            this.Scene.drawPlayerInfo(SingleplayerMode._players, 60 - Math.round(this.ticks / 50));
+            
+            if (this.started && !this.paused) {
+                setTimeout(() => {
+                    this.logic();
+                });
             } else {
-                this.Scene.pauseScreen();
+                if (this.over) {
+                    this.Scene.gameOverScreen(SingleplayerMode._players);
+                }
+    
+                if (this.paused) {
+                    this.Scene.pauseScreen();
+                }
             }
         }
         
@@ -115,14 +127,19 @@ export default class SingleplayerMode extends Mode {
     }
 
     private launchGame(): void {
-        if (!this.started) {
-            this.started = true;
-            this.Scene.prepareScreen();
+        if (this.over) {
+            const Bus = GameEventBus;
+            Bus.emit('RESTART');
         } else {
-            if (!this.paused) {
-                this.paused = true;
+            if (!this.started) {
+                this.started = true;
+                this.Scene.prepareScreen();
             } else {
-                this.paused = false;
+                if (!this.paused) {
+                    this.paused = true;
+                } else {
+                    this.paused = false;
+                }
             }
         }
     }

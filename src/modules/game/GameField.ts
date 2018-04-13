@@ -16,7 +16,7 @@ export default class GameField {
         this.init(range);
     }
 
-    private init (range: number = 8): void {
+    public init (range: number = 8): void {
         //fill(undefined).
         //this._idsMatrix.fill(new Array<number>(range).fill(0));
         // think
@@ -233,8 +233,7 @@ export default class GameField {
 
         
         const Bus = GameEventBus;
-        console.log('emit', id, score);
-        Bus.emit('SCORED', [id, score]);
+        Bus.emit(`SCORED:${id}`, [id, score]);
     }
 
     public markGameFieldCell(i, j: number, id: number): void {
