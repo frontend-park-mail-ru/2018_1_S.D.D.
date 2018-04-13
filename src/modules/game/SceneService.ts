@@ -104,20 +104,22 @@ export default class SceneService {
 		let marginLeft = (infoFieldWidth - contextWidth) / 2;
 
 		// crutch, approximaete max heigth as width M		
-		let maxNameHeight = this._ctx.measureText('M').width;		
-		let imgSize = maxNameHeight * 2;		
-		let contentHeight = imgSize * 4 + maxNameHeight;
+		let maxNameHeight = this._ctx.measureText('M').width * scale;		
+		let imgSize = maxNameHeight * 2 * scale;		
+		let contentHeight = (imgSize * 4 + maxNameHeight) * scale;
 		let startY = (this.height - contentHeight) / 2;
-		let contentMargin = 30;
-		let start = startY;
+		let contentMargin = 30  * scale;
+		let start = (startY + 100)  * scale;
 		let startX = startPosition + marginLeft;
 		this.bg('#FFFFFF');
-		this._ctx.fillText(`Time left: ${timer.toString()}`, startX + contentMargin, start - 100);
+		this._ctx.font = `${30 * scale}px Arial`;
+		this._ctx.fillText(`Time left: ${timer.toString()}`, startX + contentMargin, start - 80);
 		players.forEach(player => {
 			this.bg(this._palyerColor.get(player.id));
 			this._ctx.save();
 			this._ctx.beginPath(); 
-			this._ctx.arc(startX - imgSize / 2, start - maxNameHeight  / 2, imgSize / 2, 0, 2 * Math.PI);
+			this._ctx.save();
+			this._ctx.arc(startX - imgSize / 2, (start - maxNameHeight  / (2 * scale)) * scale, imgSize / 2, 0, 2 * Math.PI);
 			this._ctx.fill();
 			this._ctx.closePath();
 			this._ctx.clip();
