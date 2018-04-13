@@ -3,11 +3,12 @@ import Player from './Player';
 import { Direction } from './Direction';
 
 export default class Bot extends Player {
-    constructor (id:number) {
+    constructor (id:number, name?: string) {
         super(id);
+        this._name = name;
     }
 
-    directionSwtich () {
+    directionSwtich (): void {
         const directionKeys = Object.keys(Direction).filter(k => typeof Direction[k as any] === "number");
         const directionValues = directionKeys.map(k => parseInt(Direction[k as any]));
         const max = Math.max.apply(null, directionValues);

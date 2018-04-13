@@ -7,6 +7,8 @@ import Scene from '../SceneService';
 import GameField from '../GameField';
 import Timer from '../Timer';
 import GameEventBus from '../GameEventBus';
+import { BOT_NAMES } from '../defines';
+export {BOT_NAMES} from '../defines';
 
 export default class SingleplayerMode extends Mode {
     private tickDelay: number;
@@ -23,10 +25,10 @@ export default class SingleplayerMode extends Mode {
     }
 
     private init(): void {
-        this.addPlayer(new Player(1));
-        this.addPlayer(new Bot(2));
-        this.addPlayer(new Bot(3));
-        this.addPlayer(new Bot(4));
+        this.addPlayer(new Player(1, 'YOU'));
+        this.addPlayer(new Bot(2, BOT_NAMES[0]));
+        this.addPlayer(new Bot(3, BOT_NAMES[1]));
+        this.addPlayer(new Bot(4, BOT_NAMES[2]));
 
         //setInterval(this.gameModelTick.bind(this), this.tickDelay);
         this.startGame();
@@ -46,17 +48,15 @@ export default class SingleplayerMode extends Mode {
 
     private gameModelTick(): void {
         //this._players[0].move();
-        
         this.Scene.clear();
         this.Scene.drawField(this._GameField.getGameMatrix());
 
         this._players.forEach(player => {
             player.move();
             this.Scene.drawPlayer(player);
+            this.Scene.drawPlayerInfo(this._players);
         });
 
-        
-        
         //console.log(this._players[0].)
         this.gameLoopReqId = requestAnimationFrame(this.gameModelTick.bind(this));
     }

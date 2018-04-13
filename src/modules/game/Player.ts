@@ -12,11 +12,13 @@ export default class Player {
     protected _changeDirection: Direction;
     protected _position: Point;
     protected _velocity: number = 4;
+    protected _name: string;
 
-    constructor (id:number) {
+    constructor (id:number, name?: string) {
         this._id = id;
         this._score = 0;
-
+        this._name = name;
+        
         if (this._id == 1) {
             this._direction = Direction.RIGHT;
             this._position = new Point(50,50);
@@ -109,5 +111,9 @@ export default class Player {
 
     get score (): number {
         return this._score;
+    }
+
+    get name(): string {
+        return this._name;
     }
 }

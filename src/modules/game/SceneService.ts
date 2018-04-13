@@ -82,6 +82,43 @@ export default class SceneService {
 		this._ctx.restore();
 	}
 
+	drawPlayerInfo(players: Player[]): void {
+		let infoFieldWidth = this.width - this.height;
+		let startPosition = this.height;
+		let imageSize = this.height / (this._cellCount);
+		
+		const scaleFactor = this.width > this.height ? this.height : this.width;		
+		const scale = scaleFactor / FIELD_SIZE;
+		const radius = this.height / (this._cellCount * 2) * scale;
+		const arrNames = [];
+		
+		players.forEach(player => {
+			arrNames.push(player.name);
+		});
+
+		this._ctx.font = "30px Arial";
+		let maxName = arrNames.reduce((a, b) => { return a.length > b.length ? a : b; });
+		let maxTextWidth = this._ctx.measureText(maxName).width; 
+		let contextWidth = maxTextWidth;
+		let marginLeft = (infoFieldWidth - contextWidth) / 2;
+
+		// crutch, approximaete max heigth as width M		
+		let maxNameHeight = this._ctx.measureText('M').width;		
+		let imgSize = maxNameHeight * 2;		
+		let contentHeight = imgSize * 4 + maxNameHeight;
+		let startY = (this.height - contentHeight) / 2;
+		let contentMargin = 30;
+		let start = startY;
+		let startX = startPosition + marginLeft;
+		players.forEach(player => {
+			this._ctx.drawImage(this.avatarImg, startX - imgSize, start - maxNameHeight * 1.5, imgSize, imgSize);
+			this._ctx.fillText(player.name, startX + contentMargin, start);
+			this._ctx.fillText(player.score.toString(), startX + 2*contentMargin + maxTextWidth, start);
+
+			start += imgSize + maxNameHeight;
+		});
+	}
+
 	private drawCell(row: number, col: number, size: number, color: string): void {
 		const drawingSize = size - 5;
 		this.bg(color, 0.7);
