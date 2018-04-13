@@ -1,61 +1,116 @@
-.return-link {
-    text-align: left;
-    padding: 0;
-    margin: 0 1%;
-}
-.table__btn {
-    height: 46px;
-    border: 0px;
-    font-size: 22px;
-}
-
-.table__btn_submit {
-    margin-top: 10px;
-    width: 48%;
-    border-radius: 8px;
-    margin: 0% 1%;
-    color: #ffffff;
-    background: linear-gradient(90deg, #2f164e, #7db9fd);
-}
-
 .scores__table {
-    width: 100%;
-    padding: 1%;
+    border-collapse: collapse;
+    margin: 40px auto;
     table-layout: fixed;
+    width: 90%;
+    border-bottom: 3px solid #fff;
 }
 
 .scores__header {
-    font-weight: 700px;
+    font-weight: bold;
     color: #ffffff;
     text-align: center;
     position: center;
-    width: 100%;
-    padding: 1%;
-}
-.scores__table__th {
-	border: 1px solid #dddddd;
-    text-align: center;
-    font-weight: 700px;
-    color: #000000;
-    padding: 8px;
-    width: 20%;
-    min-width: 20%;
-    max-width: 20%;
-    white-space: nowrap; 
-    overflow: hidden;
-}
-.scores__table__td {
-    border: 1px solid #dddddd;
-    text-align: center;
-    color: #ffffff;
-    padding: 8px;
-    width: 20%;
-    min-width: 20%;
-    max-width: 20%;
-    white-space: nowrap; 
-    overflow: hidden;
+    width: 90%;
+    margin: 30px auto;
 }
 
-.scores__table__tr:nth-child(even) {
-    background-color: #2f164e;
+.scores__table__th {
+    background: #fff;
+    text-align: center;
+    font-weight: bold;
+    color: #2f164e;
+    white-space: nowrap; 
+    overflow: hidden;
+    height: 35px;
+    border-bottom: 5px solid rgba(255, 255, 255, 0);;
+}
+
+.scores__table__tr_you {
+    background-color:rgba(208, 212, 235, 0.274);
+}
+
+.scores__table__tr_additional {
+    border-top: 3px solid #fff;
+}
+
+.scores__table__td {
+    text-align: center;
+    color: #fff;
+    white-space: nowrap; 
+    overflow: hidden;
+    height: 40px;
+    font-weight: bold;
+}
+
+.scores__table_big {
+    width: 30%;
+    padding: 8px 20px;
+}
+
+.scores__table_small {
+    width: 10%;
+    padding: 8px;
+}
+
+.scores__table_nodata {
+    color: #d6d6d6;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.scores__medal {
+    width: 35px;
+    margin: auto;
+}
+
+.rating {
+    padding: 7px;
+    border-radius: 50px;
+}
+
+.rating_positive {
+    background: #19802a;
+    font-weight: bold;
+}
+
+.rating_negative {
+    background: #801919;
+    font-weight: bold;
+}
+
+.scores__table__tr:hover {
+    background-color:rgba(208, 212, 235, 0.5);
+}
+
+@media screen and (max-width: 750px) {
+    .scores__table_email {
+        display: none;
+    }
+
+    .scores__table_big {
+        width: 43%;
+    }
+
+    .scores__table_small {
+        width: 15%;
+    }
+
+    .scores__table_nodata {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .scores__table_games {
+        display: none;
+    }
+
+    .scores__table_small {
+        width: 19%;
+    }
+
+    .scores__table {
+        font-size: 14px;
+    }
 }

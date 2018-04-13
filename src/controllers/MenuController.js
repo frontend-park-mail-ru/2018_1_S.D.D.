@@ -2,7 +2,6 @@
 
 import Controller from './Controller';
 import MenuView from '../views/MenuView';
-import MenuModel from '../models/MenuModel';
 
 class MenuController extends Controller {
 	/**
@@ -10,8 +9,7 @@ class MenuController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Model = new MenuModel();
-		this._View = new MenuView();
+		this.MenuView = new MenuView();
 		this.addActions();
 	}
 
@@ -27,11 +25,17 @@ class MenuController extends Controller {
 	 */
 	actionIndex() {
 		const data = {
-			'Menu': this._Model.getMenuItems(),
-			'Header': this._Model.getHeaderData()
-		};	
-		this._View.constructPage(data);
-		this._View.showPage();
+			'Menu': {
+				menuItems: [
+					{ link:'/lobby', text:'PLAY' },
+					{ link:'/scores/show', text:'SCORES' },
+					{ link:'/rules', text:'RULES' },
+					{ link:'/about', text:'DEVELOPERS' }
+				]
+			},
+			'Header': this.getHeaderData()
+		};
+		this.MenuView.constructPage(data);
 	}
 }
 

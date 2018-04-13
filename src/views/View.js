@@ -3,6 +3,8 @@
 import ServiceManager from '../modules/ServiceManager';
 import TemplateHolder from '../ui/templates/TemplateHolder';
 import PageParts from '../ui/templates/PageParts';
+
+import 'normalize.css';
 import '../ui/styles/main.scss';
 
 /**
@@ -33,20 +35,21 @@ class View {
 			'main',
 			document.querySelector('main'),
 			['block'],
-			['left', 'right']
+			['left', 'right', 'modal']
 		);
 		this._PageBlock.addViewBlock(
 			'left',
 			document.querySelector('main'),
-			['block', 'block-inline', 'block_w50p'],
-			['main']
+			['block', 'block-inline', 'block_w60p'],
+			['main', 'modal']
 		);
 		this._PageBlock.addViewBlock(
 			'right',
 			document.querySelector('main'),
-			['block', 'block-inline', 'block_w50p'],
-			['main']
+			['block', 'block-inline', 'block_w40p'],
+			['main', 'modal']
 		);
+		this._PageBlock.addModalBlock('modal');
 	}
 
 	/**
@@ -58,7 +61,7 @@ class View {
 		const links = html.querySelectorAll('a');
 		[].forEach.call(links, link => {
 			const appendInHistory = !(link.getAttribute('nohistory') === 'true');
-			if(!link.getAttribute('target')) {
+			if (!link.getAttribute('target')) {
 				link.addEventListener('click', event => {
 					event.preventDefault();
 					const route = link.getAttribute('href');
@@ -84,7 +87,7 @@ class View {
 		let T = this._TemplateHolder.template(templateName);
 		const renderData = this._data[templateName];
 
-		if(!T || T.reload || properties.reload) {
+		if (!T || T.reload || properties.reload) {
 			if (!templateObject) {
 				return false;
 			}
@@ -96,7 +99,7 @@ class View {
 			const doReload = T;
 
 			let block = null;
-			if(doReload) {
+			if (doReload) {
 				this._TemplateHolder.update(templateName, html, properties);
 				block = T.block;
 			} else {
@@ -106,10 +109,10 @@ class View {
 
 			T = this._TemplateHolder.template(templateName);
 
-			if(block && this._PageBlock.block(block)) {
+			if (block && this._PageBlock.block(block)) {
 				this._PageBlock.addToBlock(templateName, !doReload);
 			} else {
-				if(T.appendFirst) {
+				if (T.appendFirst) {
 					this._body.insertBefore(html, this._body.firstChild);
 				} else {
 					this._body.appendChild(html);
@@ -119,6 +122,39 @@ class View {
 		return T.html;
 	}
 
+	/**
+	 * Loads all templates and provieds sunchronicly actions after.
+	 * 
+	 * @param {Object[]} templates Array of templates to load in dom.
+	 * @returns {Promise} Promise with result of each template loading.
+	 */
+	onLoad(templates = []) {
+		if (!Array.isArray(templates)) {
+			templates = [templates];
+		}
+
+		const loadPromises = templates.map(template => {
+			return Promise.resolve(this.load(...template));
+		});
+
+		return Promise.all(loadPromises);
+	}
+
+	/**
+	 * Check if template is visible or not.
+	 * 
+	 * @param {string} templateName Name of template to check on visibility.
+	 * @returns {boolean} True if visible, false in other case.
+	 */
+	isVisible(templateName) {
+		const T = this._TemplateHolder.template(templateName);
+		if (T) {
+			return !T.html.hidden;
+		} else {
+			return false;
+		}
+	}
+
 	/** 
 	 * Display element.
 	 * 
@@ -126,7 +162,7 @@ class View {
 	 */
 	show(templateName) {
 		const T = this._TemplateHolder.template(templateName);
-		if(T && !this._PageBlock.changeTemplate(templateName)) {
+		if (T && !this._PageBlock.changeTemplate(templateName)) {
 			T.html.hidden = false;
 		}
 	}
@@ -138,7 +174,7 @@ class View {
 	 */
 	hide(templateName) {
 		const T = this._TemplateHolder.template(templateName);
-		if(T) {
+		if (T) {
 			T.html.hidden = true;
 		}
 	}
@@ -151,6 +187,16 @@ class View {
 	remove(templateName) {
 		this._PageBlock.disconnectViewBlock(templateName);
 		this._TemplateHolder.delete(templateName);
+	}
+
+	/**
+	 * Get page block.
+	 * 
+	 * @param {string} id Id of block
+	 * @returns {HTMLElement} Block with content.
+	 */
+	getBlock(id) {
+		return this._PageBlock.getContentHolder(id);
 	}
 
 }

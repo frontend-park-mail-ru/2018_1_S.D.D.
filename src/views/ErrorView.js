@@ -20,12 +20,19 @@ class ErrorView extends View {
     
 	constructPage(data = {}) {
 		this._data = data;
-		this.load('Error', ErrorTemplate, { block: 'main', reload: true });
-		this.load('Header', HeaderTemplate, { appendFirst: true });
+
+		return this.onLoad([
+			['Header', HeaderTemplate, { appendFirst: true }],
+			['Error', ErrorTemplate, { block: 'main', reload: true }]
+		])
+			.then(() => {
+				this.showPage();
+			});
 	}
 
 	showPage() {
 		this.show('Header');
+		HeaderTemplate.showLogo();
 		this.show('Error');
 	}
 }

@@ -1,83 +1,74 @@
-.profile_wrapper {
-	width: 400px;
-	margin: auto;
-	text-align: center;
+@import '../../styles/constants';
+
+.profile {
+	&__wrapper {
+		margin: auto;
+		text-align: center;
+	}
+	
+	&__nickname {
+		display: block;
+		text-align: center;
+		font-size: $font-size-big;
+		font-weight: bold;
+		color: $color-light;
+		margin: 40px 0;
+	}
+	
+	&__info-holder {
+		font-size: $font-size-common;
+		color: $color-light;
+		height: auto;
+		margin: auto;
+		margin-bottom: 5px;
+
+		&:hover {
+			background: rgba(162, 169, 211, 0.5);
+		}
+
+		&__row {
+			width: 190px;
+			display: inline-block;
+			padding: 15px 0px;
+		}
+	}
+}
+.info {
+	&__key {
+		margin-left: 10px;
+		text-align: left;
+	}
+	
+	&__value {
+		font-weight: bold;
+		text-align: right;
+	
+		&_good {
+			background: $color-good;
+		}
+		
+		&_bad {
+			background: $color-bad;
+		}
+
+		&_marker {
+			border-radius: 100px;
+			padding: 6px 12px;
+		}
+	}
 }
 
-.avatar {
-	margin: 30px auto;
-	width: 250px;
-}
+@media screen and (max-width: 750px) {
+	.profile__nickname {
+		font-size: $font-size-common;
+		margin: 10px auto;
+	}
 
-.avatar__img {
-	width: 100%;
-	border-radius: 200px;
-}
+	.profile__info-holder__row {
+		width: 140px;
+	}
 
-.nickname {
-	display: block;
-	text-align: center;
-	font-size: 32px;
-	font-weight: bold;
-	color: #fff;
-	margin: 40px 0;
-}
-
-.info_holder {
-	font-size: 22px;
-	color: #fff;
-	height: auto;
-	margin: auto;
-	margin-bottom: 5px;
-}
-
-.info_holder:hover {
-	background: rgba(162, 169, 211, 0.5);
-}
-
-.info_holder > span {
-	width: 190px;
-	display: inline-block;
-	padding: 15px 0px;
-}
-
-.info_key {
-	margin-left: 10px;
-	text-align: left;
-}
-
-.info_value {
-	font-weight: bold;
-	text-align: right;
-}
-
-.info_value_good {
-	background: rgb(25, 128, 42);
-}
-
-.info_value_bad {
-	background: rgb(128, 25, 25);
-}
-
-.marker {
-	border-radius: 100px;
-	padding: 6px 12px;
-}
-
-.profile_close {
-	width: 100px;
-	text-align: center;
-	margin: auto;
-}
-
-.profile__link_close {
-    color: #16174e;
-	text-decoration: none;
-	background: #7db9fd;
-	margin: 20px auto;
-}
-
-.profile__link_close:hover {
-	text-decoration: none;
-	background: #fff;
+    .profile__info-holder {
+		font-size: $font-size-common;
+	}
 }

@@ -13,6 +13,7 @@ class Router {
 	 */
 	constructor() {
 		this.routes = [];
+		this._confirm = false;
 		window.addEventListener('popstate', () => {
 			this.loadPage(location.pathname);
 		}, false);
@@ -38,16 +39,55 @@ class Router {
 		return window.location.pathname;
 	}
 
+	requestConfirm(message) {
+		this._confirm = true;
+		this._confirmMessage = message;
+	}
+
 	/**
 	 * Redirect to new page specified by urlPath
 	 * 
 	 * @param {string} urlPath Url path to page 
 	 */
 	go(urlPath, pushState = true) {
-		if (urlPath !== this.getCurrentUrlPath() && pushState) {
-			window.history.pushState({}, '', urlPath);
+		const go = () => {
+			if (urlPath !== this.getCurrentUrlPath() && pushState) {
+				window.history.pushState({}, '', urlPath);
+			}
+			this.loadPage(urlPath);
+		};
+
+		if (this._confirm) {
+			const c = confirm(this._confirmMessage);
+			if (c) {
+				this._confirm = false;
+				go();
+			}
+		} else {
+			go();
 		}
-		this.loadPage(urlPath);
+	}
+
+	/**
+	 * Redirect to new page specified by urlPath without saving previous page.
+	 * 
+	 * @param {string} urlPath Url path to page
+	 */
+	re(urlPath) {
+		const go = () => {
+			window.history.replaceState({}, '', urlPath);
+			this.loadPage(urlPath);
+		};
+
+		if (this._confirm) {
+			const c = confirm(this._confirmMessage);
+			if (c) {
+				this._confirm = false;
+				go();
+			}
+		} else {
+			go();
+		}
 	}
     
 	/**
@@ -76,15 +116,47 @@ class Router {
 	}
 
 	/**
+	 * Get controller name from url.
+	 * 
+	 * @param {string} url Url path.
+	 */
+	getController(url) {
+		return url.split('/')[1];
+	}
+
+	/**
+	 * Get action name from url.
+	 * 
+	 * @param {string} url Url path.
+	 */
+	getAction(url) {
+		let action = url.split('/')[2];
+		if (!action) {
+			action = 'index';
+		}
+		return action;
+	}
+
+	/**
+	 * Get params from url.
+	 * 
+	 * @param {string} url Url path.
+	 */
+	getParams(url) {
+		const params = url.split('/');
+		params.splice(0, 3);
+		return params;
+	}
+
+	/**
 	 * Loads page associated with url 
 	 * 
 	 * @param {string} urlPath Url path to page
 	 */
 	loadPage(urlPath) {
 		let newUrlPath = this.getNewUrlPath(urlPath);
-		newUrlPath = newUrlPath.split('/');
 		let route = this.routes.find(routeIterator => {
-			return routeIterator.urlPath == newUrlPath[1];
+			return routeIterator.urlPath == this.getController(newUrlPath);
 		});
 
 		if (this.currentRoute != null) {
@@ -96,14 +168,14 @@ class Router {
 			route = this.notFound();
 			action = '404';
 		} else {
-			action = newUrlPath[2];
+			action = this.getAction(newUrlPath);
 		}
 		
 		this.currentRoute = route;
 
-		newUrlPath.splice(0, 3);
+		const params = this.getParams(newUrlPath);
 
-		if(!this.currentRoute.load(action, newUrlPath)) {
+		if (!this.currentRoute.load(action, params)) {
 			route = this.notFound();
 			this.currentRoute = route;
 			this.currentRoute.load('404');

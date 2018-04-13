@@ -10,9 +10,15 @@ class ScoresController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Model = new ScoresModel();
-		this._View = new ScoresView();
+		if (ScoresController.__instance) {
+			return ScoresController.__instance;
+		}
+		ScoresController.__instance = this;
+
+		this.ScoresModel = new ScoresModel();
+		this.ScoresView = new ScoresView();
 		this.addActions();
+		this.subscribeEvents();
 	}
 
 	/**
@@ -20,40 +26,76 @@ class ScoresController extends Controller {
 	 */
 	addActions() {
 		this.addAction('index', this.actionIndex);
-		this.addAction('show', this.actionIndex);
+		this.addAction('show', this.actionShow);
+	}
+
+	subscribeEvents() {
+		const EventBus = this.ServiceManager.EventBus;
+		EventBus.subscribe('showScoresTable', (usersList, userPosition) => { 
+			this.showScoresTable(usersList, userPosition);
+		}, this);
+		EventBus.subscribe('showPagination', usersCount => {
+			this.showPagination(usersCount);
+		} , this);
+	}
+
+	/**
+	 * Defalt action not exists. 404.
+	 */
+	actionIndex() {
+		this.go('/error/404/', false);
 	}
 
 	/**
 	 * Common action. Show scores table
+	 * 
+	 * @param {number} page Number of page to display (pagination)
 	 */
-	actionIndex(params = []) {
-		let page = (params[0] >= 1) ? params[0] : this.go('/scores/show/1');
-		
-		this._Model.getUserScores(
-			page,
-			result => {
-				const data = {
-					'Scores': {
-						data: result,
-						onClickPrev: () => {
-							page--;
-							this.go(`/scores/show/${page}`);
-						},
-						onClickNext: () => {
-							page++;
-							this.go(`/scores/show/${page}`);
-						}
-					}
-				};
-				this._View.constructPage(data);
-				this._View.showPage();
-			},
-			() => {
-				
-			}
-		);
+	actionShow(page = 1) {
+		if (page === '' || page < 1) {
+			this.go('/error/404', false);
+		} else {
+			this.page = page;
+			this.ScoresModel.getUserScores(page)
+				.then(() => {
+					this.ScoresModel.getUserCount();
+				});
+		}
 	}
 
+	showScoresTable(usersList, userPosition) {
+		const User = this.ServiceManager.UserStorage;
+		const data = {
+			'Scores': {
+				data: usersList,
+				me: {
+					'place': userPosition + 1,
+					'nickname': User.getData('nickname'),
+					'email':  User.getData('email'),
+					'countGames':  User.getData('countGames'),
+					'countWins':  User.getData('countWins'),
+					'rating':  User.getData('rating')
+				}
+			},
+			'Header': this.getHeaderData()
+		};
+		this.ScoresView.constructScores(data);
+	}
+
+	showPagination(usersCount) {
+		const data = {
+			'ScoresPagination': {
+				usersCount: usersCount,
+				limit: this.ScoresModel.limit,
+				currentPage: this.page,
+				onPaginate: p => {
+					this.go(`/scores/show/${p}`);
+				}
+			}
+		};
+		
+		this.ScoresView.constructPagination(data);
+	}
 	
 }
 

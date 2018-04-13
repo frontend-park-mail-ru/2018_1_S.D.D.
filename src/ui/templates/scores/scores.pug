@@ -1,19 +1,58 @@
-a(href='/').return-link ← Back to menu
-h2.scores__header Leaderboard
+mixin info(user, additional)
+	- var you = '';
+	if user.place == me.place
+		- you = 'scores__table__tr_you'
+	if additional
+		tr
+			td.scores__table__td.scores__table_small ...
+			td.scores__table__td.scores__table_big.scores__table_nickname 
+			td.scores__table__td.scores__table_big.scores__table_email 
+			td.scores__table__td.scores__table_small.scores__table_games 
+			td.scores__table__td.scores__table_small 
+			td.scores__table__td.scores__table_small
+		- you += ' scores__table__tr_additional'
+	tr(class=you).scores__table__tr
+		td.scores__table__td.scores__table_small 
+			if user.place == 1
+				img(src=require('../../images/gold.svg')).scores__medal
+			else if user.place == 2
+				img(src=require('../../images/silver.svg')).scores__medal
+			else if user.place == 3
+				img(src=require('../../images/bronze.svg')).scores__medal
+			else
+				| #{user.place}
+		if user.place == me.place
+			td.scores__table__td.scores__table_big.scores__table_nickname 
+				| #{user.nickname} 
+				b (YOU)
+		else
+			td.scores__table__td.scores__table_big.scores__table_nickname #{user.nickname}
+		td.scores__table__td.scores__table_big.scores__table_email #{user.email}
+		td.scores__table__td.scores__table_small.scores__table_games #{user.countGames}
+		td.scores__table__td.scores__table_small #{user.countWins}
+		td.scores__table__td.scores__table_small
+			if me.rating > 0
+				span.rating.rating_positive &nbsp;#{user.rating}&nbsp;
+			else
+				span.rating.rating_negative &nbsp;#{user.rating}&nbsp;
+
+h2.scores__header LEADERBOARD
 table.scores__table
 	if data.userViewList
-		th.scores__table__th Nickname
-		th.scores__table__th Email
-		th.scores__table__th Games
-		th.scores__table__th Wins
-		th.scores__table__th Rating
-		each user in data.userViewList
+		th.scores__table__th.scores__table_small #
+		th.scores__table__th.scores__table_big.scores__table_nickname Nickname
+		th.scores__table__th.scores__table_big.scores__table_email Email
+		th.scores__table__th.scores__table_small.scores__table_games Games
+		th.scores__table__th.scores__table_small Wins
+		th.scores__table__th.scores__table_small Rating
+		if data.userViewList.length > 0
+			each user in data.userViewList
+				+info(user, false)
+			if data.userViewList[0].place > me.place || data.userViewList[data.userViewList.length - 1].place < me.place
+				if me.place > 0
+					+info(me, true)
+		else
 			tr.scores__table__tr
-				td.scores__table__td #{user.nickname}
-				td.scores__table__td #{user.email}
-				td.scores__table__td #{user.countGames}
-				td.scores__table__td #{user.countWins}
-				td.scores__table__td #{user.rating}
-div
-	button.table__btn.table__btn_submit.prev ← Previous
-	button.table__btn.table__btn_submit.next → Next
+				td(colspan="6").scores__table__td.scores__table_nodata No users found :(
+			if me.place > 0
+				+info(me, true)

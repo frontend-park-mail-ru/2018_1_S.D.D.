@@ -1,8 +1,9 @@
 'use strict';
 
 import Controller from './Controller';
-import SignupModel from '../models/SignupModel';
+import UserModel from '../models/UserModel';
 import SignupView from '../views/SignupView';
+import validation from '../modules/validations';
 
 class SignupController extends Controller {
 	/**
@@ -10,8 +11,8 @@ class SignupController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Model = new SignupModel();
-		this._View = new SignupView();
+		this.UserModel = new UserModel();
+		this.SignupView = new SignupView();
 		this.addActions();
 	}
 
@@ -27,86 +28,84 @@ class SignupController extends Controller {
 	 * Common action. Show signup form.
 	 */
 	actionIndex() {
-		this._Model.onAuth(
-			() => {
-				this._loginCallback();
-			},
-			() => {
-				const data = {
-					'SignupForm': this._Model.getSignupForm(
-						() => this._ServiceManager.Router.go('/signup/submit', false)
-					),
-					'Header': this._Model.getHeaderData()
-				};
-				this._View.constructPage(data);
-				this._View.showPage();
-			}
-		);
+		const data = {
+			'SignupForm': this.getSignupForm(),
+			'Header': this.getHeaderData()
+		};
+
+		this.SignupView.constructPage(data);
 	}
 
 	/**
 	 * Submit action. Validate form and submit data to server if ok.
 	 */
 	actionSubmit() {
-		this._Model.onAuth(
-			this._loginCallback,
-			() => {
-				const data = {
-					'SignupForm': this._Model.getSignupForm(
-						() => this._ServiceManager.Router.go('/signup/submit', false)
-					),
-					'Header': this._Model.getHeaderData()
-				};
+		const data = {
+			'SignupForm': this.getSignupForm(),
+			'Header': this.getHeaderData()
+		};
 
-				let submitData = this._View.serializeForm();
-				if(!submitData) {
-					this._View.constructPage(data);
-					submitData = this._View.serializeForm();
-				}
-		
-				const validation = this._Model.validate(submitData);
-		
-				let noValidationError = true;
-				for(let input in validation) {
-					if(validation[input]) {
-						this._View.addFormError(input, validation[input]);
-						noValidationError = false;
-					}
-				}
-		
-				if(noValidationError) {
-					this._Model.signup(
-						submitData,
-						() => {
-							const reconstructData = {
-								'Header': this._Model.getHeaderData()
-							};
-							this._View.reconstructPage(reconstructData);
-							this.go('/');
-						},
-						errors => {
-							for(let e in errors) {
-								this._View.addFormError(e, errors[e]);
-							}
-							this.go('/signup');
-						}
-					);
-				} else {
-					this.go('/signup');
-				}
+		let submitData = this.SignupView.serializeForm();
+		if (!submitData) {
+			this.SignupView.constructPage(data);
+			submitData = this.SignupView.serializeForm();
+		}
+
+		const EventBus = this.ServiceManager.EventBus;
+		EventBus.subscribe('signupError', errors => {
+			for (let e in errors) {
+				this.SignupView.addFormError(e, errors[e]);
 			}
-		);
+			this.go('/signup');
+		}, this);
+		
+		this.UserModel.signup(submitData);
 	}
 
 	/**
-	 * What to do is user already logged in.
+	 * Get Signup form data.
+	 * 
+	 * @returns {Object} Inputs and header.
 	 */
-	_loginCallback() {
-		const data = {
-			'Header': this._Model.getHeaderData()
+	getSignupForm() {
+		return {
+			back: true,
+			header: 'HI STRANGER!',
+			social: false,
+			formAction: '/signup/submit',
+			onSubmit: () => this.go('/signup/submit', false),
+			formInputs: [
+				{
+					type: 'text',
+					name: 'nickname',
+					placeholder: 'Login',
+					validateMethod: validation.login,
+					validateFields: ['nickname']
+				},
+				{
+					type: 'text',
+					name: 'email',
+					placeholder: 'Email',
+					validateMethod: validation.email,
+					validateFields: ['email']
+				},
+				{
+					type: 'password',
+					name: 'password',
+					placeholder: 'Password',
+					validateMethod: validation.password,
+					validateFields: ['password', 'passwordCheck']
+				},
+				{
+					type: 'password',
+					name: 'passwordCheck',
+					placeholder: 'Repeat password',
+					validateMethod: validation.password,
+					validateFields: ['passwordCheck', 'password']
+				}
+			],
+			button: 'SIGN UP'
 		};
-		this._View.reconstructPage(data);
-		this.go('/');
 	}
 }
 

@@ -1,0 +1,40 @@
+@import '../../styles/constants';
+
+.pagination {
+    width: 90%;
+    text-align: right;
+    margin: auto;
+
+    &__btn {
+        border: 0px;
+        font-size: 18px;
+        padding: 7px 0;
+        text-align: center;
+        border-radius: 50px;
+        margin: 0 20px 0 0;
+        outline: none;
+        display: inline-block;
+        height: 38px;
+        width: 38px;
+    }
+    
+    &__btn_disabled {
+        color: $btn-disabled-color;
+        background: $btn-disabled-bg;
+        cursor: not-allowed;
+    }
+    
+    &__btn_active {
+        color: $btn-color-common;
+        background: $btn-bg-common;
+        cursor: pointer;
+
+        &:hover {
+            background: $color-light;
+        }
+    }
+}
+
+.pages {
+    display: inline-block;
+}

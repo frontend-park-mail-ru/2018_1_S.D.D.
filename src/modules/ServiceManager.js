@@ -4,7 +4,8 @@
 
 import Router from './Router';
 import Api from './Api';
-import User from './User';
+import EventBus from './EventBus';
+import UserStorage from './Storage';
 
 /** Service manager object - container of major application objects */
 class ServiceManager {
@@ -19,7 +20,8 @@ class ServiceManager {
      
 		this._Router = new Router();
 		this._ApiService = new Api(API_SERVER_ADDRESS);
-		this._User = new User();
+		this._EventBus = new EventBus();
+		this._UserStorage = new UserStorage();
 	}
     
 	/**
@@ -30,10 +32,17 @@ class ServiceManager {
 	}
 
 	/**
+	 * Returns EventBus object
+	 */
+	get EventBus() {
+		return this._EventBus;
+	}
+
+	/**
 	 * Returns User object
 	 */
-	get User() {
-		return this._User;
+	get UserStorage() {
+		return this._UserStorage;
 	}
 
 	/**

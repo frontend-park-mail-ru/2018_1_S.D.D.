@@ -1,84 +1,120 @@
+@import '../../styles/constants';
+
 .header {
     width: 100%;
-    height: 80px;
+    height: $header-height-big;
+
+    &__container {
+        padding: 0px 20px;
+
+        &_left {
+            float: left;
+        }
+
+        &_right {
+            float: right;
+            height: 80px;
+        }
+    }
+
+    &__logo {
+        font-size: $header-logo-size;
+        font-weight: bold;
+        color: $color-light;
+        text-align: center;
+        margin: $header-logo-y-margins 10px;
+    }
+
+    &__logo_hided {
+        opacity: 0;
+    }
+
+    &__logo__link {
+        text-decoration: none;
+        display: block;
+        color: $color-light;
+    }
+
+    &__logo__smile {
+        width: $header-logo-size;
+        height: $header-logo-size;
+        position: relative;
+    }
+
+    &__link:hover {
+        text-decoration: underline;
+    }
+
+    &__list {
+        margin-top: 9px;
+        text-align: center;
+    }
+
+    &__link {
+        color: $color-light;
+        text-decoration: none;
+        font-size: $font-size-common;
+    }
+
+    &__link_btn {
+        background: linear-gradient(90deg, $bg-grad-start, $bg-grad-end);
+    }
+
+    &__link_btn:hover {
+        background: linear-gradient(90deg, $bg-grad-end, $bg-grad-end) !important; 
+        text-decoration: none;
+        color: $btn-color-common;
+    }
 }
 
-.header__container {
-    height: 80px;
-    padding: 0px 20px;
-}
-
-.header__container_right {
-    float: right;
-}
-
-.header__link:hover {
-    text-decoration: underline;
-}
-
-.header__list {
-    margin-top: 9px;
-    text-align: center;
-}
-
-.header__link {
-    color: #fff;
-	text-decoration: none;
-	font-size: 18px;
-}
-
-.header__link_btn {
-    background: linear-gradient(90deg, #2f164e, #7db9fd);
-}
-
-.header__link_btn:hover {
-    background: linear-gradient(90deg, #7db9fd, #7db9fd) !important; 
-    text-decoration: none;
-    color: #16174e;
+.auth_menu {
+    padding: 8px 0;
 }
 
 .sub_btn {
     display: block;
-    color: #fff;
-    padding: 10px 20px;
+    color: $color-light;
+    padding: 2px 10px;
     cursor: pointer;
-    background: rgba(162, 169, 211, 0.2);
+    background: $header-loggedin-menu-btn;
     border-radius: 50px;
-}
 
-.sub_btn:hover {
-    background: rgba(162, 169, 211, 0.5);
+    &:hover {
+        background: $header-loggedin-menu-btn-hov;
+    }
 }
 
 .user_section {
     display: block;
-}
+    height: 80px;
 
-.user_section__avatar {
-    height: 45px;
-    width: 45px;
-    border-radius: 100px;
-    float: left;
-}
+    &__avatar {
+        padding: 6px;
+        height: $header-avatar-size;
+        width: $header-avatar-size;
+        border-radius: 100px;
+        float: left;
+    }
 
-.user_section__nickname {
-    float: right;
-    margin: auto;
-    display: block;
-    padding: 12px 8px;
-    font-size: 18px;
-    -o-transition: .0s;
-    -ms-transition: .0s;
-    -moz-transition: .0s;
-    -webkit-transition: .0s;
-    transition: .0s;
-}
+    &__nickname {
+        float: right;
+        margin: auto;
+        display: block;
+        padding: 15px 8px;
+        font-size: $font-size-common;
+        -o-transition: $animation-disabled;
+        -ms-transition: $animation-disabled;
+        -moz-transition: $animation-disabled;
+        -webkit-transition: $animation-disabled;
+        transition: $animation-disabled;
+    }
 
-.user_secction__nickname__arrow {
-    display: block;
-    float: right;
-    font-size: 10px;
-    padding: 5px 8px;
+    &__nickname__arrow {
+        display: block;
+        float: right;
+        font-size: 10px;
+        padding: 5px 8px;
+    }
 }
 
 .submenu {
@@ -102,15 +138,17 @@
 }
 
 .submenu__item__link {
-    color: #fff;
+    color: $color-light;
     text-decoration: none;
     padding: 10px;
     display: block;
+
+    &:hover {
+        background: $header-loggedin-submenu-btn-hov;
+    }
 }
 
-.submenu__item:hover {
-    background: rgba(162, 169, 211, 0.5);
-}
+
 
 .user_section > li:hover .submenu {
     opacity: 1;
@@ -120,24 +158,70 @@
 
 @media screen and (max-width: 1080px) {
     .header {
-        height: 40px;
-    }
+        height: $header-height-small;
 
-    .header__link {
-        font-size: 12px;
-    }
-    
-    .header__container {
-        padding: 0px;
+        &__link {
+            font-size: $font-size-small;
+        }
+        
+        &__container {
+            padding: 0px;
+        }
     }
 }
 
 @media screen and (max-width: 640px) {
     .submenu__item {
-        background: rgba(162, 169, 211, 0.7);
+        background-color: $header-loggedin-submenu-filled;
+    
+        &:hover {
+            background-color: $header-loggedin-submenu-filled-hov;
+        }
+    }
+
+}
+
+@media screen and (max-width: 520px) {
+    .header {
+        &__logo {
+            font-size: $header-logo-size-small;
+            margin: $header-logo-y-margins-small 5px;
+        }
+        
+        &__logo__smile {
+            width: $header-logo-size-small;
+            height: $header-logo-size-small;
+            position: relative;
+        } 
     }
     
-    .submenu__item:hover {
-        background: rgba(162, 169, 211, 0.8);
+    .user_section {
+        &__avatar {
+            padding: 6px;
+            height: $header-avatar-size-small;
+            width: $header-avatar-size-small;
+        }
+        
+        &__nickname {
+            padding: 18px 8px;
+            font-size: $font-size-small;
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .header {
+        &__container_left {
+            float: none;
+        }
+    
+        &__logo {
+            margin: 10px auto;
+        }
+        
+        &__container_right {
+            float: none;
+            height: auto;
+        }
     }
 }

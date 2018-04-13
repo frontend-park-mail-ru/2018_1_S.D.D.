@@ -1,3 +1,5 @@
+@import '../../styles/constants';
+
 ::-webkit-input-placeholder {
     color: #b9b9b9;
 }
@@ -14,117 +16,155 @@
 .form {
     text-align: center;
     max-width: 400px;
-    margin: 0 auto 60px auto;
+	margin: 0 auto 60px auto;
+	
+	&__header {
+		color: $color-light;
+		font-size: 50px;
+		text-align: center;
+		font-weight: 100;
+		margin: 30px auto;
+	}
+	
+	&__input {
+		height: 50px;
+		width: 100%;
+		margin: 10px auto;
+		text-align: center;
+		font-size: 22px;
+		border-radius: 50px;
+		border: 0px;
+		outline: none;
+		background: rgba(255,2555,255,0.1);
+		color: $color-light;
+
+		&:focus {
+			background: rgba(255,2555,255,0.3);
+		}
+	}
+	
+	&__btn {
+		height: 46px;
+		border: 0px;
+		font-size: 22px;
+	}
+	
+	&__btn_submit {
+		margin-top: 10px;
+		width: 100%;
+	}
+	
+	&__btn_submit:hover {
+		background: #614585;
+		color: $color-light;
+	}
+	
+	&__btn_submit__text {
+		-o-transition:$animation-disabled;
+		-ms-transition:$animation-disabled;
+		-moz-transition:$animation-disabled;
+		-webkit-transition:$animation-disabled;
+		transition:$animation-disabled;
+	}
+	
+	&__btn_social {
+		width: 50%;
+		display: inline-block;
+		margin: 10px 0px;
+		padding: 7px 10px;
+		text-decoration: none;
+
+		&-vk {
+			background: #4a76a8;
+			color: $color-light;
+			border-top-right-radius: 0px;
+			border-bottom-right-radius: 0px;
+
+			&:hover {
+				background: #5a8ac2;
+			}
+		}	
+		
+		&-google {
+			background: #de4b39;
+			color: $color-light;
+			border-top-left-radius: 0px;
+			border-bottom-left-radius: 0px;
+
+			&:hover {
+				background: #eb6250;
+			}
+		}
+	}
 }
 
-.form__header {
-    color: #fff;
-    font-size: 50px;
-    text-align: center;
-    font-weight: 100;
-    margin: 30px auto;
-}
-
-.form__input {
-    height: 50px;
-    width: 100%;
-    margin: 10px auto;
-    text-align: center;
-    font-size: 22px;
-    border-radius: 50px;
-    border: 0px;
-    outline: none;
-    background: rgba(255,2555,255,0.1);
-    color: #fff;
-}
-
-.form__input:focus {
-    background: rgba(255,2555,255,0.3);
-}
-
-.form__btn {
-    height: 46px;
-    border: 0px;
-    font-size: 22px;
-}
-
-.form__btn_submit {
-    margin-top: 10px;
-    width: 100%;
-}
-
-.form__btn_submit:hover {
-    background: #614585;
-    color: #fff;
-}
-
-.form__btn_submit__text {
-    -o-transition:.0s;
-    -ms-transition:.0s;
-    -moz-transition:.0s;
-    -webkit-transition:.0s;
-    transition:.0s;
-}
-
-.form__btn_social {
-    width: 50%;
-    display: inline-block;
-    margin: 10px 0px;
-	padding: 7px 10px;
-	text-decoration: none;
-}
-
-.form__btn_social-vk {
-    background: #4a76a8;
-    color: #fff;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-.form__btn_social-vk:hover {
-    background: #5a8ac2;
-}
-
-.form__btn_social-google {
-    background: #de4b39;
-    color: #fff;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-}
-
-.form__btn_social-google:hover {
-    background: #eb6250;
-}
-
+// google+ icon
 .gp {
     font-weight: bold;
 }
-
-
 
 .input-error {
 	margin-bottom: 10px;
 	background: rgba(202, 96, 96, 0.502);
 }
 
-.error-message {
-	display: block;
-	max-width: 97%;
-	margin: 0 auto 10px auto;
-	top: -5px;
+.error {
+	&-general {
+		top: 5px;
+	}
+
+	&-message {
+		display: block;
+		max-width: 97%;
+		margin: 0 auto 10px auto;
+		top: -5px;
+
+		&-active {
+			color: rgb(221, 221, 221);
+			background: rgba(165, 54, 54, 0.781);
+			padding: 5px;
+			border-radius: 50px;
+			position: relative;
+			font-weight: bold;
+		}
+	}
 }
 
-.error-general {
-    top: 5px;
+input[type=file].form__input {
+	position: absolute;
+    top: 0;
+	opacity: 0;
+	z-index: -2;
 }
 
-.error-message-active {
-	color: rgb(221, 221, 221);
-	background: rgba(165, 54, 54, 0.781);
-	padding: 5px;
-	border-radius: 50px;
+.file-upload {
+    display: block;
 	position: relative;
-	font-weight: bold;
+	z-index: 1;
+}
+
+.file-upload__button, .file-upload__path{
+    display: block;
+    cursor: pointer;
+}
+
+.file-upload__button {
+    float: right;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.file-upload__button:hover {
+	background: #614585;
+	color: $color-light;
+}
+
+.file-upload__path {
+	color: #b9b9b9;
+	font-size: $font-size-common;
+	padding: 10px;
+	background: rgba(255,2555,255,0.1);
+	border-radius: 500px;
 }
 
 @media screen and (max-width: 1200px) {

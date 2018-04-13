@@ -1,7 +1,6 @@
 'use strict';
 
 import Model from './Model';
-import validation from '../modules/validations';
 
 /**
  * Creates instance of UserModel
@@ -17,258 +16,225 @@ class UserModel extends Model {
 		super();
 	}
 
-	getProfileData(backUrl = '/') {
-		const User = this._ServiceManager.User;
-		return {
-			url: backUrl,
-			nickname: User.nickname,
-			gamesCount: User.games,
-			winsCount: User.wins,
-			rating: User.rating,
-		};
-	}
+	/**
+	 * Reset user in local storage.
+	 */
+	resetUser() {
+		const UserStorage = this.ServiceManager.UserStorage;
 
-	getEditNickname(onSubmitCallback) {
-		const User = this._ServiceManager.User;
-		return {
-			back: true,
-			header: false,
-			social: false,
-			formAction: '/user/edit/nickname',
-			onSubmit: () => onSubmitCallback(),
-			formInputs: [
-				{
-					type: 'text',
-					name: 'nickname',
-					placeholder: User.nickname
-				}
-			],
-			button: 'CHANGE NICKNAME!'
-		};
-	}
-
-	getEditEmail(onSubmitCallback) {
-		const User = this._ServiceManager.User;
-		return {
-			header: false,
-			social: false,
-			formAction: '/user/edit/email',
-			onSubmit: () => onSubmitCallback(),
-			formInputs: [
-				{
-					type: 'text',
-					name: 'email',
-					placeholder: User.email
-				}
-			],
-			button: 'CHANGE EMAIL!'
-		};
-	}
-
-	getEditPassword(onSubmitCallback) {
-		return {
-			header: false,
-			social: false,
-			formAction: '/user/edit/password',
-			onSubmit: () => onSubmitCallback(),
-			formInputs: [
-				{
-					type: 'password',
-					name: 'oldPassword',
-					placeholder: 'Old password'
-				},
-				{
-					type: 'password',
-					name: 'password',
-					placeholder: 'New password'
-				},
-				{
-					type: 'password',
-					name: 'passwordCheck',
-					placeholder: 'Confirm password'
-				}
-			],
-			button: 'CHANGE PASSWORD!'
-		};
-	}
-
-	getUploadAvatar(onSubmitCallback) {
-		return {
-			header: false,
-			social: false,
-			formAction: '/user/uploadavatar',
-			onSubmit: () => onSubmitCallback(),
-			formInputs: [
-				{
-					type: 'file',
-					name: 'file',
-					placeholder: 'Photo upload'
-				}
-			],
-			button: 'UPLOAD PHOTO!'
-		};
-	}
-
-	getAvatar() {
-		const User = this._ServiceManager.User;
-		return {
-			defaultAvatar: User.defaultAvatar,
-			avatar: User.avatar
-		};
+		UserStorage.setData('loggedin', false);
+		UserStorage.setData('avatar', '');
+		UserStorage.setData('nickname', '');
+		UserStorage.setData('email', '');
+		UserStorage.setData('rating', '');
+		UserStorage.setData('countGames', '');
+		UserStorage.setData('countWins', '');
 	}
 
 	/**
-	 * Validate nickname form.
+	 * Fill local storage with user data.
 	 * 
-	 * @param {Object} formData Serealized form values.
-	 * @returns {Object} Error messages.
+	 * @param {Object} response Server response.
 	 */
-	validateNickname(formData) {
-		return {
-			nickname: validation.login(formData.nickname)
-		};
+	fillUser(response) {
+		const UserStorage = this.ServiceManager.UserStorage;
+		const user = response.data.current_user;
+
+		UserStorage.setData('avatar', user.avatar);
+		UserStorage.setData('nickname', user.nickname);
+		UserStorage.setData('email', user.email);
+		UserStorage.setData('rating', user.rating);
+		UserStorage.setData('countGames', user.countGames);
+		UserStorage.setData('countWins', user.countWins);
+		UserStorage.setData('loggedin', true);
 	}
 
 	/**
-	 * Validate email form.
+	 * Sign up user. If success - login user.
 	 * 
-	 * @param {Object} formData Serealized form values.
-	 * @returns {Object} Error messages.
+	 * @param {Object} formData Sign up data.
 	 */
-	validateEmail(formData) {
-		return {
-			email: validation.email(formData.email)
-		};
+	signup(formData) {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+
+		API.POST('user/signup', formData)
+			.then(response => {
+				if (API.responseSuccess(response)) {
+					const loginData = {
+						nickname: formData.nickname,
+						password: formData.password
+					};
+					this.login(loginData, true);
+				} else {
+					EventBus.emit('signupError', response.errors);
+				}
+			})
+			.catch(error => {
+				EventBus.emit('signupError', {'general': error});
+			});
 	}
 
 	/**
-	 * Validate password form.
+	 * Login user.
 	 * 
-	 * @param {Object} formData Serealized form values.
-	 * @returns {Object} Error messages.
+	 * @param {Object} formData Login and password.
+	 * @param {boolean} signup Flag if current action is signup.
 	 */
-	validatePassword(formData) {
-		return {
-			oldPassword: validation.password(formData.oldPassword),
-			password: validation.password(formData.password, formData.passwordCheck),
-			passwordCheck: validation.password(formData.passwordCheck, formData.password)
+	login(formData, signup = false) {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+
+		const errorHandler = (error) => {
+			if (signup) {
+				EventBus.emit('signupError', error);
+			} else {
+				EventBus.emit('loginError', error);
+			}
 		};
+
+		API.POST('user/signin', formData)
+			.then(response => {
+				if (API.responseSuccess(response)) {
+					this.loadUser();
+				} else {
+					errorHandler(response.errors);
+				}
+			})
+			.catch(error => {
+				errorHandler({'general': error});
+			});
+	}
+
+	/**
+	 * Get user info from server if user logged in.
+	 */
+	loadUser() {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+
+		API.GET('user/info')
+			.then(response => {
+				if (API.responseSuccess(response)) {
+					this.fillUser(response);
+					EventBus.emit('login');
+				} else {
+					this.resetUser();
+					EventBus.emit('logout');
+				}
+			})
+			.catch(() => {
+				EventBus.emit('error:noresponse');
+			});
 	}
 
 	/**
 	 * Upload users avatar to server.
 	 * 
 	 * @param {Object} formData Avatar
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	uploadAvatar(formData, onSuccessCallback, onErrorCallback) {
-		const API = this._ServiceManager.ApiService;
-		const User = this._ServiceManager.User;
+	uploadAvatar(formData) {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+		const UserStorage = this.ServiceManager.UserStorage;
 
-		User.uploadAvatar(formData)
+		API.POST('user/update_avatar', formData, false)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					UserStorage.setData('avatar', response.data.avatar);
+					EventBus.emit('avatarChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('avatarUploadingError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('avatarUploadingError', {'general': error});
 			});
 	}
 
 	/**
 	 * Edit nickname with incoming data.
-	 * 
-	 * @param {Object} formData Serialized form values
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	editNickname(formData, onSuccessCallback, onErrorCallback) {
-		const API = this._ServiceManager.ApiService;
-		const User = this._ServiceManager.User;
+	editNickname(formData) {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+		const UserStorage = this.ServiceManager.UserStorage;
 
-		User.editNickname(formData)
+		API.POST('user/update_nickname', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					UserStorage.setData('nickname', formData.nickname);
+					EventBus.emit('nicknameChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('editnicknameError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('editnicknameError', {'general': error});
 			});
 	}
 
 	/**
 	 * Edit email with incoming data.
-	 * 
-	 * @param {Object} formData Serialized form values
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	editEmail(formData, onSuccessCallback, onErrorCallback) {
-		const API = this._ServiceManager.ApiService;
-		const User = this._ServiceManager.User;
+	editEmail(formData) {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+		const UserStorage = this.ServiceManager.UserStorage;
 		
-		User.editEmail(formData)
+		API.POST('user/update_email', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					UserStorage.setData('email', formData.email);
+					EventBus.emit('emailChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('editemailError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('editemailError', {'general': error});
 			});
 	}
 
 	/**
 	 * Edit password with incoming data.
-	 * 
-	 * @param {Object} formData Serialized form values
-	 * @param {Function} onSuccessCallback What we do after editing
-	 * @param {Function} onErrorCallback What we do if request returned error
 	 */
-	editPassword(formData, onSuccessCallback, onErrorCallback) {
-		const API = this._ServiceManager.ApiService;
-		const User = this._ServiceManager.User;
+	editPassword(formData) {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
 
-		User.editPassword(formData)
+		API.POST('user/update_password', formData)
 			.then(response => {
-				if(API.responseSuccess(response)) {
-					onSuccessCallback();
+				if (API.responseSuccess(response)) {
+					EventBus.emit('passwordChanged');
 				} else {
-					onErrorCallback(response.errors);
+					EventBus.emit('editpasswordError', response.errors);
 				}
 			})
 			.catch(error => {
-				onErrorCallback({'general': error});
+				EventBus.emit('editpasswordError', {'general': error});
 			});
 	}
 
 	/**
 	 * Logout user.
-	 * 
-	 * @param {Function} onSuccessCallback What to do when user is logged out.
-	 * @param {Function} onErrorCallback What to do if we got error.
 	 */
-	logout(onSuccessCallback, onErrorCallback) {
-		const User = this._ServiceManager.User;
-		if(User.isLogged()) {
-			User.logout()
+	logout() {
+		const API = this.ServiceManager.ApiService;
+		const EventBus = this.ServiceManager.EventBus;
+		const UserStorage = this.ServiceManager.UserStorage;
+
+		if (UserStorage.getData('loggedin')) {
+			API.POST('user/signout')
 				.then(() => {
-					onSuccessCallback();
+					this.resetUser();
+					EventBus.emit('logout');
 				})
 				.catch(() => {
-					onErrorCallback();
+					EventBus.emit('error:noresponse');
 				});
 		} else {
-			onSuccessCallback();
+			EventBus.emit('logout');
 		}
 	}
 

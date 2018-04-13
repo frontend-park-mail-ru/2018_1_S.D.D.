@@ -3,17 +3,46 @@ const path = require('path');
 module.exports = {
 	entry: './src/main.js',
 	output: {
+		publicPath: '/',
 		path: path.resolve(__dirname, '../public'),
 		filename: 'bundle.js'
 	},
+	resolve: {
+		extensions: ['.ts', '.tsx', '.js']
+	},
 	module: {
 		rules: [
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: [['env', {
+								'targets': {
+									'browsers': ['last 2 versions']
+								}
+							}]]
+						}
+					}
+				]
+			},
+			{
+				test: /\.ts$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'ts-loader',
+					}
+				]
+			},
 			{
 				test: /\.pug$/,
 				loader: 'pug-loader'
 			},
 			{
-				test: /\.scss$/,
+				test: /\.(scss|css)$/,
 				use: [
 					{
 						loader: 'style-loader'
@@ -27,7 +56,7 @@ module.exports = {
 				]
 			},
 			{
-				test: /\.svg$/,
+				test: /\.(svg|jpg|png)$/,
 				use: [
 					{
 						loader: 'file-loader',

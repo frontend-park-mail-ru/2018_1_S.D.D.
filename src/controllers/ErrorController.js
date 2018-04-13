@@ -1,7 +1,6 @@
 'use strict';
 
 import Controller from './Controller';
-import ErrorModel from '../models/ErrorModel';
 import ErrorView from '../views/ErrorView';
 
 class ErrorController extends Controller {
@@ -10,8 +9,7 @@ class ErrorController extends Controller {
 	 */
 	constructor() {
 		super();
-		this._Model = new ErrorModel();
-		this._View = new ErrorView();
+		this.ErrorView = new ErrorView();
 		this.addActions();
 	}
 
@@ -30,14 +28,10 @@ class ErrorController extends Controller {
 	 */
 	action403() {
 		const data = {
-			'Error': this._Model.get403Message(),
-			'Header': this._Model.getHeaderData()
+			'Error': this.get403Message(),
+			'Header': this.getHeaderData()
 		};
-		this._View.constructPage(data);
-		this._View.showPage();
-
-		// if session was gone we need to clear our templates
-		this.go('/user/logout/quietly', false);
+		this.ErrorView.constructPage(data);
 	}
 
 	/**
@@ -45,11 +39,10 @@ class ErrorController extends Controller {
 	 */
 	action404() {
 		const data = {
-			'Error': this._Model.get404Message(),
-			'Header': this._Model.getHeaderData()
+			'Error': this.get404Message(),
+			'Header': this.getHeaderData()
 		};
-		this._View.constructPage(data);
-		this._View.showPage();
+		this.ErrorView.constructPage(data);
 	}
 
 	/**
@@ -57,11 +50,51 @@ class ErrorController extends Controller {
 	 */
 	action503() {
 		const data = {
-			'Error': this._Model.get503Message(),
-			'Header': this._Model.getHeaderData()
+			'Error': this.get503Message(),
+			'Header': this.getHeaderData()
 		};
-		this._View.constructPage(data);
-		this._View.showPage();
+		this.ErrorView.constructPage(data);
+	}
+
+	/**
+	 * Get 403 error message.
+	 * 
+	 * @returns {Object} 403 error message.
+	 */
+	get403Message() {
+		const url = this.ServiceManager.Router.getNewUrlPath();
+		return {
+			Code: '403',
+			Header: 'This place is strictly forbidden for guys like you!',
+			Message: 'You should sign in first to look on ' + url
+		};
+	}
+	
+	/**
+	 * Get 404 error message.
+	 * 
+	 * @returns {Object} 404 error message.
+	 */
+	get404Message() {
+		const url = this.ServiceManager.Router.getNewUrlPath();
+		return {
+			Code: '404',
+			Header: 'We can\'t find what are you looked for...',
+			Message: 'Are you sure that "' + url + '" is correct address?'
+		};
+	}
+
+	/**
+	 * Get 503 error message.
+	 * 
+	 * @returns {Object} 503 error message.
+	 */
+	get503Message() {
+		return {
+			Code: '503',
+			Header: 'Application is not responding. We are sorry about that!',
+			Message: 'You still can (probably) play offline if you want...'
+		};
 	}
 }
 

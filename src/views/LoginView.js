@@ -26,7 +26,7 @@ class LoginView extends View {
 	 */
 	serializeForm() {
 		const form = this.load('LoginForm');
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.serialize(form);
@@ -41,7 +41,7 @@ class LoginView extends View {
 	 */
 	addFormError(input, message) {
 		const form = this.load('LoginForm');
-		if(!form) {
+		if (!form) {
 			return false;
 		}
 		return FormTemplate.addError(input, message, form);
@@ -54,21 +54,15 @@ class LoginView extends View {
 	 */
 	constructPage(data = {}) {
 		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true });
-		this.load('Logo', LogoTemplate, { block: 'left' });
-		this.load('LoginForm', FormTemplate, { block: 'right' });
-	}
 
-	/**
-	 * Reload and delete all required templates after login.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
-	reconstructPage(data = {}) {
-		this._data = data;
-		this.load('Header', HeaderTemplate, { appendFirst: true, reload: true });
-		this.remove('SignupForm');
-		this.remove('LoginForm');
+		return this.onLoad([
+			['Header', HeaderTemplate, { appendFirst: true }],
+			['Logo', LogoTemplate, { block: 'left' }],
+			['LoginForm', FormTemplate, { block: 'right' }]
+		])
+			.then(() => {
+				this.showPage();
+			});
 	}
 
 	/**
@@ -76,6 +70,7 @@ class LoginView extends View {
 	 */
 	showPage() {
 		this.show('Header');
+		HeaderTemplate.hideLogo();
 		this.show('Logo');
 		this.show('LoginForm');
 	}

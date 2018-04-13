@@ -9,13 +9,13 @@ export default {
 	 * @returns {string|boolean} Error message or false if no validation error.
 	 */
 	password: (password, passwordCheck = null) => {
-		if(password === '') {
+		if (password === '') {
 			return 'You should fill password field!';
 		}
-		if(password.length < 6) {
+		if (password.length < 6) {
 			return 'Password should be at least 6 characters in length!';
 		}
-		if(passwordCheck !== null && password !== passwordCheck) {
+		if (passwordCheck !== null && password !== passwordCheck) {
 			return 'Different passwords were entered!';
 		}
 		return false;
@@ -28,11 +28,11 @@ export default {
 	 * @returns {string|boolean} Error message or false if no validation error.
 	 */
 	email: email => {
-		if(email === '') {
+		if (email === '') {
 			return 'You should fill email field!';
 		}
 		const emailPattern = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/i;
-		if(!emailPattern.test(email)) {
+		if (!emailPattern.test(email)) {
 			return 'That\'s not valid email!';
 		}
 		
@@ -46,10 +46,10 @@ export default {
 	 * @returns {string|boolean} Error message or false if no validation error.
 	 */
 	login: login => {
-		if(login === '') {
+		if (login === '') {
 			return 'You should fill login field!';
 		}
-		if(login.length < 4) {
+		if (login.length < 4) {
 			return 'Login should be at least 4 characters in length!';
 		}
 		return false;
