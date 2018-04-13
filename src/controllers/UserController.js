@@ -85,13 +85,8 @@ class UserController extends Controller {
 			EventBus.subscribe('login', this.onLoginAction, this);
 			EventBus.subscribe('logout', this.onLogoutAction, this);
 
-			UserStorage.onChange('loggedin', () => {	
-				const loggedin = UserStorage.getBooleanData('loggedin');
-				if (loggedin) {
-					EventBus.emit('login');
-				} else {
-					EventBus.emit('logout');
-				}
+			UserStorage.onChange('loggedin', () => {
+				this.UserModel.loadUser(true);
 			}, this);
 		}
 		
@@ -102,6 +97,7 @@ class UserController extends Controller {
 	 * What to do after user logged in.
 	 */
 	onLoginAction() {
+
 		const Router = this.ServiceManager.Router;
 		const currentUrl = Router.getCurrentUrlPath();
 		const currentControler = Router.getController(currentUrl);
