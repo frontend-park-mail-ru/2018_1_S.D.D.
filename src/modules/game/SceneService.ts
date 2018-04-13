@@ -83,18 +83,22 @@ export default class SceneService {
 		this._ctx.restore();
 	}
 
-	public drawBonus(Bonus: BonusObject, Coordinates: Point) {
-		const scaleFactor = this.width > this.height ? this.height : this.width;
-		const scale = scaleFactor / FIELD_SIZE;
-		const imgSize = (this.height / (this._cellCount * 2) * scale - 5) * 1.3;
-		const imgPosX = Coordinates.x * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
-		const imgPosY = Coordinates.y * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
-		this._ctx.drawImage(Bonus.getSkin(), imgPosX, imgPosY, imgSize, imgSize);
+	public drawBonus(Bonus: BonusObject) {
+		console.log(Bonus.isActive)
+		if (Bonus.isActive()) {
+			const Coordinates = Bonus.position();
+			const scaleFactor = this.width > this.height ? this.height : this.width;
+			const scale = scaleFactor / FIELD_SIZE;
+			const imgSize = (this.height / (this._cellCount * 2) * scale - 5) * 1.3;
+			const imgPosX = Coordinates.x * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
+			const imgPosY = Coordinates.y * CELL_SIZE * scale + (CELL_SIZE * scale - imgSize) / 2;
+			this._ctx.drawImage(Bonus.getSkin(), imgPosX, imgPosY, imgSize, imgSize);
+		}
 	}
 
 	private drawCell(row: number, col: number, size: number, color: string): void {
 		const drawingSize = size - 5;
-		this.bg(color, 0.7);
+		this.bg(color, 0.6);
 		this._ctx.fillRect(row * size, col * size, drawingSize, drawingSize);
 	}
 

@@ -9,19 +9,19 @@ export default class Point {
         this._y = y;
     }
 
-    get x(): number {
+    get x (): number {
         return this._x;
     }
 
-    set x(x: number) {
+    set x (x: number) {
         this._x = x;
     }
 
-    get y(): number {
+    get y (): number {
         return this._y;
     }
 
-    set y(y: number) {
+    set y (y: number) {
         this._y = y;
     }
 }

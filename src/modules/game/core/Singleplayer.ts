@@ -24,6 +24,7 @@ export default class SingleplayerMode extends Mode {
         this.tickDelay = 1000/ticksInSecond;
 
         this.SlownessBonus = new SlownessBonus();
+        this.SlownessBonus.spawn(1,1);
 
         this.init();
     }
@@ -39,7 +40,7 @@ export default class SingleplayerMode extends Mode {
     }
 
     public addPlayer(player: Player): void {
-        this._players.push(player);
+        SingleplayerMode._players.push(player);
     }
 
     startGame(): void {
@@ -54,11 +55,11 @@ export default class SingleplayerMode extends Mode {
         //this._players[0].move();
         
         this.Scene.clear();
-        this.Scene.drawField(this._GameField.getGameMatrix());
-        this.Scene.drawPlayer(this._players[0]);
-        this.Scene.drawBonus(this.SlownessBonus, new Point(1,1));
+        this.Scene.drawField(SingleplayerMode._GameField.getGameMatrix());
+        this.Scene.drawPlayer(SingleplayerMode._players[0]);
+        this.Scene.drawBonus(this.SlownessBonus);
 
-        this._players.forEach(player => {
+        SingleplayerMode._players.forEach(player => {
             player.move();
             this.Scene.drawPlayer(player);
         });
