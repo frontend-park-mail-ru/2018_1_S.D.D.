@@ -41,6 +41,10 @@ export default class SceneService {
 		this._ctx.font = "30px Arial";
 	}
 
+	public re(): void {
+		this._scene.width = this._scene.width;
+	}
+
 	public drawField(matrix: Array<Array<number>>): void {
 		const cellSize = this.height / this._cellCount;
 

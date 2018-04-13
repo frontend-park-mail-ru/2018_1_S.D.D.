@@ -80,7 +80,7 @@ class ErrorController extends Controller {
 		return {
 			Code: '404',
 			Header: 'We can\'t find what are you looked for...',
-			Message: 'Are you sure that "' + url + '" is correct addres?'
+			Message: 'Are you sure that "' + url + '" is correct address?'
 		};
 	}
 

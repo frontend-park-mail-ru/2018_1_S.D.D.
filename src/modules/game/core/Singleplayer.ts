@@ -32,11 +32,6 @@ export default class SingleplayerMode extends Mode {
         this.tickDelay = 1000/ticksInSecond;
 
         this.Bonuses.push(new SlownessBonus());
-
-        const Bus = GameEventBus;
-        Bus.subscribe('PRESSED:SPACE', this.launchGame, this);
-        Bus.subscribe('GAMEOVER', this.gameOver, this);
-
         this.init(Users);
     }
 
@@ -45,7 +40,7 @@ export default class SingleplayerMode extends Mode {
         this.gameLoopReqId = undefined;
         this.ticks = 0;
         this.over = false;
-        Mode._GameField.init(this.gameFieldRange)
+        SingleplayerMode._GameField.init(this.gameFieldRange);
         SingleplayerMode._players.splice(0, SingleplayerMode._players.length)
         this.addPlayer(new Player(1, 'YOU', Users[0]));
         this.addPlayer(new Bot(2, BOT_NAMES[0]));
@@ -53,13 +48,15 @@ export default class SingleplayerMode extends Mode {
         this.addPlayer(new Bot(4, BOT_NAMES[2]));
 
         const Bus = GameEventBus;
-        Bus.unSubscribeAll('START').then(() => {
+        
+        Bus.unSubscribeAll().then(() => {
+            Bus.subscribe('PRESSED:SPACE', this.launchGame, this);
+            Bus.subscribe('GAMEOVER', this.gameOver, this);
             Bus.subscribe('START', () => { this.startGame(); }, this);
-        });
-        Bus.unSubscribeAll('RESTART').then(() => {
             Bus.subscribe('RESTART', () => { this.init(Users); }, this);
         });
 
+        this.Scene.re();
         this.Scene.awaitScreen();
     }
 
