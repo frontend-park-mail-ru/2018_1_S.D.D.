@@ -108,15 +108,19 @@ class UserModel extends Model {
 
 	/**
 	 * Get user info from server if user logged in.
+	 * 
+	 * @param {boolean} check Flag if we need fill LocalStorage.
 	 */
-	loadUser() {
+	loadUser(check = false) {
 		const API = this.ServiceManager.ApiService;
 		const EventBus = this.ServiceManager.EventBus;
 
 		API.GET('user/info')
 			.then(response => {
 				if (API.responseSuccess(response)) {
-					this.fillUser(response);
+					if (!check) {
+						this.fillUser(response);
+					}
 					EventBus.emit('login');
 				} else {
 					this.resetUser();
