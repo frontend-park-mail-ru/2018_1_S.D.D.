@@ -1,26 +1,34 @@
-'use strict';
-
-import IMode from './core/Mode';
-import SingleplayerMode from './core/Singleplayer';
-//import MultiplayerMode from './core/Multiplayer';
-import SceneService from './SceneService';
 import ServiceManager from '../ServiceManager';
+import { PlayerData } from './playerdata';
+import SinglePlayer from './core/SinglePlayer';
+import Scene from './Scene';
 
-export default class GameManager {
-	Scene: SceneService;
-	Mode: IMode;
+/**
+ * Initialize game. Sets mode.
+ * 
+ * @class 
+ * @classdesc Entry point. Initialize game. Sets mode (online/offline/multiplayer)
+ */
+export default class GameInitializer {
+    /**
+     * Sets mode and canvas.
+     * 
+     * @param room Lobby id.
+     * @param canvas DOM canvas element.
+     */
+    constructor(room: string, canvas: HTMLCanvasElement) {
+        Scene.sceneCanvas = canvas;
+        const User = new ServiceManager().UserStorage;
+        const Me: PlayerData = {
+            name: User.getData('nickname'),
+            avatar: User.getData('avatar')
+        };
 
-	constructor(scene: HTMLCanvasElement, room: string) {
-		const userAvatar = new ServiceManager().UserStorage.getData('avatar');
-		this.Scene = new SceneService(scene);
-
-		if (!room || room === '') {
-			const Users = [{'avatar': userAvatar}]
-			this.Mode = new SingleplayerMode(this.Scene, Users);
-		} else {
-			//this._mode = new MultiplayerMode(Scene);
-		}
-
-		//this._Scene.drawField();
-	}
+        if (!room || room === '') {
+            new SinglePlayer(Me);
+        } else {
+            // Get Other PLayers
+            //new MultiPlayer(Me, OtherPlayers);
+        }
+    }
 }
