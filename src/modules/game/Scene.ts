@@ -1,5 +1,9 @@
 import Composite from './objects/Composite';
+import Field from './objects/field/Field';
+import Cell from './objects/field/Cell';
 import Character from './objects/player/Character';
+import Player from './objects/player/Player';
+import { CELL_SIZE } from './settings';
 
 /**
  * Initializes scene.
@@ -19,7 +23,17 @@ export default class Scene {
     public static sceneCanvasContext: CanvasRenderingContext2D;
 
     /**
-     * Players objects. Includs real players and bots.
+     * Conventional size.
+     */
+    public static size;
+
+    /**
+     * Cells objects.
+     */
+    public static Field: Composite<Cell>;
+
+    /**
+     * Players objects. Includes real players and bots.
      */
     public static Players: Composite<Character>;
 
@@ -31,6 +45,8 @@ export default class Scene {
             Scene.sceneCanvas = document.createElement('canvas'); // just stub
         }
         Scene.sceneCanvasContext = Scene.sceneCanvas.getContext('2d');
+        Scene.size = Field.range * CELL_SIZE;
+        Scene.Players = new Composite();
     }
 
     /**
@@ -38,10 +54,33 @@ export default class Scene {
      * 
      * @param Player Player object.
      */
-    addPlayer(Player: Character): void {
+    public addPlayer(Player: Character): void {
         if(!Scene.Players) {
             Scene.Players = new Composite();
         }
         Scene.Players.add(Player);
+    }
+
+    /**
+     * Draw scene.
+     */
+    public render(): void {
+        Scene.Field.draw();
+        Scene.Players.draw();
+    }
+
+    /**
+     * Delete all objects from scene.
+     */
+    public clearObjects() {
+        if (!Scene.Players) return;
+        Scene.Players.clear();
+    }
+
+    /**
+     * Clears canvas.
+     */
+    public clear(): void {
+        Scene.sceneCanvasContext.clearRect(0, 0, Scene.sceneCanvas.width, Scene.sceneCanvas.height);
     }
 }

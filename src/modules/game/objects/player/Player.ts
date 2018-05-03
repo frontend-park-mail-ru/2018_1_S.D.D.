@@ -17,4 +17,15 @@ export default class Player extends Character {
         super(id, name);
     }
 
+    /**
+     * Set custom avatar by url.
+     * 
+     * @param url Url to image. 
+     */
+    setAvatar(url: string) {
+        if (url.length !== 0) {
+            this.avatar.src = url;
+        }
+    }
+
 }

@@ -6,16 +6,13 @@ import './scene.scss';
 export default {
 	setSize: (template, parent) => {
 		const canvas = template.querySelector('.scene');
-		const resolutionX = 1900;
-		const resolutionY = 859;
 
-		const tw = parent.clientWidth / resolutionX;
-		const th = parent.clientHeight / resolutionY;
+		const w = parent.clientWidth;
+		const h = parent.clientHeight;
 
-		let t = tw > th ? th : tw;
-		t = t > 1 ? 1 / t : t;
-		canvas.height = resolutionY * t;
-		canvas.width = (resolutionX - 20) * t;
+		const t = w > h ? h : w;
+		canvas.height = t;
+		canvas.width = t;
 	},
 
 	render: params => {

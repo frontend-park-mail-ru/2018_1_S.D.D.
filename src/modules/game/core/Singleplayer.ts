@@ -18,8 +18,18 @@ export default class SinglePlayer extends Game {
      */
     constructor(Data: PlayerData) {
         super();
-        this.addPlayer(Data);
-        this.addBots(Data.name);
+        this.playerData = Data;
+        this.initGame();
+    }
+
+    /**
+     * Initialize game before start.
+     */
+    public initGame(): void {
+        this.baseInit();
+        this.addPlayer(this.playerData);
+        this.addBots(this.playerData.name);
+        this.start();
     }
 
     /**
@@ -27,9 +37,10 @@ export default class SinglePlayer extends Game {
      * 
      * @param Data Player data. Contains nickname and avatar.
      */
-    addPlayer(Data: PlayerData): void {
+    private addPlayer(Data: PlayerData): void {
         const nickname = Data.name === '' ? 'Mr. Incognito' : Data.name;
         const Me = new Player(1, nickname);
+        Me.setAvatar(Data.avatar);
         this.Scene.addPlayer(Me);
     }
 
@@ -38,7 +49,7 @@ export default class SinglePlayer extends Game {
      * 
      * @param PlayerNickname Player nickname. Bot shouldn't have same nickname.
      */
-    addBots(PlayerNickname) {
+    private addBots(PlayerNickname) {
         const namesAmount = botNames.length;
         const divider = namesAmount / 3;
 
@@ -49,10 +60,12 @@ export default class SinglePlayer extends Game {
             }
 
             let nickname = botNames[id];
-            if (nickname === PlayerNickname ) {
+            if (nickname === PlayerNickname) {
                 nickname = id === (i + 1) * divider - 1 ? botNames[id - 1] : botNames[id + 1];
             }
-            const Bot = new Bot(id, nickname);
+
+            const Npc = new Bot(id, nickname);
+            this.Scene.addPlayer(Npc);
         }
     }
 }
