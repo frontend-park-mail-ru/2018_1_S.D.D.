@@ -93,8 +93,9 @@ export default abstract class Game {
      */
     protected start(): void {
         if (!this.gameAnimationLoop) {
-            this.lastFrameCall = performance.now();
-            this.lastTimerCall = performance.now();
+            const now = performance.now();
+            this.lastFrameCall = now;
+            this.lastTimerCall = now;
             this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
         }
     }

@@ -3,18 +3,10 @@ import Point from '../Point';
 import GameEventBus from '../../GameEventBus';
 import Cell from '../field/Cell';
 import Scene from '../../Scene';
-import { COLOR_MAP, CHARACTER_VELOCITY } from '../../settings';
+import { COLOR_MAP, DIRECTION_MAP, CHARACTER_VELOCITY } from '../../settings';
+import { Direction } from './directions';
 import * as defaultAvatar from '../../bin/1.svg';
-
-/**
- * Possible directions on field.
- */
-enum Direction {
-    UP = 1,
-    DOWN = 2,
-    LEFT = 3,
-    RIGHT = 4
-}
+import Field from '../field/Field';
 
 /**
  * Initializes charcter in the beginning of game.
@@ -36,7 +28,7 @@ export default abstract class Character extends Drawable {
     /**
      * Movement offset between cells.
      */
-    private moveOffset: number = 0;
+    private moveOffset: Point = new Point(0, 0);
 
     /**
      * Character avatar.
@@ -61,7 +53,7 @@ export default abstract class Character extends Drawable {
     /**
      * Character current velocity.
      */
-    protected velocity: number = CHARACTER_VELOCITY;
+    public velocity: number = CHARACTER_VELOCITY;
 
     /**
      * Current character movement direction.
@@ -72,7 +64,7 @@ export default abstract class Character extends Drawable {
      * New character movement direction. 
      * Would apply after character step on field.
      */
-    protected nextDirection: Direction;
+    protected nextDirection: Direction ;
 
     /**
      * Character ingame nickname.
@@ -96,6 +88,8 @@ export default abstract class Character extends Drawable {
         this.subscribeMovement();
         this.subscribeScore();
         this.color = COLOR_MAP.get(id);
+        this.direction = DIRECTION_MAP.get(id);
+        this.nextDirection = this.direction;
         this.avatar = new Image();
         this.avatar.src = defaultAvatar;
     }
@@ -104,7 +98,11 @@ export default abstract class Character extends Drawable {
      * Set next direction as current direction.
      */
     protected switchDirection(): void {
-        this.direction = this.nextDirection;
+        if (this.direction != this.nextDirection) {
+            this.moveOffset.x = 0;
+            this.moveOffset.y = 0;
+            this.direction = this.nextDirection;
+        }
     }
 
     /**
@@ -122,6 +120,71 @@ export default abstract class Character extends Drawable {
      */
     private subscribeScore(): void {
         GameEventBus.subscribe(`SCORE:${this.id}`, score => { this.score += score; }, this);
+    }
+
+    public move(time: number): void {
+        const distance = time * this.velocity;
+        if (distance < 0) {
+            return;
+        }
+
+        let stepped: boolean = false;
+
+        switch (this.direction) {
+            case Direction.UP:
+                if (this.startPosition.y == 0) {
+                    this.moveOffset.y = 0;
+                    return;
+                }
+                this.moveOffset.y -= distance;
+                if (this.moveOffset.y <= -100) {
+                    this.startPosition.y--;
+                    this.moveOffset.y += 100;
+                    stepped = true;
+                }
+                break;
+            case Direction.DOWN:
+                if (this.startPosition.y == Field.range - 1) {
+                    this.moveOffset.y = 0;
+                    return;
+                }
+                this.moveOffset.y += distance;
+                if (this.moveOffset.y >= 100) {
+                    this.startPosition.y++;
+                    this.moveOffset.y -= 100;
+                    stepped = true;
+                }
+                break;
+            case Direction.LEFT:
+                if (this.startPosition.x == 0) {
+                    this.moveOffset.x = 0;
+                    return;
+                }
+                this.moveOffset.x -= distance;
+                if (this.moveOffset.x <= -100) {
+                    this.startPosition.x--;
+                    this.moveOffset.x += 100;
+                    stepped = true;
+                }
+                break;
+            case Direction.RIGHT:
+                if (this.startPosition.x == Field.range - 1) {
+                    this.moveOffset.x = 0;
+                    return;
+                }
+                this.moveOffset.x += distance;
+                if (this.moveOffset.x >= 100) {
+                    this.startPosition.x++;
+                    this.moveOffset.x -= 100;
+                    stepped = true;
+                }
+                break;
+        }
+
+        if (stepped) {
+            GameEventBus.emit('STEPPED', [this.id, this.startPosition]);
+            this.switchDirection();
+        }
     }
 
     /**
@@ -146,8 +209,8 @@ export default abstract class Character extends Drawable {
         const imgSize = radius * 2 - border * 2;
 
         // x, y - center
-		const x = this.startPosition.x * Cell.realSize + Cell.size / 2 + margin / 2;
-        const y = this.startPosition.y * Cell.realSize + Cell.size / 2 + margin / 2;
+		const x = this.startPosition.x * Cell.realSize + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
+        const y = this.startPosition.y * Cell.realSize + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
         
 		this.circle(x, y, radius);
         

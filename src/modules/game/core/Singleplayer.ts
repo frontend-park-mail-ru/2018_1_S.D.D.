@@ -32,7 +32,6 @@ export default class SinglePlayer extends Game {
         this.baseInit();
         this.addPlayer(this.playerData);
         this.addBots(this.playerData.name);
-        console.log(Scene.Players)
         this.start();
     }
 
@@ -72,5 +71,14 @@ export default class SinglePlayer extends Game {
             Npc.setAvatar(avatar);
             this.Scene.addPlayer(Npc);
         }
+    }
+
+    /**
+     * Logic call.
+     * 
+     * @param lastLogicCall Time spend from last logic call.
+     */
+    protected logic(lastLogicCall: number): void {
+        Scene.Players.do(player => player.move(lastLogicCall));
     }
 }

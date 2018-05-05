@@ -1,6 +1,7 @@
 import Drawable from './Drawable';
 
 type SearchCallback = (...x: any[]) => any;
+type ExecuteCallback = (...x: any[]) => any;
 
 /**
  * Initialize composite container.
@@ -39,6 +40,17 @@ export default class Composite<T extends Drawable> {
      */
     public item(search: SearchCallback): T {
         return this.container.find(search);
+    }
+
+    /**
+     * Execute callback to each item in container.
+     * 
+     * @param execute Callback with action on item.
+     */
+    public do(execute: ExecuteCallback): void {
+        this.container.forEach(item => {
+            execute(item);
+        });
     }
 
     /**
