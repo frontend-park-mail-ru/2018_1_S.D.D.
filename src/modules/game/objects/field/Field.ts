@@ -29,14 +29,23 @@ export default class Field {
      */
     constructor(range: number = DEFAULT_FIELD_RANGE) {
         Field.range = range;
-        this.initField();
         this.subscribeStep();
+    }
+
+    /**
+     * Destroy current instance of field.
+     * 
+     * @returns Null.
+     */
+    public destroy(): null {
+        this.cellsMatrix = null;
+        return null;
     }
 
     /**
      * Initialize field. Creates cells objects.
      */
-    private initField(): void {
+    public initField(): void {
         if (!Scene.Field) {
             Scene.Field = new Composite();
         }
@@ -68,9 +77,9 @@ export default class Field {
     private markCell(position: Point, id: number): void {
         // if last player's step was rounded area, 
         // it should be visible 1 more step
-        if (Scene.Players.item(id - 1).gotScore) {
+        if (Scene.Players.item(player => player.id == id) && Scene.Players.item(player => player.id == id).gotScore) {
             this.countScoresForPlayer(id);
-            Scene.Players.item(id - 1).gotScore = false;
+            Scene.Players.item(player => player.id == id).gotScore = false;
         }
 
         if (this.cellsMatrix[position.y][position.x].player != id) {
@@ -218,8 +227,8 @@ export default class Field {
                 }
 
                 // mark that player can get score on next step
-                if (!Scene.Players.item(id).gotScore && !isBadArea) {
-                    Scene.Players.item(id).gotScore = true;
+                if (!Scene.Players.item(player => player.id == id).gotScore && !isBadArea) {
+                    Scene.Players.item(player => player.id == id).gotScore = true;
                 }
 
                 // after finishing area by current startingDot

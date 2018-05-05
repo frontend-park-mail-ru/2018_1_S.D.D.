@@ -3,6 +3,7 @@ import Point from '../Point';
 import GameEventBus from '../../GameEventBus';
 import Cell from '../field/Cell';
 import Scene from '../../Scene';
+import { COLOR_MAP, CHARACTER_VELOCITY } from '../../settings';
 import * as defaultAvatar from '../../bin/1.svg';
 
 /**
@@ -25,13 +26,17 @@ export default abstract class Character extends Drawable {
     /**
      * Did last step got scores?
      */
-    public gotScore: boolean;
+    public gotScore: boolean = false;
 
     /**
-     * Player object position on field.
-     * In pixels.
+     * Player position on field (on cell).
      */
-    public screenPosition: Point;
+    private startPosition: Point;
+
+    /**
+     * Movement offset between cells.
+     */
+    private moveOffset: number = 0;
 
     /**
      * Character avatar.
@@ -41,7 +46,7 @@ export default abstract class Character extends Drawable {
     /**
      * Character unique identificator.
      */
-    protected id: number;
+    public id: number;
 
     /**
      * Color associated with this character.
@@ -51,12 +56,12 @@ export default abstract class Character extends Drawable {
     /**
      * Score of this character in current game.
      */
-    protected score: number;
+    protected score: number = 0;
 
     /**
      * Character current velocity.
      */
-    protected velocity: number;
+    protected velocity: number = CHARACTER_VELOCITY;
 
     /**
      * Current character movement direction.
@@ -79,12 +84,18 @@ export default abstract class Character extends Drawable {
      * 
      * @param id Character unique identificator.
      * @param name Character ingame nickname.
+     * @param startPosition Coordinates of cell to spawn in.
      */
-    constructor(id: number, name: string) {
+    constructor(id: number, name: string, startPosition: Point = new Point(0, 0)) {
         super();
+        this.id = id;
+        this.name = name;
+        this.startPosition = startPosition;
+        GameEventBus.emit('STEPPED', [id, startPosition]); // mark start cell
+
         this.subscribeMovement();
         this.subscribeScore();
-        this.screenPosition = Scene.Field.item(1).screenPosition;
+        this.color = COLOR_MAP.get(id);
         this.avatar = new Image();
         this.avatar.src = defaultAvatar;
     }
@@ -114,22 +125,31 @@ export default abstract class Character extends Drawable {
     }
 
     /**
+     * Set custom avatar by url.
+     * 
+     * @param url Url to image. 
+     */
+    setAvatar(url: string): void {
+        if (url.length !== 0) {
+            this.avatar.src = url;
+        }
+    }
+
+    /**
      * Draw player.
      */
     public draw(): void {
         this.bg(this.color);
-        
-        const margin = 10;
-        const border = 4; 
+        const margin = 5 * this.scale;
+        const border = 4 * this.scale;
+        const radius = (Cell.size / 2) - margin;
+        const imgSize = radius * 2 - border * 2;
 
         // x, y - center
-		const x = this.screenPosition.x * this.scale + margin / 2;
-		const y = this.screenPosition.y * this.scale + margin / 2;
-        const radius = (Cell.size / 2) * this.scale - margin;
+		const x = this.startPosition.x * Cell.realSize + Cell.size / 2 + margin / 2;
+        const y = this.startPosition.y * Cell.realSize + Cell.size / 2 + margin / 2;
         
 		this.circle(x, y, radius);
-
-        const imgSize = radius * 2 - border * 2;
         
         // PosX, PosY - top left corner
 		const imgPosX = x - imgSize / 2;

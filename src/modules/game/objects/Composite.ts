@@ -1,5 +1,7 @@
 import Drawable from './Drawable';
 
+type SearchCallback = (...x: any[]) => any;
+
 /**
  * Initialize composite container.
  * 
@@ -35,8 +37,8 @@ export default class Composite<T extends Drawable> {
      * 
      * @param idx ID of object in composite array.
      */
-    public item(idx: number): T {
-        return this.container[idx];
+    public item(search: SearchCallback): T {
+        return this.container.find(search);
     }
 
     /**

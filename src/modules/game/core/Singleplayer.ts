@@ -1,8 +1,11 @@
+import Point from '../objects/Point';
 import Game from './Game';
 import { PlayerData } from '../playerdata'
 import Player from '../objects/player/Player';
 import Bot from '../objects/player/Bot';
-import botNames from '../objects/player/botnames';
+import Field from '../objects/field/Field';
+import Scene from '../Scene'
+import { BOTNAMES_MAP, BOTAVATARS_MAP } from '../objects/player/botsettings';
 
 /**
  * Initializes player, bots.
@@ -29,6 +32,7 @@ export default class SinglePlayer extends Game {
         this.baseInit();
         this.addPlayer(this.playerData);
         this.addBots(this.playerData.name);
+        console.log(Scene.Players)
         this.start();
     }
 
@@ -39,7 +43,7 @@ export default class SinglePlayer extends Game {
      */
     private addPlayer(Data: PlayerData): void {
         const nickname = Data.name === '' ? 'Mr. Incognito' : Data.name;
-        const Me = new Player(1, nickname);
+        const Me = new Player(1, nickname, new Point(0, 0));
         Me.setAvatar(Data.avatar);
         this.Scene.addPlayer(Me);
     }
@@ -50,21 +54,22 @@ export default class SinglePlayer extends Game {
      * @param PlayerNickname Player nickname. Bot shouldn't have same nickname.
      */
     private addBots(PlayerNickname) {
-        const namesAmount = botNames.length;
+        const namesAmount = BOTNAMES_MAP.size;
         const divider = namesAmount / 3;
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 3; i++) {
             let id = Math.floor(Math.random() * ((i + 1) * divider - i * divider)) + i * divider;
             if (id == 0) {
                 id++;
             }
 
-            let nickname = botNames[id];
-            if (nickname === PlayerNickname) {
-                nickname = id === (i + 1) * divider - 1 ? botNames[id - 1] : botNames[id + 1];
-            }
+            let nickname = BOTNAMES_MAP.get(id + 1);
+            let avatar = BOTAVATARS_MAP.get(id + 1);
 
-            const Npc = new Bot(id, nickname);
+            const botPosition = new Point(i < 2 ? Field.range - 1 : 0, i > 0 ? Field.range - 1 : 0);
+
+            const Npc = new Bot(i + 2, nickname, botPosition);
+            Npc.setAvatar(avatar);
             this.Scene.addPlayer(Npc);
         }
     }

@@ -1,4 +1,5 @@
 import Character from './Character';
+import Point from '../Point';
 
 /**
  * Initialize player in the beginning of game.
@@ -12,20 +13,10 @@ export default class Player extends Character {
      * 
      * @param id Player unique identificator.
      * @param name Player ingame nickname.
+     * @param startPosition Defines on which cell player spawns.
      */
-    constructor(id: number, name: string) {
-        super(id, name);
-    }
-
-    /**
-     * Set custom avatar by url.
-     * 
-     * @param url Url to image. 
-     */
-    setAvatar(url: string) {
-        if (url.length !== 0) {
-            this.avatar.src = url;
-        }
+    constructor(id: number, name: string, startPosition: Point) {
+        super(id, name, startPosition);
     }
 
 }

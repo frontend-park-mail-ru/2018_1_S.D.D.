@@ -21,9 +21,14 @@ export default class Cell extends Drawable {
     public screenPosition: Point;
 
     /**
-     * Real cell size (in pixels).
+     * Cell size (in pixels).
      */
     public static size: number;
+
+    /**
+     * Cell size with margins (in pixels).
+     */
+    public static realSize: number;
 
     /**
      * Id of player owned the cell.
@@ -61,20 +66,23 @@ export default class Cell extends Drawable {
         super();
         this.position = position;
         this.setCellSize();
-        const realSize = Cell.size + this.margin;
-        this.screenPosition = new Point(this.position.x * realSize, this.position.y * realSize);
-        this.changeColor();
+        this.setCellScreenPosition();
     }
 
     /**
-     * Draw cell.
+     * Draw cell. Calculate new size and position (depends on scaling)
      */
     public draw(): void {
+        const margin = this.margin * this.scale;
+        
+        this.changeColor();
         this.bg(this.color, 0.6);
         this.setCellSize();
+        this.setCellScreenPosition();
+
 		this.canvas.fillRect(
-            this.position.x * Cell.size + this.margin / 2 * (this.position.x * 2 + 1), 
-            this.position.y * Cell.size + this.margin / 2 * (this.position.y * 2 + 1), 
+            this.position.x * Cell.size + margin / 2 * (this.position.x * 2 + 1), 
+            this.position.y * Cell.size + margin / 2 * (this.position.y * 2 + 1), 
             Cell.size, Cell.size
         );
     }
@@ -89,7 +97,15 @@ export default class Cell extends Drawable {
     /**
      * Set new real cell size (in pixels).
      */
-    private setCellSize(): number {
-        return Cell.size = this.canvasHeight / Field.range - this.margin;
+    private setCellSize() {
+        Cell.size = this.canvasHeight / Field.range - this.margin * this.scale;
+    }
+
+    /**
+     * Set new real cell position on screen (in pixels).
+     */
+    private setCellScreenPosition() {
+        Cell.realSize = Cell.size + this.margin * this.scale;
+        this.screenPosition = new Point(this.position.x * Cell.realSize, this.position.y * Cell.realSize);
     }
 }

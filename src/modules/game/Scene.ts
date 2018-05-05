@@ -45,8 +45,23 @@ export default class Scene {
             Scene.sceneCanvas = document.createElement('canvas'); // just stub
         }
         Scene.sceneCanvasContext = Scene.sceneCanvas.getContext('2d');
+        // if (window.devicePixelRatio > 1) {
+        //     Scene.sceneCanvasContext.scale(2,2); // Reina display
+        // }
         Scene.size = Field.range * CELL_SIZE;
         Scene.Players = new Composite();
+    }
+
+    /**
+     * Destroy current Scene instance.
+     * 
+     * @returns Null.
+     */
+    public destroy(): null {
+        this.clearObjects();
+        Scene.Field = null;
+        Scene.Players = null;
+        return null;
     }
 
     /**

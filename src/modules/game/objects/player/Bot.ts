@@ -1,4 +1,5 @@
 import Character from './Character';
+import Point from '../Point';
 
 /**
  * Initialize bot in the beginning of game.
@@ -12,9 +13,10 @@ export default class Bot extends Character {
      * 
      * @param id Bot unique identificator.
      * @param name Bot ingame nickname.
+     * @param startPosition Defines on which cell bot spawns.
      */
-    constructor(id: number, name: string) {
-        super(id, name);
+    constructor(id: number, name: string, startPosition: Point) {
+        super(id, name, startPosition);
     }
     
 }

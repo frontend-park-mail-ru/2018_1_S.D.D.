@@ -1,6 +1,7 @@
 import Scene from '../Scene';
 import Field from '../objects/field/Field';
 import { PlayerData } from '../playerdata'
+import { GAME_DURATION } from '../settings';
 
 /**
  * Initializes scene and common game system.
@@ -45,11 +46,29 @@ export default abstract class Game {
     private lastTimerCall: number;
 
     /**
+     * Timestamp of last requestAnimationFrame was called.
+     */
+    private lastFrameCall: number;
+
+    /**
      * Initializes scene and common game system.
      */
     constructor() {
-        this.Scene = new Scene();
         this.Field = new Field();
+        this.Scene = new Scene();
+        this.Field.initField();
+    }
+
+    /**
+     * Destroy game instance.
+     * 
+     * @returns Null.
+     */
+    public destroy(): null {
+        this.pauseAnimationFrame();
+        this.Scene = this.Scene.destroy();
+        this.Field = this.Field.destroy();
+        return null;
     }
 
     /**
@@ -57,15 +76,16 @@ export default abstract class Game {
      */
     protected baseInit(): void {
         this.tick = 0;
-        this.timer = 60;
+        this.timer = GAME_DURATION;
         this.Scene.clearObjects();
     }
 
     /**
-     * Pause redrawing scene. Also pause login loop.
+     * Pause redrawing scene. Also pause logic loop.
      */
     protected pauseAnimationFrame(): void {
         window.cancelAnimationFrame(this.gameAnimationLoop);
+        this.gameAnimationLoop = undefined;
     }
 
     /**
@@ -73,6 +93,8 @@ export default abstract class Game {
      */
     protected start(): void {
         if (!this.gameAnimationLoop) {
+            this.lastFrameCall = performance.now();
+            this.lastTimerCall = performance.now();
             this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
         }
     }
@@ -83,24 +105,32 @@ export default abstract class Game {
      * @param now Current timestamp.
      */
     protected gameLoop(now: number): void {
-        if (this.timer == 0) {
-            this.gameOver();
+        if (this.gameAnimationLoop) {
+            if (this.timer == 0) {
+                this.gameOver();
+            }
+    
+            if (now - this.lastTimerCall >= 1000) {
+                this.timer--;
+                this.lastTimerCall = this.lastTimerCall + 1000; // not now coz maybe more
+            }
+    
+            this.Scene.clear();
+            this.Scene.render();
+    
+            this.logic(now - this.lastFrameCall);
+            this.lastFrameCall = now;
         }
 
-        if (now - this.lastTimerCall >= 1000) {
-            this.timer--;
-            this.lastTimerCall = now;
-        }
-
-        this.Scene.clear();
-        this.Scene.render();
-
-        this.logic();
-
-        requestAnimationFrame(this.gameLoop.bind(this));
+        this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
     }
 
-    protected logic(): void {
+    /**
+     * Should be overwritten. Logic call.
+     * 
+     * @param lastLogicCall Time spend from last logic call.
+     */
+    protected logic(lastLogicCall: number): void {
         // should be overwritten
     }
 

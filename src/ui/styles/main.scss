@@ -169,7 +169,7 @@ main {
     main {
         display: block;
         top: #{$header-height-big};
-        height: auto;
+        height: calc(100% - #{$header-height-big} - #{$header-height-big})
     }
 
     .block_w50p {

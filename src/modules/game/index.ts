@@ -1,5 +1,6 @@
 import ServiceManager from '../ServiceManager';
 import { PlayerData } from './playerdata';
+import Game from './core/Game';
 import SinglePlayer from './core/SinglePlayer';
 import Scene from './Scene';
 
@@ -10,6 +11,10 @@ import Scene from './Scene';
  * @classdesc Entry point. Initialize game. Sets mode (online/offline/multiplayer)
  */
 export default class GameInitializer {
+    /**
+     * Game instance.
+     */
+    private game: Game;
     /**
      * Sets mode and canvas.
      * 
@@ -25,10 +30,22 @@ export default class GameInitializer {
         };
 
         if (!room || room === '') {
-            new SinglePlayer(Me);
+            this.game = new SinglePlayer(Me);
         } else {
             // Get Other PLayers
             //new MultiPlayer(Me, OtherPlayers);
         }
+    }
+
+    /**
+     * Destroy current game instance.
+     * 
+     * @returns Null;
+     */
+    public destroy(): null {
+        if (this.game) {
+            this.game = this.game.destroy();
+        }
+        return null;
     }
 }

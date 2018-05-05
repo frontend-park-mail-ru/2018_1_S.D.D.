@@ -7,19 +7,6 @@ import Scene from '../Scene';
  */
 export default abstract class Drawable {
     /**
-     * DOM canvas element.
-     */
-    protected canvas: CanvasRenderingContext2D;
-
-    /**
-     * Sets canvas for object.
-     * Calculates scale.
-     */
-    constructor() {
-        this.canvas = Scene.sceneCanvasContext;
-    }
-
-    /**
      * @returns Height of canvas DOM element.
      */
     protected get canvasHeight(): number {
@@ -39,6 +26,13 @@ export default abstract class Drawable {
     protected get scale(): number {
         const scaleFactor = this.canvasWidth > this.canvasHeight ? this.canvasHeight : this.canvasWidth;
 		return scaleFactor / Scene.size;
+    }
+
+    /**
+     * @returns DOM canvas element.
+     */
+    protected get canvas(): CanvasRenderingContext2D {
+        return Scene.sceneCanvasContext;
     }
 
     /**
