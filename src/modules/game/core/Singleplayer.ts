@@ -5,6 +5,7 @@ import Player from '../objects/player/Player';
 import Bot from '../objects/player/Bot';
 import Field from '../objects/field/Field';
 import Scene from '../Scene'
+import InputController from '../InputController';
 import { BOTNAMES_MAP, BOTAVATARS_MAP } from '../objects/player/botsettings';
 
 /**
@@ -14,6 +15,11 @@ import { BOTNAMES_MAP, BOTAVATARS_MAP } from '../objects/player/botsettings';
  * @classdesc Defines behaviour for singleplayer mode.
  */
 export default class SinglePlayer extends Game {
+    /**
+     * Input controller object.
+     */
+    private IController: InputController;
+
     /**
      * Initializes playe, bots.
      * 
@@ -45,6 +51,7 @@ export default class SinglePlayer extends Game {
         const Me = new Player(1, nickname, new Point(0, 0));
         Me.setAvatar(Data.avatar);
         this.Scene.addPlayer(Me);
+        this.IController = new InputController(1);
     }
 
     /**

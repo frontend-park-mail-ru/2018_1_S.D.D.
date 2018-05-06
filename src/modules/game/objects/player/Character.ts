@@ -128,6 +128,10 @@ export default abstract class Character extends Drawable {
             return;
         }
 
+        if (this.moveOffset.x == 0 && this.moveOffset.y == 0) {
+            this.switchDirection();
+        }
+
         let stepped: boolean = false;
 
         switch (this.direction) {

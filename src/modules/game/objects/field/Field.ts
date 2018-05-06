@@ -158,8 +158,9 @@ export default class Field {
     private getArrayOfPointsToCheck(cells: Array<Array<Cell>>, position: Point, id: number): Array<Point> {
         let pointsToCheck: Array<Point> = [];
 
-        for (let x = position.x - 1; x < position.x + 1; x++) {
-            for (let y = position.y - 1; y < position.y + 1; y++) {
+        for (let x = position.x - 1; x <= position.x + 1; x++) {
+            console.log(x)
+            for (let y = position.y - 1; y <= position.y + 1; y++) {
                 if (x != position.x && y != position.y) {
                     const pointToCheck = new Point(x, y);
                     if (this.isPointValid(cells, pointToCheck, id)) {
@@ -168,17 +169,23 @@ export default class Field {
                 }
             }
         }
+        console.log('-----')
 
         return pointsToCheck;
     }
 
     /**
-     * Check if we gou rounded area.
+     * Check if we got rounded area.
      * 
      * @param position Last player step.
      * @param id Player id.
      */
     private checkArea(position: Point, id:number): void {
+        this.cellsMatrix.forEach((row,i) => {
+            console.log(i, row[0].player,row[1].player,row[2].player,row[3].player,row[4].player,row[5].player,row[6].player,row[7].player,)
+        })
+        console.log('-----------')
+
         let cells: Array<Array<Cell>> = this.cellsMatrix.map(col => Object.assign([], col));
         let checkArray = this.getArrayOfPointsToCheck(cells, position, id); 
 
