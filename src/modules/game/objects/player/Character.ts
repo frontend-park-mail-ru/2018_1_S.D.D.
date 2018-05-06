@@ -123,6 +123,8 @@ export default abstract class Character extends Drawable {
     }
 
     public move(time: number): void {
+        const prevPosition = new Point(this.startPosition.x, this.startPosition.y);
+
         const distance = time * this.velocity;
         if (distance < 0) {
             return;
@@ -186,7 +188,7 @@ export default abstract class Character extends Drawable {
         }
 
         if (stepped) {
-            GameEventBus.emit('STEPPED', [this.id, this.startPosition]);
+            GameEventBus.emit('STEPPED', [this.id, this.startPosition, prevPosition]);
             this.switchDirection();
         }
     }

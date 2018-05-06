@@ -19,4 +19,4 @@ export const GAME_DURATION = 60;
 export const DEFAULT_FIELD_RANGE = 8;
 export const CELL_SIZE = 100;
 
-export const CHARACTER_VELOCITY = 0.15;
+export const CHARACTER_VELOCITY = 0.3;

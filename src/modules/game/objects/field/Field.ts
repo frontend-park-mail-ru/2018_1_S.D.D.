@@ -65,7 +65,30 @@ export default class Field {
      * After stepping on cell we need mark this cell.
      */
     private subscribeStep(): void {
-        GameEventBus.subscribe('STEPPED', (id, position) => { this.markCell(position, id); }, this);
+        GameEventBus.subscribe('STEPPED', (id, position, prevPosition?) => { this.markCell(position, id, prevPosition); }, this);
+    }
+
+    /**
+     * Check if neighbor cells marked for current player.
+     * 
+     * @param position Player current position.
+     * @param prevPosition Player previous position.
+     * @param id Player id.
+     */
+    private checkNeighborCell(position: Point, prevPosition: Point, id: number): Array<Point> {
+        const checkedCells: Array<Point> = [];
+        const checkPosition = new Point(position.x, position.y);
+        const c = this.cellsMatrix;
+        const check = (x, y) => {
+            return c[y] && c[y][x] && c[y][x].player == id && (x != prevPosition.x || y != prevPosition.y);
+        }
+
+        if (check(checkPosition.x + 1, checkPosition.y)) checkedCells.push(new Point(checkPosition.x + 1, checkPosition.y));
+        if (check(checkPosition.x, checkPosition.y + 1)) checkedCells.push(new Point(checkPosition.x, checkPosition.y + 1));
+        if (check(checkPosition.x - 1, checkPosition.y)) checkedCells.push(new Point(checkPosition.x - 1, checkPosition.y));
+        if (check(checkPosition.x, checkPosition.y - 1)) checkedCells.push(new Point(checkPosition.x, checkPosition.y - 1));
+
+        return checkedCells;
     }
 
     /**
@@ -73,8 +96,9 @@ export default class Field {
      * 
      * @param poistion X, Y position on field.
      * @param id Player ID
+     * @param prevPosition Position form which player stepped on this cell.
      */
-    private markCell(position: Point, id: number): void {
+    private markCell(position: Point, id: number, prevPosition?: Point): void {
         // if last player's step was rounded area, 
         // it should be visible 1 more step
         if (Scene.Players.item(player => player.id == id) && Scene.Players.item(player => player.id == id).gotScore) {
@@ -86,8 +110,11 @@ export default class Field {
             this.cellsMatrix[position.y][position.x].player = id;
             this.cellsMatrix[position.y][position.x].bad = false;
             this.cellsMatrix[position.y][position.x].scored = false;
-        } else {
-            this.checkArea(position, id);
+        }
+        if (prevPosition) {
+            this.checkNeighborCell(position, prevPosition, id).forEach(cell => {
+                this.checkArea(cell, id);
+            });
         }
     }
 
@@ -105,6 +132,8 @@ export default class Field {
                 if (this.cellsMatrix[i][j].player == id) {
                     score++;
                     this.cellsMatrix[i][j].player = 0;
+                    this.cellsMatrix[i][j].scored = false;
+                    this.cellsMatrix[i][j].bad = false;
                 }
             }
         }
@@ -159,9 +188,8 @@ export default class Field {
         let pointsToCheck: Array<Point> = [];
 
         for (let x = position.x - 1; x <= position.x + 1; x++) {
-            console.log(x)
             for (let y = position.y - 1; y <= position.y + 1; y++) {
-                if (x != position.x && y != position.y) {
+                if (x != position.x || y != position.y) {
                     const pointToCheck = new Point(x, y);
                     if (this.isPointValid(cells, pointToCheck, id)) {
                         pointsToCheck.push(pointToCheck);
@@ -169,7 +197,6 @@ export default class Field {
                 }
             }
         }
-        console.log('-----')
 
         return pointsToCheck;
     }
@@ -181,14 +208,15 @@ export default class Field {
      * @param id Player id.
      */
     private checkArea(position: Point, id:number): void {
-        this.cellsMatrix.forEach((row,i) => {
-            console.log(i, row[0].player,row[1].player,row[2].player,row[3].player,row[4].player,row[5].player,row[6].player,row[7].player,)
-        })
-        console.log('-----------')
-
-        let cells: Array<Array<Cell>> = this.cellsMatrix.map(col => Object.assign([], col));
-        let checkArray = this.getArrayOfPointsToCheck(cells, position, id); 
-
+        let cells = [];
+        this.cellsMatrix.forEach((col, i) => {
+            cells[i] = [];
+            col.forEach((cell, j) => {
+                cells[i][j] = Object.assign({}, cell);
+            });
+        });
+        
+        let checkArray = this.getArrayOfPointsToCheck(cells, position, id);
         const stack: Array<Point> = [];
 
         /*
@@ -200,12 +228,12 @@ export default class Field {
         4.2. Не обработан ранее (т.е. его цвет отличается от цвета границы или цвета внутренней области);
         5. Если стек не пуст, перейти к шагу 2
         */
-        let isBadArea: boolean;
-        let curAreaDots: Array<Point>;
+        let isBadArea: boolean = false;
+        let curAreaDots: Array<Point> = [];
 
         checkArray.forEach(startDot => {
             // dot mastnot be marked as scored or badArea
-            if (!cells[startDot.y][startDot.x].scored && !cells[startDot.y][startDot.x].bad) { 
+            if (!cells[startDot.y][startDot.x].scored && !cells[startDot.y][startDot.x].bad) {
                 isBadArea = false; 
                 curAreaDots = [];
 
@@ -214,7 +242,9 @@ export default class Field {
                 while (stack.length > 0) {
                     let curDot = stack.pop();
 
+                    cells[curDot.y][curDot.x].player = 0;
                     cells[curDot.y][curDot.x].scored = true;
+                    cells[curDot.y][curDot.x].bad = false;
                     curAreaDots.push(curDot);
 
                     // if on edge => badArea
@@ -223,8 +253,8 @@ export default class Field {
                     }
 
                     // adding around dots
-                    for (let x = curDot.x - 1; x < curDot.x + 1; x++) {
-                        for (let y = curDot.y - 1; y < curDot.y + 1; y++) {
+                    for (let y = curDot.y - 1; y <= curDot.y + 1; y++) {
+                        for (let x = curDot.x - 1; x <= curDot.x + 1; x++) {
                             let dotToAdd = new Point(x, y);
                             if (this.isDotValidNoEdgeCheck(cells, dotToAdd, id)) {
                                 stack.push(dotToAdd);
@@ -244,7 +274,9 @@ export default class Field {
                 while (curAreaDots.length > 0) {
                     let dotToColor = curAreaDots.pop();
                     if (isBadArea) {
+                        cells[dotToColor.y][dotToColor.x].player = 0;
                         cells[dotToColor.y][dotToColor.x].bad = true;
+                        cells[dotToColor.y][dotToColor.x].scored = false;
                     } else {
                         cells[dotToColor.y][dotToColor.x].player = id;
                         cells[dotToColor.y][dotToColor.x].bad = false;
