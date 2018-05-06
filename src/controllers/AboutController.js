@@ -4,31 +4,31 @@ import Controller from './Controller';
 import AboutView from '../views/AboutView';
 
 class AboutController extends Controller {
-	/**
+    /**
 	 * Creates instance of AboutController
 	 */
-	constructor() {
-		super();
-		this.AboutView = new AboutView();
-		this.addActions();
-	}
+    constructor() {
+        super();
+        this.AboutView = new AboutView();
+        this.addActions();
+    }
 
-	/**
+    /**
 	 * Add actions to controller.
 	 */
-	addActions() {
-		this.addAction('index', this.actionIndex);
-	}
+    addActions() {
+        this.addAction('index', this.actionIndex);
+    }
 
-	/**
+    /**
 	 * Default action. Renders menu.
 	 */
-	actionIndex() {
-		const data = {
-			'Header': this.getHeaderData()
-		};
-		this.AboutView.constructPage(data);
-	}
+    actionIndex() {
+        const data = {
+            'Header': this.getHeaderData()
+        };
+        this.AboutView.constructPage(data);
+    }
 }
 
 export default AboutController;

@@ -1,25 +1,15 @@
-import Drawable from "../Drawable";
-import Field from "./Field";
-import Point from '../Point';
 import { COLOR_MAP } from '../../settings';
+import Drawable from '../Drawable';
+import Point from '../Point';
+import Field from './Field';
 
 /**
  * Initialize cell and it's behaviour.
- * 
+ *
  * @class
  * @classdesc Cell object.
  */
 export default class Cell extends Drawable {
-    /**
-     * Position on field.
-     */
-    public position: Point;
-
-    /**
-     * Real position on screen (in pixels);
-     */
-    public screenPosition: Point;
-
     /**
      * Cell size (in pixels).
      */
@@ -29,6 +19,16 @@ export default class Cell extends Drawable {
      * Cell size with margins (in pixels).
      */
     public static realSize: number;
+
+    /**
+     * Position on field.
+     */
+    public position: Point;
+
+    /**
+     * Real position on screen (in pixels);
+     */
+    public screenPosition: Point;
 
     /**
      * Id of player owned the cell.
@@ -59,7 +59,7 @@ export default class Cell extends Drawable {
 
     /**
      * Initialize cell and it's behaviour.
-     * 
+     *
      * @param position X, Y coordinate on field.
      */
     constructor(position: Point) {
@@ -74,16 +74,16 @@ export default class Cell extends Drawable {
      */
     public draw(): void {
         const margin = this.margin * this.scale;
-        
+
         this.changeColor();
         this.bg(this.color, 0.6);
         this.setCellSize();
         this.setCellScreenPosition();
 
-		this.canvas.fillRect(
-            this.position.x * Cell.size + margin / 2 * (this.position.x * 2 + 1), 
-            this.position.y * Cell.size + margin / 2 * (this.position.y * 2 + 1), 
-            Cell.size, Cell.size
+		      this.canvas.fillRect(
+            this.position.x * Cell.size + margin / 2 * (this.position.x * 2 + 1),
+            this.position.y * Cell.size + margin / 2 * (this.position.y * 2 + 1),
+            Cell.size, Cell.size,
         );
     }
 
@@ -91,7 +91,7 @@ export default class Cell extends Drawable {
      * Change backgound color of cell.
      */
     private changeColor() {
-        this.color = COLOR_MAP.get(this.player)
+        this.color = COLOR_MAP.get(this.player);
     }
 
     /**

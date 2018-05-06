@@ -5,14 +5,14 @@ export const COLOR_MAP = new Map<number, string>([
     [1, '#FF5A5A'],
     [2, '#FFF15A'],
     [3, '#FFBE3C'],
-    [4, '#73DB56']
+    [4, '#73DB56'],
 ]);
 
 export const DIRECTION_MAP = new Map<number, Direction>([
     [1, Direction.RIGHT],
     [2, Direction.DOWN],
     [3, Direction.LEFT],
-    [4, Direction.UP]
+    [4, Direction.UP],
 ]);
 
 export const GAME_DURATION = 60;

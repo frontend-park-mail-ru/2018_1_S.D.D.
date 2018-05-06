@@ -1,7 +1,7 @@
 import EventBus from '../EventBus.js';
 
 let GameEventBus;
-if(!GameEventBus) {
+if (!GameEventBus) {
     GameEventBus = new EventBus();
 }
 

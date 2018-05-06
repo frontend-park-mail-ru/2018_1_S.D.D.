@@ -5,7 +5,7 @@ type ExecuteCallback = (...x: any[]) => any;
 
 /**
  * Initialize composite container.
- * 
+ *
  * @class
  * @classdesc Composite object. Helps to operate with same objects.
  */
@@ -13,7 +13,7 @@ export default class Composite<T extends Drawable> {
     /**
      * Contains objects to operate.
      */
-    private container: Array<T>
+    private container: T[];
 
     /**
      * Initialize composite container.
@@ -24,18 +24,18 @@ export default class Composite<T extends Drawable> {
 
     /**
      * Add new object in composite.
-     * 
+     *
      * @param object Object to add in composite
      * @returns Container with objects.
      */
-    public add(object: T): Array<T> {
+    public add(object: T): T[] {
         this.container.push(object);
         return this.container;
     }
 
     /**
      * Get object by it's idx.
-     * 
+     *
      * @param idx ID of object in composite array.
      */
     public item(search: SearchCallback): T {
@@ -44,21 +44,21 @@ export default class Composite<T extends Drawable> {
 
     /**
      * Execute callback to each item in container.
-     * 
+     *
      * @param execute Callback with action on item.
      */
     public do(execute: ExecuteCallback): void {
-        this.container.forEach(item => {
+        this.container.forEach((item) => {
             execute(item);
         });
     }
 
     /**
      * Returns container with objects.
-     * 
+     *
      * @returns Containers with objects.
      */
-    public get(): Array<T> {
+    public get(): T[] {
         return this.container;
     }
 
@@ -73,7 +73,7 @@ export default class Composite<T extends Drawable> {
      * Draw objects.
      */
     public draw(): void {
-        this.container.forEach(object => {
+        this.container.forEach((object) => {
             object.draw();
         });
     }

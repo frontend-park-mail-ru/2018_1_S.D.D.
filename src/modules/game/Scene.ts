@@ -1,13 +1,12 @@
 import Composite from './objects/Composite';
-import Field from './objects/field/Field';
 import Cell from './objects/field/Cell';
+import Field from './objects/field/Field';
 import Character from './objects/player/Character';
-import Player from './objects/player/Player';
 import { CELL_SIZE } from './settings';
 
 /**
  * Initializes scene.
- * 
+ *
  * @class
  * @classdesc Contains canvas and game objects.
  */
@@ -54,7 +53,7 @@ export default class Scene {
 
     /**
      * Destroy current Scene instance.
-     * 
+     *
      * @returns Null.
      */
     public destroy(): null {
@@ -66,11 +65,11 @@ export default class Scene {
 
     /**
      * Adds player on scene.
-     * 
+     *
      * @param Player Player object.
      */
     public addPlayer(Player: Character): void {
-        if(!Scene.Players) {
+        if (!Scene.Players) {
             Scene.Players = new Composite();
         }
         Scene.Players.add(Player);
@@ -88,7 +87,7 @@ export default class Scene {
      * Delete all objects from scene.
      */
     public clearObjects() {
-        if (!Scene.Players) return;
+        if (!Scene.Players) { return; }
         Scene.Players.clear();
     }
 

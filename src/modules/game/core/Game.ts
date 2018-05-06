@@ -1,11 +1,11 @@
-import Scene from '../Scene';
 import Field from '../objects/field/Field';
-import { PlayerData } from '../playerdata'
+import { IPlayerData } from '../playerdata';
+import Scene from '../Scene';
 import { GAME_DURATION } from '../settings';
 
 /**
  * Initializes scene and common game system.
- * 
+ *
  * @class
  * @classdesc Common behaviour for both multiplayer and singleplayer mode.
  */
@@ -23,7 +23,7 @@ export default abstract class Game {
     /**
      * Player data. Contains name and avatar url.
      */
-    protected playerData: PlayerData;
+    protected playerData: IPlayerData;
 
     /**
      * ID of requestAnimationFrame.
@@ -61,7 +61,7 @@ export default abstract class Game {
 
     /**
      * Destroy game instance.
-     * 
+     *
      * @returns Null.
      */
     public destroy(): null {
@@ -102,23 +102,23 @@ export default abstract class Game {
 
     /**
      * Redraw scene and call logic.
-     * 
+     *
      * @param now Current timestamp.
      */
     protected gameLoop(now: number): void {
         if (this.gameAnimationLoop) {
-            if (this.timer == 0) {
+            if (this.timer === 0) {
                 this.gameOver();
             }
-    
+
             if (now - this.lastTimerCall >= 1000) {
                 this.timer--;
                 this.lastTimerCall = this.lastTimerCall + 1000; // not now coz maybe more
             }
-    
+
             this.Scene.clear();
             this.Scene.render();
-    
+
             this.logic(now - this.lastFrameCall);
             this.lastFrameCall = now;
         }
@@ -128,7 +128,7 @@ export default abstract class Game {
 
     /**
      * Should be overwritten. Logic call.
-     * 
+     *
      * @param lastLogicCall Time spend from last logic call.
      */
     protected logic(lastLogicCall: number): void {
@@ -136,6 +136,6 @@ export default abstract class Game {
     }
 
     protected gameOver() {
-
+        // TODO
     }
 }

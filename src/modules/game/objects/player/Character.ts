@@ -1,16 +1,16 @@
-import Drawable from '../Drawable';
-import Point from '../Point';
-import GameEventBus from '../../GameEventBus';
-import Cell from '../field/Cell';
-import Scene from '../../Scene';
-import { COLOR_MAP, DIRECTION_MAP, CHARACTER_VELOCITY } from '../../settings';
-import { Direction } from './directions';
 import * as defaultAvatar from '../../bin/1.svg';
+import GameEventBus from '../../GameEventBus';
+import Scene from '../../Scene';
+import { CHARACTER_VELOCITY, COLOR_MAP, DIRECTION_MAP } from '../../settings';
+import Drawable from '../Drawable';
+import Cell from '../field/Cell';
 import Field from '../field/Field';
+import Point from '../Point';
+import { Direction } from './directions';
 
 /**
  * Initializes charcter in the beginning of game.
- * 
+ *
  * @class
  * @classdesc Abstract class. Defines common behaviour for player and bot.
  */
@@ -19,16 +19,6 @@ export default abstract class Character extends Drawable {
      * Did last step got scores?
      */
     public gotScore: boolean = false;
-
-    /**
-     * Player position on field (on cell).
-     */
-    private startPosition: Point;
-
-    /**
-     * Movement offset between cells.
-     */
-    private moveOffset: Point = new Point(0, 0);
 
     /**
      * Character avatar.
@@ -41,6 +31,11 @@ export default abstract class Character extends Drawable {
     public id: number;
 
     /**
+     * Character current velocity.
+     */
+    public velocity: number = CHARACTER_VELOCITY;
+
+    /**
      * Color associated with this character.
      */
     protected color: string;
@@ -51,17 +46,12 @@ export default abstract class Character extends Drawable {
     protected score: number = 0;
 
     /**
-     * Character current velocity.
-     */
-    public velocity: number = CHARACTER_VELOCITY;
-
-    /**
      * Current character movement direction.
      */
     protected direction: Direction;
 
     /**
-     * New character movement direction. 
+     * New character movement direction.
      * Would apply after character step on field.
      */
     protected nextDirection: Direction ;
@@ -72,8 +62,18 @@ export default abstract class Character extends Drawable {
     protected name: string;
 
     /**
+     * Player position on field (on cell).
+     */
+    private startPosition: Point;
+
+    /**
+     * Movement offset between cells.
+     */
+    private moveOffset: Point = new Point(0, 0);
+
+    /**
      * Initializes charater in the beginning of game.
-     * 
+     *
      * @param id Character unique identificator.
      * @param name Character ingame nickname.
      * @param startPosition Coordinates of cell to spawn in.
@@ -95,33 +95,10 @@ export default abstract class Character extends Drawable {
     }
 
     /**
-     * Set next direction as current direction.
+     * Move player across the field.
+     *
+     * @param time Time spended from last move call.
      */
-    protected switchDirection(): void {
-        if (this.direction != this.nextDirection) {
-            this.moveOffset.x = 0;
-            this.moveOffset.y = 0;
-            this.direction = this.nextDirection;
-        }
-    }
-
-    /**
-     * Listen events on which charater will change movement direction.
-     */
-    private subscribeMovement(): void {
-        GameEventBus.subscribe(`MOVE.UP:${this.id}`, () => { this.nextDirection = Direction.UP; }, this);
-        GameEventBus.subscribe(`MOVE.DOWN:${this.id}`, () => { this.nextDirection = Direction.DOWN; }, this);
-        GameEventBus.subscribe(`MOVE.LEFT:${this.id}`, () => { this.nextDirection = Direction.LEFT; }, this);
-        GameEventBus.subscribe(`MOVE.RIGHT:${this.id}`, () => { this.nextDirection = Direction.RIGHT; }, this);
-    }
-
-    /**
-     * Listen event on which character gets some scores.
-     */
-    private subscribeScore(): void {
-        GameEventBus.subscribe(`SCORE:${this.id}`, score => { this.score += score; }, this);
-    }
-
     public move(time: number): void {
         const prevPosition = new Point(this.startPosition.x, this.startPosition.y);
 
@@ -130,7 +107,7 @@ export default abstract class Character extends Drawable {
             return;
         }
 
-        if (this.moveOffset.x == 0 && this.moveOffset.y == 0) {
+        if (this.moveOffset.x === 0 && this.moveOffset.y === 0) {
             this.switchDirection();
         }
 
@@ -138,7 +115,7 @@ export default abstract class Character extends Drawable {
 
         switch (this.direction) {
             case Direction.UP:
-                if (this.startPosition.y == 0) {
+                if (this.startPosition.y === 0) {
                     this.moveOffset.y = 0;
                     return;
                 }
@@ -150,7 +127,7 @@ export default abstract class Character extends Drawable {
                 }
                 break;
             case Direction.DOWN:
-                if (this.startPosition.y == Field.range - 1) {
+                if (this.startPosition.y === Field.range - 1) {
                     this.moveOffset.y = 0;
                     return;
                 }
@@ -162,7 +139,7 @@ export default abstract class Character extends Drawable {
                 }
                 break;
             case Direction.LEFT:
-                if (this.startPosition.x == 0) {
+                if (this.startPosition.x === 0) {
                     this.moveOffset.x = 0;
                     return;
                 }
@@ -174,7 +151,7 @@ export default abstract class Character extends Drawable {
                 }
                 break;
             case Direction.RIGHT:
-                if (this.startPosition.x == Field.range - 1) {
+                if (this.startPosition.x === Field.range - 1) {
                     this.moveOffset.x = 0;
                     return;
                 }
@@ -195,10 +172,10 @@ export default abstract class Character extends Drawable {
 
     /**
      * Set custom avatar by url.
-     * 
-     * @param url Url to image. 
+     *
+     * @param url Url to image.
      */
-    setAvatar(url: string): void {
+    public setAvatar(url: string): void {
         if (url.length !== 0) {
             this.avatar.src = url;
         }
@@ -215,17 +192,47 @@ export default abstract class Character extends Drawable {
         const imgSize = radius * 2 - border * 2;
 
         // x, y - center
-		const x = this.startPosition.x * Cell.realSize + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
-        const y = this.startPosition.y * Cell.realSize + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
-        
-		this.circle(x, y, radius);
-        
+        const startx = this.startPosition.x * Cell.realSize;
+        const starty = this.startPosition.y * Cell.realSize;
+		      const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
+        const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
+
+		      this.circle(x, y, radius);
+
         // PosX, PosY - top left corner
-		const imgPosX = x - imgSize / 2;
+		      const imgPosX = x - imgSize / 2;
         const imgPosY = y - imgSize / 2;
 
         this.image(this.avatar, imgPosX, imgPosY, imgSize);
-        
-		this.unCircle();
+
+		      this.unCircle();
+    }
+
+    /**
+     * Set next direction as current direction.
+     */
+    protected switchDirection(): void {
+        if (this.direction !== this.nextDirection) {
+            this.moveOffset.x = 0;
+            this.moveOffset.y = 0;
+            this.direction = this.nextDirection;
+        }
+    }
+
+    /**
+     * Listen events on which charater will change movement direction.
+     */
+    private subscribeMovement(): void {
+        GameEventBus.subscribe(`MOVE.UP:${this.id}`, () => { this.nextDirection = Direction.UP; }, this);
+        GameEventBus.subscribe(`MOVE.DOWN:${this.id}`, () => { this.nextDirection = Direction.DOWN; }, this);
+        GameEventBus.subscribe(`MOVE.LEFT:${this.id}`, () => { this.nextDirection = Direction.LEFT; }, this);
+        GameEventBus.subscribe(`MOVE.RIGHT:${this.id}`, () => { this.nextDirection = Direction.RIGHT; }, this);
+    }
+
+    /**
+     * Listen event on which character gets some scores.
+     */
+    private subscribeScore(): void {
+        GameEventBus.subscribe(`SCORE:${this.id}`, (score) => { this.score += score; }, this);
     }
 }

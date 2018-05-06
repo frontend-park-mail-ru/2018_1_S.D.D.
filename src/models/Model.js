@@ -9,12 +9,12 @@ import ServiceManager from '../modules/ServiceManager';
  * @classdesc Base model. Provide acces to ServiceManager.
  */
 class Model {
-	/**
+    /**
 	 * Creates instance of Model
 	 */
-	constructor() {
-		this.ServiceManager = new ServiceManager();
-	}
+    constructor() {
+        this.ServiceManager = new ServiceManager();
+    }
 	
 }
 

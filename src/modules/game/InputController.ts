@@ -10,19 +10,19 @@ const SPACE_KEY = 32;
 
 /**
  * Sets handler on key pressed event.
- * 
+ *
  * @class
  * @classdesc Executes handler on arrow keys.
  */
 export default class InputController {
     /**
-     * 
+     *
      * @param id Id of current player.
      */
 	constructor(id: number) {
 		const Bus = GameEventBus;
 
-		document.addEventListener('keydown', event => {
+		document.addEventListener('keydown', (event) => {
 			switch (event.keyCode) {
 			case LEFT_KEY:
 				Bus.emit(`MOVE.LEFT:${id}`);

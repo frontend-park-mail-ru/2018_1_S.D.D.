@@ -1,13 +1,13 @@
 import ServiceManager from '../ServiceManager';
-import { PlayerData } from './playerdata';
 import Game from './core/Game';
 import SinglePlayer from './core/SinglePlayer';
+import { IPlayerData } from './playerdata';
 import Scene from './Scene';
 
 /**
  * Initialize game. Sets mode.
- * 
- * @class 
+ *
+ * @class
  * @classdesc Entry point. Initialize game. Sets mode (online/offline/multiplayer)
  */
 export default class GameInitializer {
@@ -17,29 +17,29 @@ export default class GameInitializer {
     private game: Game;
     /**
      * Sets mode and canvas.
-     * 
+     *
      * @param room Lobby id.
      * @param canvas DOM canvas element.
      */
     constructor(room: string, canvas: HTMLCanvasElement) {
         Scene.sceneCanvas = canvas;
         const User = new ServiceManager().UserStorage;
-        const Me: PlayerData = {
+        const Me: IPlayerData = {
+            avatar: User.getData('avatar'),
             name: User.getData('nickname'),
-            avatar: User.getData('avatar')
         };
 
         if (!room || room === '') {
             this.game = new SinglePlayer(Me);
         } else {
             // Get Other PLayers
-            //new MultiPlayer(Me, OtherPlayers);
+            // new MultiPlayer(Me, OtherPlayers);
         }
     }
 
     /**
      * Destroy current game instance.
-     * 
+     *
      * @returns Null;
      */
     public destroy(): null {

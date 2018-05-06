@@ -21,7 +21,7 @@ export const BOTNAMES_MAP = new Map<number, string>([
     [18, 'John Snow'],
 ]);
 
-//later we can add custom avatars for each nickname
+// later we can add custom avatars for each nickname
 export const BOTAVATARS_MAP = new Map<number, string>([
     [1, avatar], // Reserved
     [2, avatar],
