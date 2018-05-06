@@ -26,6 +26,10 @@ class GameView extends View {
         return SceneTemplate.getScene(this.load('Scene'));
     }
 
+    getMetaBlock() {
+        return SceneTemplate.getMetaBlock(this.load('Scene'));
+    }
+
     showPage() {
         this.show('Header');
         HeaderTemplate.showLogo();

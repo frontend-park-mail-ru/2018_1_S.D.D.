@@ -20,9 +20,11 @@ export default class GameInitializer {
      *
      * @param room Lobby id.
      * @param canvas DOM canvas element.
+     * @param metaBlock DOM block on which we will display timer and other info.
      */
-    constructor(room: string, canvas: HTMLCanvasElement) {
+    constructor(room: string, canvas: HTMLCanvasElement, metaBlock: HTMLElement) {
         Scene.sceneCanvas = canvas;
+        Scene.sceneMetaBlock = metaBlock;
         const User = new ServiceManager().UserStorage;
         const Me: IPlayerData = {
             avatar: User.getData('avatar'),

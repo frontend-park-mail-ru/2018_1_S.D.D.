@@ -30,10 +30,11 @@ class GameController extends Controller {
         this.GameView.constructPage()
             .then(() => {
                 const scene = this.GameView.getScene();
+                const meta = this.GameView.getMetaBlock();
                 if (this.GameManager) {
                     this.GameManager = this.GameManager.destroy();
                 }
-                this.GameManager = new Game(room, scene);
+                this.GameManager = new Game(room, scene, meta);
             });
     }
 	

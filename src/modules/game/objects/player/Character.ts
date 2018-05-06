@@ -1,5 +1,6 @@
 import * as defaultAvatar from '../../bin/1.svg';
 import GameEventBus from '../../GameEventBus';
+import MetaController from '../../MetaController';
 import Scene from '../../Scene';
 import { CHARACTER_VELOCITY, COLOR_MAP, DIRECTION_MAP } from '../../settings';
 import Drawable from '../Drawable';
@@ -31,6 +32,16 @@ export default abstract class Character extends Drawable {
     public id: number;
 
     /**
+     * Character ingame nickname.
+     */
+    public name: string;
+
+    /**
+     * Score of this character in current game.
+     */
+    public score: number = 0;
+
+    /**
      * Character current velocity.
      */
     public velocity: number = CHARACTER_VELOCITY;
@@ -39,11 +50,6 @@ export default abstract class Character extends Drawable {
      * Color associated with this character.
      */
     protected color: string;
-
-    /**
-     * Score of this character in current game.
-     */
-    protected score: number = 0;
 
     /**
      * Current character movement direction.
@@ -57,19 +63,14 @@ export default abstract class Character extends Drawable {
     protected nextDirection: Direction ;
 
     /**
-     * Character ingame nickname.
+     * Movement offset between cells.
      */
-    protected name: string;
+    protected moveOffset: Point = new Point(0, 0);
 
     /**
      * Player position on field (on cell).
      */
     private startPosition: Point;
-
-    /**
-     * Movement offset between cells.
-     */
-    private moveOffset: Point = new Point(0, 0);
 
     /**
      * Initializes charater in the beginning of game.
@@ -182,6 +183,17 @@ export default abstract class Character extends Drawable {
     }
 
     /**
+     * Set next direction as current direction.
+     */
+    public switchDirection(): void {
+        if (this.direction !== this.nextDirection) {
+            this.moveOffset.x = 0;
+            this.moveOffset.y = 0;
+            this.direction = this.nextDirection;
+        }
+    }
+
+    /**
      * Draw player.
      */
     public draw(): void {
@@ -194,29 +206,18 @@ export default abstract class Character extends Drawable {
         // x, y - center
         const startx = this.startPosition.x * Cell.realSize;
         const starty = this.startPosition.y * Cell.realSize;
-		      const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
+        const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
         const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
 
-		      this.circle(x, y, radius);
+        this.circle(x, y, radius);
 
         // PosX, PosY - top left corner
-		      const imgPosX = x - imgSize / 2;
+        const imgPosX = x - imgSize / 2;
         const imgPosY = y - imgSize / 2;
 
         this.image(this.avatar, imgPosX, imgPosY, imgSize);
 
-		      this.unCircle();
-    }
-
-    /**
-     * Set next direction as current direction.
-     */
-    protected switchDirection(): void {
-        if (this.direction !== this.nextDirection) {
-            this.moveOffset.x = 0;
-            this.moveOffset.y = 0;
-            this.direction = this.nextDirection;
-        }
+        this.unCircle();
     }
 
     /**
@@ -233,6 +234,9 @@ export default abstract class Character extends Drawable {
      * Listen event on which character gets some scores.
      */
     private subscribeScore(): void {
-        GameEventBus.subscribe(`SCORE:${this.id}`, (score) => { this.score += score; }, this);
+        GameEventBus.subscribe(`SCORE:${this.id}`, (score) => {
+            this.score += score;
+            MetaController.updateScores();
+        }, this);
     }
 }

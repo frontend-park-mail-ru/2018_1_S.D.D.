@@ -1,5 +1,89 @@
+@import '../../styles/constants';
+
 .scene {
-	display: block;
+	display: inline-block;
 	margin: auto;
-	height: 100%;
+	width: 50%;
+}
+
+.game-meta {
+	display: inline-block;
+	width: 50%;
+	vertical-align: top;
+}
+
+.timer {
+	font-size: $font-size-big;
+	color: $color-light;
+	text-align: center;
+}
+
+.players-scores {
+	width: 80%;
+	margin: auto;
+	height: auto;
+}
+
+.player {
+	position: absolute;
+	display: box;
+	display: flex;
+	justify-content: space-between;
+	-webkit-box-align: center;
+    align-items: center;
+	background: $menu-background-hovered;
+}
+
+// I know it's bad practice but anyway
+.avatar > img {
+	width: 50px;
+	height: 50px;
+	margin: 5px 0 0 0;
+	border-radius: 100px;
+}
+
+.avatar, .nickname, .score {
+	display: inline-block;
+	font-size: 30px;
+	padding: 0 10px;
+}
+
+.score {
+	color: $color-light;
+}
+
+@media screen and (max-width: 980px) {
+	.avatar, .nickname, .score {
+		font-size: 20px;
+		padding: 0 10px;
+	}
+}
+
+@media screen and (max-width: 800px) {
+	.avatar > img {
+		width: 30px;
+		height: 30px;
+		margin: 5px 0 0 0;
+	}
+
+	.timer {
+		font-size: 22px;
+	}
+}
+
+@media screen and (max-width: 630px) {
+	.avatar > img {
+		width: 20px;
+		height: 20px;
+		margin: 3px 0 0 0;
+	}
+
+	.timer {
+		font-size: 18px;
+	}
+
+	.avatar, .nickname, .score {
+		font-size: 16px;
+		padding: 0 5px;
+	}
 }

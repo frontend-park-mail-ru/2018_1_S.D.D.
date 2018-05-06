@@ -1,3 +1,4 @@
+import MetaController from '../MetaController';
 import Field from '../objects/field/Field';
 import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
@@ -10,6 +11,10 @@ import { GAME_DURATION } from '../settings';
  * @classdesc Common behaviour for both multiplayer and singleplayer mode.
  */
 export default abstract class Game {
+    /**
+     * Game status. Do we need proccees logic.
+     */
+    public running: boolean = false;
     /**
      * Game field. Contains logic for field.
      */
@@ -29,11 +34,6 @@ export default abstract class Game {
      * ID of requestAnimationFrame.
      */
     protected gameAnimationLoop: number;
-
-    /**
-     * Tick number (number of frames were drawed after game started).
-     */
-    protected tick: number;
 
     /**
      * Ingame timer. Seconds until game ended.
@@ -75,7 +75,6 @@ export default abstract class Game {
      * Initialize base components.
      */
     protected baseInit(): void {
-        this.tick = 0;
         this.timer = GAME_DURATION;
         this.Scene.clearObjects();
     }
@@ -92,10 +91,12 @@ export default abstract class Game {
      * Start game. Entry point for game loop.
      */
     protected start(): void {
+        MetaController.updateTimer(this.timer);
         if (!this.gameAnimationLoop) {
             const now = performance.now();
             this.lastFrameCall = now;
             this.lastTimerCall = now;
+            this.running = true;
             this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
         }
     }
@@ -112,14 +113,19 @@ export default abstract class Game {
             }
 
             if (now - this.lastTimerCall >= 1000) {
-                this.timer--;
+                if (this.running) {
+                    this.timer--;
+                    MetaController.updateTimer(this.timer);
+                }
                 this.lastTimerCall = this.lastTimerCall + 1000; // not now coz maybe more
             }
 
             this.Scene.clear();
             this.Scene.render();
 
-            this.logic(now - this.lastFrameCall);
+            if (this.running) {
+                this.logic(now - this.lastFrameCall);
+            }
             this.lastFrameCall = now;
         }
 
@@ -136,6 +142,7 @@ export default abstract class Game {
     }
 
     protected gameOver() {
-        // TODO
+        this.running = false;
+        this.Scene.gameOver();
     }
 }

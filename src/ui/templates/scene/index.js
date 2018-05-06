@@ -23,5 +23,9 @@ export default {
 
     getScene: template => {
         return template.querySelector('.scene');
+    },
+
+    getMetaBlock: template => {
+        return template.querySelector('.game-meta');
     }
 };

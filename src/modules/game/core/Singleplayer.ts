@@ -1,4 +1,5 @@
 import InputController from '../InputController';
+import MetaController from '../MetaController';
 import Field from '../objects/field/Field';
 import Bot from '../objects/player/Bot';
 import { BOTAVATARS_MAP, BOTNAMES_MAP } from '../objects/player/botsettings';
@@ -38,6 +39,9 @@ export default class SinglePlayer extends Game {
         this.baseInit();
         this.addPlayer(this.playerData);
         this.addBots(this.playerData.name);
+        MetaController.initPlayersScores(
+            Scene.Players.get(),
+        );
         this.start();
     }
 
@@ -57,7 +61,7 @@ export default class SinglePlayer extends Game {
      */
     private addPlayer(Data: IPlayerData): void {
         const nickname = Data.name === '' ? 'Mr. Incognito' : Data.name;
-        const Me = new Player(1, nickname, new Point(0, 0));
+        const Me = new Player(1, nickname + ' (YOU)', new Point(0, 0));
         Me.setAvatar(Data.avatar);
         this.Scene.addPlayer(Me);
         this.IController = new InputController(1);

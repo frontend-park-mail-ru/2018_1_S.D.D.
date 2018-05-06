@@ -22,6 +22,16 @@ export default class Scene {
     public static sceneCanvasContext: CanvasRenderingContext2D;
 
     /**
+     * DOM meta block element.
+     */
+    public static sceneMetaBlock: HTMLElement;
+
+    /**
+     * DOM popup window.
+     */
+    public static scenePopup: HTMLElement;
+
+    /**
      * Conventional size.
      */
     public static size;
@@ -96,5 +106,12 @@ export default class Scene {
      */
     public clear(): void {
         Scene.sceneCanvasContext.clearRect(0, 0, Scene.sceneCanvas.width, Scene.sceneCanvas.height);
+    }
+
+    /**
+     * Game over window.
+     */
+    public gameOver(): void {
+        // TODO
     }
 }
