@@ -35,11 +35,11 @@ module.exports = {
                     {
                         loader: 'awesome-typescript-loader',
                         options: {
-                            "useBabel": true,
-                            "babelOptions": {
-                                "babelrc": false, /* Important line */
-                                "presets": [
-                                    ["env", { "targets": "last 2 versions, ie 11", "modules": false }]
+                            'useBabel': true,
+                            'babelOptions': {
+                                'babelrc': false, /* Important line */
+                                'presets': [
+                                    ['env', { 'targets': 'last 2 versions, ie 11', 'modules': false }]
                                 ]
                             },
                         }
