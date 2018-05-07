@@ -25,7 +25,7 @@ export default class MetaController {
         const block = MetaController.metaBlock;
         const size = block.querySelector('.player').clientHeight;
         MetaController.marginSeparator = size * 1.1;
-        block.querySelectorAll('.player').forEach((b: HTMLElement) => {
+        [].forEach.call(block.querySelectorAll('.player'), (b: HTMLElement) => {
             b.style.width = `${block.clientWidth * 0.8}px`;
         });
     }

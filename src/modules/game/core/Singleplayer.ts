@@ -75,7 +75,7 @@ export default class SinglePlayer extends Game {
     private addBots(PlayerNickname) {
         const namesAmount = BOTNAMES_MAP.size - 1;
 
-        const choosenBots = [];
+        const choosenBots: Array<any> = [];
         for (let i = 0; i < 3; i++) {
             let choosen = false;
             let id = 0;
