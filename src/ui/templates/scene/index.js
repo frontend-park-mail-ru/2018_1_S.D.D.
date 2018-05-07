@@ -10,7 +10,12 @@ export default {
         const w = parent.clientWidth;
         const h = parent.clientHeight;
 
-        const t = w > h ? h : w;
+        let t = w > h ? h : w;
+        canvas.style.width = t;
+        canvas.style.height = t;
+        if (window.devicePixelRatio > 1) {
+            t *= 2; // Reina display
+        }
         canvas.height = t;
         canvas.width = t;
     },

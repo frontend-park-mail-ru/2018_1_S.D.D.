@@ -73,17 +73,22 @@ export default class SinglePlayer extends Game {
      * @param PlayerNickname Player nickname. Bot shouldn't have same nickname.
      */
     private addBots(PlayerNickname) {
-        const namesAmount = BOTNAMES_MAP.size;
-        const divider = namesAmount / 3;
+        const namesAmount = BOTNAMES_MAP.size - 1;
 
+        const choosenBots = [];
         for (let i = 0; i < 3; i++) {
-            let id = Math.floor(Math.random() * ((i + 1) * divider - i * divider)) + i * divider;
-            if (id === 0) {
-                id++;
+            let choosen = false;
+            let id = 0;
+            while (!choosen) {
+                id = Math.floor(Math.random() * namesAmount);
+                if (!choosenBots.includes(id)) {
+                    choosenBots.push(id);
+                    choosen = true;
+                }
             }
 
-            const nickname = BOTNAMES_MAP.get(id + 1);
-            const avatar = BOTAVATARS_MAP.get(id + 1);
+            const nickname = BOTNAMES_MAP.get(id + 2);
+            const avatar = BOTAVATARS_MAP.get(id + 2);
 
             const botPosition = new Point(i < 2 ? Field.range - 1 : 0, i > 0 ? Field.range - 1 : 0);
 

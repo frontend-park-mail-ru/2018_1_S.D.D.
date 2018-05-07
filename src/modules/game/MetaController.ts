@@ -59,6 +59,17 @@ export default class MetaController {
             const element = playerInfoBlock.querySelector('.nickname') as HTMLElement;
             element.style.color = player.color;
             playerInfoBlock.querySelector('.score').innerHTML = player.score;
+
+            const hexToRgb = (hex, a = 1) => {
+                const bigint = parseInt(hex.substr(1), 16);
+                const r = (bigint >> 16) & 255;
+                const g = (bigint >> 8) & 255;
+                const b = bigint & 255;
+            
+                return `rgba(${r},${g},${b},${a})`;
+            }
+
+            playerInfoBlock.style.background = hexToRgb(player.color, 0.3);
         });
     }
 

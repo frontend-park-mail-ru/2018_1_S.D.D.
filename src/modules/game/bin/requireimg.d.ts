@@ -1,4 +1,9 @@
 declare module '*.svg' {
-	const value: any;
-	export = value;
+	const svg: any;
+	export = svg;
+}
+
+declare module '*.png' {
+	const png: any;
+	export = png;
 }
