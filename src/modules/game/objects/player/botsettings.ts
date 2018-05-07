@@ -1,21 +1,21 @@
 import * as avatar from '../../bin/1.svg';
-import * as ww from '../../bin/ww.png';
-import * as jessey from '../../bin/jessey.png';
-import * as bill from '../../bin/bill.png';
-import * as strange from '../../bin/strange.png';
-import * as nobody from '../../bin/nobody.png';
-import * as cheater from '../../bin/cheater.png';
 import * as admin from '../../bin/admin.png';
+import * as bill from '../../bin/bill.png';
+import * as cheater from '../../bin/cheater.png';
 import * as crash from '../../bin/crash.png';
 import * as gopher from '../../bin/gopher.png';
+import * as homer from '../../bin/homer.png';
 import * as java from '../../bin/java.png';
+import * as jessey from '../../bin/jessey.png';
+import * as joey from '../../bin/joey.png';
+import * as jon from '../../bin/jon.png';
+import * as nobody from '../../bin/nobody.png';
+import * as panther from '../../bin/panther.png';
+import * as pinky from '../../bin/pinky.png';
+import * as strange from '../../bin/strange.png';
 import * as superman from '../../bin/superman.png';
 import * as willy from '../../bin/willy.png';
-import * as homer from '../../bin/homer.png';
-import * as pinky from '../../bin/pinky.png';
-import * as joey from '../../bin/joey.png';
-import * as panther from '../../bin/panther.png';
-import * as jon from '../../bin/jon.png';
+import * as ww from '../../bin/ww.png';
 
 export const BOTNAMES_MAP = new Map<number, string>([
     [1, 'Reserved by player'], // Reserved by player
