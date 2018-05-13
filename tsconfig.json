@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-			"lib": [ "es7", "dom" ],
+			"lib": ["es7", "dom"],
 			"target": "es6",
 			"sourceMap": true
     }

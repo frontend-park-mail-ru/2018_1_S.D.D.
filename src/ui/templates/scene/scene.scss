@@ -1,15 +1,31 @@
 @import '../../styles/constants';
 
+.scene-holder {
+	width: 50%;
+	display: inline-block;
+	margin: auto;
+	text-align: center;
+	-o-transition: $animation-disabled;
+    -ms-transition: $animation-disabled;
+    -moz-transition: $animation-disabled;
+    -webkit-transition: $animation-disabled;
+    transition: $animation-disabled;
+}
+
 .scene {
 	display: inline-block;
 	margin: auto;
-	width: 50%;
 }
 
 .game-meta {
 	display: inline-block;
 	width: 50%;
 	vertical-align: top;
+	-o-transition: $animation-disabled;
+    -ms-transition: $animation-disabled;
+    -moz-transition: $animation-disabled;
+    -webkit-transition: $animation-disabled;
+    transition: $animation-disabled;
 }
 
 .timer {
@@ -19,6 +35,7 @@
 }
 
 .players-scores {
+	position: relative;
 	width: 80%;
 	margin: auto;
 	height: auto;
@@ -85,5 +102,11 @@
 	.avatar, .nickname, .score {
 		font-size: 16px;
 		padding: 0 5px;
+	}
+}
+
+@media screen and (max-width: 440px) {
+	.scene-holder, .game-meta {
+		width: 100%;
 	}
 }

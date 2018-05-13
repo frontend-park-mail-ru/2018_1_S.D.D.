@@ -7,12 +7,13 @@ export default {
     setSize: (template, parent) => {
         const canvas = template.querySelector('.scene');
 
-        const w = parent.clientWidth;
+        const w = template.querySelector('.scene-holder').clientWidth;
         const h = parent.clientHeight;
 
         let t = w > h ? h : w;
-        canvas.style.width = t;
-        canvas.style.height = t;
+        //t = t / 2;
+        canvas.style.width = `${t}px`;
+        canvas.style.height = `${t}px`;
         if (window.devicePixelRatio > 1) {
             t *= 2; // Reina display
         }

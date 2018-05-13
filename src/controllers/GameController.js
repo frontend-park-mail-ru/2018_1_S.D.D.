@@ -29,12 +29,10 @@ class GameController extends Controller {
         this.ServiceManager.Router.requestConfirm('Are you sure you wanna leave this page? Game results wont be save!');
         this.GameView.constructPage()
             .then(() => {
-                const scene = this.GameView.getScene();
-                const meta = this.GameView.getMetaBlock();
                 if (this.GameManager) {
                     this.GameManager = this.GameManager.destroy();
                 }
-                this.GameManager = new Game(room, scene, meta);
+                this.GameManager = new Game(room, this.GameView);
             });
     }
 	

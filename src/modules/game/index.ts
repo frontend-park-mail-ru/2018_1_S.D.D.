@@ -3,6 +3,7 @@ import Game from './core/Game';
 import SinglePlayer from './core/SinglePlayer';
 import { IPlayerData } from './playerdata';
 import Scene from './Scene';
+import GameView from '../../views/GameView.js';
 
 /**
  * Initialize game. Sets mode.
@@ -22,9 +23,10 @@ export default class GameInitializer {
      * @param canvas DOM canvas element.
      * @param metaBlock DOM block on which we will display timer and other info.
      */
-    constructor(room: string, canvas: HTMLCanvasElement, metaBlock: HTMLElement) {
-        Scene.sceneCanvas = canvas;
-        Scene.sceneMetaBlock = metaBlock;
+    constructor(room: string, View: GameView) {
+        Scene.sceneCanvas = View.getScene();
+        Scene.sceneMetaBlock = View.getMetaBlock();
+        Scene.viewController = View;
         const User = new ServiceManager().UserStorage;
         const Me: IPlayerData = {
             avatar: User.getData('avatar'),

@@ -3,6 +3,7 @@ import Cell from './objects/field/Cell';
 import Field from './objects/field/Field';
 import Character from './objects/player/Character';
 import { CELL_SIZE } from './settings';
+import GameView from '../../views/GameView';
 
 /**
  * Initializes scene.
@@ -11,6 +12,10 @@ import { CELL_SIZE } from './settings';
  * @classdesc Contains canvas and game objects.
  */
 export default class Scene {
+    /**
+     * Page view.
+     */
+    public static viewController: GameView;
     /**
      * DOM canvas element.
      */
@@ -112,6 +117,9 @@ export default class Scene {
      * Game over window.
      */
     public gameOver(): void {
-        // TODO
+        Scene.viewController.constructGameOver()
+        .then(() => {
+            Scene.viewController.showGameOver();
+        });
     }
 }

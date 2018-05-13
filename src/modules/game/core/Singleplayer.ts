@@ -81,7 +81,7 @@ export default class SinglePlayer extends Game {
             let id = 0;
             while (!choosen) {
                 id = Math.floor(Math.random() * namesAmount);
-                if (!choosenBots.includes(id)) {
+                if (choosenBots.indexOf(id) === -1) {
                     choosenBots.push(id);
                     choosen = true;
                 }

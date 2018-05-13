@@ -41,6 +41,10 @@ export default class MetaController {
             MetaController.getTopMarginSize();
             MetaController.updateScores();
         });
+        window.addEventListener('orientationchange', () => {
+            MetaController.getTopMarginSize();
+            MetaController.updateScores();
+        });
 
         MetaController.players = [];
         const playersBlock = MetaController.metaBlock.querySelector('.players-scores');
