@@ -40,7 +40,7 @@ export default class SinglePlayer extends Game {
         this.addPlayer(this.playerData);
         this.addBots(this.playerData.name);
         MetaController.initPlayersScores(
-            Scene.Players.get(),
+            Scene.Players.get()
         );
         this.start();
     }

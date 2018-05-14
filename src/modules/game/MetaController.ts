@@ -4,7 +4,7 @@ import Scene from './Scene';
 /**
  *
  * @class
- * @classdesc Meta block controller..
+ * @classdesc Meta block and modal screen controller.
  */
 export default class MetaController {
 
@@ -21,11 +21,14 @@ export default class MetaController {
         timerBlock.innerHTML = `${timer} seconds left!`;
     }
 
+    /**
+     * Margins of player-line-block.
+     */
     public static getTopMarginSize() {
         const block = MetaController.metaBlock;
-        const size = block.querySelector('.player').clientHeight;
+        const size = block.querySelector('.sc_player').clientHeight;
         MetaController.marginSeparator = size * 1.1;
-        [].forEach.call(block.querySelectorAll('.player'), (b: HTMLElement) => {
+        [].forEach.call(block.querySelectorAll('.sc_player'), (b: HTMLElement) => {
             b.style.width = `${block.clientWidth * 0.8}px`;
         });
     }
@@ -56,13 +59,13 @@ export default class MetaController {
                 p: player,
             });
 
-            playerInfoBlock.querySelector('.avatar').innerHTML = '';
-            playerInfoBlock.querySelector('.avatar').appendChild(player.avatar);
+            playerInfoBlock.querySelector('.sc_avatar').innerHTML = '';
+            playerInfoBlock.querySelector('.sc_avatar').appendChild(player.avatar);
 
-            playerInfoBlock.querySelector('.nickname').innerHTML = player.name;
-            const element = playerInfoBlock.querySelector('.nickname') as HTMLElement;
+            playerInfoBlock.querySelector('.sc_nickname').innerHTML = player.name;
+            const element = playerInfoBlock.querySelector('.sc_nickname') as HTMLElement;
             element.style.color = player.color;
-            playerInfoBlock.querySelector('.score').innerHTML = player.score;
+            playerInfoBlock.querySelector('.sc_score').innerHTML = player.score;
 
             const hexToRgb = (hex, a = 1) => {
                 const bigint = parseInt(hex.substr(1), 16);
@@ -84,7 +87,7 @@ export default class MetaController {
 
         MetaController.players.forEach((player, i) => {
             player.dom.style.top = `${(i + 1) * MetaController.marginSeparator}px`;
-            player.dom.querySelector('.score').innerHTML = player.p.score;
+            player.dom.querySelector('.sc_score').innerHTML = player.p.score;
         });
     }
 

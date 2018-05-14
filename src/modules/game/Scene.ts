@@ -64,6 +64,9 @@ export default class Scene {
         // }
         Scene.size = Field.range * CELL_SIZE;
         Scene.Players = new Composite();
+        window.addEventListener('resize', () => {
+            this.render();
+        });
     }
 
     /**

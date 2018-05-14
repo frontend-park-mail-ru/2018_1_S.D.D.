@@ -14,6 +14,7 @@ class Router {
     constructor() {
         this.routes = [];
         this._confirm = false;
+        this._last = null;
         window.addEventListener('popstate', () => {
             this.loadPage(location.pathname);
         }, false);
@@ -52,6 +53,7 @@ class Router {
     go(urlPath, pushState = true) {
         const go = () => {
             if (urlPath !== this.getCurrentUrlPath() && pushState) {
+                this._last = this.getCurrentUrlPath();
                 window.history.pushState({}, '', urlPath);
             }
             this.loadPage(urlPath);
@@ -76,6 +78,7 @@ class Router {
     re(urlPath) {
         const go = () => {
             window.history.replaceState({}, '', urlPath);
+            this._last = urlPath;
             this.loadPage(urlPath);
         };
 
@@ -180,6 +183,16 @@ class Router {
             this.currentRoute = route;
             this.currentRoute.load('404');
         }
+    }
+
+    /**
+     * Get previous page link.
+     */
+    get last() {
+        if (!this._last || this._last === this.getCurrentUrlPath()) {
+            return '/';
+        }
+        return this._last;
     }
 }
 

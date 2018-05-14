@@ -80,11 +80,18 @@ export default abstract class Game {
     }
 
     /**
-     * Pause redrawing scene. Also pause logic loop.
+     * Pause redrawing scene.
      */
     protected pauseAnimationFrame(): void {
         window.cancelAnimationFrame(this.gameAnimationLoop);
         this.gameAnimationLoop = undefined;
+    }
+
+    /**
+     * Resume rendering scene.
+     */
+    protected resumeAnimationFrame(): void {
+        this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
     }
 
     /**
@@ -108,8 +115,12 @@ export default abstract class Game {
      */
     protected gameLoop(now: number): void {
         if (this.gameAnimationLoop) {
+            this.Scene.clear();
+            this.Scene.render();
+            
             if (this.timer === 0) {
                 this.gameOver();
+                return;
             }
 
             if (now - this.lastTimerCall >= 1000) {
@@ -120,16 +131,12 @@ export default abstract class Game {
                 this.lastTimerCall = this.lastTimerCall + 1000; // not now coz maybe more
             }
 
-            this.Scene.clear();
-            this.Scene.render();
-
             if (this.running) {
                 this.logic(now - this.lastFrameCall);
             }
             this.lastFrameCall = now;
+            this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
         }
-
-        this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
     }
 
     /**
@@ -143,6 +150,7 @@ export default abstract class Game {
 
     protected gameOver() {
         this.running = false;
+        this.pauseAnimationFrame();
         this.Scene.gameOver();
     }
 }
