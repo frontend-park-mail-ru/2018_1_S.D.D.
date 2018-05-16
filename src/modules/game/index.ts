@@ -4,6 +4,7 @@ import SinglePlayer from './core/SinglePlayer';
 import { IPlayerData } from './playerdata';
 import Scene from './Scene';
 import GameView from '../../views/GameView.js';
+import GameEventBus from './GameEventBus';
 
 /**
  * Initialize game. Sets mode.
@@ -44,12 +45,13 @@ export default class GameInitializer {
     /**
      * Destroy current game instance.
      *
-     * @returns Null;
+     * @returns True;
      */
-    public destroy(): null {
+    public destroy(): boolean {
+        GameEventBus.unSubscribeAll();   
         if (this.game) {
-            this.game = this.game.destroy();
+            return this.game.destroy();
         }
-        return null;
+        return true;
     }
 }

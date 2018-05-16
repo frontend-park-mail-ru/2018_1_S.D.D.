@@ -10,19 +10,19 @@ class GameView extends View {
     }
 
     constructPage() {
+        this._data = {
+            'Scene': {
+                main: this.getBlock('main')
+            }
+        };
+
         return this.onLoad([
-            ['Scene', SceneTemplate, { block: 'main' }],
+            ['Scene', SceneTemplate, { block: 'main'}],
             ['Header', HeaderTemplate, { appendFirst: true }]
         ])
             .then(() => {
                 this.showPage();
                 SceneTemplate.setSize(this.load('Scene'), this.getBlock('main'));
-                window.addEventListener('resize', () => {
-                    SceneTemplate.setSize(this.load('Scene'), this.getBlock('main'));
-                });
-                window.addEventListener('orientationchange', () => {
-                    SceneTemplate.setSize(this.load('Scene'), this.getBlock('main'));
-                });
             });
     }
 
@@ -45,6 +45,10 @@ class GameView extends View {
 
     getMetaBlock() {
         return SceneTemplate.getMetaBlock(this.load('Scene'));
+    }
+
+    getGameOverBlock() {
+        return this.load('GameOver');
     }
 
     showPage() {

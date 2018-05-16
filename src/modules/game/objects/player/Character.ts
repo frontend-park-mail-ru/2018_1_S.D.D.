@@ -27,6 +27,11 @@ export default abstract class Character extends Drawable {
     public avatar: HTMLImageElement;
 
     /**
+     * Is this curretn player?
+     */
+    public isCurrentPlayer: boolean = false;
+
+    /**
      * Character unique identificator.
      */
     public id: number;
@@ -78,12 +83,14 @@ export default abstract class Character extends Drawable {
      * @param id Character unique identificator.
      * @param name Character ingame nickname.
      * @param startPosition Coordinates of cell to spawn in.
+     * @param isCurrentPlayer Defines if this player is current user.
      */
-    constructor(id: number, name: string, startPosition: Point = new Point(0, 0)) {
+    constructor(id: number, name: string, startPosition: Point = new Point(0, 0), isCurrentPlayer: boolean = false) {
         super();
         this.id = id;
         this.name = name;
         this.startPosition = startPosition;
+        this.isCurrentPlayer = isCurrentPlayer;
         GameEventBus.emit('STEPPED', [id, startPosition]); // mark start cell
 
         this.subscribeMovement();

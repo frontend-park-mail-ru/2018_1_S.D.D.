@@ -14,9 +14,10 @@ export default class Player extends Character {
      * @param id Player unique identificator.
      * @param name Player ingame nickname.
      * @param startPosition Defines on which cell player spawns.
+     * @param isCurrentPlayer Defines if this player is current user.
      */
-    constructor(id: number, name: string, startPosition: Point) {
-        super(id, name, startPosition);
+    constructor(id: number, name: string, startPosition: Point, isCurrentPlayer: boolean = false) {
+        super(id, name, startPosition, isCurrentPlayer);
     }
 
 }

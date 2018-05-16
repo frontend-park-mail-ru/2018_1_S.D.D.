@@ -4,6 +4,7 @@ import Field from './objects/field/Field';
 import Character from './objects/player/Character';
 import { CELL_SIZE } from './settings';
 import GameView from '../../views/GameView';
+import MetaController from './MetaController';
 
 /**
  * Initializes scene.
@@ -72,13 +73,13 @@ export default class Scene {
     /**
      * Destroy current Scene instance.
      *
-     * @returns Null.
+     * @returns True.
      */
-    public destroy(): null {
+    public destroy(): boolean {
         this.clearObjects();
         Scene.Field = null;
         Scene.Players = null;
-        return null;
+        return true;
     }
 
     /**
@@ -118,10 +119,13 @@ export default class Scene {
 
     /**
      * Game over window.
+     * 
+     * @param places Array with places.
      */
-    public gameOver(): void {
+    public gameOver(places: Array<Array<Character>>): void {
         Scene.viewController.constructGameOver()
         .then(() => {
+            MetaController.gameover(Scene.viewController.getGameOverBlock(), places);
             Scene.viewController.showGameOver();
         });
     }

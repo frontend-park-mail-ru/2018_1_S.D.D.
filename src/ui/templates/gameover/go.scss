@@ -1,1 +1,167 @@
 @import '../../styles/constants';
+
+.gameover {
+    &__result {
+        text-align: center;
+        padding: 10px;
+        font-size: $font-size-big;
+        font-weight: bold;
+        display: none;
+    }
+
+    &__result_win {
+        color: $color-win;
+    }
+
+    &__result_lost {
+        color: $color-lost;
+    }
+
+    &__msg {
+        font-size: $font-size-common;
+        padding: 5px;
+        font-weight: normal;
+    }
+
+    &__player {
+        width: 100%;
+        text-align: center;
+        margin: 20px auto;
+    }
+}
+
+.go_place {
+    display: block;
+    font-size: $font-size-common;
+}
+
+.go_player {
+    display: inline-block;
+    padding: 30px 10px;
+    margin: 0 20px; 
+    text-align: center;
+}
+
+.go_avatar {
+    height: 70px;
+    width: 70px;
+    display: block;
+    margin: auto;
+}
+
+.go_nickname {
+    font-size: $font-size-common;
+    padding: 5px;
+    color: #000;
+}
+
+.go_score {
+    font-size: $font-size-common;
+}
+
+.crown {
+    display: none;
+    height: 60px;
+    width: 150px;
+    background: url('../../images/gold-crown.svg') no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin: auto;
+}
+
+.gameover__player-1 {
+    .crown {
+        height: 60px;
+        width: 150px;
+        display: block;
+    }
+
+    .go_avatar {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+.players__container {
+    font-size: $font-size-small;
+    color: rgb(155, 155, 155);
+}
+
+.back-to-game {
+    margin: 50px auto 30px auto;
+    text-align: center;
+}
+
+@media screen and (max-width:1200px) {
+    .gameover__player-1 {
+        .crown {
+            height: 45px;
+            width: 112px;
+        }
+        .go_avatar {
+            width: 112px;
+            height: 112px;
+        }
+    }
+
+    .go_avatar {
+        height: 40px;
+        width: 40px;
+    }
+
+    .gameover {
+        &__player {
+            margin: 20px auto;
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    .gameover__player-1 {
+        .crown {
+            height: 30px;
+            width: 75px;
+        }
+        .go_avatar {
+            width: 75px;
+            height: 75px;
+        }
+    }
+
+    .gameover {
+        &__player {
+            margin: 10px auto;
+        }
+    }
+
+    .go_player {
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .gameover {
+        &__result {
+            padding: 5px;
+            font-size: $font-size-common;
+        }
+    
+        &__msg {
+            font-size: $font-size-small;
+            padding: 5px;
+        }
+
+        &__player {
+            margin: 5px auto;
+        }
+    }
+
+    .go_player {
+        padding: 5px;
+    }
+
+    .go_avatar {
+        height: 30px;
+        width: 30px;
+    }
+}

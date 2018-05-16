@@ -3,6 +3,7 @@ import Field from '../objects/field/Field';
 import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
 import { GAME_DURATION } from '../settings';
+import Character from '../objects/player/Character';
 
 /**
  * Initializes scene and common game system.
@@ -15,6 +16,12 @@ export default abstract class Game {
      * Game status. Do we need proccees logic.
      */
     public running: boolean = false;
+
+    /**
+     * ID of current player.
+     */
+    protected me: number;
+
     /**
      * Game field. Contains logic for field.
      */
@@ -62,13 +69,17 @@ export default abstract class Game {
     /**
      * Destroy game instance.
      *
-     * @returns Null.
+     * @returns True.
      */
-    public destroy(): null {
+    public destroy(): boolean {
         this.pauseAnimationFrame();
-        this.Scene = this.Scene.destroy();
-        this.Field = this.Field.destroy();
-        return null;
+        if(this.Scene.destroy()) {
+            this.Scene = null;
+        }
+        if(this.Field.destroy()) {
+            this.Field = null;
+        }
+        return true;
     }
 
     /**
@@ -117,7 +128,7 @@ export default abstract class Game {
         if (this.gameAnimationLoop) {
             this.Scene.clear();
             this.Scene.render();
-            
+
             if (this.timer === 0) {
                 this.gameOver();
                 return;
@@ -148,9 +159,30 @@ export default abstract class Game {
         // should be overwritten
     }
 
+    /**
+     * Get places array: places[place] - array with players.
+     * For example, player on 3rd place will placed in places[2];
+     */
+    protected getPlaces(): Array<Array<Character>> {
+        const places: Array<Array<Character>> = [];
+        const players = Scene.Players.get();
+        players.sort((a, b) => b.score - a.score);
+        let currentPlace = -1;
+        let currentScore = -1;
+        players.forEach(player => {
+            if (player.score < currentScore || currentScore === -1) {
+                currentScore = player.score;
+                currentPlace++;
+                places[currentPlace] = [];
+            }
+            places[currentPlace].push(player)
+        });
+        return places;
+    }
+
     protected gameOver() {
         this.running = false;
         this.pauseAnimationFrame();
-        this.Scene.gameOver();
+        this.Scene.gameOver(this.getPlaces());
     }
 }

@@ -91,10 +91,11 @@ class EventBus {
 	 * @param {string} key Event name.
 	 */
     unSubscribeAll() {
-        return Promise.resolve(() => {
+        const unsub = () => {
             delete this._eventsList;
             this._eventsList = {};
-        });
+        }
+        return Promise.resolve(unsub());
     }
 
     /**

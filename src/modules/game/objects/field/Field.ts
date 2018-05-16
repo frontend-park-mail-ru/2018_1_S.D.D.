@@ -35,11 +35,11 @@ export default class Field {
     /**
      * Destroy current instance of field.
      *
-     * @returns Null.
+     * @returns True.
      */
-    public destroy(): null {
+    public destroy(): boolean {
         this.cellsMatrix = null;
-        return null;
+        return true;
     }
 
     /**

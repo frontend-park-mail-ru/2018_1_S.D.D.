@@ -1,33 +1,18 @@
 .gameover
-    .gameover__result.gameover__result-win 
-        | CONGRATULATIONS! YOU WON! WE ARE PROUD OF YOU!
-    .gameover__result.gameover__result-lost
-        | WHAT A SILLY PERFORMANCE! YOU LOST! SHAME ON YOU!
+    .gameover__result.gameover__result_win 
+        | YOU WON!
+        .gameover__msg CONGRATULATIONS! WE ARE PROUD OF YOU!
+    .gameover__result.gameover__result_lost
+        | YOU LOST!
+        .gameover__msg WHAT A SILLY PERFORMANCE! SHAME ON YOU!
+    .gameover__result.gameover__result_draw
+        | IT'S A DRAW!
+        .gameover__msg WHOA! IT WAS LIKE FIGHT WITH A MIRROR!
     .gameover__player.gameover__player-1
-        .go_avatar
-            img
-        .go_nickname
-            | Temp
-        .go_score
-            | 0
+        span.go_place
+        .players__container
     .gameover__player.gameover__player-2
-        .go_avatar
-            img
-        .go_nickname
-            | Temp
-        .go_score
-            | 0
-    .gameover__player.gameover__player-3
-        .go_avatar
-            img
-        .go_nickname
-            | Temp
-        .go_score
-            | 0
-    .gameover__player.gameover__player-4
-        .go_avatar
-            img
-        .go_nickname
-            | Temp
-        .go_score
-            | 0
+        span.go_place
+        .players__container
+.back-to-game
+    a(href='/').btn.btn_common Play Again

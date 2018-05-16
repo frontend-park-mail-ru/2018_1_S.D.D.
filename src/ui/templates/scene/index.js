@@ -4,7 +4,7 @@ import template from './scene.pug';
 import './scene.scss';
 
 export default {
-    setSize: (template, parent) => {
+    setSize: function(template, parent) {
         const canvas = template.querySelector('.scene');
 
         const w = template.querySelector('.scene-holder').clientWidth;
@@ -21,9 +21,16 @@ export default {
         canvas.width = t;
     },
 
-    render: params => {
+    render: function(params) {
         const elem = document.createElement('div');
         elem.innerHTML = template(params);
+        const main = params.main;
+        window.addEventListener('resize', () => {
+            this.setSize(elem, main);
+        });
+        window.addEventListener('orientationchange', () => {
+            this.setSize(elem, main);
+        });
         return elem;
     },
 

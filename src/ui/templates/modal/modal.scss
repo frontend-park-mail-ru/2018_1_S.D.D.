@@ -2,6 +2,7 @@
 
 .modal-dialog {
 	&__wrapper {
+		min-width: 320px;
 		position: absolute;
 		height: 100%;
 		width: 100%;

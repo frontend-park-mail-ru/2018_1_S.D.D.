@@ -61,7 +61,8 @@ export default class SinglePlayer extends Game {
      */
     private addPlayer(Data: IPlayerData): void {
         const nickname = Data.name === '' ? 'Mr. Incognito' : Data.name;
-        const Me = new Player(1, nickname + ' (YOU)', new Point(0, 0));
+        const Me = new Player(1, nickname + ' (YOU)', new Point(0, 0), true);
+        this.me = 1;
         Me.setAvatar(Data.avatar);
         this.Scene.addPlayer(Me);
         this.IController = new InputController(1);
