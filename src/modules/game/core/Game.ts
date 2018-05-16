@@ -4,6 +4,8 @@ import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
 import { GAME_DURATION } from '../settings';
 import Character from '../objects/player/Character';
+import SlowPoke from '../objects/bonus/SlowPoke';
+import ColorLine from '../objects/bonus/ColorLine';
 
 /**
  * Initializes scene and common game system.
@@ -13,6 +15,11 @@ import Character from '../objects/player/Character';
  */
 export default abstract class Game {
     /**
+     * Game field. Contains logic for field.
+     */
+    public static Field: Field;
+
+    /**
      * Game status. Do we need proccees logic.
      */
     public running: boolean = false;
@@ -21,11 +28,6 @@ export default abstract class Game {
      * ID of current player.
      */
     protected me: number;
-
-    /**
-     * Game field. Contains logic for field.
-     */
-    protected Field: Field;
 
     /**
      * Scene object. Contains canvas and game objects.
@@ -61,9 +63,9 @@ export default abstract class Game {
      * Initializes scene and common game system.
      */
     constructor() {
-        this.Field = new Field();
+        Game.Field = new Field();
         this.Scene = new Scene();
-        this.Field.initField();
+        Game.Field.initField();
     }
 
     /**
@@ -76,8 +78,8 @@ export default abstract class Game {
         if(this.Scene.destroy()) {
             this.Scene = null;
         }
-        if(this.Field.destroy()) {
-            this.Field = null;
+        if(Game.Field.destroy()) {
+            Game.Field = null;
         }
         return true;
     }
@@ -88,8 +90,10 @@ export default abstract class Game {
     protected baseInit(): void {
         this.timer = GAME_DURATION;
         this.Scene.clearObjects();
+        Scene.Bonuses.add(new SlowPoke());
+        Scene.Bonuses.add(new ColorLine());
+        
     }
-
     /**
      * Pause redrawing scene.
      */
@@ -143,7 +147,7 @@ export default abstract class Game {
             }
 
             if (this.running) {
-                this.logic(now - this.lastFrameCall);
+                this.logic(now - this.lastFrameCall, now);
             }
             this.lastFrameCall = now;
             this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
@@ -154,8 +158,9 @@ export default abstract class Game {
      * Should be overwritten. Logic call.
      *
      * @param lastLogicCall Time spend from last logic call.
+     * @param now Current timestamp.
      */
-    protected logic(lastLogicCall: number): void {
+    protected logic(lastLogicCall: number, now: number): void {
         // should be overwritten
     }
 

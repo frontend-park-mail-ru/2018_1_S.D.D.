@@ -15,7 +15,7 @@ export const DIRECTION_MAP = new Map<number, Direction>([
     [4, Direction.UP],
 ]);
 
-export const GAME_DURATION = 10;
+export const GAME_DURATION = 60;
 export const DEFAULT_FIELD_RANGE = 8;
 export const CELL_SIZE = 100;
 

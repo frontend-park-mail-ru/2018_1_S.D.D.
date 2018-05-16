@@ -102,7 +102,7 @@ export default class Field {
      * @param id Player ID
      * @param prevPosition Position form which player stepped on this cell.
      */
-    private markCell(position: Point, id: number, prevPosition?: Point): void {
+    public markCell(position: Point, id: number, prevPosition?: Point): void {
         // if last player's step was rounded area,
         // it should be visible 1 more step
         if (Scene.Players.item((player) => player.id === id) &&

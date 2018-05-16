@@ -31,6 +31,11 @@ export default class Cell extends Drawable {
     public screenPosition: Point;
 
     /**
+     * Uses for bonuses objects.
+     */
+    public busy: boolean = false;
+
+    /**
      * Id of player owned the cell.
      * 0: neutral.
      * 1-4: players.

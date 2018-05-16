@@ -5,6 +5,7 @@ import Character from './objects/player/Character';
 import { CELL_SIZE } from './settings';
 import GameView from '../../views/GameView';
 import MetaController from './MetaController';
+import BonusObject from './objects/bonus/BonusObject';
 
 /**
  * Initializes scene.
@@ -53,6 +54,11 @@ export default class Scene {
     public static Players: Composite<Character>;
 
     /**
+     * Array with possible bonuses.
+     */
+    public static Bonuses: Composite<BonusObject>;
+
+    /**
      * Initializes scene
      */
     constructor() {
@@ -65,6 +71,7 @@ export default class Scene {
         // }
         Scene.size = Field.range * CELL_SIZE;
         Scene.Players = new Composite();
+        Scene.Bonuses = new Composite();
         window.addEventListener('resize', () => {
             this.render();
         });
@@ -100,6 +107,7 @@ export default class Scene {
     public render(): void {
         Scene.Field.draw();
         Scene.Players.draw();
+        Scene.Bonuses.draw();
     }
 
     /**
