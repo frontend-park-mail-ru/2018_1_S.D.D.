@@ -10,8 +10,8 @@ import UserStorage from './Storage';
 /** Service manager object - container of major application objects */
 class ServiceManager {
     /** 
-	 * Creates Service manager object (singleton)
-	 */
+     * Creates Service manager object (singleton)
+     */
     constructor() {
         if (ServiceManager._instance) {
             return ServiceManager._instance;
@@ -25,29 +25,29 @@ class ServiceManager {
     }
     
     /**
-	 * Returns Router object
-	 */
+     * Returns Router object
+     */
     get Router() {
         return this._Router;
     }
 
     /**
-	 * Returns EventBus object
-	 */
+     * Returns EventBus object
+     */
     get EventBus() {
         return this._EventBus;
     }
 
     /**
-	 * Returns User object
-	 */
+     * Returns User object
+     */
     get UserStorage() {
         return this._UserStorage;
     }
 
     /**
-	 * Returns ApiService object
-	 */
+     * Returns ApiService object
+     */
     get ApiService() {
         return this._ApiService;
     }

@@ -13,18 +13,18 @@ import FormTemplate from '../ui/templates/form/';
  */
 class SettingsUserView extends View {
     /**
-	 * Creates instance of UserView
-	 */
+     * Creates instance of UserView
+     */
     constructor() {
         super();
     }
 
     /**
-	 * Serealize nickname form.
-	 * 
-	 * @param {string} formTemplate Form to serialize.
-	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
-	 */
+     * Serealize nickname form.
+     * 
+     * @param {string} formTemplate Form to serialize.
+     * @returns {Object|boolean} Get form data {name: value} or false if form not found.
+     */
     serializeForm(formTemplate) {
         const form = this.load(formTemplate);
         if (!form) {
@@ -34,10 +34,10 @@ class SettingsUserView extends View {
     }
 
     /**
-	 * Serealize avatar form.
-	 * 
-	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
-	 */
+     * Serealize avatar form.
+     * 
+     * @returns {Object|boolean} Get form data {name: value} or false if form not found.
+     */
     serializeAvatar() {
         const form = this.load('UploadAvatar');
         if (!form) {
@@ -47,13 +47,13 @@ class SettingsUserView extends View {
     }
 
     /**
-	 * Add error message to input in nickname form.
-	 * 
-	 * @param {string} formTemplate Form to serialize.
-	 * @param {string} input Input name.
-	 * @param {string} message Error message.
-	 * @returns {boolean} True if ok, false if form or input not found.
-	 */
+     * Add error message to input in nickname form.
+     * 
+     * @param {string} formTemplate Form to serialize.
+     * @param {string} input Input name.
+     * @param {string} message Error message.
+     * @returns {boolean} True if ok, false if form or input not found.
+     */
     addFormError(formTemplate, input, message) {
         const form = this.load(formTemplate);
         if (!form) {
@@ -63,14 +63,14 @@ class SettingsUserView extends View {
     }
 
     /**
-	 * Reloading form in DOM.
-	 * 
-	 * @param {strng} formTemplateName Name of form template to reload
-	 * @param {Object} data Data for template rendering
-	 */
+     * Reloading form in DOM.
+     * 
+     * @param {strng} formTemplateName Name of form template to reload
+     * @param {Object} data Data for template rendering
+     */
     reloadForm(formTemplateName, data = {}) {
         this._data = data;
-		
+        
         const visible = this.isVisible(formTemplateName);
         if (this.load(formTemplateName)) {
             this.onLoad([
@@ -85,10 +85,10 @@ class SettingsUserView extends View {
     }
 
     /**
-	 * Reloading avatars after loading new profile picture.
-	 * 
-	 * @param {Object} data Data for template rendering
-	 */
+     * Reloading avatars after loading new profile picture.
+     * 
+     * @param {Object} data Data for template rendering
+     */
     reloadAvatar(data = {}) {
         this._data = data;
         this.reloadForm('UploadAvatar', data);
@@ -107,10 +107,10 @@ class SettingsUserView extends View {
     }
 
     /**
-	 * Load all required templates for profile page.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
+     * Load all required templates for profile page.
+     * 
+     * @param {Object} data Data for template rendering.
+     */
     constructSettings(data = {}) {
         this._data = data;
         const connectedLeft = ['Avatar', 'UploadAvatar'];
@@ -130,10 +130,10 @@ class SettingsUserView extends View {
     }
 
     /**
-	 * Destroy setings page.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
+     * Destroy setings page.
+     * 
+     * @param {Object} data Data for template rendering.
+     */
     destroySettings() {
         this.remove('EditNickname');
         this.remove('EditEmail');
@@ -143,8 +143,8 @@ class SettingsUserView extends View {
     }
 
     /**
-	 * Display required templates for settings page.
-	 */
+     * Display required templates for settings page.
+     */
     showSettings() {
         this.show('Header');
         HeaderTemplate.showLogo();

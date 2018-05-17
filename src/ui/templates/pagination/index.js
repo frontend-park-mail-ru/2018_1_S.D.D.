@@ -52,7 +52,7 @@ export default {
             }
             this.checkToDisable(page, pagesCount, btnPrev, btnNext);
         });
-		
+        
         btnNext.addEventListener('click', event => {
             event.preventDefault();
             if (page < pagesCount) {

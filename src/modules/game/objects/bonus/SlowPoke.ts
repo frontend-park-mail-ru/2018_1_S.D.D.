@@ -49,31 +49,31 @@ export default class SlownessBonus extends BonusObject {
      * @param AppliedBy Player who gets bonus.
      * @param position Bonus position.
      */
-	   public applied(AppliedBy: Player, position: Point = new Point(0, 0)) {
+       public applied(AppliedBy: Player, position: Point = new Point(0, 0)) {
         this.spawned = false;
         const cell = Scene.Field.item((Cell) => {
             return Cell.position.x === position.x &&
             Cell.position.y === position.y;
         });
         cell.busy = false;
-		      this.applyBonusToPlayers([AppliedBy]);
-	}
+              this.applyBonusToPlayers([AppliedBy]);
+    }
 
-	/**
+    /**
      * Get bonus image.
      *
      * @returns Bonus image.
      */
-	   public getSkin(): HTMLImageElement {
-		return this.skin;
-	}
+       public getSkin(): HTMLImageElement {
+        return this.skin;
+    }
 
     /**
      * Get bonus name.
      *
      * @returns Bonus name.
      */
-	   public getBonusName(): string {
-		return 'BONUS:SLOW';
-	}
+       public getBonusName(): string {
+        return 'BONUS:SLOW';
+    }
 }

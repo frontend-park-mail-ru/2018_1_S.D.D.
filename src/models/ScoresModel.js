@@ -10,18 +10,18 @@ import Model from './Model';
  */
 class ScoresModel extends Model {
     /**
-	 * Creates instance of ScoresModel
-	 */
+     * Creates instance of ScoresModel
+     */
     constructor() {
         super();
         this._usersPerPage = 5;
     }
 
     /**
-	* Get user count
-	*
-	* @returns {Promise} Promise contains count of registered users.
-	*/
+    * Get user count
+    *
+    * @returns {Promise} Promise contains count of registered users.
+    */
     getUserCount() {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -40,10 +40,10 @@ class ScoresModel extends Model {
     }
 
     /**
-	* Get current user poistion in scores table.
-	*
-	* @returns {Promise} Promise contains position in table.
-	*/
+    * Get current user poistion in scores table.
+    *
+    * @returns {Promise} Promise contains position in table.
+    */
     getUserPosition(users_list) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -62,10 +62,10 @@ class ScoresModel extends Model {
     }
 
     /**
-	* Get user scores
-	*
-	* @returns {Promise} Promise contains users scores
-	*/
+    * Get user scores
+    *
+    * @returns {Promise} Promise contains users scores
+    */
     getUserScores(page) {
         const limit = this.limit;
         const offset = page * limit - limit;

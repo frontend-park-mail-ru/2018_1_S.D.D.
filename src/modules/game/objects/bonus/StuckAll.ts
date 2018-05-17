@@ -49,7 +49,7 @@ export default class SlownessBonus extends BonusObject {
      * @param AppliedBy Player who gets bonus.
      * @param position Bonus position.
      */
-	   public applied(AppliedBy: Player, position: Point = new Point(0, 0)) {
+       public applied(AppliedBy: Player, position: Point = new Point(0, 0)) {
         this.spawned = false;
         const cell = Scene.Field.item((Cell) => {
             return Cell.position.x === position.x &&
@@ -59,24 +59,24 @@ export default class SlownessBonus extends BonusObject {
         const enemies = Scene.Players.get().filter((Player) => {
             return Player.id !== AppliedBy.id;
         });
-		      this.applyBonusToPlayers(enemies);
-	}
+              this.applyBonusToPlayers(enemies);
+    }
 
-	/**
+    /**
      * Get bonus image.
      *
      * @returns Bonus image.
      */
-	   public getSkin(): HTMLImageElement {
-		return this.skin;
-	}
+       public getSkin(): HTMLImageElement {
+        return this.skin;
+    }
 
     /**
      * Get bonus name.
      *
      * @returns Bonus name.
      */
-	   public getBonusName(): string {
-		return 'BONUS:STUCK';
-	}
+       public getBonusName(): string {
+        return 'BONUS:STUCK';
+    }
 }

@@ -12,8 +12,8 @@ import AboutTemplate from '../ui/templates/about/';
  */
 class AboutView extends View {
     /**
-	 * Creates instance of AboutView
-	 */
+     * Creates instance of AboutView
+     */
     constructor() {
         super();
     }

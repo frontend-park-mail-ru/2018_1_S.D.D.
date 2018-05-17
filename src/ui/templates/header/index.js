@@ -8,7 +8,7 @@ export default {
         if (!template) {
             return false;
         }
-		
+        
         const header = template.querySelector('.header__logo');
         if (header) {
             return !header.hidden;

@@ -8,8 +8,8 @@
  */
 class TemplateHolder {
     /** 
-	 * Creates instance of TemplateHolder.
-	 */
+     * Creates instance of TemplateHolder.
+     */
     constructor() {
         if (TemplateHolder._instance) {
             return TemplateHolder._instance;
@@ -20,13 +20,13 @@ class TemplateHolder {
     }
 
     /**
-	 * Saves new template in holder.
-	 * 
-	 * @param {string} templateName Template ID in holder.
-	 * @param {HTMLElement} templateHTML Template HTML code.
-	 * @param {Object} properties Asociated array with properties.
-	 * @returns {boolean} Operation success.
-	 */
+     * Saves new template in holder.
+     * 
+     * @param {string} templateName Template ID in holder.
+     * @param {HTMLElement} templateHTML Template HTML code.
+     * @param {Object} properties Asociated array with properties.
+     * @returns {boolean} Operation success.
+     */
     save(templateName, templateHTML, properties = {}) {
         if (!this._parts[templateName]) {
             this._parts[templateName] = {
@@ -37,25 +37,25 @@ class TemplateHolder {
             for (let propertyName in properties) {
                 this._parts[templateName][propertyName] = properties[propertyName];
             }
-			
+            
             return true;
         }
         return false;
     }
 
     /**
-	 * Update template properties in holder.
-	 * 
-	 * @param {string} templateName Template ID in holder.
-	 * @param {HTMLElement} templateHTML Rendered template.
-	 * @param {Object} properties Asociated array with properties.
-	 * @returns {boolean} Flse if template not found, true if ok.
-	 */
+     * Update template properties in holder.
+     * 
+     * @param {string} templateName Template ID in holder.
+     * @param {HTMLElement} templateHTML Rendered template.
+     * @param {Object} properties Asociated array with properties.
+     * @returns {boolean} Flse if template not found, true if ok.
+     */
     update(templateName, templateHTML, properties = {}) {
         if (!this._parts[templateName]) {
             return false;
         }
-		
+        
         if (templateHTML) {
             const parent = this._parts[templateName].html.parentNode;
             const newTemplate = parent.insertBefore(templateHTML, this._parts[templateName].html);
@@ -71,11 +71,11 @@ class TemplateHolder {
     }
 
     /**
-	 * Load template from holder.
-	 * 
-	 * @param {string} templateName Template ID in holder.
-	 * @returns {boolean|HTMLElement} False if template not found, HTML code in other case.
-	 */
+     * Load template from holder.
+     * 
+     * @param {string} templateName Template ID in holder.
+     * @returns {boolean|HTMLElement} False if template not found, HTML code in other case.
+     */
     load(templateName) {
         if (!this._parts[templateName]) {
             return false;
@@ -84,11 +84,11 @@ class TemplateHolder {
     }
 
     /**
-	 * Delete template from holder.
-	 * 
-	 * @param {string} templateName Template ID in holder.
-	 * @returns {boolean} False if template not found, true in deleted successful.
-	 */
+     * Delete template from holder.
+     * 
+     * @param {string} templateName Template ID in holder.
+     * @returns {boolean} False if template not found, true in deleted successful.
+     */
     delete(templateName) {
         if (!this._parts[templateName]) {
             return false;
@@ -98,11 +98,11 @@ class TemplateHolder {
     }
 
     /**
-	 * Get template from holder.
-	 * 
-	 * @param {string} templateName Template ID in holder.
-	 * @returns {boolean|Object} False if template not found, template object other case.
-	 */
+     * Get template from holder.
+     * 
+     * @param {string} templateName Template ID in holder.
+     * @returns {boolean|Object} False if template not found, template object other case.
+     */
     template(templateName) {
         if (!this._parts[templateName]) {
             return false;

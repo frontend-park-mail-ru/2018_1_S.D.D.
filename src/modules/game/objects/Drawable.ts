@@ -25,7 +25,7 @@ export default abstract class Drawable {
      */
     protected get scale(): number {
         const scaleFactor = this.canvasWidth > this.canvasHeight ? this.canvasHeight : this.canvasWidth;
-		      return scaleFactor / Scene.size;
+              return scaleFactor / Scene.size;
     }
 
     /**
@@ -50,11 +50,11 @@ export default abstract class Drawable {
      */
     protected circle(x: number, y: number, radius: number): void {
         this.canvas.save();
-		      this.canvas.beginPath();
-		      this.canvas.arc(x, y, radius, 0, 2 * Math.PI);
-		      this.canvas.fill();
-		      this.canvas.closePath();
-		      this.canvas.clip();
+              this.canvas.beginPath();
+              this.canvas.arc(x, y, radius, 0, 2 * Math.PI);
+              this.canvas.fill();
+              this.canvas.closePath();
+              this.canvas.clip();
     }
 
     /**
@@ -71,8 +71,8 @@ export default abstract class Drawable {
      * @param opacity Background alpha-channel.
      */
     protected bg(color: string, opacity: number = 1): void {
-		this.canvas.globalAlpha = opacity;
-		this.canvas.fillStyle = color;
+        this.canvas.globalAlpha = opacity;
+        this.canvas.fillStyle = color;
     }
 
     /**
@@ -85,7 +85,7 @@ export default abstract class Drawable {
      */
     protected image(img: HTMLImageElement, x: number, y: number, size: number) {
         if (img.naturalWidth !== 0) {
-			this.canvas.drawImage(img, x, y, size, size);
+            this.canvas.drawImage(img, x, y, size, size);
         }
     }
 }

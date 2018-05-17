@@ -6,8 +6,8 @@ import ProfileUserView from '../views/ProfileUserView';
 
 class ProfileUserController extends Controller {
     /**
-	 * Creates instance of ProfileUserController
-	 */
+     * Creates instance of ProfileUserController
+     */
     constructor() {
         super();
         if (ProfileUserController.__instance) {
@@ -20,8 +20,8 @@ class ProfileUserController extends Controller {
     }
 
     /**
-	 * Defines forms reload actions after users data changes.
-	 */
+     * Defines forms reload actions after users data changes.
+     */
     subscribeProfileActions() {
         const EventBus = this.ServiceManager.EventBus;
 
@@ -63,8 +63,8 @@ class ProfileUserController extends Controller {
     }
 
     /**
-	 * Show user profile.
-	 */
+     * Show user profile.
+     */
     actionIndex() {
         if (!this.subscribed) {
             this.subscribeProfileActions();
@@ -80,10 +80,10 @@ class ProfileUserController extends Controller {
     }
 
     /**
-	 * Get data for rendering profile template.
-	 * 
-	 * @returns {Object} Contains data for template rendering.
-	 */
+     * Get data for rendering profile template.
+     * 
+     * @returns {Object} Contains data for template rendering.
+     */
     getProfileData() {
         const UserStorage = this.ServiceManager.UserStorage;
         return {
@@ -96,10 +96,10 @@ class ProfileUserController extends Controller {
     }
 
     /**
-	 * If user uploaded avatar will contain path to this avatar.
-	 * 
-	 * @returns {Object} Contains flag of default avatar and path to users avatar.
-	 */
+     * If user uploaded avatar will contain path to this avatar.
+     * 
+     * @returns {Object} Contains flag of default avatar and path to users avatar.
+     */
     getAvatar() {
         const UserStorage = this.ServiceManager.UserStorage;
         return {

@@ -5,8 +5,8 @@ import MenuView from '../views/MenuView';
 
 class MenuController extends Controller {
     /**
-	 * Creates instance of MenuController
-	 */
+     * Creates instance of MenuController
+     */
     constructor() {
         super();
         this.MenuView = new MenuView();
@@ -14,15 +14,15 @@ class MenuController extends Controller {
     }
 
     /**
-	 * Add actions to controller.
-	 */
+     * Add actions to controller.
+     */
     addActions() {
         this.addAction('index', this.actionIndex);
     }
 
     /**
-	 * Default action. Renders menu.
-	 */
+     * Default action. Renders menu.
+     */
     actionIndex() {
         const data = {
             'Menu': {

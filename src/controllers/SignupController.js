@@ -7,8 +7,8 @@ import validation from '../modules/validations';
 
 class SignupController extends Controller {
     /**
-	 * Creates instance of SignupController
-	 */
+     * Creates instance of SignupController
+     */
     constructor() {
         super();
         this.UserModel = new UserModel();
@@ -17,16 +17,16 @@ class SignupController extends Controller {
     }
 
     /**
-	 * Add actions to controller.
-	 */
+     * Add actions to controller.
+     */
     addActions() {
         this.addAction('index', this.actionIndex);
         this.addAction('submit', this.actionSubmit);
     }
 
     /**
-	 * Common action. Show signup form.
-	 */
+     * Common action. Show signup form.
+     */
     actionIndex() {
         const data = {
             'SignupForm': this.getSignupForm(),
@@ -37,8 +37,8 @@ class SignupController extends Controller {
     }
 
     /**
-	 * Submit action. Validate form and submit data to server if ok.
-	 */
+     * Submit action. Validate form and submit data to server if ok.
+     */
     actionSubmit() {
         const data = {
             'SignupForm': this.getSignupForm(),
@@ -58,15 +58,15 @@ class SignupController extends Controller {
             }
             this.go('/signup');
         }, this);
-		
+        
         this.UserModel.signup(submitData);
     }
 
     /**
-	 * Get Signup form data.
-	 * 
-	 * @returns {Object} Inputs and header.
-	 */
+     * Get Signup form data.
+     * 
+     * @returns {Object} Inputs and header.
+     */
     getSignupForm() {
         return {
             back: true,

@@ -16,86 +16,86 @@
 .form {
     text-align: center;
     max-width: 400px;
-	margin: 0 auto 60px auto;
-	
-	&__header {
-		color: $color-light;
-		font-size: 50px;
-		text-align: center;
-		font-weight: 100;
-		margin: 30px auto;
-	}
-	
-	&__input {
-		height: 50px;
-		width: 100%;
-		margin: 10px auto;
-		text-align: center;
-		font-size: 22px;
-		border-radius: 50px;
-		border: 0px;
-		outline: none;
-		background: rgba(255,2555,255,0.1);
-		color: $color-light;
+    margin: 0 auto 60px auto;
+    
+    &__header {
+        color: $color-light;
+        font-size: 50px;
+        text-align: center;
+        font-weight: 100;
+        margin: 30px auto;
+    }
+    
+    &__input {
+        height: 50px;
+        width: 100%;
+        margin: 10px auto;
+        text-align: center;
+        font-size: 22px;
+        border-radius: 50px;
+        border: 0px;
+        outline: none;
+        background: rgba(255,2555,255,0.1);
+        color: $color-light;
 
-		&:focus {
-			background: rgba(255,2555,255,0.3);
-		}
-	}
-	
-	&__btn {
-		height: 46px;
-		border: 0px;
-		font-size: 22px;
-	}
-	
-	&__btn_submit {
-		margin-top: 10px;
-		width: 100%;
-	}
-	
-	&__btn_submit:hover {
-		background: #614585;
-		color: $color-light;
-	}
-	
-	&__btn_submit__text {
-		-o-transition:$animation-disabled;
-		-ms-transition:$animation-disabled;
-		-moz-transition:$animation-disabled;
-		-webkit-transition:$animation-disabled;
-		transition:$animation-disabled;
-	}
-	
-	&__btn_social {
-		width: 50%;
-		display: inline-block;
-		margin: 10px 0px;
-		padding: 7px 10px;
-		text-decoration: none;
+        &:focus {
+            background: rgba(255,2555,255,0.3);
+        }
+    }
+    
+    &__btn {
+        height: 46px;
+        border: 0px;
+        font-size: 22px;
+    }
+    
+    &__btn_submit {
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    &__btn_submit:hover {
+        background: #614585;
+        color: $color-light;
+    }
+    
+    &__btn_submit__text {
+        -o-transition:$animation-disabled;
+        -ms-transition:$animation-disabled;
+        -moz-transition:$animation-disabled;
+        -webkit-transition:$animation-disabled;
+        transition:$animation-disabled;
+    }
+    
+    &__btn_social {
+        width: 50%;
+        display: inline-block;
+        margin: 10px 0px;
+        padding: 7px 10px;
+        text-decoration: none;
 
-		&-vk {
-			background: #4a76a8;
-			color: $color-light;
-			border-top-right-radius: 0px;
-			border-bottom-right-radius: 0px;
+        &-vk {
+            background: #4a76a8;
+            color: $color-light;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
 
-			&:hover {
-				background: #5a8ac2;
-			}
-		}	
-		
-		&-google {
-			background: #de4b39;
-			color: $color-light;
-			border-top-left-radius: 0px;
-			border-bottom-left-radius: 0px;
+            &:hover {
+                background: #5a8ac2;
+            }
+        }    
+        
+        &-google {
+            background: #de4b39;
+            color: $color-light;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
 
-			&:hover {
-				background: #eb6250;
-			}
-		}
-	}
+            &:hover {
+                background: #eb6250;
+            }
+        }
+    }
 }
 
 // google+ icon
@@ -104,43 +104,43 @@
 }
 
 .input-error {
-	margin-bottom: 10px;
-	background: rgba(202, 96, 96, 0.502);
+    margin-bottom: 10px;
+    background: rgba(202, 96, 96, 0.502);
 }
 
 .error {
-	&-general {
-		top: 5px;
-	}
+    &-general {
+        top: 5px;
+    }
 
-	&-message {
-		display: block;
-		max-width: 97%;
-		margin: 0 auto 10px auto;
-		top: -5px;
+    &-message {
+        display: block;
+        max-width: 97%;
+        margin: 0 auto 10px auto;
+        top: -5px;
 
-		&-active {
-			color: rgb(221, 221, 221);
-			background: rgba(165, 54, 54, 0.781);
-			padding: 5px;
-			border-radius: 50px;
-			position: relative;
-			font-weight: bold;
-		}
-	}
+        &-active {
+            color: rgb(221, 221, 221);
+            background: rgba(165, 54, 54, 0.781);
+            padding: 5px;
+            border-radius: 50px;
+            position: relative;
+            font-weight: bold;
+        }
+    }
 }
 
 input[type=file].form__input {
-	position: absolute;
+    position: absolute;
     top: 0;
-	opacity: 0;
-	z-index: -2;
+    opacity: 0;
+    z-index: -2;
 }
 
 .file-upload {
     display: block;
-	position: relative;
-	z-index: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .file-upload__button, .file-upload__path{
@@ -155,16 +155,16 @@ input[type=file].form__input {
 }
 
 .file-upload__button:hover {
-	background: #614585;
-	color: $color-light;
+    background: #614585;
+    color: $color-light;
 }
 
 .file-upload__path {
-	color: #b9b9b9;
-	font-size: $font-size-common;
-	padding: 10px;
-	background: rgba(255,2555,255,0.1);
-	border-radius: 500px;
+    color: #b9b9b9;
+    font-size: $font-size-common;
+    padding: 10px;
+    background: rgba(255,2555,255,0.1);
+    border-radius: 500px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -191,34 +191,34 @@ input[type=file].form__input {
 
     .form__btn_social img {
         height: 16px;
-	}
-	
-	.error-message {
-		top: -2px;
-	}
+    }
+    
+    .error-message {
+        top: -2px;
+    }
 
-	.error-message-active {
-		font-weight: normal;
-	}
+    .error-message-active {
+        font-weight: normal;
+    }
 }
 
 @media screen and (max-width: 640px) {
-	.form__btn {
+    .form__btn {
         width: 95%;
-	}
-	
-	.form__input {
-		width: 95%;
-	}
+    }
+    
+    .form__input {
+        width: 95%;
+    }
 
-	.form__btn_social {
-		width: 47%;
-	}
+    .form__btn_social {
+        width: 47%;
+    }
 
-	.error-message {
-		width: 95%;
-		padding: 5px 0;
-	}
+    .error-message {
+        width: 95%;
+        padding: 5px 0;
+    }
 }
 
 /* CSS LOADER */
@@ -231,112 +231,112 @@ input[type=file].form__input {
 }
 
 .circleG {
-	background-color:rgb(221,221,221);
-	display: inline-block;
-	height:21px;
-	margin: 0 15px;
-	width:21px;
-	animation-name:bounce_circleG;
-		-o-animation-name:bounce_circleG;
-		-ms-animation-name:bounce_circleG;
-		-webkit-animation-name:bounce_circleG;
-		-moz-animation-name:bounce_circleG;
-	animation-duration:1.24s;
-		-o-animation-duration:1.24s;
-		-ms-animation-duration:2.24s;
-		-webkit-animation-duration:2.24s;
-		-moz-animation-duration:2.24s;
-	animation-iteration-count:infinite;
-		-o-animation-iteration-count:infinite;
-		-ms-animation-iteration-count:infinite;
-		-webkit-animation-iteration-count:infinite;
-		-moz-animation-iteration-count:infinite;
-	animation-direction:normal;
-		-o-animation-direction:normal;
-		-ms-animation-direction:normal;
-		-webkit-animation-direction:normal;
-		-moz-animation-direction:normal;
-	border-radius:20px;
-		-o-border-radius:20px;
-		-ms-border-radius:20px;
-		-webkit-border-radius:20px;
-		-moz-border-radius:20px;
+    background-color:rgb(221,221,221);
+    display: inline-block;
+    height:21px;
+    margin: 0 15px;
+    width:21px;
+    animation-name:bounce_circleG;
+        -o-animation-name:bounce_circleG;
+        -ms-animation-name:bounce_circleG;
+        -webkit-animation-name:bounce_circleG;
+        -moz-animation-name:bounce_circleG;
+    animation-duration:1.24s;
+        -o-animation-duration:1.24s;
+        -ms-animation-duration:2.24s;
+        -webkit-animation-duration:2.24s;
+        -moz-animation-duration:2.24s;
+    animation-iteration-count:infinite;
+        -o-animation-iteration-count:infinite;
+        -ms-animation-iteration-count:infinite;
+        -webkit-animation-iteration-count:infinite;
+        -moz-animation-iteration-count:infinite;
+    animation-direction:normal;
+        -o-animation-direction:normal;
+        -ms-animation-direction:normal;
+        -webkit-animation-direction:normal;
+        -moz-animation-direction:normal;
+    border-radius:20px;
+        -o-border-radius:20px;
+        -ms-border-radius:20px;
+        -webkit-border-radius:20px;
+        -moz-border-radius:20px;
 }
 
 .circleG_1 {
-	animation-delay:0.45s;
-		-o-animation-delay:0.45s;
-		-ms-animation-delay:0.45s;
-		-webkit-animation-delay:0.45s;
-		-moz-animation-delay:0.45s;
+    animation-delay:0.45s;
+        -o-animation-delay:0.45s;
+        -ms-animation-delay:0.45s;
+        -webkit-animation-delay:0.45s;
+        -moz-animation-delay:0.45s;
 }
 
 .circleG_2 {
-	animation-delay:1.05s;
-		-o-animation-delay:1.05s;
-		-ms-animation-delay:1.05s;
-		-webkit-animation-delay:1.05s;
-		-moz-animation-delay:1.05s;
+    animation-delay:1.05s;
+        -o-animation-delay:1.05s;
+        -ms-animation-delay:1.05s;
+        -webkit-animation-delay:1.05s;
+        -moz-animation-delay:1.05s;
 }
 
 .circleG_3 {
-	animation-delay:1.35s;
-		-o-animation-delay:1.35s;
-		-ms-animation-delay:1.35s;
-		-webkit-animation-delay:1.35s;
-		-moz-animation-delay:1.35s;
+    animation-delay:1.35s;
+        -o-animation-delay:1.35s;
+        -ms-animation-delay:1.35s;
+        -webkit-animation-delay:1.35s;
+        -moz-animation-delay:1.35s;
 }
 
 
 
 @keyframes bounce_circleG {
-	0% {}
+    0% {}
 
-	50% {
-		background-color:rgb(97,69,133);
-	}
+    50% {
+        background-color:rgb(97,69,133);
+    }
 
-	100% {}
+    100% {}
 }
 
 @-o-keyframes bounce_circleG {
-	0% {}
+    0% {}
 
-	50% {
-		background-color:rgb(97,69,133);
-	}
+    50% {
+        background-color:rgb(97,69,133);
+    }
 
-	100% {}
+    100% {}
 }
 
 @-ms-keyframes bounce_circleG {
-	0% {}
+    0% {}
 
-	50% {
-		background-color:rgb(97,69,133);
-	}
+    50% {
+        background-color:rgb(97,69,133);
+    }
 
-	100% {}
+    100% {}
 }
 
 @-webkit-keyframes bounce_circleG {
-	0% {}
+    0% {}
 
-	50% {
-		background-color:rgb(97,69,133);
-	}
+    50% {
+        background-color:rgb(97,69,133);
+    }
 
-	100% {}
+    100% {}
 }
 
 @-moz-keyframes bounce_circleG {
-	0% {}
+    0% {}
 
-	50% {
-		background-color:rgb(97,69,133);
-	}
+    50% {
+        background-color:rgb(97,69,133);
+    }
 
-	100% {}
+    100% {}
 }
 
 @media screen and (max-width: 1200px) {

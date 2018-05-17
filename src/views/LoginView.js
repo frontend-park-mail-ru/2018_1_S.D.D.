@@ -13,17 +13,17 @@ import FormTemplate from '../ui/templates/form/';
  */
 class LoginView extends View {
     /**
-	 * Creates instance of LoginView
-	 */
+     * Creates instance of LoginView
+     */
     constructor() {
         super();
     }
 
     /**
-	 * Serealize login form.
-	 * 
-	 * @returns {Object|boolean} Get form data {name: value} or false if form not found.
-	 */
+     * Serealize login form.
+     * 
+     * @returns {Object|boolean} Get form data {name: value} or false if form not found.
+     */
     serializeForm() {
         const form = this.load('LoginForm');
         if (!form) {
@@ -33,12 +33,12 @@ class LoginView extends View {
     }
 
     /**
-	 * Add error message to input in form.
-	 * 
-	 * @param {string} input Input name.
-	 * @param {string} message Error message.
-	 * @returns {boolean} True if ok, false if form or input not found.
-	 */
+     * Add error message to input in form.
+     * 
+     * @param {string} input Input name.
+     * @param {string} message Error message.
+     * @returns {boolean} True if ok, false if form or input not found.
+     */
     addFormError(input, message) {
         const form = this.load('LoginForm');
         if (!form) {
@@ -46,12 +46,12 @@ class LoginView extends View {
         }
         return FormTemplate.addError(input, message, form);
     }
-	
+    
     /**
-	 * Load all required templates.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
+     * Load all required templates.
+     * 
+     * @param {Object} data Data for template rendering.
+     */
     constructPage(data = {}) {
         this._data = data;
 
@@ -66,8 +66,8 @@ class LoginView extends View {
     }
 
     /**
-	 * Display reuired templates.
-	 */
+     * Display reuired templates.
+     */
     showPage() {
         this.show('Header');
         HeaderTemplate.hideLogo();

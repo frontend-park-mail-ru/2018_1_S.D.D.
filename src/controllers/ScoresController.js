@@ -6,8 +6,8 @@ import ScoresView from '../views/ScoresView';
 
 class ScoresController extends Controller {
     /**
-	 * Creates instance of ScoresController
-	 */
+     * Creates instance of ScoresController
+     */
     constructor() {
         super();
         if (ScoresController.__instance) {
@@ -22,8 +22,8 @@ class ScoresController extends Controller {
     }
 
     /**
-	 * Add actions to controller.
-	 */
+     * Add actions to controller.
+     */
     addActions() {
         this.addAction('index', this.actionIndex);
         this.addAction('show', this.actionShow);
@@ -40,17 +40,17 @@ class ScoresController extends Controller {
     }
 
     /**
-	 * Defalt action not exists. 404.
-	 */
+     * Defalt action not exists. 404.
+     */
     actionIndex() {
         this.go('/error/404/', false);
     }
 
     /**
-	 * Common action. Show scores table
-	 * 
-	 * @param {number} page Number of page to display (pagination)
-	 */
+     * Common action. Show scores table
+     * 
+     * @param {number} page Number of page to display (pagination)
+     */
     actionShow(page = 1) {
         if (page === '' || page < 1) {
             this.go('/error/404', false);
@@ -93,10 +93,10 @@ class ScoresController extends Controller {
                 }
             }
         };
-		
+        
         this.ScoresView.constructPagination(data);
     }
-	
+    
 }
 
 export default ScoresController;

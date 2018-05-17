@@ -11,8 +11,8 @@ import ServiceManager from './ServiceManager';
  */
 class Storage {
     /**
-	 * Creates instance of Storage
-	 */
+     * Creates instance of Storage
+     */
     constructor() {
         if (Storage._instance) {
             return Storage._instance;
@@ -30,41 +30,41 @@ class Storage {
     }
 
     /**
-	 * Subscribe on event when data in localstorage changed.
-	 * 
-	 * @param {string} key Data changed in storage. 
-	 * @param {Function} callback Function to evaluate when data changed.
-	 * @returns {string} Function id in subscribtion list.
-	 */
+     * Subscribe on event when data in localstorage changed.
+     * 
+     * @param {string} key Data changed in storage. 
+     * @param {Function} callback Function to evaluate when data changed.
+     * @returns {string} Function id in subscribtion list.
+     */
     onChange(key, callback, context = this) {
         return this._storage.subscribe(key, callback, context);
     }
 
     /**
-	 * Remove onChange listener on data.
-	 * 
-	 * @param {string} key Data changed in storage.
-	 */
+     * Remove onChange listener on data.
+     * 
+     * @param {string} key Data changed in storage.
+     */
     removeChangeLisener(key) {
         this._storage.unSubscribe(key);
     }
 
     /**
-	 * Get data from localStorage.
-	 * 
-	 * @param {string} key Data in storage
-	 * @returns {string|null} Value if found or null.
-	 */
+     * Get data from localStorage.
+     * 
+     * @param {string} key Data in storage
+     * @returns {string|null} Value if found or null.
+     */
     getData(key) {
         return localStorage.getItem(key);
     }
 
     /**
-	 * Get boolean data from localStorage.
-	 * 
-	 * @param {string} key Data in storage
-	 * @returns {boolean|null} Boolean value if found or null.
-	 */
+     * Get boolean data from localStorage.
+     * 
+     * @param {string} key Data in storage
+     * @returns {boolean|null} Boolean value if found or null.
+     */
     getBooleanData(key) {
         const value = localStorage.getItem(key);
         if (value) {
@@ -74,11 +74,11 @@ class Storage {
     }
 
     /**
-	 * Insert (update) data in localStorage.
-	 * 
-	 * @param {string} key Data name in localStorage.
-	 * @param {string} value Data value in localStorage.
-	 */
+     * Insert (update) data in localStorage.
+     * 
+     * @param {string} key Data name in localStorage.
+     * @param {string} value Data value in localStorage.
+     */
     setData(key, value) {
         if (!this.getData(key)) {
             this.emitEventBus(key);
@@ -87,26 +87,26 @@ class Storage {
     }
 
     /**
-	 * Remove data from localStorage.
-	 * 
-	 * @param {string} key Data name in localStorage.
-	 */
+     * Remove data from localStorage.
+     * 
+     * @param {string} key Data name in localStorage.
+     */
     removeData(key) {
         localStorage.removeItem(key);
     }
 
     /**
-	 * Clear localStorage.
-	 */
+     * Clear localStorage.
+     */
     clear() {
         localStorage.clear();
     }
 
     /**
-	 * Emit keyChanged event in EventBus.
-	 * 
-	 * @param {string} key Changed item.
-	 */
+     * Emit keyChanged event in EventBus.
+     * 
+     * @param {string} key Changed item.
+     */
     emitEventBus(key) {
         this.onChange(key, () => {
             this._EventBus.emit(`${key}Changed`);

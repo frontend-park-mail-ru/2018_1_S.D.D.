@@ -5,8 +5,8 @@ import ErrorView from '../views/ErrorView';
 
 class ErrorController extends Controller {
     /**
-	 * Creates instance of ErrorController
-	 */
+     * Creates instance of ErrorController
+     */
     constructor() {
         super();
         this.ErrorView = new ErrorView();
@@ -14,8 +14,8 @@ class ErrorController extends Controller {
     }
 
     /**
-	 * Add actions to controller.
-	 */
+     * Add actions to controller.
+     */
     addActions() {
         this.addAction('403', this.action403);
         this.addAction('404', this.action404);
@@ -24,8 +24,8 @@ class ErrorController extends Controller {
     }
 
     /**
-	 * Login required.
-	 */
+     * Login required.
+     */
     action403() {
         const data = {
             'Error': this.get403Message(),
@@ -35,8 +35,8 @@ class ErrorController extends Controller {
     }
 
     /**
-	 * Page not found.
-	 */
+     * Page not found.
+     */
     action404() {
         const data = {
             'Error': this.get404Message(),
@@ -46,8 +46,8 @@ class ErrorController extends Controller {
     }
 
     /**
-	 * Service unavailable.
-	 */
+     * Service unavailable.
+     */
     action503() {
         const data = {
             'Error': this.get503Message(),
@@ -57,10 +57,10 @@ class ErrorController extends Controller {
     }
 
     /**
-	 * Get 403 error message.
-	 * 
-	 * @returns {Object} 403 error message.
-	 */
+     * Get 403 error message.
+     * 
+     * @returns {Object} 403 error message.
+     */
     get403Message() {
         const url = this.ServiceManager.Router.getNewUrlPath();
         return {
@@ -69,12 +69,12 @@ class ErrorController extends Controller {
             Message: 'You should sign in first to look on ' + url
         };
     }
-	
+    
     /**
-	 * Get 404 error message.
-	 * 
-	 * @returns {Object} 404 error message.
-	 */
+     * Get 404 error message.
+     * 
+     * @returns {Object} 404 error message.
+     */
     get404Message() {
         const url = this.ServiceManager.Router.getNewUrlPath();
         return {
@@ -85,10 +85,10 @@ class ErrorController extends Controller {
     }
 
     /**
-	 * Get 503 error message.
-	 * 
-	 * @returns {Object} 503 error message.
-	 */
+     * Get 503 error message.
+     * 
+     * @returns {Object} 503 error message.
+     */
     get503Message() {
         return {
             Code: '503',

@@ -10,8 +10,8 @@ import Model from './Model';
  */
 class LobbyModel extends Model {
     /**
-	 * Creates instance of LobbyModel
-	 */
+     * Creates instance of LobbyModel
+     */
     constructor() {
         super();
     }

@@ -11,17 +11,17 @@ import HeaderTemplate from '../ui/templates/header/';
  */
 class UserView extends View {
     /**
-	 * Creates instance of UserView
-	 */
+     * Creates instance of UserView
+     */
     constructor() {
         super();
     }
 
     /**
-	 * Reloading header in DOM.
-	 * 
-	 * @param {Object} data Data for template rendering
-	 */
+     * Reloading header in DOM.
+     * 
+     * @param {Object} data Data for template rendering
+     */
     reloadHeader(data = {}) {
         this._data = data;
         const doShowLogo = HeaderTemplate.logoVisibility(this.load('Header'));
@@ -33,8 +33,8 @@ class UserView extends View {
     }
 
     /**
-	 * Reload header and delete forms after login.
-	 */
+     * Reload header and delete forms after login.
+     */
     constructLogin() {
         this.remove('SignupForm');
         this.remove('LoginForm');

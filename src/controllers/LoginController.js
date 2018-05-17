@@ -7,8 +7,8 @@ import validation from '../modules/validations';
 
 class LoginController extends Controller {
     /**
-	 * Creates instance of LoginController
-	 */
+     * Creates instance of LoginController
+     */
     constructor() {
         super();
         this.UserModel = new UserModel();
@@ -17,34 +17,34 @@ class LoginController extends Controller {
     }
 
     /**
-	 * Add actions to controller.
-	 */
+     * Add actions to controller.
+     */
     addActions() {
         this.addAction('index', this.actionIndex);
         this.addAction('submit', this.actionSubmit);
     }
 
     /**
-	 * Common action. Show login form.
-	 */
+     * Common action. Show login form.
+     */
     actionIndex() {
         const data = {
             'LoginForm': this.getLoginForm(),
             'Header': this.getHeaderData()
         };
-		
+        
         this.LoginView.constructPage(data);
     }
 
     /**
-	 * Submit action. Validate form and submit data to server if ok.
-	 */
+     * Submit action. Validate form and submit data to server if ok.
+     */
     actionSubmit() {
         const data = {
             'LoginForm': this.getLoginForm(),
             'Header': this.getHeaderData()
         };
-		
+        
         let submitData = this.LoginView.serializeForm();
         if (!submitData) {
             this.LoginView.constructPage(data);
@@ -59,14 +59,14 @@ class LoginController extends Controller {
             this.go('/login');
         }, this);
 
-        this.UserModel.login(submitData);	
+        this.UserModel.login(submitData);    
     }
 
     /**
-	 * Get data for rendering login form.
-	 * 
-	 * @returns {Object} Contains data for template rendering.
-	 */
+     * Get data for rendering login form.
+     * 
+     * @returns {Object} Contains data for template rendering.
+     */
     getLoginForm() {
         return {
             back: true,

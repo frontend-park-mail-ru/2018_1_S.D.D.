@@ -14,8 +14,8 @@ import LobbyController from './controllers/LobbyController';
 const SM = new ServiceManager();
 
 /*if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('/sw.js', {scope: '/'})
-		.catch(() => {});
+    navigator.serviceWorker.register('/sw.js', {scope: '/'})
+        .catch(() => {});
 }*/
 
 SM.Router.addRoute('error', ErrorController);

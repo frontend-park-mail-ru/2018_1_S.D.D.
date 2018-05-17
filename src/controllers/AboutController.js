@@ -5,8 +5,8 @@ import AboutView from '../views/AboutView';
 
 class AboutController extends Controller {
     /**
-	 * Creates instance of AboutController
-	 */
+     * Creates instance of AboutController
+     */
     constructor() {
         super();
         this.AboutView = new AboutView();
@@ -14,15 +14,15 @@ class AboutController extends Controller {
     }
 
     /**
-	 * Add actions to controller.
-	 */
+     * Add actions to controller.
+     */
     addActions() {
         this.addAction('index', this.actionIndex);
     }
 
     /**
-	 * Default action. Renders menu.
-	 */
+     * Default action. Renders menu.
+     */
     actionIndex() {
         const data = {
             'Header': this.getHeaderData()

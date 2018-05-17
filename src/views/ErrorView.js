@@ -12,8 +12,8 @@ import HeaderTemplate from '../ui/templates/header/';
  */
 class ErrorView extends View {
     /**
-	 * Creates instance of ErrorView
-	 */
+     * Creates instance of ErrorView
+     */
     constructor() {
         super();
     }

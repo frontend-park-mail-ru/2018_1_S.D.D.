@@ -8,8 +8,8 @@ import ServiceManager from '../modules/ServiceManager';
 */
 class Controller {
     /**
-	 * Creates instance if Controller
-	 */
+     * Creates instance if Controller
+     */
     constructor() {
         this.ServiceManager = new ServiceManager();
         this._actions = {
@@ -25,21 +25,21 @@ class Controller {
     }
 
     /**
-	 * 
-	 * @param {string} action Action name.
-	 * @param {Function} callback Function to call.
-	 */
+     * 
+     * @param {string} action Action name.
+     * @param {Function} callback Function to call.
+     */
     addAction(action, callback) {
         this._actions[action] = callback.bind(this);
     }
 
     /**
-	 * Searches for action and executes it.
-	 * 
-	 * @param {string} action Action name.
-	 * @param {string[]} parameters Parameters for action.
-	 * @returns {boolean} True if action executed. False if bot found (404).
-	 */
+     * Searches for action and executes it.
+     * 
+     * @param {string} action Action name.
+     * @param {string[]} parameters Parameters for action.
+     * @returns {boolean} True if action executed. False if bot found (404).
+     */
     action(action, parameters = []) {
         const callback = this._actions[action];
         if (!callback) {
@@ -50,20 +50,20 @@ class Controller {
     }
 
     /**
-	 * Load new page.
-	 * 
-	 * @param {string} url Page url.
-	 */
+     * Load new page.
+     * 
+     * @param {string} url Page url.
+     */
     go(url, history = true) {
         this.ServiceManager.Router.go(url, history);
     }
 
     /**
-	 * Get data for header rendering
-	 */
+     * Get data for header rendering
+     */
     getHeaderData() {
         const User = this.ServiceManager.UserStorage;
-		
+        
         return {
             loggedIn: User.getBooleanData('loggedin'),
             nickname: User.getData('nickname'),

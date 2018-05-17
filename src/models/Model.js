@@ -10,12 +10,12 @@ import ServiceManager from '../modules/ServiceManager';
  */
 class Model {
     /**
-	 * Creates instance of Model
-	 */
+     * Creates instance of Model
+     */
     constructor() {
         this.ServiceManager = new ServiceManager();
     }
-	
+    
 }
 
 export default Model;

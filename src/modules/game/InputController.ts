@@ -19,27 +19,27 @@ export default class InputController {
      *
      * @param id Id of current player.
      */
-	constructor(id: number) {
-		const Bus = GameEventBus;
+    constructor(id: number) {
+        const Bus = GameEventBus;
 
-		document.addEventListener('keydown', (event) => {
-			switch (event.keyCode) {
-			case LEFT_KEY:
-				Bus.emit(`MOVE.LEFT:${id}`);
-				break;
-			case RIGHT_KEY:
-				Bus.emit(`MOVE.RIGHT:${id}`);
-				break;
-			case UP_KEY:
-				Bus.emit(`MOVE.UP:${id}`);
-				break;
-			case DOWN_KEY:
-				Bus.emit(`MOVE.DOWN:${id}`);
-				break;
-			case SPACE_KEY:
-				Bus.emit('PRESSED:SPACE');
-				break;
-			}
-		});
-	}
+        document.addEventListener('keydown', (event) => {
+            switch (event.keyCode) {
+            case LEFT_KEY:
+                Bus.emit(`MOVE.LEFT:${id}`);
+                break;
+            case RIGHT_KEY:
+                Bus.emit(`MOVE.RIGHT:${id}`);
+                break;
+            case UP_KEY:
+                Bus.emit(`MOVE.UP:${id}`);
+                break;
+            case DOWN_KEY:
+                Bus.emit(`MOVE.DOWN:${id}`);
+                break;
+            case SPACE_KEY:
+                Bus.emit('PRESSED:SPACE');
+                break;
+            }
+        });
+    }
 }

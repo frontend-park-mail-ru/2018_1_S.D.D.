@@ -7,8 +7,8 @@ import validation from '../modules/validations';
 
 class SettingsUserController extends Controller {
     /**
-	 * Creates instance of SettingsUserController
-	 */
+     * Creates instance of SettingsUserController
+     */
     constructor() {
         super();
         if (SettingsUserController.__instance) {
@@ -21,8 +21,8 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Defines forms reload actions after users data changes.
-	 */
+     * Defines forms reload actions after users data changes.
+     */
     subscribeSettingsActions() {
         const EventBus = this.ServiceManager.EventBus;
 
@@ -59,8 +59,8 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Show form with user`s settings
-	 */
+     * Show form with user`s settings
+     */
     actionIndex() {
         if (!this.subscribed) {
             this.subscribeSettingsActions();
@@ -71,8 +71,8 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Upload users avatar.
-	 */
+     * Upload users avatar.
+     */
     actionUploadAvatar() {
         let submitData = this.UserView.serializeAvatar();
         if (!submitData) {
@@ -94,16 +94,16 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Submit action. Edit user settings. Validate form and submit data to server if ok.
-	 * 
-	 * @param {string} editParam Contains what to edit
-	 */
+     * Submit action. Edit user settings. Validate form and submit data to server if ok.
+     * 
+     * @param {string} editParam Contains what to edit
+     */
     actionEdit(editParam) {
         if (!editParam || editParam === '') {
             this.go('/error/404', false);
             return;
         }
-		
+        
         let formTemplate = '';
         switch (editParam) {
         case 'nickname':
@@ -126,7 +126,7 @@ class SettingsUserController extends Controller {
             this.UserView.constructSettings(data);
             submitData = this.UserView.serializeForm(formTemplate);
         }
-		
+        
         const EventBus = this.ServiceManager.EventBus;
         if (!EventBus.eventExists(`edit${editParam}Error`)) {
             EventBus.subscribe(`edit${editParam}Error`, errors => {
@@ -136,7 +136,7 @@ class SettingsUserController extends Controller {
                 this.go('/user/settings');
             }, this);
         }
-		
+        
         switch (editParam) {
         case 'nickname':
             this.UserModel.editNickname(submitData);
@@ -151,10 +151,10 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Get data for settings page rendering.
-	 * 
-	 * @returns {Object} Data for rendering.
-	 */
+     * Get data for settings page rendering.
+     * 
+     * @returns {Object} Data for rendering.
+     */
     _getSettingsData() {
         return {
             'Header': this.getHeaderData(),
@@ -167,10 +167,10 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * If user uploaded avatar will contain path to this avatar.
-	 * 
-	 * @returns {Object} Contains flag of default avatar and path to users avatar.
-	 */
+     * If user uploaded avatar will contain path to this avatar.
+     * 
+     * @returns {Object} Contains flag of default avatar and path to users avatar.
+     */
     getAvatar() {
         const UserStorage = this.ServiceManager.UserStorage;
         return {
@@ -180,10 +180,10 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Get data for rendering nickname form.
-	 * 
-	 * @returns {Object} Contains data for template rendering.
-	 */
+     * Get data for rendering nickname form.
+     * 
+     * @returns {Object} Contains data for template rendering.
+     */
     getEditNickname() {
         const UserStorage = this.ServiceManager.UserStorage;
         return {
@@ -206,10 +206,10 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Get data for rendering email form.
-	 * 
-	 * @returns {Object} Contains data for template rendering.
-	 */
+     * Get data for rendering email form.
+     * 
+     * @returns {Object} Contains data for template rendering.
+     */
     getEditEmail() {
         const UserStorage = this.ServiceManager.UserStorage;
         return {
@@ -231,10 +231,10 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Get data for rendering password form.
-	 * 
-	 * @returns {Object} Contains data for template rendering.
-	 */
+     * Get data for rendering password form.
+     * 
+     * @returns {Object} Contains data for template rendering.
+     */
     getEditPassword() {
         return {
             header: false,
@@ -269,10 +269,10 @@ class SettingsUserController extends Controller {
     }
 
     /**
-	 * Get data for rendering avatar form.
-	 * 
-	 * @returns {Object} Contains data for template rendering.
-	 */
+     * Get data for rendering avatar form.
+     * 
+     * @returns {Object} Contains data for template rendering.
+     */
     getUploadAvatar() {
         return {
             header: false,

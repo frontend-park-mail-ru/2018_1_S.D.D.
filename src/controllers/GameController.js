@@ -9,7 +9,7 @@ class GameController extends Controller {
         super();
         if (GameController.__instance) {
             return GameController.__instance;
-        }		
+        }        
         GameController.__instance = this;
 
         this.GameView = new GameView();
@@ -35,7 +35,7 @@ class GameController extends Controller {
                 this.GameManager = new Game(room, this.GameView);
             });
     }
-	
+    
 }
 
 export default GameController;

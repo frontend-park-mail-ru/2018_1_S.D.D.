@@ -12,8 +12,8 @@ import HeaderTemplate from '../ui/templates/header/';
  */
 class LobbyView extends View {
     /**
-	 * Creates instance of LobbyView
-	 */
+     * Creates instance of LobbyView
+     */
     constructor() {
         super();
     }

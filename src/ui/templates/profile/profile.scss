@@ -1,74 +1,74 @@
 @import '../../styles/constants';
 
 .profile {
-	&__wrapper {
-		margin: auto;
-		text-align: center;
-	}
-	
-	&__nickname {
-		display: block;
-		text-align: center;
-		font-size: $font-size-big;
-		font-weight: bold;
-		color: $color-light;
-		margin: 40px 0;
-	}
-	
-	&__info-holder {
-		font-size: $font-size-common;
-		color: $color-light;
-		height: auto;
-		margin: auto;
-		margin-bottom: 5px;
+    &__wrapper {
+        margin: auto;
+        text-align: center;
+    }
+    
+    &__nickname {
+        display: block;
+        text-align: center;
+        font-size: $font-size-big;
+        font-weight: bold;
+        color: $color-light;
+        margin: 40px 0;
+    }
+    
+    &__info-holder {
+        font-size: $font-size-common;
+        color: $color-light;
+        height: auto;
+        margin: auto;
+        margin-bottom: 5px;
 
-		&:hover {
-			background: rgba(162, 169, 211, 0.5);
-		}
+        &:hover {
+            background: rgba(162, 169, 211, 0.5);
+        }
 
-		&__row {
-			width: 190px;
-			display: inline-block;
-			padding: 15px 0px;
-		}
-	}
+        &__row {
+            width: 190px;
+            display: inline-block;
+            padding: 15px 0px;
+        }
+    }
 }
 .info {
-	&__key {
-		margin-left: 10px;
-		text-align: left;
-	}
-	
-	&__value {
-		font-weight: bold;
-		text-align: right;
-	
-		&_good {
-			background: $color-good;
-		}
-		
-		&_bad {
-			background: $color-bad;
-		}
+    &__key {
+        margin-left: 10px;
+        text-align: left;
+    }
+    
+    &__value {
+        font-weight: bold;
+        text-align: right;
+    
+        &_good {
+            background: $color-good;
+        }
+        
+        &_bad {
+            background: $color-bad;
+        }
 
-		&_marker {
-			border-radius: 100px;
-			padding: 6px 12px;
-		}
-	}
+        &_marker {
+            border-radius: 100px;
+            padding: 6px 12px;
+        }
+    }
 }
 
 @media screen and (max-width: 750px) {
-	.profile__nickname {
-		font-size: $font-size-common;
-		margin: 10px auto;
-	}
+    .profile__nickname {
+        font-size: $font-size-common;
+        margin: 10px auto;
+    }
 
-	.profile__info-holder__row {
-		width: 140px;
-	}
+    .profile__info-holder__row {
+        width: 140px;
+    }
 
     .profile__info-holder {
-		font-size: $font-size-common;
-	}
+        font-size: $font-size-common;
+    }
 }

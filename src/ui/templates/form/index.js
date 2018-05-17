@@ -5,11 +5,11 @@ import './form.scss';
 
 export default {
     /**
-	 * Gets data from form inputs.
-	 * 
-	 * @param {HTMLElement} html Html block with form.
-	 * @returns {Object} Serialized data from inputs.
-	 */
+     * Gets data from form inputs.
+     * 
+     * @param {HTMLElement} html Html block with form.
+     * @returns {Object} Serialized data from inputs.
+     */
     serialize: function(html) {
         const inputs = html.querySelectorAll('input');
         const inputsArray = Array.from(inputs);
@@ -21,11 +21,11 @@ export default {
     },
 
     /**
-	 * Gets data from multipart form.
-	 * 
-	 * @param {HTMLElement} html Html block with form.
-	 * @returns {Object} Serialized data from inputs.
-	 */
+     * Gets data from multipart form.
+     * 
+     * @param {HTMLElement} html Html block with form.
+     * @returns {Object} Serialized data from inputs.
+     */
     serializeMultipart: function(html) {
         const form = html.querySelector('form');
         const data = new FormData(form);
@@ -33,13 +33,13 @@ export default {
     },
 
     /**
-	 * Adds error mesage to input.
-	 * 
-	 * @param {string} input Name of input to add error.
-	 * @param {string} message Error message.
-	 * @param {HTMLElement} html Html block with form.
-	 * @returns {boolean} True id error added, false if input not found.
-	 */
+     * Adds error mesage to input.
+     * 
+     * @param {string} input Name of input to add error.
+     * @param {string} message Error message.
+     * @param {HTMLElement} html Html block with form.
+     * @returns {boolean} True id error added, false if input not found.
+     */
     addError: function(input, message, html = document) {
         // If we adding error that means request completed
         // So we need to hide animation loader
@@ -63,11 +63,11 @@ export default {
     },
 
     /**
-	 * Renders form and sets 'onsubmit' action.
-	 * 
-	 * @param {Object} params Data for render and submit action.
-	 * @returns {HTMLElement} Html block with form.
-	 */
+     * Renders form and sets 'onsubmit' action.
+     * 
+     * @param {Object} params Data for render and submit action.
+     * @returns {HTMLElement} Html block with form.
+     */
     render: function(params) {
         function disableError(selector) {
             const activeError = elem.querySelector(selector);
@@ -140,7 +140,7 @@ export default {
                     }
                 }
             });
-			
+            
             if (!validated) {
                 return;
             }

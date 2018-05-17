@@ -13,17 +13,17 @@ import AvatarTemplate from '../ui/templates/avatar/';
  */
 class ProfileUserView extends View {
     /**
-	 * Creates instance of UserView
-	 */
+     * Creates instance of UserView
+     */
     constructor() {
         super();
     }
 
     /**
-	 * Reloading avatars after loading new profile picture.
-	 * 
-	 * @param {Object} data Data for template rendering
-	 */
+     * Reloading avatars after loading new profile picture.
+     * 
+     * @param {Object} data Data for template rendering
+     */
     reloadAvatar(data = {}) {
         this._data = data;
         const visible = this.isVisible('ProfileAvatar');
@@ -41,10 +41,10 @@ class ProfileUserView extends View {
     }
 
     /**
-	 * Reloading profile data after user data changed.
-	 * 
-	 * @param {Object} data Data for template rendering
-	 */
+     * Reloading profile data after user data changed.
+     * 
+     * @param {Object} data Data for template rendering
+     */
     reloadProfile(data = {}) {
         this._data = data;
         const visible = this.isVisible('Profile');
@@ -58,15 +58,15 @@ class ProfileUserView extends View {
                         this.show('Profile');
                     }
                 });
-			
+            
         }
     }
-	
+    
     /**
-	 * Load all required templates for profile page.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
+     * Load all required templates for profile page.
+     * 
+     * @param {Object} data Data for template rendering.
+     */
     constructProfile(data = {}) {
         this._data = data;
         this.load('Header', HeaderTemplate, { appendFirst: true });
@@ -82,18 +82,18 @@ class ProfileUserView extends View {
     }
 
     /**
-	 * Destroy profile page.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
+     * Destroy profile page.
+     * 
+     * @param {Object} data Data for template rendering.
+     */
     destroyProfile() {
         this.remove('Profile');
         this.remove('ProfileAvatar');
     }
 
     /**
-	 * Display required templates for profile page.
-	 */
+     * Display required templates for profile page.
+     */
     showProfile() {
         this.show('Header');
         HeaderTemplate.showLogo();

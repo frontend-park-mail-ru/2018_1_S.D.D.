@@ -8,8 +8,8 @@ import UserView from '../views/UserView';
 
 class UserController extends Controller {
     /**
-	 * Creates instance of UserController
-	 */
+     * Creates instance of UserController
+     */
     constructor() {
         super();
         if (UserController.__instance) {
@@ -20,14 +20,14 @@ class UserController extends Controller {
         this.UserModel = new UserModel();
         this.UserView = new UserView();
         this.SettingsController = new SettingsController();
-		
+        
         this.addActions();
         this.reloadHeaderOnChange();
     }
 
     /**
-	 * Add actions to controller.
-	 */
+     * Add actions to controller.
+     */
     addActions() {
         this.addAction('index', this.actionIndex);
         this.addAction('profile', this.actionProfile);
@@ -54,11 +54,11 @@ class UserController extends Controller {
     }
 
     /**
-	 * Defines header reload actions after users data changes.
-	 */
+     * Defines header reload actions after users data changes.
+     */
     reloadHeaderOnChange() {
         const EventBus = this.ServiceManager.EventBus;
-		
+        
         const reloadHeader = () => {
             const data = {
                 'Header': this.getHeaderData()
@@ -74,8 +74,8 @@ class UserController extends Controller {
     }
 
     /**
-	 * Set login/logout callbacks and load user if logged in.
-	 */
+     * Set login/logout callbacks and load user if logged in.
+     */
     actionIndex() {
         const UserStorage = this.ServiceManager.UserStorage;
         const EventBus = this.ServiceManager.EventBus;
@@ -89,13 +89,13 @@ class UserController extends Controller {
                 this.UserModel.loadUser(true);
             }, this);
         }
-		
+        
         this.UserModel.loadUser();
     }
 
     /**
-	 * What to do after user logged in.
-	 */
+     * What to do after user logged in.
+     */
     onLoginAction() {
 
         const Router = this.ServiceManager.Router;
@@ -107,8 +107,8 @@ class UserController extends Controller {
 
         if (
             currentControler === 'login' ||
-			currentControler === 'signup' ||
-			(currentControler === 'user' && currentAction === 'index')
+            currentControler === 'signup' ||
+            (currentControler === 'user' && currentAction === 'index')
         ) {
             Router.re('/');
         } else {
@@ -117,8 +117,8 @@ class UserController extends Controller {
     }
 
     /**
-	 * What to do after user logged out.
-	 */
+     * What to do after user logged out.
+     */
     onLogoutAction() {
         const Router = this.ServiceManager.Router;
         const currentUrl = Router.getCurrentUrlPath();
@@ -137,8 +137,8 @@ class UserController extends Controller {
     }
 
     /**
-	 * Logout action. Delete user from current session. Delete user templates.
-	 */
+     * Logout action. Delete user from current session. Delete user templates.
+     */
     actionLogout() {
         this.UserModel.logout();
     }

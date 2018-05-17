@@ -13,18 +13,18 @@ import PaginationTemplate from '../ui/templates/pagination/';
  */
 class ScoresView extends View {
     /**
-	 * Creates instance of ScoresView
-	 */
+     * Creates instance of ScoresView
+     */
     constructor() {
         super();
         this.connected = ['Scores', 'ScoresPagination'];
     }
 
     /**
-	 * Load all required templates.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
+     * Load all required templates.
+     * 
+     * @param {Object} data Data for template rendering.
+     */
     constructScores(data = {}) {
         this._data = data;
 
@@ -38,10 +38,10 @@ class ScoresView extends View {
     }
 
     /**
-	 * Load pagination template.
-	 * 
-	 * @param {Object} data Data for template rendering.
-	 */
+     * Load pagination template.
+     * 
+     * @param {Object} data Data for template rendering.
+     */
     constructPagination(data = {}) {
         this._data = data;
 
@@ -54,8 +54,8 @@ class ScoresView extends View {
     }
 
     /**
-	 * Display required templates.
-	 */
+     * Display required templates.
+     */
     showScores() {
         this.show('Header');
         HeaderTemplate.showLogo();
@@ -63,8 +63,8 @@ class ScoresView extends View {
     }
 
     /**
-	 * Display pagination.
-	 */
+     * Display pagination.
+     */
     showPagination() {
         this.show('ScoresPagination');
     }

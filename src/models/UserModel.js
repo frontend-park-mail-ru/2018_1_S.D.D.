@@ -10,15 +10,15 @@ import Model from './Model';
  */
 class UserModel extends Model {
     /**
-	 * Creates instance of UserModel
-	 */
+     * Creates instance of UserModel
+     */
     constructor() {
         super();
     }
 
     /**
-	 * Reset user in local storage.
-	 */
+     * Reset user in local storage.
+     */
     resetUser() {
         const UserStorage = this.ServiceManager.UserStorage;
 
@@ -32,10 +32,10 @@ class UserModel extends Model {
     }
 
     /**
-	 * Fill local storage with user data.
-	 * 
-	 * @param {Object} response Server response.
-	 */
+     * Fill local storage with user data.
+     * 
+     * @param {Object} response Server response.
+     */
     fillUser(response) {
         const UserStorage = this.ServiceManager.UserStorage;
         const user = response.data.current_user;
@@ -50,10 +50,10 @@ class UserModel extends Model {
     }
 
     /**
-	 * Sign up user. If success - login user.
-	 * 
-	 * @param {Object} formData Sign up data.
-	 */
+     * Sign up user. If success - login user.
+     * 
+     * @param {Object} formData Sign up data.
+     */
     signup(formData) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -76,11 +76,11 @@ class UserModel extends Model {
     }
 
     /**
-	 * Login user.
-	 * 
-	 * @param {Object} formData Login and password.
-	 * @param {boolean} signup Flag if current action is signup.
-	 */
+     * Login user.
+     * 
+     * @param {Object} formData Login and password.
+     * @param {boolean} signup Flag if current action is signup.
+     */
     login(formData, signup = false) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -107,10 +107,10 @@ class UserModel extends Model {
     }
 
     /**
-	 * Get user info from server if user logged in.
-	 * 
-	 * @param {boolean} check Flag if we need fill LocalStorage.
-	 */
+     * Get user info from server if user logged in.
+     * 
+     * @param {boolean} check Flag if we need fill LocalStorage.
+     */
     loadUser(check = false) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -133,10 +133,10 @@ class UserModel extends Model {
     }
 
     /**
-	 * Upload users avatar to server.
-	 * 
-	 * @param {Object} formData Avatar
-	 */
+     * Upload users avatar to server.
+     * 
+     * @param {Object} formData Avatar
+     */
     uploadAvatar(formData) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -157,8 +157,8 @@ class UserModel extends Model {
     }
 
     /**
-	 * Edit nickname with incoming data.
-	 */
+     * Edit nickname with incoming data.
+     */
     editNickname(formData) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -179,13 +179,13 @@ class UserModel extends Model {
     }
 
     /**
-	 * Edit email with incoming data.
-	 */
+     * Edit email with incoming data.
+     */
     editEmail(formData) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
         const UserStorage = this.ServiceManager.UserStorage;
-		
+        
         API.POST('user/update_email', formData)
             .then(response => {
                 if (API.responseSuccess(response)) {
@@ -201,8 +201,8 @@ class UserModel extends Model {
     }
 
     /**
-	 * Edit password with incoming data.
-	 */
+     * Edit password with incoming data.
+     */
     editPassword(formData) {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;
@@ -221,8 +221,8 @@ class UserModel extends Model {
     }
 
     /**
-	 * Logout user.
-	 */
+     * Logout user.
+     */
     logout() {
         const API = this.ServiceManager.ApiService;
         const EventBus = this.ServiceManager.EventBus;

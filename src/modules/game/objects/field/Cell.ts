@@ -85,7 +85,7 @@ export default class Cell extends Drawable {
         this.setCellSize();
         this.setCellScreenPosition();
 
-		      this.canvas.fillRect(
+              this.canvas.fillRect(
             this.position.x * Cell.size + margin / 2 * (this.position.x * 2 + 1),
             this.position.y * Cell.size + margin / 2 * (this.position.y * 2 + 1),
             Cell.size, Cell.size,

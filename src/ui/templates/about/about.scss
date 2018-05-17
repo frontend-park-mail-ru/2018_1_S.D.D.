@@ -1,61 +1,61 @@
 @import '../../styles/constants';
 
 .about-us {
-	margin: 20px auto;
-	text-align: center;
+    margin: 20px auto;
+    text-align: center;
 
-	&__header {
-		color: $color-light;
-		font-weight: bold;
-		font-size: $font-size-big;
-	}
+    &__header {
+        color: $color-light;
+        font-weight: bold;
+        font-size: $font-size-big;
+    }
 
-	&__members {
-		margin: 20px auto;
-	}
+    &__members {
+        margin: 20px auto;
+    }
 }
 
 .team-member {
-	display: inline-block;
-	margin: 50px 50px 0 50px;
+    display: inline-block;
+    margin: 50px 50px 0 50px;
 
-	&__img {
-		width: $about-avatar-size;
-		height: $about-avatar-size;
-		border-radius: 500px;
-		border: 2px solid $color-light;
-		border-bottom: 7px solid $color-light;
-	}
+    &__img {
+        width: $about-avatar-size;
+        height: $about-avatar-size;
+        border-radius: 500px;
+        border: 2px solid $color-light;
+        border-bottom: 7px solid $color-light;
+    }
 
-	&__description {
-		color: $color-light;
-	}
+    &__description {
+        color: $color-light;
+    }
 
-	&__description__name {
-		font-size: $font-size-big;
-		margin: 20px 0 10px 0;
-	}
+    &__description__name {
+        font-size: $font-size-big;
+        margin: 20px 0 10px 0;
+    }
 
-	&__description__work {
-		font-size: $font-size-common;
-	}
+    &__description__work {
+        font-size: $font-size-common;
+    }
 }
 
 .contact-link {
-	display: inline-block;
-	text-decoration: none;
-	height: $contact-size;
-	width: $contact-size;
-	margin: 20px;
+    display: inline-block;
+    text-decoration: none;
+    height: $contact-size;
+    width: $contact-size;
+    margin: 20px;
 
 
-	.contakt-link:hover {
-		text-decoration: underline;
-	}
+    .contakt-link:hover {
+        text-decoration: underline;
+    }
 
-	&__icon {
-		height: $contact-size;
-	}
+    &__icon {
+        height: $contact-size;
+    }
 }
 
 @media screen and (max-width: 750px) {

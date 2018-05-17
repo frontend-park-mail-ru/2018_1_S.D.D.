@@ -6,12 +6,12 @@ import LobbyModel from '../models/LobbyModel';
 
 class LobbyController extends Controller {
     constructor() {
-        super();	
+        super();    
         if (LobbyController.__instance) {
             return LobbyController.__instance;
-        }	
+        }    
         LobbyController.__instance = this;
-		
+        
         this.LobbyView = new LobbyView();
         this.LobbyModel = new LobbyModel();
         this.addActions();
@@ -41,7 +41,7 @@ class LobbyController extends Controller {
         };
         this.LobbyView.constructPage(pageData);
     }
-	
+    
 }
 
 export default LobbyController;
