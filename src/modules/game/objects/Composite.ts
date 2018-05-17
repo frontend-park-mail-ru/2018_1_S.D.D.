@@ -34,9 +34,10 @@ export default class Composite<T extends Drawable> {
     }
 
     /**
-     * Get object by it's idx.
+     * Get object by search callback.
      *
-     * @param idx ID of object in composite array.
+     * @param search Search callback.
+     * @returns Founded item.
      */
     public item(search: SearchCallback): T {
         return this.container.find(search);

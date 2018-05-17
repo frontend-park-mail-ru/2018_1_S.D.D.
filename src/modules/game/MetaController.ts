@@ -1,6 +1,6 @@
 import GameEventBus from './GameEventBus';
-import Scene from './Scene';
 import Character from './objects/player/Character';
+import Scene from './Scene';
 
 /**
  * Mnogo govnokoda. Sorry.
@@ -96,7 +96,7 @@ export default class MetaController {
         });
     }
 
-    public static gameover(block: HTMLElement, places: Array<Array<Character>>): void {
+    public static gameover(block: HTMLElement, places: Character[][]): void {
         const win: HTMLElement = block.querySelector('.gameover__result_win');
         const lost: HTMLElement = block.querySelector('.gameover__result_lost');
         const draw: HTMLElement = block.querySelector('.gameover__result_draw');
@@ -104,40 +104,40 @@ export default class MetaController {
         lost.style.display = lost.style.display = 'none';
         draw.style.display = lost.style.display = 'none';
 
-        const createPlayerBlock = (avatar: string, nickname: string, score: number, maxSymbols: number) => {
-            const go_player = document.createElement('div');
-            go_player.classList.add('go_player');
+        const createPlayerBlock = (avatar: string, nickname: string, score: number, maxS: number) => {
+            const goplayer = document.createElement('div');
+            goplayer.classList.add('go_player');
 
             const crown = document.createElement('div');
             crown.classList.add('crown');
-            go_player.appendChild(crown);
+            goplayer.appendChild(crown);
 
-            const go_avatar = document.createElement('img');
-            go_avatar.src = avatar;
-            go_avatar.classList.add('go_avatar');
-            go_player.appendChild(go_avatar);
+            const goavatar = document.createElement('img');
+            goavatar.src = avatar;
+            goavatar.classList.add('go_avatar');
+            goplayer.appendChild(goavatar);
 
-            const go_nickname = document.createElement('div');
-            if (nickname.length < maxSymbols) {
-                const toAdd = (maxSymbols - nickname.length) / 2;
+            const gonickname = document.createElement('div');
+            if (nickname.length < maxS) {
+                const toAdd = (maxS - nickname.length) / 2;
                 const prep = '&nbsp;'.repeat(toAdd);
                 nickname = prep + nickname + prep;
             }
-            go_nickname.innerHTML = nickname;
-            go_nickname.classList.add('go_nickname');
-            go_player.appendChild(go_nickname);
+            gonickname.innerHTML = nickname;
+            gonickname.classList.add('go_nickname');
+            goplayer.appendChild(gonickname);
 
-            const go_score = document.createElement('div');
-            go_score.innerHTML = score.toString();
-            go_score.classList.add('go_score');
-            go_player.appendChild(go_score);
+            const goscore = document.createElement('div');
+            goscore.innerHTML = score.toString();
+            goscore.classList.add('go_score');
+            goplayer.appendChild(goscore);
 
-            return go_player;
+            return goplayer;
         };
 
         let maxSymbols = 0;
-        places.forEach(place => {
-            place.forEach(player => {
+        places.forEach((place) => {
+            place.forEach((player) => {
                 const n = player.name.length;
                 maxSymbols = n > maxSymbols ? n : maxSymbols;
             });
@@ -155,11 +155,11 @@ export default class MetaController {
 
         places.forEach((place, i) => {
             const j = i > 0 ? 2 : 1;
-            const placeInDom = block.querySelector(`.gameover__player-${j} .players__container`);
-            if (placeInDom.innerHTML === 'Everyone is a champion!') {
-                placeInDom.innerHTML = '';
+            const goplaceInDom = block.querySelector(`.gameover__player-${j} .players__container`);
+            if (goplaceInDom.innerHTML === 'Everyone is a champion!') {
+                goplaceInDom.innerHTML = '';
             }
-            place.forEach(player => {
+            place.forEach((player) => {
                 if (player.isCurrentPlayer) {
                     if (i > 0) {
                         lost.style.display = 'block';
@@ -171,11 +171,11 @@ export default class MetaController {
                         }
                     }
                 }
-                placeInDom.appendChild(
-                    createPlayerBlock(player.avatar.src, player.name, player.score, maxSymbols)
+                goplaceInDom.appendChild(
+                    createPlayerBlock(player.avatar.src, player.name, player.score, maxSymbols),
                 );
             });
-        })
+        });
     }
 
     /**

@@ -1,6 +1,6 @@
 'use strict';
 
-import * as slowpoke from '../../bin/slowpoke.svg';
+import * as clock from '../../bin/clock.svg';
 import GameEventBus from '../../GameEventBus';
 import Scene from '../../Scene';
 import GameField from '../field/Field';
@@ -9,10 +9,10 @@ import Point from '../Point';
 import BonusObject from './BonusObject';
 
 /**
- * Register SlowPoke bonus.
+ * Register StuckAll bonus.
  *
  * @class
- * @classdesc Make player slower.
+ * @classdesc Stuck enemies.
  */
 export default class SlownessBonus extends BonusObject {
     /**
@@ -26,7 +26,7 @@ export default class SlownessBonus extends BonusObject {
     constructor () {
         super();
         this.skin = new Image();
-        this.skin.src = slowpoke;
+        this.skin.src = clock;
         this.registerBonus();
     }
 
@@ -36,10 +36,10 @@ export default class SlownessBonus extends BonusObject {
     public registerBonus() {
         GameEventBus.subscribe(this.getBonusName(), (Player) => {
             const currentVelocity = Player.velocity;
-            Player.velocity = currentVelocity / 2;
+            Player.velocity = 0;
             setTimeout(() => {
                 Player.velocity = currentVelocity;
-            }, 10000);
+            }, 5000);
         }, this);
     }
 
@@ -56,7 +56,10 @@ export default class SlownessBonus extends BonusObject {
             Cell.position.y === position.y;
         });
         cell.busy = false;
-		      this.applyBonusToPlayers([AppliedBy]);
+        const enemies = Scene.Players.get().filter((Player) => {
+            return Player.id !== AppliedBy.id;
+        });
+		      this.applyBonusToPlayers(enemies);
 	}
 
 	/**
@@ -74,6 +77,6 @@ export default class SlownessBonus extends BonusObject {
      * @returns Bonus name.
      */
 	   public getBonusName(): string {
-		return 'BONUS:SLOW';
+		return 'BONUS:STUCK';
 	}
 }

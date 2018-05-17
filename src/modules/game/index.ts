@@ -1,10 +1,10 @@
+import GameView from '../../views/GameView.js';
 import ServiceManager from '../ServiceManager';
 import Game from './core/Game';
 import SinglePlayer from './core/SinglePlayer';
+import GameEventBus from './GameEventBus';
 import { IPlayerData } from './playerdata';
 import Scene from './Scene';
-import GameView from '../../views/GameView.js';
-import GameEventBus from './GameEventBus';
 
 /**
  * Initialize game. Sets mode.
@@ -48,7 +48,7 @@ export default class GameInitializer {
      * @returns True;
      */
     public destroy(): boolean {
-        GameEventBus.unSubscribeAll();   
+        GameEventBus.unSubscribeAll();
         if (this.game) {
             return this.game.destroy();
         }

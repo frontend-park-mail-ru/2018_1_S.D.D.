@@ -94,7 +94,7 @@ class EventBus {
         const unsub = () => {
             delete this._eventsList;
             this._eventsList = {};
-        }
+        };
         return Promise.resolve(unsub());
     }
 

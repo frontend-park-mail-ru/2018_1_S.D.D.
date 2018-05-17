@@ -1,11 +1,11 @@
+import GameView from '../../views/GameView';
+import MetaController from './MetaController';
+import BonusObject from './objects/bonus/BonusObject';
 import Composite from './objects/Composite';
 import Cell from './objects/field/Cell';
 import Field from './objects/field/Field';
 import Character from './objects/player/Character';
 import { CELL_SIZE } from './settings';
-import GameView from '../../views/GameView';
-import MetaController from './MetaController';
-import BonusObject from './objects/bonus/BonusObject';
 
 /**
  * Initializes scene.
@@ -127,10 +127,10 @@ export default class Scene {
 
     /**
      * Game over window.
-     * 
+     *
      * @param places Array with places.
      */
-    public gameOver(places: Array<Array<Character>>): void {
+    public gameOver(places: Character[][]): void {
         Scene.viewController.constructGameOver()
         .then(() => {
             MetaController.gameover(Scene.viewController.getGameOverBlock(), places);

@@ -1,5 +1,6 @@
 import InputController from '../InputController';
 import MetaController from '../MetaController';
+import Bonus from '../objects/bonus/BonusObject';
 import Field from '../objects/field/Field';
 import Bot from '../objects/player/Bot';
 import { BOTAVATARS_MAP, BOTNAMES_MAP } from '../objects/player/botsettings';
@@ -8,7 +9,6 @@ import Point from '../objects/Point';
 import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
 import Game from './Game';
-import Bonus from '../objects/bonus/BonusObject';
 
 /**
  * Initializes player, bots.
@@ -41,7 +41,7 @@ export default class SinglePlayer extends Game {
         this.addPlayer(this.playerData);
         this.addBots(this.playerData.name);
         MetaController.initPlayersScores(
-            Scene.Players.get()
+            Scene.Players.get(),
         );
         this.start();
     }
@@ -54,19 +54,19 @@ export default class SinglePlayer extends Game {
      */
     protected logic(lastLogicCall: number, now: number): void {
         Scene.Players.do((player) => player.move(lastLogicCall));
-        Scene.Bonuses.do(BonusItem => {
+        Scene.Bonuses.do((BonusItem) => {
             if (!BonusItem.isActive()) {
                 const rC = (min, max) => {
-                    const rand = min - 0.5 + Math.random() * (max - min + 1)
+                    const rand = min - 0.5 + Math.random() * (max - min + 1);
                     return Math.round(rand);
-                }
+                };
                 const last = Bonus.lastSpawned;
                 if (last === -1 || now - last > 1000) {
                     if (rC(0, 3) == 0) {
                         let spawned = false;
-                    while (!spawned) {
-                        const bonusPosition = new Point(rC(0,7), rC(0,7));
-                        const cell = Scene.Field.item(Cell => {
+                        while (!spawned) {
+                        const bonusPosition = new Point(rC(0, 7), rC(0, 7));
+                        const cell = Scene.Field.item((Cell) => {
                             return Cell.position.x === bonusPosition.x &&
                             Cell.position.y === bonusPosition.y;
                         });

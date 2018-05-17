@@ -1,11 +1,12 @@
 import MetaController from '../MetaController';
+import ColorLine from '../objects/bonus/ColorLine';
+import SlowPoke from '../objects/bonus/SlowPoke';
+import StuckAll from '../objects/bonus/StuckAll';
 import Field from '../objects/field/Field';
+import Character from '../objects/player/Character';
 import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
 import { GAME_DURATION } from '../settings';
-import Character from '../objects/player/Character';
-import SlowPoke from '../objects/bonus/SlowPoke';
-import ColorLine from '../objects/bonus/ColorLine';
 
 /**
  * Initializes scene and common game system.
@@ -75,10 +76,10 @@ export default abstract class Game {
      */
     public destroy(): boolean {
         this.pauseAnimationFrame();
-        if(this.Scene.destroy()) {
+        if (this.Scene.destroy()) {
             this.Scene = null;
         }
-        if(Game.Field.destroy()) {
+        if (Game.Field.destroy()) {
             Game.Field = null;
         }
         return true;
@@ -92,7 +93,8 @@ export default abstract class Game {
         this.Scene.clearObjects();
         Scene.Bonuses.add(new SlowPoke());
         Scene.Bonuses.add(new ColorLine());
-        
+        Scene.Bonuses.add(new StuckAll());
+
     }
     /**
      * Pause redrawing scene.
@@ -168,19 +170,19 @@ export default abstract class Game {
      * Get places array: places[place] - array with players.
      * For example, player on 3rd place will placed in places[2];
      */
-    protected getPlaces(): Array<Array<Character>> {
-        const places: Array<Array<Character>> = [];
+    protected getPlaces(): Character[][] {
+        const places: Character[][] = [];
         const players = Scene.Players.get();
         players.sort((a, b) => b.score - a.score);
         let currentPlace = -1;
         let currentScore = -1;
-        players.forEach(player => {
+        players.forEach((player) => {
             if (player.score < currentScore || currentScore === -1) {
                 currentScore = player.score;
                 currentPlace++;
                 places[currentPlace] = [];
             }
-            places[currentPlace].push(player)
+            places[currentPlace].push(player);
         });
         return places;
     }
