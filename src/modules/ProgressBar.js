@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * 
@@ -18,7 +18,6 @@ export default class ProgressBar {
         this.parent.style.height = '5px';
         this.progress = 10;
         this.bar.style.width = `${this.progress}%`;
-        console.log(this.bar.style.width);
     }
 
     /**

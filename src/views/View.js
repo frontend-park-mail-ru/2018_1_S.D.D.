@@ -162,7 +162,7 @@ class View {
      * @param {string} templateName Name of template to display.
      */
     show(templateName) {
-        const preloader = document.querySelector('.preloader').style.display = 'none';
+        document.querySelector('.preloader').style.display = 'none';
         ProgressBar.finish();
         const T = this._TemplateHolder.template(templateName);
         if (T && !this._PageBlock.changeTemplate(templateName)) {
