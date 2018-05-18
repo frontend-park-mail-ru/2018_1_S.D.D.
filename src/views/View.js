@@ -3,6 +3,7 @@
 import ServiceManager from '../modules/ServiceManager';
 import TemplateHolder from '../ui/templates/TemplateHolder';
 import PageParts from '../ui/templates/PageParts';
+import ProgressBar from '../modules/ProgressBar';
 
 import 'normalize.css';
 import '../ui/styles/main.scss';
@@ -161,6 +162,8 @@ class View {
      * @param {string} templateName Name of template to display.
      */
     show(templateName) {
+        document.querySelector('.preloader').style.display = 'none';
+        ProgressBar.finish();
         const T = this._TemplateHolder.template(templateName);
         if (T && !this._PageBlock.changeTemplate(templateName)) {
             T.html.hidden = false;

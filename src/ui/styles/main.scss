@@ -39,6 +39,14 @@
     transition: $animation-template;
 }
 
+.animation-disabled {
+    -o-transition: $animation-disabled !important;
+    -ms-transition: $animation-disabled !important;
+    -moz-transition: $animation-disabled !important;
+    -webkit-transition: $animation-disabled !important;
+    transition: $animation-disabled !important;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -152,6 +160,71 @@ main {
 .return-link:hover {
     color: #fff;
     text-decoration: underline;
+}
+
+.preloader {
+    position: absolute;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @-moz-keyframes spin {
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+    }
+    @-webkit-keyframes spin {
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+    @keyframes spin {
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform:rotate(360deg);
+        }
+    }
+
+    &__smile {
+        height: 120px;
+        width: 120px;
+        margin: 20px;
+        -webkit-animation: 0.8s linear;
+        -moz-animation: 0.8s linear;
+        animation: 0.8s linear;
+    }
+
+    &__text {
+        color: $color-light;
+        font-size: $font-size-big;
+    }
+}
+
+.progress {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 5px;
+
+    &__bar {
+        height: 100%;
+        background: $progress-bar-color;
+        width: 0%;
+        -o-transition: $progress-delay;
+        -ms-transition: $progress-delay;
+        -moz-transition: $progress-delay;
+        -webkit-transition: $progress-delay;
+        transition: $progress-delay;
+    }
 }
 
 @media screen and (max-width: 1080px) {
