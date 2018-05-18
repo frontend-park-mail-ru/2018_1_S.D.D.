@@ -1,5 +1,5 @@
 'use strict';
-
+import ProgressBar from '../modules/ProgressBar';
 /**
  *  Sends requests to server. 
  */ 
@@ -86,6 +86,7 @@ class Api {
 
         return fetch(`${this.serverAddress}/api/${path}`, requestSettings).then(
             response => {
+                ProgressBar.step();
                 return response.json();
             },
             () => {

@@ -1,5 +1,6 @@
 'use strict';
 import Route from './Route';
+import ProgressBar from './ProgressBar';
 
 /** 
  * Creates Router.
@@ -157,6 +158,7 @@ class Router {
      * @param {string} urlPath Url path to page
      */
     loadPage(urlPath) {
+        ProgressBar.start();
         let newUrlPath = this.getNewUrlPath(urlPath);
         let route = this.routes.find(routeIterator => {
             return routeIterator.urlPath == this.getController(newUrlPath);

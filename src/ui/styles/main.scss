@@ -39,6 +39,14 @@
     transition: $animation-template;
 }
 
+.animation-disabled {
+    -o-transition: $animation-disabled !important;
+    -ms-transition: $animation-disabled !important;
+    -moz-transition: $animation-disabled !important;
+    -webkit-transition: $animation-disabled !important;
+    transition: $animation-disabled !important;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -190,14 +198,32 @@ main {
         height: 120px;
         width: 120px;
         margin: 20px;
-        -webkit-animation: spin 1s linear infinite;
-        -moz-animation: spin 1s linear infinite;
-        animation: spin 0.8s linear infinite;
+        -webkit-animation: 0.8s linear;
+        -moz-animation: 0.8s linear;
+        animation: 0.8s linear;
     }
 
     &__text {
         color: $color-light;
         font-size: $font-size-big;
+    }
+}
+
+.progress {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 5px;
+
+    &__bar {
+        height: 100%;
+        background: $progress-bar-color;
+        width: 0%;
+        -o-transition: $progress-delay;
+        -ms-transition: $progress-delay;
+        -moz-transition: $progress-delay;
+        -webkit-transition: $progress-delay;
+        transition: $progress-delay;
     }
 }
 
