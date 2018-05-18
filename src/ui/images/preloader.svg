@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="5.820833206176758" height="5.820833683013916" style=""><rect id="backgroundrect" width="100%" height="100%" x="0" y="0" fill="none" stroke="none"/>
+    <defs>
+        <linearGradient y2="0.07545609772205353" x2="0.4854542016983032" y1="0.9900013208389282" x1="0.4936384856700897" id="0">
+            <stop stop-color="#ffeb96"/>
+            <stop offset="1" stop-color="#fff1b7"/>
+        </linearGradient>
+    </defs>
+    
+<g class="currentLayer" style=""><title>Layer 1</title><g id="svg_1" class="">
+        <g id="svg_2">
+            <circle cx="488.63594588277215" cy="-131.04857878767805" r="5.499999999999993" fill="url(#0)" transform="matrix(0.5189925559815842,0,0,0.5189925559815842,-250.68800491826548,70.92365023603533) " stroke-width="0" id="svg_3"/>
+            <path d="m2.4032164760224877,4.1388370853035665 c0.1656577659627259,0.46043114363169374 0.8616987994195577,0.46043114363169374 1.0127397036796897,0 " fill="none" fill-rule="evenodd" stroke="#414141" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.14603096000000002" id="svg_4"/>
+        </g>
+        <g id="svg_5">
+            <circle cx="491.71596009582555" cy="-130.08333655973684" r="0.6000000238418579" transform="matrix(0.519011182367617,0,0,0.5190043257688584,-250.7072415869004,70.27580472170435) " fill="#414141" stroke-width="0" id="svg_6"/>
+            <circle cx="485.96596009582555" cy="-130.08333655973684" r="0.6000000238418579" transform="matrix(0.519011182367617,0,0,0.5190043257688584,-250.7072415869004,70.27580472170435) " fill="#414141" stroke-width="0" id="svg_7"/>
+        </g>
+    </g></g></svg>

@@ -31,3 +31,4 @@ SM.Router.addRoute('lobby', LobbyController);
 
 // Check for user logged in and then load current page
 SM.Router.go('/user', false);
+

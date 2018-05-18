@@ -161,6 +161,7 @@ class View {
      * @param {string} templateName Name of template to display.
      */
     show(templateName) {
+        const preloader = document.querySelector('.preloader').style.display = 'none';
         const T = this._TemplateHolder.template(templateName);
         if (T && !this._PageBlock.changeTemplate(templateName)) {
             T.html.hidden = false;
