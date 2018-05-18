@@ -1,83 +1,83 @@
 @import '../../styles/constants';
 
 .logo {
-	font-size: $logo-size;
-	font-weight: bold;
-	color: $color-light;
-	text-align: center;
-	margin: auto;
+    font-size: $logo-size;
+    font-weight: bold;
+    color: $color-light;
+    text-align: center;
+    margin: auto;
 
-	&__fix {
-		// ¯\_(ツ)_/¯ just don't ask why
-		font-size: 1px;
-		height: 1px;
-		display: block;
-	}
-	
-	&__link {
-		text-decoration: none;
-		display: block;
-		color: $color-light;
-	}
-	
-	&__smile {
-		width: $logo-size;
-		height: $logo-size;
-		position: relative;
-	}
-	
-	&__smile_first {
-		animation-name: jump;
-		animation-iteration-count: infinite;
-		animation-timing-function: linear;
-		animation-duration: 4s;
-		animation-delay: 2s;
-	}
+    &__fix {
+        // ¯\_(ツ)_/¯ just don't ask why
+        font-size: 1px;
+        height: 1px;
+        display: block;
+    }
+    
+    &__link {
+        text-decoration: none;
+        display: block;
+        color: $color-light;
+    }
+    
+    &__smile {
+        width: $logo-size;
+        height: $logo-size;
+        position: relative;
+    }
+    
+    &__smile_first {
+        animation-name: jump;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-duration: 4s;
+        animation-delay: 2s;
+    }
 }
 
 @keyframes jump {
-	0% {
-		top: 0px;
-	}
+    0% {
+        top: 0px;
+    }
 
-	2% {
-		top: -40px;
-	}
+    2% {
+        top: -40px;
+    }
 
-	4% {
-		top: -55px;
-	}
+    4% {
+        top: -55px;
+    }
 
-	5% {
-		top: -60px;
-	}
+    5% {
+        top: -60px;
+    }
 
-	6% {
-		top: -55px;
-	}
+    6% {
+        top: -55px;
+    }
 
-	8% {
-		top: -40px;
-	}
+    8% {
+        top: -40px;
+    }
 
-	10%, 100% {
-		top: 0px;
-	}
+    10%, 100% {
+        top: 0px;
+    }
 }
 
 @media screen and (max-width: 1200px) {
-	.logo {
-		font-size: $logo-size-small;
+    .logo {
+        font-size: $logo-size-small;
 
-		&__smile {
-			width: $logo-size-small;
-			height: $logo-size-small;
-		}
-	}
+        &__smile {
+            width: $logo-size-small;
+            height: $logo-size-small;
+        }
+    }
 }
 
 @media screen and (max-width: 640px) {
-	.logo {
-		margin-bottom: 40px;
-	}
+    .logo {
+        margin-bottom: 40px;
+    }
 }

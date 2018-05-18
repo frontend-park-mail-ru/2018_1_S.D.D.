@@ -1,4 +1,112 @@
+@import '../../styles/constants';
+
+.scene-holder {
+    width: 50%;
+    display: inline-block;
+    margin: auto;
+    text-align: center;
+    -o-transition: $animation-disabled;
+    -ms-transition: $animation-disabled;
+    -moz-transition: $animation-disabled;
+    -webkit-transition: $animation-disabled;
+    transition: $animation-disabled;
+}
+
 .scene {
-	display: block;
-	margin: auto;
+    display: inline-block;
+    margin: auto;
+}
+
+.game-meta {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    -o-transition: $animation-disabled;
+    -ms-transition: $animation-disabled;
+    -moz-transition: $animation-disabled;
+    -webkit-transition: $animation-disabled;
+    transition: $animation-disabled;
+}
+
+.timer {
+    font-size: $font-size-big;
+    color: $color-light;
+    text-align: center;
+}
+
+.players-scores {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    height: auto;
+}
+
+.sc_player {
+    position: absolute;
+    display: box;
+    display: flex;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    background: $menu-background-hovered;
+}
+
+// I know it's bad practice but anyway
+.sc_avatar > img {
+    width: 50px;
+    height: 50px;
+    margin: 5px 0 0 0;
+    border-radius: 100px;
+}
+
+.sc_avatar, .sc_nickname, .sc_score {
+    display: inline-block;
+    font-size: 30px;
+    padding: 0 10px;
+}
+
+.sc_score {
+    color: $color-light;
+}
+
+@media screen and (max-width: 980px) {
+    .sc_avatar, .sc_nickname, .sc_score {
+        font-size: 20px;
+        padding: 0 10px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .sc_avatar > img {
+        width: 30px;
+        height: 30px;
+        margin: 5px 0 0 0;
+    }
+
+    .timer {
+        font-size: 22px;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    .sc_avatar > img {
+        width: 20px;
+        height: 20px;
+        margin: 3px 0 0 0;
+    }
+
+    .timer {
+        font-size: 18px;
+    }
+
+    .sc_avatar, .sc_nickname, .sc_score {
+        font-size: 16px;
+        padding: 0 5px;
+    }
+}
+
+@media screen and (max-width: 440px) {
+    .scene-holder, .game-meta {
+        width: 100%;
+    }
 }

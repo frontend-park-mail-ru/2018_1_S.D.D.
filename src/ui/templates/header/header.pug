@@ -1,35 +1,35 @@
 header.header
-	.header__container.header__container_left
-		.header__logo(hidden=true)
-			a(href='/').header__logo__link
-				| C
-				img(src=require('../../images/smile.svg')).header__logo__smile
-				| L
-				img(src=require('../../images/smile_winked.svg')).header__logo__smile
-				| R&nbsp;&nbsp;IT
-	.header__container.header__container_right
-		if loggedIn
-			ul.header__list.list.user_section
-				li.list__item.list__item_hor
-					.sub_btn
-						if defaultAvatar
-							img(src=require('../../images/avatars/1.svg')).user_section__avatar
-						else
-							img(src=avatar).user_section__avatar
-						span.user_section__nickname #{nickname}
-							span.user_secction__nickname__arrow ▼
-						.clearfix
-					ul.submenu
-						each item in menuItems
-							li.submenu__item
-								if item.nohistory === undefined
-									- nohistory = 'false'
-								else
-									- nohistory = item.nohistory
-								a(href=item.link, nohistory=nohistory).submenu__item__link #{item.text}
-		else
-			ul.header__list.list.auth_menu
-				li.list__item.list__item_hor
-					a(href='/login').header__link.header__link_btn.btn LOGIN
-				li.list__item.list__item_hor
-					a(href='/signup').header__link SIGN UP
+    .header__container.header__container_left
+        .header__logo(hidden=true)
+            a(href='/').header__logo__link
+                | C
+                img(src=require('../../images/smile.svg')).header__logo__smile
+                | L
+                img(src=require('../../images/smile_winked.svg')).header__logo__smile
+                | R&nbsp;&nbsp;IT
+    .header__container.header__container_right
+        if loggedIn
+            ul.header__list.list.user_section
+                li.list__item.list__item_hor
+                    .sub_btn
+                        if defaultAvatar
+                            img(src=require('../../images/avatars/1.svg')).user_section__avatar
+                        else
+                            img(src=avatar).user_section__avatar
+                        span.user_section__nickname #{nickname}
+                            span.user_secction__nickname__arrow ▼
+                        .clearfix
+                    ul.submenu
+                        each item in menuItems
+                            li.submenu__item
+                                if item.nohistory === undefined
+                                    - nohistory = 'false'
+                                else
+                                    - nohistory = item.nohistory
+                                a(href=item.link, nohistory=nohistory).submenu__item__link #{item.text}
+        else
+            ul.header__list.list.auth_menu
+                li.list__item.list__item_hor
+                    a(href='/login').header__link.header__link_btn.btn LOGIN
+                li.list__item.list__item_hor
+                    a(href='/signup').header__link SIGN UP

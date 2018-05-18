@@ -43,6 +43,7 @@ html, body {
     width: 100%;
     height: 100%;
     font-family: $font-family;
+    min-width: 320px;
 }
 
 body {
@@ -168,8 +169,8 @@ main {
 
     main {
         display: block;
-        top: #{$header-height-big};
-        height: auto;
+        //top: #{$header-height-big};
+        height: calc(100% - #{$header-height-big})
     }
 
     .block_w50p {
@@ -199,7 +200,7 @@ main {
 
 @media screen and (max-width: 448px) {
     main {
-        top: calc(#{$header-height-big});
-        height: calc(100% - #{$header-height-big} - #{$header-height-big})
+        top: #{$header-logo-size};
+        height: calc(100% - #{$header-height-big} - #{$header-logo-size})
     }
 }

@@ -11,30 +11,30 @@ import AboutTemplate from '../ui/templates/about/';
  * @classdesc About view. Render, shows, hide page.
  */
 class AboutView extends View {
-	/**
-	 * Creates instance of AboutView
-	 */
-	constructor() {
-		super();
-	}
+    /**
+     * Creates instance of AboutView
+     */
+    constructor() {
+        super();
+    }
     
-	constructPage(data = {}) {
-		this._data = data;
+    constructPage(data = {}) {
+        this._data = data;
 
-		return this.onLoad([
-			['Header', HeaderTemplate, { appendFirst: true }],
-			['About', AboutTemplate, { block: 'left' }]
-		])
-			.then(() => {
-				this.showPage();
-			});
-	}
+        return this.onLoad([
+            ['Header', HeaderTemplate, { appendFirst: true }],
+            ['About', AboutTemplate, { block: 'left' }]
+        ])
+            .then(() => {
+                this.showPage();
+            });
+    }
 
-	showPage() {
-		this.show('Header');
-		HeaderTemplate.showLogo();
-		this.show('About');
-	}
+    showPage() {
+        this.show('Header');
+        HeaderTemplate.showLogo();
+        this.show('About');
+    }
 }
 
 export default AboutView;

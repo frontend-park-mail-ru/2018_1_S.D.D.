@@ -1,0 +1,17 @@
+{
+    "extends": "tslint:latest",
+    "jsRules": {
+        "quotemark": [true, "single", "avoid-escape"],
+        "indent": ["error", 4],
+        "no-bitwise": false
+    },
+    "rules": {
+        "quotemark": [true, "single", "avoid-escape"],
+        "space-before-function-paren": ["error", "never"],
+        "indent": ["error", 4],
+        "no-bitwise": false
+    },
+    "rulesDirectory": [
+
+    ]
+}

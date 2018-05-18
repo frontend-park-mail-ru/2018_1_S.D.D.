@@ -12,32 +12,32 @@ import MenuTemplate from '../ui/templates/menu/';
  * @classdesc Menu view. Render, shows, hide page.
  */
 class MenuView extends View {
-	/**
-	 * Creates instance of MenuView
-	 */
-	constructor() {
-		super();
-	}
+    /**
+     * Creates instance of MenuView
+     */
+    constructor() {
+        super();
+    }
     
-	constructPage(data = {}) {
-		this._data = data;
+    constructPage(data = {}) {
+        this._data = data;
 
-		return this.onLoad([
-			['Header', HeaderTemplate, { appendFirst: true }],
-			['Logo', LogoTemplate, { block: 'left' }],
-			['Menu', MenuTemplate, { block: 'right' }]
-		])
-			.then(() => {
-				this.showPage();
-			});
-	}
+        return this.onLoad([
+            ['Header', HeaderTemplate, { appendFirst: true }],
+            ['Logo', LogoTemplate, { block: 'left' }],
+            ['Menu', MenuTemplate, { block: 'right' }]
+        ])
+            .then(() => {
+                this.showPage();
+            });
+    }
 
-	showPage() {
-		this.show('Header');
-		HeaderTemplate.hideLogo();
-		this.show('Logo');
-		this.show('Menu');
-	}
+    showPage() {
+        this.show('Header');
+        HeaderTemplate.hideLogo();
+        this.show('Logo');
+        this.show('Menu');
+    }
 }
 
 export default MenuView;
