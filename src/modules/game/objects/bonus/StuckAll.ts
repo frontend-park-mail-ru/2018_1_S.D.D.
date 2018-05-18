@@ -34,11 +34,10 @@ export default class SlownessBonus extends BonusObject {
      * Register bonus. Provide behaviour on appliement.
      */
     public registerBonus() {
-        GameEventBus.subscribe(this.getBonusName(), (Player) => {
-            const currentVelocity = Player.velocity;
-            Player.velocity = 0;
+        GameEventBus.subscribe(this.getBonusName(), Player => {
+            Player.stucked = true;
             setTimeout(() => {
-                Player.velocity = currentVelocity;
+                Player.stucked = false;
             }, 5000);
         }, this);
     }
@@ -51,7 +50,7 @@ export default class SlownessBonus extends BonusObject {
      */
     public applied(AppliedBy: Character, position: Point = new Point(0, 0)) {
         this.spawned = false;
-        const cell = Scene.Field.item((Cell) => {
+        const cell = Scene.Field.item(Cell => {
             return Cell.position.x === position.x &&
             Cell.position.y === position.y;
         });

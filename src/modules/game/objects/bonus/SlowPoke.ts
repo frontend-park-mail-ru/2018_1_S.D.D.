@@ -35,10 +35,9 @@ export default class SlownessBonus extends BonusObject {
      */
     public registerBonus() {
         GameEventBus.subscribe(this.getBonusName(), (Player) => {
-            const currentVelocity = Player.velocity;
-            Player.velocity = currentVelocity / 2;
+            Player.velocity /= 2;
             setTimeout(() => {
-                Player.velocity = currentVelocity;
+                Player.velocity *= 2;
             }, 10000);
         }, this);
     }

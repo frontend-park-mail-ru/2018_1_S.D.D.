@@ -52,6 +52,11 @@ export default abstract class Character extends Drawable {
     public velocity: number = CHARACTER_VELOCITY;
 
     /**
+     * Can player move or not.
+     */
+    public stucked: boolean = false;
+
+    /**
      * Color associated with this character.
      */
     protected color: string;
@@ -111,7 +116,7 @@ export default abstract class Character extends Drawable {
         const prevPosition = new Point(this.startPosition.x, this.startPosition.y);
 
         const distance = time * this.velocity;
-        if (distance < 0) {
+        if (distance < 0 || this.stucked) {
             return;
         }
 
