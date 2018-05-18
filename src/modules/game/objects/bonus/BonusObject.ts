@@ -5,7 +5,7 @@ import GameEventBus from '../../GameEventBus';
 import Scene from '../../Scene';
 import Drawable from '../Drawable';
 import Cell from '../field/Cell';
-import Player from '../player/Character';
+import Character from '../player/Character';
 import Point from '../Point';
 
 /**
@@ -36,47 +36,16 @@ export default abstract class BonusObject extends Drawable {
     constructor() {
         super();
         GameEventBus.subscribe('STEPPED', (id, position) => {
-            if (this.spawned && position.x == this.Coordinates.x && position.y == this.Coordinates.y) {
-                const Player = Scene.Players.get().filter((Player) => {
-                    return Player.id == id;
+            if (this.spawned && position.x === this.Coordinates.x && position.y === this.Coordinates.y) {
+                const Players = Scene.Players.get().filter((Player) => {
+                    return Player.id === id;
                 })[0];
 
-                if (Player) {
-                    this.applied(Player, position);
+                if (Players) {
+                    this.applied(Players, position);
                 }
             }
         }, this);
-    }
-
-    /**
-     * Apply bonus to players.
-     *
-     * @param Players Players affected to bonus.
-     */
-    protected applyBonusToPlayers(Players: Player[]): void {
-        Players.forEach((Player) => {
-            GameEventBus.emit(this.getBonusName(), Player);
-        });
-    }
-
-    /**
-     * Mark field cell in player color.
-     *
-     * @param Player Player who will color field..
-     * @param position Which cell will be colored.
-     */
-    protected applyBonusToField(Player: Player, position: Point): void {
-        GameEventBus.emit(this.getBonusName(), [position, Player.id]);
-    }
-
-    /**
-     * Action when player get the bonus.
-     *
-     * @param AppliedBy Player who get the bonus.
-     * @param position Bonus position.
-     */
-    protected applied(AppliedBy: Player, position: Point) {
-        this.spawned = false;
     }
 
     /**
@@ -150,5 +119,36 @@ export default abstract class BonusObject extends Drawable {
 
             this.image(this.getSkin(), imgPosX, imgPosY, imgSize);
         }
+    }
+
+    /**
+     * Apply bonus to players.
+     *
+     * @param Players Players affected to bonus.
+     */
+    protected applyBonusToPlayers(Players: Character[]): void {
+        Players.forEach((Player) => {
+            GameEventBus.emit(this.getBonusName(), Player);
+        });
+    }
+
+    /**
+     * Mark field cell in player color.
+     *
+     * @param Player Player who will color field..
+     * @param position Which cell will be colored.
+     */
+    protected applyBonusToField(Player: Character, position: Point): void {
+        GameEventBus.emit(this.getBonusName(), [position, Player.id]);
+    }
+
+    /**
+     * Action when player get the bonus.
+     *
+     * @param AppliedBy Player who get the bonus.
+     * @param position Bonus position.
+     */
+    protected applied(AppliedBy: Character, position: Point) {
+        this.spawned = false;
     }
 }

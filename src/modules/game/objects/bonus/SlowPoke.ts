@@ -4,7 +4,7 @@ import * as slowpoke from '../../bin/slowpoke.svg';
 import GameEventBus from '../../GameEventBus';
 import Scene from '../../Scene';
 import GameField from '../field/Field';
-import Player from '../player/Character';
+import Character from '../player/Character';
 import Point from '../Point';
 import BonusObject from './BonusObject';
 
@@ -49,14 +49,14 @@ export default class SlownessBonus extends BonusObject {
      * @param AppliedBy Player who gets bonus.
      * @param position Bonus position.
      */
-       public applied(AppliedBy: Player, position: Point = new Point(0, 0)) {
+    public applied(AppliedBy: Character, position: Point = new Point(0, 0)) {
         this.spawned = false;
         const cell = Scene.Field.item((Cell) => {
             return Cell.position.x === position.x &&
             Cell.position.y === position.y;
         });
         cell.busy = false;
-              this.applyBonusToPlayers([AppliedBy]);
+        this.applyBonusToPlayers([AppliedBy]);
     }
 
     /**
@@ -64,7 +64,7 @@ export default class SlownessBonus extends BonusObject {
      *
      * @returns Bonus image.
      */
-       public getSkin(): HTMLImageElement {
+    public getSkin(): HTMLImageElement {
         return this.skin;
     }
 
@@ -73,7 +73,7 @@ export default class SlownessBonus extends BonusObject {
      *
      * @returns Bonus name.
      */
-       public getBonusName(): string {
+    public getBonusName(): string {
         return 'BONUS:SLOW';
     }
 }

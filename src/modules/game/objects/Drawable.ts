@@ -25,7 +25,7 @@ export default abstract class Drawable {
      */
     protected get scale(): number {
         const scaleFactor = this.canvasWidth > this.canvasHeight ? this.canvasHeight : this.canvasWidth;
-              return scaleFactor / Scene.size;
+        return scaleFactor / Scene.size;
     }
 
     /**
@@ -50,11 +50,11 @@ export default abstract class Drawable {
      */
     protected circle(x: number, y: number, radius: number): void {
         this.canvas.save();
-              this.canvas.beginPath();
-              this.canvas.arc(x, y, radius, 0, 2 * Math.PI);
-              this.canvas.fill();
-              this.canvas.closePath();
-              this.canvas.clip();
+        this.canvas.beginPath();
+        this.canvas.arc(x, y, radius, 0, 2 * Math.PI);
+        this.canvas.fill();
+        this.canvas.closePath();
+        this.canvas.clip();
     }
 
     /**

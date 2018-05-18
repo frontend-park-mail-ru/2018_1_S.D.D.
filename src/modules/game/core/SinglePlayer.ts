@@ -62,10 +62,10 @@ export default class SinglePlayer extends Game {
                 };
                 const last = Bonus.lastSpawned;
                 if (last === -1 || now - last > 1000) {
-                    if (rC(0, 3) == 0) {
+                    if (rC(0, 3) === 0) {
                         let spawned = false;
                         while (!spawned) {
-                        const bonusPosition = new Point(rC(0, 7), rC(0, 7));
+                        const bonusPosition = new Point(rC(0, Field.range - 1), rC(0, Field.range - 1));
                         const cell = Scene.Field.item((Cell) => {
                             return Cell.position.x === bonusPosition.x &&
                             Cell.position.y === bonusPosition.y;

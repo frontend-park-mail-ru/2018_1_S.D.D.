@@ -62,6 +62,34 @@ export default class Field {
     }
 
     /**
+     * Mark Cell into player ID.
+     *
+     * @param poistion X, Y position on field.
+     * @param id Player ID
+     * @param prevPosition Position form which player stepped on this cell.
+     */
+    public markCell(position: Point, id: number, prevPosition?: Point): void {
+        // if last player's step was rounded area,
+        // it should be visible 1 more step
+        if (Scene.Players.item((player) => player.id === id) &&
+            Scene.Players.item((player) => player.id === id).gotScore) {
+            this.countScoresForPlayer(id);
+            Scene.Players.item((player) => player.id === id).gotScore = false;
+        }
+
+        if (this.cellsMatrix[position.y][position.x].player !== id) {
+            this.cellsMatrix[position.y][position.x].player = id;
+            this.cellsMatrix[position.y][position.x].bad = false;
+            this.cellsMatrix[position.y][position.x].scored = false;
+        }
+        if (prevPosition) {
+            this.checkNeighborCell(position, prevPosition, id).forEach((cell) => {
+                this.checkArea(cell, id);
+            });
+        }
+    }
+
+    /**
      * After stepping on cell we need mark this cell.
      */
     private subscribeStep(): void {
@@ -93,34 +121,6 @@ export default class Field {
         check(checkPosition.x, checkPosition.y - 1);
 
         return checkedCells;
-    }
-
-    /**
-     * Mark Cell into player ID.
-     *
-     * @param poistion X, Y position on field.
-     * @param id Player ID
-     * @param prevPosition Position form which player stepped on this cell.
-     */
-    public markCell(position: Point, id: number, prevPosition?: Point): void {
-        // if last player's step was rounded area,
-        // it should be visible 1 more step
-        if (Scene.Players.item((player) => player.id === id) &&
-            Scene.Players.item((player) => player.id === id).gotScore) {
-            this.countScoresForPlayer(id);
-            Scene.Players.item((player) => player.id === id).gotScore = false;
-        }
-
-        if (this.cellsMatrix[position.y][position.x].player !== id) {
-            this.cellsMatrix[position.y][position.x].player = id;
-            this.cellsMatrix[position.y][position.x].bad = false;
-            this.cellsMatrix[position.y][position.x].scored = false;
-        }
-        if (prevPosition) {
-            this.checkNeighborCell(position, prevPosition, id).forEach((cell) => {
-                this.checkArea(cell, id);
-            });
-        }
     }
 
     /**
