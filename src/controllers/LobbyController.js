@@ -19,7 +19,7 @@ class LobbyController extends Controller {
     }
 
     addActions() {
-        this.addAction('index', this.actionStub);
+        this.addAction('index', this.actionShowLobbies);
     }
 
     subscribeEvents() {
