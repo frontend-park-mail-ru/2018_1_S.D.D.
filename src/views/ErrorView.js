@@ -11,30 +11,30 @@ import HeaderTemplate from '../ui/templates/header/';
  * @classdesc Error view. Render, shows, hide page.
  */
 class ErrorView extends View {
-	/**
-	 * Creates instance of ErrorView
-	 */
-	constructor() {
-		super();
-	}
+    /**
+     * Creates instance of ErrorView
+     */
+    constructor() {
+        super();
+    }
     
-	constructPage(data = {}) {
-		this._data = data;
+    constructPage(data = {}) {
+        this._data = data;
 
-		return this.onLoad([
-			['Header', HeaderTemplate, { appendFirst: true }],
-			['Error', ErrorTemplate, { block: 'main', reload: true }]
-		])
-			.then(() => {
-				this.showPage();
-			});
-	}
+        return this.onLoad([
+            ['Header', HeaderTemplate, { appendFirst: true }],
+            ['Error', ErrorTemplate, { block: 'main', reload: true }]
+        ])
+            .then(() => {
+                this.showPage();
+            });
+    }
 
-	showPage() {
-		this.show('Header');
-		HeaderTemplate.showLogo();
-		this.show('Error');
-	}
+    showPage() {
+        this.show('Header');
+        HeaderTemplate.showLogo();
+        this.show('Error');
+    }
 }
 
 export default ErrorView;

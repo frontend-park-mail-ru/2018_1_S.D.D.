@@ -11,30 +11,30 @@ import HeaderTemplate from '../ui/templates/header/';
  * @classdesc Error view. Render, shows, hide page.
  */
 class LobbyView extends View {
-	/**
-	 * Creates instance of LobbyView
-	 */
-	constructor() {
-		super();
-	}
+    /**
+     * Creates instance of LobbyView
+     */
+    constructor() {
+        super();
+    }
     
-	constructPage(data = {}) {
-		this._data = data;
+    constructPage(data = {}) {
+        this._data = data;
 
-		return this.onLoad([
-			['Header', HeaderTemplate, { appendFirst: true }],
-			['Lobby', LobbyTemplate, { block: 'main', reload: true }]
-		])
-			.then(() => {
-				this.showPage();
-			});
-	}
+        return this.onLoad([
+            ['Header', HeaderTemplate, { appendFirst: true }],
+            ['Lobby', LobbyTemplate, { block: 'main', reload: true }]
+        ])
+            .then(() => {
+                this.showPage();
+            });
+    }
 
-	showPage() {
-		this.show('Header');
-		HeaderTemplate.showLogo();
-		this.show('Lobby');
-	}
+    showPage() {
+        this.show('Header');
+        HeaderTemplate.showLogo();
+        this.show('Lobby');
+    }
 }
 
 export default LobbyView;
