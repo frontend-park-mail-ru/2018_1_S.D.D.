@@ -1,9 +1,6 @@
-.scores__table {
-    border-collapse: collapse;
-    margin: 40px auto;
-    table-layout: fixed;
+.scores__wrapper {
     width: 90%;
-    border-bottom: 3px solid #fff;
+    margin: auto;
 }
 
 .scores__header {
@@ -15,48 +12,12 @@
     margin: 30px auto;
 }
 
-.scores__table__th {
-    background: #fff;
-    text-align: center;
-    font-weight: bold;
-    color: #2f164e;
-    white-space: nowrap; 
-    overflow: hidden;
-    height: 35px;
-    border-bottom: 5px solid rgba(255, 255, 255, 0);;
-}
-
 .scores__table__tr_you {
     background-color:rgba(208, 212, 235, 0.274);
 }
 
 .scores__table__tr_additional {
     border-top: 3px solid #fff;
-}
-
-.scores__table__td {
-    text-align: center;
-    color: #fff;
-    white-space: nowrap; 
-    overflow: hidden;
-    height: 40px;
-    font-weight: bold;
-}
-
-.scores__table_big {
-    width: 30%;
-    padding: 8px 20px;
-}
-
-.scores__table_small {
-    width: 10%;
-    padding: 8px;
-}
-
-.scores__table_nodata {
-    color: #d6d6d6;
-    font-size: 22px;
-    font-weight: bold;
 }
 
 .scores__medal {
@@ -79,35 +40,15 @@
     font-weight: bold;
 }
 
-.scores__table__tr:hover {
-    background-color:rgba(208, 212, 235, 0.5);
-}
-
 @media screen and (max-width: 750px) {
     .scores__table_email {
         display: none;
-    }
-
-    .scores__table_big {
-        width: 43%;
-    }
-
-    .scores__table_small {
-        width: 15%;
-    }
-
-    .scores__table_nodata {
-        font-size: 18px;
     }
 }
 
 @media screen and (max-width: 500px) {
     .scores__table_games {
         display: none;
-    }
-
-    .scores__table_small {
-        width: 19%;
     }
 
     .scores__table {

@@ -17,9 +17,8 @@ class LobbyModel extends Model {
     }
 
     getLobbies() {
-        const EventBus = this.ServiceManager.EventBus;
-        const data = [{'lobbyId': 5, 'countPlayers': 4, 'additionalInfo': 'info'}];
-        EventBus.emit('showLobbies', data);
+        const Net = this.ServiceManager.Net;
+        Net.send({class: 'ShowLobbies$Request'});
     }
 }
 

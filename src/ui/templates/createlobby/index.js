@@ -1,8 +1,7 @@
 'use strict';
 
-import template from './scores.pug';
-import './scores.scss';
-import '../../styles/tables.scss';
+import template from './createlobby.pug';
+import './createlobby.scss';
 
 export default {
     render: params => {

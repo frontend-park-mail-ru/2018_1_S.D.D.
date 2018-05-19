@@ -2,6 +2,7 @@
 
 import View from './View';
 import LobbyTemplate from '../ui/templates/lobby/';
+import CreateLobbyTemplate from '../ui/templates/createlobby/';
 import HeaderTemplate from '../ui/templates/header/';
 
 /**
@@ -17,10 +18,13 @@ class LobbyView extends View {
     constructor() {
         super();
     }
+
+    addLobbyInList(data = null) {
+        LobbyTemplate.addLobbyInList(data, this.load('Lobby'));
+    }
     
     constructPage(data = {}) {
         this._data = data;
-
         return this.onLoad([
             ['Header', HeaderTemplate, { appendFirst: true }],
             ['Lobby', LobbyTemplate, { block: 'main', reload: true }]
@@ -30,10 +34,27 @@ class LobbyView extends View {
             });
     }
 
+    constructCreation(data = {}) {
+        this._data = data;
+        return this.onLoad([
+            ['Header', HeaderTemplate, { appendFirst: true }],
+            ['CreateLobby', CreateLobbyTemplate, { block: 'modal', reload: true }]
+        ])
+        .then(() => {
+            this.showCreation();
+        });
+    }
+
     showPage() {
         this.show('Header');
         HeaderTemplate.showLogo();
         this.show('Lobby');
+    }
+
+    showCreation() {
+        this.show('Header');
+        HeaderTemplate.showLogo();
+        this.show('CreateLobby');
     }
 }
 
