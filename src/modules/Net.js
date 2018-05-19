@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import ServiceManager from './ServiceManager';
 
@@ -17,11 +17,11 @@ export default class Net {
         this.socket.onmessage = this.messageHandler;
         this.socket.onopen = () => {
             this.ready = true;
-        }
+        };
         this.socket.onclose = () => {
             this.ready = false;
             this.disconnected = true;
-        }
+        };
     }
 
     send(msg) {
@@ -31,7 +31,7 @@ export default class Net {
         if (!this.ready) {
             setTimeout(() => {
                 this.send(msg);
-            }, 200)
+            }, 200);
         } else {
             this.socket.send(JSON.stringify(msg));
         }
@@ -40,7 +40,7 @@ export default class Net {
     messageHandler(msg) {
         const data = JSON.parse(msg.data);
         const EventBus = new ServiceManager().EventBus;
-        console.log(data)
+        //console.log(data);
         EventBus.emit(`WS:${data.class}`, data);
     }
 }

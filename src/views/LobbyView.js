@@ -40,9 +40,9 @@ class LobbyView extends View {
             ['Header', HeaderTemplate, { appendFirst: true }],
             ['CreateLobby', CreateLobbyTemplate, { block: 'modal', reload: true }]
         ])
-        .then(() => {
-            this.showCreation();
-        });
+            .then(() => {
+                this.showCreation();
+            });
     }
 
     showPage() {

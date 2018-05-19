@@ -7,7 +7,7 @@ import './lobby.scss';
 export default {
     subscribeOpen: function(tr) {
         tr.addEventListener('click', () => {
-            console.log('connected to ', tr.getAttribute('data-id'));
+            //console.log('connected to ', tr.getAttribute('data-id'));
         });
     },
 
