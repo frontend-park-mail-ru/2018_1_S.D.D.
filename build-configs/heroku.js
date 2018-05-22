@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const serverUrl = 'https://color-it-back.herokuapp.com';
-const wsAddress = 'ws://color-it-back.herokuapp.com/game';
+const wsAddress = 'wss://color-it-back.herokuapp.com/game';
 
 module.exports = {
     serverUrl: serverUrl,
