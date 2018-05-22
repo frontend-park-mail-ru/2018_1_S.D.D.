@@ -152,6 +152,16 @@ class Router {
         return params;
     }
 
+    getAdditionalParams(url) {
+        let params = url.split('?');
+        params = params.length > 0 ? params[1] : false;
+        if (!params || params.length === 0) {
+            return false;
+        }
+        params = params.split('&');
+        // TODO
+    }
+
     /**
      * Loads page associated with url 
      * 

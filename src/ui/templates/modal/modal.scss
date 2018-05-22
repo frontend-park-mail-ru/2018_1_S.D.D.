@@ -13,6 +13,7 @@
         -moz-transition: $animation-disabled;
         -webkit-transition: $animation-disabled;
         transition: $animation-disabled;
+        text-align: center;
     }
 
     &__outer {
@@ -49,7 +50,7 @@
 
     &__window-holder {
         top: 50px;
-        width: 80%;
+        display: inline-block;
         position: relative;
         margin: auto;
         z-index: 100;

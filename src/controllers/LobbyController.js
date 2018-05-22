@@ -21,12 +21,15 @@ class LobbyController extends Controller {
     addActions() {
         this.addAction('index', this.actionGetLobbies);
         this.addAction('create', this.actionCreateLobby);
+        this.addAction('room', this.actionOnlineLobby);
+        this.addAction('offline', this.actionOfflineLobby);
     }
 
     subscribeEvents() {
         const EventBus = this.ServiceManager.EventBus;
         EventBus.subscribe('WS:Lobbies', this.showLobbies, this);
         EventBus.subscribe('WS:OneLobbyInfo', this.addLobbyInList, this);
+        EventBus.subscribe('WS:OneLobbyInfo', this.connectToLobby, this);
         EventBus.subscribe('logout', () => {
             this.showLobbies();
         }, this);
@@ -57,18 +60,14 @@ class LobbyController extends Controller {
             }
         };
         this.LobbyView.constructCreation(pageData);
-        // const object = {
-        //     "class": "LobbyMessage",
-        //     "action": "CREATE",
-        //     "settings": {
-        //         "gameTime": 60,
-        //         "fieldSize": 5,
-        //         "isMultiplayer": true,
-        //         "name": "Hello go fight!"
-        //     }
-        // }
-        
-        // this.ServiceManager.Net.send(object);
+    }
+
+    actionOnlineLobby() {
+
+    }
+
+    actionOfflineLobby() {
+
     }
 
     showLobbies(data = null) {
@@ -79,6 +78,12 @@ class LobbyController extends Controller {
             }
         };
         this.LobbyView.constructPage(pageData);
+    }
+
+    connectToLobby(data = null) {
+        if (data.owner === this.ServiceManager.UserStorage.getData('nickname')) {
+            this.ServiceManager.Router.re(`/lobby/room/${data.id}`);
+        }
     }
 
     addLobbyInList(data = null) {

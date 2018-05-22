@@ -1,4 +1,19 @@
-center CREATE NEW GAME
-if loggedIn
-    .chooseMode
-        .choose
+.create-lobby CREATE NEW GAME
+    .choose-mode Mode:
+        br
+        if loggedIn
+            .choose(data-multiplayer='true').choosen MULTIPLAYER
+            .choose(data-multiplayer='false') SINGLEPLAYER
+            .choose(data-multiplayer="offline") PLAY OFFLINE
+        else
+            .choose(data-multiplayer="offline") PLAY OFFLINE
+    .choose-timer Time:
+        br
+        input(type="text" value="60" name="timer") 
+        | seconds
+    .choose-field Field size:
+        br
+        input(type="text" value="8" name="size") 
+        | cells&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    button.btn.btn_common.btn_creategame CREATE GAME
