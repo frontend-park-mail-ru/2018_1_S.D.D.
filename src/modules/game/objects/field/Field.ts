@@ -1,5 +1,6 @@
 import GameEventBus from '../../GameEventBus';
 import Scene from '../../Scene';
+import SessionSettings from '../../SessionSettings';
 import { DEFAULT_FIELD_RANGE } from '../../settings';
 import Composite from '../Composite';
 import Point from '../Point';
@@ -27,7 +28,7 @@ export default class Field {
      *
      * @param range Field size: Range X Range.
      */
-    constructor(range: number = DEFAULT_FIELD_RANGE) {
+    constructor(range: number = SessionSettings.size) {
         Field.range = range;
         this.subscribeStep();
     }

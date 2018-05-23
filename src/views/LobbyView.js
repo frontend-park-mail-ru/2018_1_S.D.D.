@@ -3,6 +3,7 @@
 import View from './View';
 import LobbyTemplate from '../ui/templates/lobby/';
 import CreateLobbyTemplate from '../ui/templates/createlobby/';
+import RoomTemplate from '../ui/templates/room/';
 import HeaderTemplate from '../ui/templates/header/';
 
 /**
@@ -45,6 +46,17 @@ class LobbyView extends View {
             });
     }
 
+    constructRoom(data = {}) {
+        this._data = data;
+        return this.onLoad([
+            ['Header', HeaderTemplate, { appendFirst: true }],
+            ['Room', RoomTemplate, { block: 'modal', reload: true }]
+        ])
+            .then(() => {
+                this.showRoom();
+            });
+    }
+
     showPage() {
         this.show('Header');
         HeaderTemplate.showLogo();
@@ -55,6 +67,12 @@ class LobbyView extends View {
         this.show('Header');
         HeaderTemplate.showLogo();
         this.show('CreateLobby');
+    }
+
+    showRoom() {
+        this.show('Header');
+        HeaderTemplate.showLogo();
+        this.show('Room');
     }
 }
 

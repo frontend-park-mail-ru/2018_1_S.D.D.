@@ -25,19 +25,21 @@ export default {
             const Net = SM.Net;
             
             const choosen = elem.querySelector('.choosen').dataset.multiplayer;
+            const time = elem.querySelector('input[name=timer]').value;
+            const field = elem.querySelector('input[name=size]').value;
             if (choosen !== 'offline' && params.loggedIn) {
                 const lobbyCreateRequest = {
                     'class': 'LobbyMessage',
                     'action': 'CREATE',
                     'settings': {
-                        'gameTime': elem.querySelector('input[name=timer]').value,
-                        'fieldSize': elem.querySelector('input[name=size]').value,
+                        'gameTime': time,
+                        'fieldSize': field,
                         'isMultiplayer': choosen
                     }
                 };
                 Net.send(lobbyCreateRequest);
             } else {
-                Router.re('/lobby/offline');
+                Router.re(`/lobby/offline?time=${time}&field=${field}`);
             }
         });
 

@@ -5,6 +5,7 @@ import SinglePlayer from './core/SinglePlayer';
 import GameEventBus from './GameEventBus';
 import { IPlayerData } from './playerdata';
 import Scene from './Scene';
+import SessionSettings from './SessionSettings';
 
 /**
  * Initialize game. Sets mode.
@@ -28,14 +29,8 @@ export default class GameInitializer {
         Scene.sceneCanvas = View.getScene();
         Scene.sceneMetaBlock = View.getMetaBlock();
         Scene.viewController = View;
-        const User = new ServiceManager().UserStorage;
-        const Me: IPlayerData = {
-            avatar: User.getData('avatar'),
-            name: User.getData('nickname'),
-        };
-
-        if (!room || room === '') {
-            this.game = new SinglePlayer(Me);
+        if (SessionSettings.mode === 'offline') {
+            this.game = new SinglePlayer();
         } else {
             // Get Other PLayers
             // new MultiPlayer(Me, OtherPlayers);

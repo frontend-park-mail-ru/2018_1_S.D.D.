@@ -41,6 +41,15 @@ class Router {
         return window.location.pathname;
     }
 
+    /** 
+     * Returns current page url path including GET params.
+     * 
+     * @return {string} Current path with GET params.
+     */
+    getCurrentHref() {
+        return window.location.pathname + window.location.search;
+    }
+
     requestConfirm(message) {
         this._confirm = true;
         this._confirmMessage = message;
@@ -53,8 +62,8 @@ class Router {
      */
     go(urlPath, pushState = true) {
         const go = () => {
-            if (urlPath !== this.getCurrentUrlPath() && pushState) {
-                this._last = this.getCurrentUrlPath();
+            if (urlPath !== this.getCurrentHref() && pushState) {
+                this._last = this.getCurrentHref();
                 window.history.pushState({}, '', urlPath);
             }
             this.loadPage(urlPath);
@@ -79,7 +88,6 @@ class Router {
     re(urlPath) {
         const go = () => {
             window.history.replaceState({}, '', urlPath);
-            this._last = urlPath;
             this.loadPage(urlPath);
         };
 
@@ -152,14 +160,16 @@ class Router {
         return params;
     }
 
-    getAdditionalParams(url) {
-        let params = url.split('?');
-        params = params.length > 0 ? params[1] : false;
-        if (!params || params.length === 0) {
-            return false;
-        }
-        params = params.split('&');
-        // TODO
+    /**
+     * Parse GET params.
+     * 
+     * @param {string} key
+     * @returns GET parameter.
+     */
+    getAdditionalParams(key) {
+        const url = window.location.href;
+        const urlObject = new URL(url);
+        return urlObject.searchParams.get(key);
     }
 
     /**
@@ -189,6 +199,7 @@ class Router {
         this.currentRoute = route;
 
         const params = this.getParams(newUrlPath);
+        action = action.split('?')[0] ? action.split('?')[0] : action;
 
         if (!this.currentRoute.load(action, params)) {
             route = this.notFound();
@@ -201,7 +212,7 @@ class Router {
      * Get previous page link.
      */
     get last() {
-        if (!this._last || this._last === this.getCurrentUrlPath()) {
+        if (!this._last || this._last === this.getCurrentHref()) {
             return '/';
         }
         return this._last;

@@ -6,6 +6,7 @@ import Field from '../objects/field/Field';
 import Character from '../objects/player/Character';
 import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
+import SessionSettings from '../SessionSettings';
 import { GAME_DURATION } from '../settings';
 
 /**
@@ -89,7 +90,7 @@ export default abstract class Game {
      * Initialize base components.
      */
     protected baseInit(): void {
-        this.timer = GAME_DURATION;
+        this.timer = SessionSettings.time;
         this.Scene.clearObjects();
         Scene.Bonuses.add(new SlowPoke());
         Scene.Bonuses.add(new ColorLine());

@@ -26,7 +26,6 @@ class GameController extends Controller {
     }
 
     actionIndex(room) {
-        //this.ServiceManager.Router.requestConfirm('Are you sure you wanna leave this page? Game results wont be save!');
         this.GameView.constructPage()
             .then(() => {
                 if (this.GameManager) {
