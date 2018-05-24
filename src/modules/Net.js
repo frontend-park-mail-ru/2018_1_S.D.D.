@@ -4,11 +4,15 @@ import ServiceManager from './ServiceManager';
 
 export default class Net {
     constructor(SocketAddr) {
+        
         this.socketAddres = SocketAddr;
         this.socket = null;
         this.ready = false;
         this.disconnected = true;
         this.connect();
+        window.onbeforeunload = () => {
+            this.disconnect();
+        };
     }
 
     connect() {
@@ -42,5 +46,10 @@ export default class Net {
         const EventBus = new ServiceManager().EventBus;
         //console.log(data);
         EventBus.emit(`WS:${data.class}`, data);
+    }
+
+    disconnect() {
+        this.socket.onclose = () => {};
+        this.socket.close();
     }
 }
