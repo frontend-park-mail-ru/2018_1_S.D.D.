@@ -57,6 +57,10 @@ class LobbyView extends View {
             });
     }
 
+    addPlayersToRoom(players, isowner) {
+        RoomTemplate.addPlayersToRoom(this.load('Room'), players, isowner);
+    }
+
     showPage() {
         this.show('Header');
         HeaderTemplate.showLogo();

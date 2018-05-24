@@ -13,6 +13,7 @@ class LobbyController extends Controller {
             return LobbyController.__instance;
         }    
         LobbyController.__instance = this;
+        this.isOwner = false;
         
         this.LobbyView = new LobbyView();
         this.LobbyModel = new LobbyModel();
@@ -31,7 +32,9 @@ class LobbyController extends Controller {
         const EventBus = this.ServiceManager.EventBus;
         EventBus.subscribe('WS:Lobbies', this.showLobbies, this);
         EventBus.subscribe('WS:OneLobbyInfo', this.addLobbyInList, this);
-        EventBus.subscribe('WS:OneLobbyInfo', this.connectToLobby, this);
+        EventBus.subscribe('WS:OneLobbyInfo', this.connectToMyLobby, this);
+        EventBus.subscribe('WS:LobbyConnected', this.connectToLobby, this);
+        EventBus.subscribe('WS:LobbyStateMessage', this.changedState, this);
         EventBus.subscribe('logout', () => {
             this.showLobbies();
         }, this);
@@ -65,30 +68,14 @@ class LobbyController extends Controller {
     }
 
     actionOnlineLobby() {
-        const Router = this.ServiceManager.Router;
-        const field = Router.getAdditionalParams('field');
-        const time = Router.getAdditionalParams('time');
-
-        const US = this.ServiceManager.UserStorage;
-        let username = 'Mr. Incognito';
-        let useravatar = defaultAvatar;
-        const owner = {
-            name: username,
-            avatar: useravatar
-        };
-
-        if (US.getBooleanData('loggedin')) {
-            owner.name = US.getData('nickname');
-            owner.avatar = US.getData('avatar') !== 'null' ? US.getData('avatar') : useravatar;
-        }
         const pageData = {
             'Room': {
-                owner: owner,
+                owner: SessionSettings.players[0],
                 isOwner: true,
-                lobbyname: 'OFFLINE Lobby',
-                mode: 'offline',
-                field: field,
-                time: time
+                lobbyname: SessionSettings.lname,
+                mode: SessionSettings.mode,
+                field: SessionSettings.size,
+                time: SessionSettings.time
             }
         };
         
@@ -139,31 +126,72 @@ class LobbyController extends Controller {
         this.LobbyView.constructPage(pageData);
     }
 
-    connectToLobby(data = null) {
+    connectToMyLobby(data = null) {
         if (data.owner === this.ServiceManager.UserStorage.getData('nickname')) {
-            SessionSettings.mode = 'offline';
+            SessionSettings.mode = 'multiplayer';
             SessionSettings.time = data.gameTime;
             SessionSettings.size = data.fieldSize;
-            
+            SessionSettings.lname = data.name;
+            this.isOwner = true;
             const US = this.ServiceManager.UserStorage;
-            let username = 'Mr. Incognito';
-            let useravatar = defaultAvatar;
-            const owner = {
-                name: username,
-                avatar: useravatar
-            };
+
+            const owner = {};
 
             if (US.getBooleanData('loggedin')) {
                 owner.name = US.getData('nickname');
-                owner.avatar = US.getData('avatar') !== 'null' ? US.getData('avatar') : useravatar;
+                owner.avatar = US.getData('avatar') !== 'null' ? US.getData('avatar') : defaultAvatar;
             }
-            SessionSettings.players.push(owner);
+            SessionSettings.players[0] = owner;
             this.ServiceManager.Router.re(`/lobby/room/${data.id}`);
         }
     }
 
     addLobbyInList(data = null) {
         this.LobbyView.addLobbyInList(data);
+    }
+
+    connectToLobby(data = null) {
+        // tut sdelat cherez sessionsettings kak na 131 str
+        this.isOwner = false;
+        let players = [];
+        data.users.forEach(user => {
+            players.push({
+                avatar: defaultAvatar,
+                name: user
+            });
+        });
+
+        const US = this.ServiceManager.UserStorage;
+        const me = {};
+        me.name = US.getData('nickname');
+        me.avatar = US.getData('avatar') !== 'null' ? US.getData('avatar') : defaultAvatar;
+
+        players.push(me);
+
+        const pageData = {
+            'Room': {
+                owner: false,
+                isOwner: false,
+                lobbyname: data.name,
+                mode: 'multiplayer',
+                field: data.fieldSize,
+                time: data.gameTime,
+                players: players
+            }
+        };
+        
+        this.LobbyView.constructRoom(pageData);
+    }
+
+    changedState(data = null) {
+        switch (data.action) {
+        case 'CONNECTED':
+            this.LobbyView.addPlayersToRoom([{
+                avatar: defaultAvatar,
+                name: data.nickname
+            }], this.isOwner);
+            break;
+        }
     }
     
 }

@@ -34,7 +34,8 @@ export default {
                     'settings': {
                         'gameTime': time,
                         'fieldSize': field,
-                        'isMultiplayer': choosen
+                        'isMultiplayer': choosen,
+                        'name': 'Lobby name stub [templates/create/index]'
                     }
                 };
                 Net.send(lobbyCreateRequest);

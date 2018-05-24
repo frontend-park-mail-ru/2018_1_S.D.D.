@@ -1,13 +1,15 @@
+include ./member.pug
 .room__name #{lobbyname}
 .room__wrapper
     .room__members
         b PLAYERS
-        .member
-            .member__avatar.member__property
-                img(src=owner.avatar, alt="")
-            .member__nickname.member__property #{owner.name}
-            if isOwner
-                .member__remove.member__property &#10006;
+        if owner
+            .member
+                +mmbr(owner, isOwner)
+        if players
+            each player in players
+                .member
+                    +mmbr(player, false)
     .room__settings 
         b GAME SETTINGS
         .settings__time.settings__item Time: #{time} seconds

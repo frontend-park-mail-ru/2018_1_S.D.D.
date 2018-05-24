@@ -3,11 +3,20 @@
 import template from './lobby.pug';
 import rowmixin from './row.pug';
 import './lobby.scss';
+import ServiceManager from '../../../modules/ServiceManager';
 
 export default {
     subscribeOpen: function(tr) {
         tr.addEventListener('click', () => {
-            //console.log('connected to ', tr.getAttribute('data-id'));
+            const id = tr.getAttribute('data-id');
+            const SM = new ServiceManager();
+            const Net = SM.Net;
+            const connectRequest = {
+                'class': 'LobbyMessage',
+                'action': 'CONNECT',
+                'id': id
+            };
+            Net.send(connectRequest);
         });
     },
 
