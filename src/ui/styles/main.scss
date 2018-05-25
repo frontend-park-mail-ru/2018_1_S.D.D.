@@ -39,15 +39,12 @@
     transition: $animation-template;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    font-family: $font-family;
-}
-
-body {
-    background: linear-gradient(-50deg, $bg-grad-start, $bg-grad-end);
-    background-attachment: fixed;
+.animation-disabled {
+    -o-transition: $animation-disabled !important;
+    -ms-transition: $animation-disabled !important;
+    -moz-transition: $animation-disabled !important;
+    -webkit-transition: $animation-disabled !important;
+    transition: $animation-disabled !important;
 }
 
 /* LISTS STYLE */
@@ -95,6 +92,21 @@ body {
 
     &_common:hover {
         background: $color-light;
+    }
+
+    &_inverse {
+        color: $btn-color-common;
+        background: $color-light;
+        text-decoration: none;
+    }
+
+    &_inverse:hover {
+        background: $btn-bg-common;
+        color: $btn-color-common;
+    }
+
+    &_small {
+        padding: 0px 10px;
     }
 }
 
@@ -168,8 +180,8 @@ main {
 
     main {
         display: block;
-        top: #{$header-height-big};
-        height: auto;
+        //top: #{$header-height-big};
+        height: calc(100% - #{$header-height-big})
     }
 
     .block_w50p {
@@ -199,7 +211,7 @@ main {
 
 @media screen and (max-width: 448px) {
     main {
-        top: calc(#{$header-height-big});
-        height: calc(100% - #{$header-height-big} - #{$header-height-big})
+        top: #{$header-logo-size};
+        height: calc(100% - #{$header-height-big} - #{$header-logo-size})
     }
 }

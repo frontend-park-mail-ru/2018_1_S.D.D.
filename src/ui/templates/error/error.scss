@@ -3,66 +3,66 @@ $link-color: #16174e;
 $link-color-active: #16174e;
 
 .error {
-	width: 100%;
-	height: 80%;
-	text-align: center;
-	display: flex;
+    width: 100%;
+    height: 80%;
+    text-align: center;
+    display: flex;
     align-items: center;
     align-content: center; 
-	justify-content: center;
-	position: fixed;
+    justify-content: center;
+    position: fixed;
 
-	&_wrapper {
-		position: relative;
-		margin: auto;
-	}
-	
-	&__smile {
-		height: 100px;
-		margin-bottom: 20px;
-	}
-	
-	&__header {
-		color: $text-color;
-		font-size: 42px;
-		font-weight: bold;
-	}
-	
-	&__message {
-		color: $text-color;
-		font-size: 28px;
-	}
-	
-	&__description {
-		width: 100%;
-		margin: 50px auto;
-		color: $text-color;
-		font-size: 18px;
-	}
+    &_wrapper {
+        position: relative;
+        margin: auto;
+    }
+    
+    &__smile {
+        height: 100px;
+        margin-bottom: 20px;
+    }
+    
+    &__header {
+        color: $text-color;
+        font-size: 42px;
+        font-weight: bold;
+    }
+    
+    &__message {
+        color: $text-color;
+        font-size: 28px;
+    }
+    
+    &__description {
+        width: 100%;
+        margin: 50px auto;
+        color: $text-color;
+        font-size: 18px;
+    }
 }
 
 @media screen and (max-width: 640px) {
-	.error {
-		width: 100%;
-		height: auto;
-		text-align: center;
-		display: block;
-		position: relative;
+    .error {
+        width: 100%;
+        height: auto;
+        text-align: center;
+        display: block;
+        position: relative;
 
-		&__smile {
-			height: 60px;
-			margin-bottom: 10px;
-		}
-		
-		&__header {
-			color: $text-color;
-			font-size: 32px;
-			font-weight: bold;
-		}
-		
-		&__message {
-			color: $text-color;
-			font-size: 18px;
-		}
-	}
+        &__smile {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        
+        &__header {
+            color: $text-color;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        &__message {
+            color: $text-color;
+            font-size: 18px;
+        }
+    }
 }

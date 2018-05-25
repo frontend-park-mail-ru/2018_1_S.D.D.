@@ -1,3 +1,27 @@
-.lobby
-	a(href='/lobby/create').btn
-	| No Lobby
+.lobbies__wrapper
+    a(href='/lobby/create').btn.btn_inverse.lobbies__create Create game
+    .lobbies__list
+        table.table
+            tbody
+                th.table__th.table_big Lobby
+                th.table__th.table_big.lobby-host Host
+                th.table__th.table_small Size
+                th.table__th.table_small Time
+                th.table__th.table_small Players
+                if loggedIn
+                    - var lobbies = lobby.lobbies;
+                    if lobbies.length === 0
+                        tr.table__tr
+                            td(colspan="5").table__td.table_nodata 
+                                | NO ONE PLAYS NOW :(
+                                br
+                                | YOU CAN 
+                                a(href='/lobby/create') CREATE
+                                |  LOBBY BY YOURSELF
+                    else
+                        include ./row.pug
+                        each lobby in lobbies
+                            +row(lobby)
+                else
+                    tr.table__tr
+                        td(colspan="5").table__td.table_nodata YOU SHOULD LOGIN TO PLAY ONLINE

@@ -4,27 +4,41 @@ import template from './scene.pug';
 import './scene.scss';
 
 export default {
-	setSize: (template, parent) => {
-		const canvas = template.querySelector('.scene');
-		const resolutionX = 1900;
-		const resolutionY = 859;
+    setSize: function(template, parent) {
+        const canvas = template.querySelector('.scene');
 
-		const tw = parent.clientWidth / resolutionX;
-		const th = parent.clientHeight / resolutionY;
+        const w = template.querySelector('.scene-holder').clientWidth;
+        const h = parent.clientHeight - 10;
 
-		let t = tw > th ? th : tw;
-		t = t > 1 ? 1 / t : t;
-		canvas.height = resolutionY * t;
-		canvas.width = (resolutionX - 20) * t;
-	},
+        let t = w > h ? h : w;
+        //t = t / 2;
+        canvas.style.width = `${t}px`;
+        canvas.style.height = `${t}px`;
+        if (window.devicePixelRatio > 1) {
+            t *= 2; // Reina display
+        }
+        canvas.height = t;
+        canvas.width = t;
+    },
 
-	render: params => {
-		const elem = document.createElement('div');
-		elem.innerHTML = template(params);
-		return elem;
-	},
+    render: function(params) {
+        const elem = document.createElement('div');
+        elem.innerHTML = template(params);
+        const main = params.main;
+        window.addEventListener('resize', () => {
+            this.setSize(elem, main);
+        });
+        window.addEventListener('orientationchange', () => {
+            this.setSize(elem, main);
+        });
+        return elem;
+    },
 
-	getScene: template => {
-		return template.querySelector('.scene');
-	}
+    getScene: template => {
+        return template.querySelector('.scene');
+    },
+
+    getMetaBlock: template => {
+        return template.querySelector('.game-meta');
+    }
 };

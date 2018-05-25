@@ -1,19 +1,84 @@
-.modal-dialog__wrapper {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	top: 0;
-	z-index: 100;
-	background: rgba(50, 50, 70, 0.8);
+@import '../../styles/constants';
+
+.modal-dialog {
+    &__wrapper {
+        min-width: 320px;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        -o-transition: $animation-disabled;
+        -ms-transition: $animation-disabled;
+        -moz-transition: $animation-disabled;
+        -webkit-transition: $animation-disabled;
+        transition: $animation-disabled;
+        text-align: center;
+    }
+
+    &__outer {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        background: rgba(50, 50, 70, 0.8);
+        z-index: 90;
+        cursor: pointer;
+        &:hover {
+            background: rgba(50, 50, 70, 0.9);
+        }
+    }
+    
+    &__close {
+        font-size: 20px;
+        text-align: center;
+        padding: 10px 0;
+        color: #ddd;
+        position: absolute;
+        right: 0px;
+        top: 10px;
+        z-index: 100;
+        cursor: pointer;
+        width: 40px;
+        height: 20px;
+
+        &:hover {
+            background: rgba(30, 30, 48, 0.9);
+            border-radius: 50px;
+        }
+    }
+
+    &__window-holder {
+        top: 50px;
+        display: inline-block;
+        position: relative;
+        margin: auto;
+        z-index: 100;
+        margin-bottom: 10px;
+    }
 }
 
-.modal-dialog__close {
-	padding: 50px 50px 0 0;
-	font-size: 36px;
-	font-weight: bold;
-	text-align: right;
-	color: #ddd;
-}
-.modal-dialog__content {
+.window {
+    &__wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #ddd;
+        border-radius: 5px;
+    }
 
+    &__content {
+        width: 90%;
+        margin: auto;
+        padding: 10px;
+    }
+}
+
+.content__header {
+    border-bottom: 1px solid rgb(189, 189, 189);
+}
+
+.outer-wrapper {
+    width: 95%;
+    margin: auto;
 }

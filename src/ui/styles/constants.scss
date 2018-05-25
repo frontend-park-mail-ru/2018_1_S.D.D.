@@ -2,6 +2,7 @@
 $animation-delay: .5s;
 $animation-disabled: .0s;
 $animation-template: .8s;
+$progress-delay: 1s;
 
 //colors
 $bg-grad-start: rgb(47, 22, 78);
@@ -19,6 +20,9 @@ $btn-disabled-bg: rgb(189, 190, 192);
 $btn-disabled-color: rgb(112, 112, 112);
 $color-good: rgb(25, 128, 42);
 $color-bad: rgb(128, 25, 25);
+$color-win: rgb(25, 128, 42);
+$color-lost: rgb(128, 25, 25);
+$progress-bar-color: rgb(255, 241, 179);
 
 //sizes
 $header-height-big: 90px;

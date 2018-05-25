@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="401.04877" height="187.39253" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient xlink:href="#linearGradient1683" id="linearGradient2642" x1="0.548874" y1="-1.982402" x2="0.548874" y2="0.141282"/>
+  <linearGradient id="linearGradient1683">
+   <stop offset="0" id="stop1684" stop-color="#68db0c"/>
+   <stop offset="1" id="stop1685" stop-color="#387606"/>
+  </linearGradient>
+ </defs>
+ <metadata id="metadata2684">image/svg+xml</metadata>
+ <g>
+  <title>Layer 1</title>
+  <g id="layer1">
+   <g id="g2649">
+    <path id="path2603" d="m114.743134,2.80563l-111.937474,90.093754l111.937474,91.6875l0,-45.4375l12.90625,0l4.9375,0l153.71875,0l0,45.4375l111.9375,-91.6875l-111.9375,-90.093754l0,45.4375l-153.71875,0l-4.9375,0l-12.90625,0l0,-45.4375z" stroke-miterlimit="4" stroke-linejoin="round" stroke-width="5.611277" stroke="url(#linearGradient2642)" fill-rule="evenodd" fill="#3f7f00"/>
+    <path id="path2605" d="m107.836884,18.05563l-93.968783,75.218754l93.968783,16.4375l19.8125,0l0,0.125l165.5,0l93.9375,-16.46875l-93.9375,-75.187504l0,37.9375l-160.625,0l0,-0.125l-24.6875,0l0,-37.9375z" stroke-miterlimit="4" stroke-width="8.75" fill-rule="evenodd" fill="#3f7f00"/>
+   </g>
+  </g>
+ </g>
+</svg>

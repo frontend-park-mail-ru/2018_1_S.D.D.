@@ -14,8 +14,8 @@ import LobbyController from './controllers/LobbyController';
 const SM = new ServiceManager();
 
 if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('/sw.js', {scope: '/'})
-		.catch(() => {});
+    navigator.serviceWorker.register('/sw.js', {scope: '/'})
+        .catch(() => {});
 }
 
 SM.Router.addRoute('error', ErrorController);
@@ -31,3 +31,4 @@ SM.Router.addRoute('lobby', LobbyController);
 
 // Check for user logged in and then load current page
 SM.Router.go('/user', false);
+

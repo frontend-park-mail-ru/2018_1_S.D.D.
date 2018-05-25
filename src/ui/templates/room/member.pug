@@ -1,0 +1,9 @@
+mixin mmbr(player, isOwner)
+    .member__avatar.member__property
+        img(src=player.avatar, alt="")
+    .member__nickname.member__property #{player.name}
+    if isOwner
+        .member__remove.member__property &#10006;
+
+if newMmbr
+    +mmbr(newMmbr, isowner)
