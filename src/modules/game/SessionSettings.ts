@@ -15,9 +15,5 @@ export default class SessionSettings {
     public static lname: string = 'Offline Game';
     public static time: number = 60;
     public static size: number = 8;
-    public static players: IPlayer[] = [{
-        avatar: defaultAvatar,
-        id: 1,
-        name: 'Mr. Incognito',
-    }];
+    public static players: IPlayer[] = [];
 }

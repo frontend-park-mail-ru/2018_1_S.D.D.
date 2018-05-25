@@ -3,6 +3,7 @@
 import Controller from './Controller';
 import GameView from '../views/GameView';
 import Game from '../modules/game';
+import SessionSettings from '../modules/game/SessionSettings';
 
 class GameController extends Controller {
     constructor () {
@@ -13,7 +14,6 @@ class GameController extends Controller {
         GameController.__instance = this;
 
         this.GameView = new GameView();
-        
         this.addActions();
         this.subscribeEvents();
     }
@@ -31,8 +31,18 @@ class GameController extends Controller {
                 if (this.GameManager) {
                     this.GameManager = this.GameManager.destroy();
                 }
+                if (SessionSettings.players.length === 0) {
+                    this.ServiceManager.Router.re('/lobby');
+                    return;
+                }
                 this.GameManager = new Game(room, this.GameView);
             });
+    }
+
+    onPageLeave() {
+        if (this.GameManager) {
+            this.GameManager = this.GameManager.destroy();
+        }
     }
     
 }

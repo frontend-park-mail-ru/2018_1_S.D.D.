@@ -36,13 +36,13 @@ export default class GameInitializer {
     /**
      * Destroy current game instance.
      *
-     * @returns True;
+     * @returns False;
      */
     public destroy(): boolean {
         GameEventBus.unSubscribeAll();
         if (this.game) {
             return this.game.destroy();
         }
-        return true;
+        return false;
     }
 }

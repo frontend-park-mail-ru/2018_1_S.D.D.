@@ -39,10 +39,10 @@ interface IGameSnapshot {
 }
 
 /**
- * Initializes player, bots.
+ * Initializes player.
  *
  * @class
- * @classdesc Defines behaviour for singleplayer mode.
+ * @classdesc Defines behaviour for mutiplayer mode.
  */
 export default class Multiplayer extends Game {
     /**
@@ -81,7 +81,7 @@ export default class Multiplayer extends Game {
         const players = data.playersSnap.forEach((player) => {
             const currentPlayer = GamePlayers.item((c) => c.id === player.id);
             currentPlayer.score = player.score;
-            currentPlayer.startPosition = player.position;
+            currentPlayer.startPosition = new Point(player.position.x, player.position.y);
             switch (player.direction) {
                 case 'LEFT':
                     currentPlayer.direction = Direction.LEFT;
@@ -111,7 +111,7 @@ export default class Multiplayer extends Game {
      * @param now Current timestamp.
      */
     protected logic(lastLogicCall: number, now: number): void {
-        // todo
+        // todo (interpolation?)
     }
 
     /**
@@ -131,7 +131,7 @@ export default class Multiplayer extends Game {
             const x = (index === 1 || index === 4) ? 0 : Field.range - 1;
             const y = index <= 2 ? 0 : Field.range - 1;
 
-            const ptoadd = new Player(player.id, nickname, new Point(x, y));
+            const ptoadd = new Player(player.id, nickname, new Point(x, y), this.me === player.id);
             ptoadd.setAvatar(player.avatar);
             this.Scene.addPlayer(ptoadd);
         });
