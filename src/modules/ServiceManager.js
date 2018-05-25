@@ -1,4 +1,5 @@
 /* global API_SERVER_ADDRESS */
+/* global WS_ADDRESS */
 
 'use strict';
 
@@ -6,6 +7,7 @@ import Router from './Router';
 import Api from './Api';
 import EventBus from './EventBus';
 import UserStorage from './Storage';
+import Net from './Net';
 
 /** Service manager object - container of major application objects */
 class ServiceManager {
@@ -22,6 +24,7 @@ class ServiceManager {
         this._ApiService = new Api(API_SERVER_ADDRESS);
         this._EventBus = new EventBus();
         this._UserStorage = new UserStorage();
+        this._Net = new Net(WS_ADDRESS);
     }
     
     /**
@@ -50,6 +53,13 @@ class ServiceManager {
      */
     get ApiService() {
         return this._ApiService;
+    }
+
+    /**
+     * Returns Net object.
+     */
+    get Net() {
+        return this._Net;
     }
 }
 

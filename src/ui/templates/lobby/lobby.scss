@@ -1,0 +1,32 @@
+@import '../../styles/constants';
+
+.lobbies {
+    &__wrapper {
+        width: 90%;
+        margin: auto;
+    }
+
+    &__create {
+        margin: 20px auto;
+    }
+}
+
+.multiplayer-not-available {
+    color: $color-light;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.lobby-connect {
+    cursor: pointer;
+}
+
+.lobby-connect:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 500px) {
+    .lobby-host {
+        display: none;
+    }
+}

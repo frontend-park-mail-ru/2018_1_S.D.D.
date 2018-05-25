@@ -1,0 +1,56 @@
+@import '../../styles/constants';
+
+.create-lobby {
+    text-align: center;
+}
+
+.choose-mode {
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
+    display: inline-block;
+}
+
+.choose {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: $btn-bg-common;
+    color: $btn-color-common;
+}
+
+.choose-timer {
+    margin: 20px;
+}
+
+.choose:hover {
+    background: $color-light;
+    color: $btn-color-common;
+}
+
+.choosen {
+    background: $btn-color-common;
+    color: $color-light;
+}
+
+.create-lobby input {
+    border: 0px;
+    border-radius: 10px;
+    padding: 5px;
+    width: 50px;
+    text-align: center;
+    margin: 10px;
+    outline: none;
+}
+
+.btn_creategame {
+    margin: 20px;
+}
+
+@media screen and (max-width: 710px) {
+    .choose {
+        display: block;
+    }
+}

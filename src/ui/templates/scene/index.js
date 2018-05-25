@@ -8,7 +8,7 @@ export default {
         const canvas = template.querySelector('.scene');
 
         const w = template.querySelector('.scene-holder').clientWidth;
-        const h = parent.clientHeight;
+        const h = parent.clientHeight - 10;
 
         let t = w > h ? h : w;
         //t = t / 2;

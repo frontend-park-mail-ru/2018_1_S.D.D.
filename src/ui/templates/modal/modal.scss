@@ -13,10 +13,11 @@
         -moz-transition: $animation-disabled;
         -webkit-transition: $animation-disabled;
         transition: $animation-disabled;
+        text-align: center;
     }
 
     &__outer {
-        position: absolute;
+        position: fixed;
         height: 100%;
         width: 100%;
         top: 0;
@@ -34,8 +35,8 @@
         padding: 10px 0;
         color: #ddd;
         position: absolute;
-        right: 20px;
-        top: 30px;
+        right: 0px;
+        top: 10px;
         z-index: 100;
         cursor: pointer;
         width: 40px;
@@ -49,10 +50,11 @@
 
     &__window-holder {
         top: 50px;
-        width: 80%;
+        display: inline-block;
         position: relative;
         margin: auto;
         z-index: 100;
+        margin-bottom: 10px;
     }
 }
 
@@ -74,4 +76,9 @@
 
 .content__header {
     border-bottom: 1px solid rgb(189, 189, 189);
+}
+
+.outer-wrapper {
+    width: 95%;
+    margin: auto;
 }

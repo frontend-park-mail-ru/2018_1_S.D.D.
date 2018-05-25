@@ -1,9 +1,14 @@
 import GameEventBus from '../../GameEventBus';
 import Scene from '../../Scene';
+import SessionSettings from '../../SessionSettings';
 import { DEFAULT_FIELD_RANGE } from '../../settings';
 import Composite from '../Composite';
 import Point from '../Point';
 import Cell from './Cell';
+
+interface IFieldState {
+    field: number[][];
+}
 
 /**
  * Initialize field.
@@ -27,7 +32,7 @@ export default class Field {
      *
      * @param range Field size: Range X Range.
      */
-    constructor(range: number = DEFAULT_FIELD_RANGE) {
+    constructor(range: number = SessionSettings.size) {
         Field.range = range;
         this.subscribeStep();
     }
@@ -59,6 +64,19 @@ export default class Field {
                 Scene.Field.add(FieldCell);
             }
         }
+    }
+
+    /**
+     * Fill field with new values
+     *
+     * @param field Field state.
+     */
+    public fillField(field: IFieldState) {
+        field.field.forEach((row, y) => {
+            row.forEach((playerId, x) => {
+                this.cellsMatrix[y][x].player = playerId;
+            });
+        });
     }
 
     /**

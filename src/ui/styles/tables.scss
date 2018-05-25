@@ -1,0 +1,90 @@
+@import '../styles/constants';
+
+.table {
+    border-collapse: collapse;
+    margin: 40px auto;
+    table-layout: fixed;
+    width: 100%;
+    border-bottom: 3px solid #fff;
+
+    &__th {
+        background: #fff;
+        text-align: center;
+        font-weight: bold;
+        color: #2f164e;
+        white-space: nowrap; 
+        overflow: hidden;
+        height: 35px;
+        border-bottom: 5px solid rgba(255, 255, 255, 0);;
+    }
+
+    &__tr {
+        color: #fff;
+    }
+
+    &__td {
+        text-align: center;
+        color: #fff;
+        white-space: nowrap; 
+        overflow: hidden;
+        height: 40px;
+        font-weight: bold;
+    }
+
+    &_big {
+        width: 30%;
+        padding: 8px 20px;
+    }
+
+    &_small {
+        width: 10%;
+        padding: 8px;
+    }
+
+    &_nodata {
+        color: #d6d6d6;
+        font-size: 22px;
+        font-weight: bold;
+        padding: 5px 0;
+
+        & > a {
+            color: $color-light;
+        }
+    }
+
+    &__tr:hover {
+        background-color:rgba(208, 212, 235, 0.5);
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .table_email {
+        display: none;
+    }
+
+    .table_big {
+        width: 43%;
+    }
+
+    .table_small {
+        width: 15%;
+    }
+
+    .table_nodata {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .table_games {
+        display: none;
+    }
+
+    .table_small {
+        width: 19%;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+}
