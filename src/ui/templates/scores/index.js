@@ -2,6 +2,7 @@
 
 import template from './scores.pug';
 import './scores.scss';
+import '../../styles/tables.scss';
 
 export default {
     render: params => {

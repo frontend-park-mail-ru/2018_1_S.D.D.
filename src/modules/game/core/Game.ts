@@ -6,6 +6,7 @@ import Field from '../objects/field/Field';
 import Character from '../objects/player/Character';
 import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
+import SessionSettings from '../SessionSettings';
 import { GAME_DURATION } from '../settings';
 
 /**
@@ -28,7 +29,7 @@ export default abstract class Game {
     /**
      * ID of current player.
      */
-    protected me: number;
+    protected me: number = -1;
 
     /**
      * Scene object. Contains canvas and game objects.
@@ -72,7 +73,7 @@ export default abstract class Game {
     /**
      * Destroy game instance.
      *
-     * @returns True.
+     * @returns False.
      */
     public destroy(): boolean {
         this.pauseAnimationFrame();
@@ -82,14 +83,14 @@ export default abstract class Game {
         if (Game.Field.destroy()) {
             Game.Field = null;
         }
-        return true;
+        return false;
     }
 
     /**
      * Initialize base components.
      */
     protected baseInit(): void {
-        this.timer = GAME_DURATION;
+        this.timer = SessionSettings.time;
         this.Scene.clearObjects();
         Scene.Bonuses.add(new SlowPoke());
         Scene.Bonuses.add(new ColorLine());

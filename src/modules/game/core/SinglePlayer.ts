@@ -8,6 +8,7 @@ import Player from '../objects/player/Player';
 import Point from '../objects/Point';
 import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
+import SessionSettings from '../SessionSettings';
 import Game from './Game';
 
 /**
@@ -24,12 +25,10 @@ export default class SinglePlayer extends Game {
 
     /**
      * Initializes playe, bots.
-     *
-     * @param Data Data of current user.
      */
-    constructor(Data: IPlayerData) {
+    constructor() {
         super();
-        this.playerData = Data;
+        this.playerData = SessionSettings.players[0];
         this.initGame();
     }
 

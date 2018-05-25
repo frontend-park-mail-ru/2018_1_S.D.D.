@@ -1,0 +1,10 @@
+mixin row(lobby)
+    tr(data-id=lobby.id).table__tr.lobby-connect
+        td.table__td.table_big #{lobby.name}
+        td.table__td.lobby-host #{lobby.owner}
+        td.table__td.table_small #{lobby.fieldSize}
+        td.table__td.table_small #{lobby.gameTime}s
+        td.table__td.table_small #{lobby.countPlayers}/4
+
+if r
+    +row(r)

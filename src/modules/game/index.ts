@@ -1,10 +1,12 @@
 import GameView from '../../views/GameView.js';
 import ServiceManager from '../ServiceManager';
 import Game from './core/Game';
+import MultiPlayer from './core/MultiPlayer';
 import SinglePlayer from './core/SinglePlayer';
 import GameEventBus from './GameEventBus';
 import { IPlayerData } from './playerdata';
 import Scene from './Scene';
+import SessionSettings from './SessionSettings';
 
 /**
  * Initialize game. Sets mode.
@@ -28,30 +30,19 @@ export default class GameInitializer {
         Scene.sceneCanvas = View.getScene();
         Scene.sceneMetaBlock = View.getMetaBlock();
         Scene.viewController = View;
-        const User = new ServiceManager().UserStorage;
-        const Me: IPlayerData = {
-            avatar: User.getData('avatar'),
-            name: User.getData('nickname'),
-        };
-
-        if (!room || room === '') {
-            this.game = new SinglePlayer(Me);
-        } else {
-            // Get Other PLayers
-            // new MultiPlayer(Me, OtherPlayers);
-        }
+        this.game = SessionSettings.mode === 'offline' ? new SinglePlayer() : new MultiPlayer();
     }
 
     /**
      * Destroy current game instance.
      *
-     * @returns True;
+     * @returns False;
      */
     public destroy(): boolean {
         GameEventBus.unSubscribeAll();
         if (this.game) {
             return this.game.destroy();
         }
-        return true;
+        return false;
     }
 }

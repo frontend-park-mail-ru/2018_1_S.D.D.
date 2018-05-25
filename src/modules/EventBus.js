@@ -35,7 +35,7 @@ class EventBus {
                 return prevEvent.then(() => {
                     return Promise.resolve(curEvent.callback.bind(curEvent.context, ...args)());
                 });
-            }, Promise.resolve(events[0].callback.bind(events[0].context, ...args)()));
+            }, Promise.resolve());
         } else
             return Promise.resolve();
     }
