@@ -13,10 +13,10 @@ import LobbyController from './controllers/LobbyController';
 
 const SM = new ServiceManager();
 
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('/sw.js', {scope: '/'})
-//         .catch(() => {});
-// }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', {scope: '/'})
+        .catch(() => {});
+}
 
 SM.Router.addRoute('error', ErrorController);
 SM.Router.addRoute('index', MenuController);
