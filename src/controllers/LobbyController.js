@@ -114,6 +114,7 @@ class LobbyController extends Controller {
         SessionSettings.mode = 'offline';
         SessionSettings.time = time;
         SessionSettings.size = field;
+        SessionSettings.players = [];
         SessionSettings.players.push(owner);
         this.LobbyView.constructRoom(pageData);
     }
@@ -143,7 +144,8 @@ class LobbyController extends Controller {
                 owner.name = US.getData('nickname');
                 owner.avatar = US.getData('avatar') !== 'null' ? US.getData('avatar') : defaultAvatar;
             }
-            SessionSettings.players[0] = owner;
+            SessionSettings.players = [];
+            SessionSettings.players.push(owner);
             this.ServiceManager.Router.re(`/lobby/room/${data.id}`);
         }
     }
