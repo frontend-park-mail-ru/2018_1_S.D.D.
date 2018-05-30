@@ -227,29 +227,8 @@ export default abstract class Character extends Drawable {
         const startx = this.startPosition.x * Cell.realSize;
         const starty = this.startPosition.y * Cell.realSize;
         
-        let offsetX = 0;
-        let offsetY = 0;
-        switch (this.direction)  {
-            case Direction.LEFT:
-                offsetX = -this.clearOffset; 
-                break;
-            case Direction.RIGHT: 
-                offsetX = this.clearOffset;
-                break;
-            case Direction.UP: 
-                offsetY = -this.clearOffset;
-                break;
-            case Direction.DOWN: 
-                offsetY = this.clearOffset;
-                break;
-            default:
-                break;
-        }
-
-        const x = startx + Cell.realSize * offsetX / 100 + Cell.size / 2 + margin / 2;
-        const y = starty + Cell.realSize * offsetY / 100 + Cell.size / 2 + margin / 2;
-        // const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
-        //const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
+        const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
+        const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
 
         this.circle(x, y, radius);
 

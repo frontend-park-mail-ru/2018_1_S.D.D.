@@ -85,6 +85,10 @@ export default class Multiplayer extends Game {
             currentPlayer.score = player.score;
             currentPlayer.startPosition = new Point(player.position.x, player.position.y);
             currentPlayer.clearOffset = player.offset;
+            
+            currentPlayer.moveOffset.x = 0;
+            currentPlayer.moveOffset.y = 0;
+
             switch (player.direction) {
                 case 'LEFT':
                     //currentPlayer.direction = Direction.LEFT;
