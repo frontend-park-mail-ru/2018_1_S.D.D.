@@ -67,6 +67,9 @@ export default abstract class Character extends Drawable {
      * Movement offset between cells.
      */
     public moveOffset: Point = new Point(0, 0);
+    // public moveOffset: number = 0;/
+
+    public clearOffset: number = 0;
 
     /**
      * Current character movement direction.
@@ -209,8 +212,11 @@ export default abstract class Character extends Drawable {
 
     /**
      * Draw player.
+     * Dima (HaseProgr) is a gay 💩. Where are commentaries for variables?
+     * FFS
      */
     public draw(): void {
+        //console.log(this);
         this.bg(this.color);
         const margin = 5 * this.scale;
         const border = 4 * this.scale;
@@ -220,8 +226,30 @@ export default abstract class Character extends Drawable {
         // x, y - center
         const startx = this.startPosition.x * Cell.realSize;
         const starty = this.startPosition.y * Cell.realSize;
-        const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
-        const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
+        
+        let offsetX = 0;
+        let offsetY = 0;
+        switch (this.direction)  {
+            case Direction.LEFT:
+                offsetX = -this.clearOffset; 
+                break;
+            case Direction.RIGHT: 
+                offsetX = this.clearOffset;
+                break;
+            case Direction.UP: 
+                offsetY = -this.clearOffset;
+                break;
+            case Direction.DOWN: 
+                offsetY = this.clearOffset;
+                break;
+            default:
+                break;
+        }
+
+        const x = startx + Cell.realSize * offsetX / 100 + Cell.size / 2 + margin / 2;
+        const y = starty + Cell.realSize * offsetY / 100 + Cell.size / 2 + margin / 2;
+        // const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
+        //const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
 
         this.circle(x, y, radius);
 

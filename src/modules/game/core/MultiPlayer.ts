@@ -49,6 +49,7 @@ export default class Multiplayer extends Game {
      * Input controller object.
      */
     private IController: InputController;
+    private gameStartTime: number;
 
     /**
      * Initializes playe, bots.
@@ -64,6 +65,7 @@ export default class Multiplayer extends Game {
      */
     public initGame(): void {
         this.baseInit();
+        this.gameStartTime = Date.now();        
         const Bus = new ServiceManager().EventBus;
         Bus.subscribe('WS:ServerSnapshot', this.refreshGameState, this);
         this.addPlayers();
@@ -82,21 +84,22 @@ export default class Multiplayer extends Game {
             const currentPlayer = GamePlayers.item((c) => c.id === player.id);
             currentPlayer.score = player.score;
             currentPlayer.startPosition = new Point(player.position.x, player.position.y);
+            currentPlayer.clearOffset = player.offset;
             switch (player.direction) {
                 case 'LEFT':
-                    currentPlayer.direction = Direction.LEFT;
+                    //currentPlayer.direction = Direction.LEFT;
                     currentPlayer.moveOffset.x = -player.offset;
                     break;
                 case 'RIGHT':
-                    currentPlayer.direction = Direction.RIGHT;
+                    //currentPlayer.direction = Direction.RIGHT;
                     currentPlayer.moveOffset.x = player.offset;
                     break;
                 case 'UP':
-                    currentPlayer.direction = Direction.UP;
+                   // currentPlayer.direction = Direction.UP;
                     currentPlayer.moveOffset.y = -player.offset;
                     break;
                 case 'DOWN':
-                    currentPlayer.direction = Direction.DOWN;
+                    //currentPlayer.direction = Direction.DOWN;
                     currentPlayer.moveOffset.y = player.offset;
                     break;
             }
@@ -111,6 +114,22 @@ export default class Multiplayer extends Game {
      * @param now Current timestamp.
      */
     protected logic(lastLogicCall: number, now: number): void {
+        const storage = new ServiceManager().UserStorage;
+        const net = new ServiceManager().Net;
+        //console.log(storage.getData('nickname'));
+        const currentPlayer = Scene.Players.item((c) => {
+            //console.log(c)
+            return c.name === storage.getData('nickname') + " (YOU)";
+        });      
+        const nowTime = Date.now();
+        //console.log(currentPlayer);   
+        net.send({
+            class: "ClientSnapshot",
+            direction: null,//currentPlayer.direction,
+            velocity: currentPlayer.velocity,
+            clientTime: nowTime - this.gameStartTime
+        })
+        this.gameStartTime = nowTime
         // todo (interpolation?)
     }
 
