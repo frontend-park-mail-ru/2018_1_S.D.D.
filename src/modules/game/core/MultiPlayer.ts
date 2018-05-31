@@ -12,6 +12,7 @@ import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
 import SessionSettings from '../SessionSettings';
 import Game from './Game';
+import { CELL_SIZE } from '../settings';
 
 interface IFieldSnap {
     field: number[][];
@@ -34,6 +35,8 @@ interface IPlayerSnap {
 
 interface IGameSnapshot {
     class: number;
+    frameTime: number;
+    timestamp: number;
     gameFieldSnap: IFieldSnap;
     playersSnap: IPlayerSnap[];
 }
@@ -51,11 +54,25 @@ export default class Multiplayer extends Game {
     private IController: InputController;
     private gameStartTime: number;
 
+    private prevServerSnap: IGameSnapshot; 
+    private curServerSnap: IGameSnapshot;
+
+    // counter from 0 to frameTime of last Snap for interpolation
+    // 0 is when we are just recieved new snap (start of interpolation)
+    // near frameTime when we are ending interpolation and about to recieve new snap
+    // this counter is updated in game loop after each rendering
+    private interCounter: number;
+
+    private prevServerSnapTime: number;
+
     /**
      * Initializes playe, bots.
      */
     constructor() {
         super();
+
+
+        this.prevServerSnapTime = Date.now();
         this.playerData = SessionSettings.players[0];
         this.initGame();
     }
@@ -75,41 +92,129 @@ export default class Multiplayer extends Game {
         this.start();
     }
 
-    public refreshGameState(data: IGameSnapshot) {
-        const field = data.gameFieldSnap;
-        Game.Field.fillField(field);
+    public interpolatePlayersOffsets() {
 
-        const GamePlayers = Scene.Players;
-        const players = data.playersSnap.forEach((player) => {
-            const currentPlayer = GamePlayers.item((c) => c.id === player.id);
-            currentPlayer.score = player.score;
-            currentPlayer.startPosition = new Point(player.position.x, player.position.y);
-            currentPlayer.clearOffset = player.offset;
-            
-            currentPlayer.moveOffset.x = 0;
-            currentPlayer.moveOffset.y = 0;
+        this.curServerSnap.playersSnap.forEach((player) => {
+            const currentPlayer = Scene.Players.item((c) => c.id === player.id);
 
-            switch (player.direction) {
-                case 'LEFT':
-                    //currentPlayer.direction = Direction.LEFT;
-                    currentPlayer.moveOffset.x = -player.offset;
-                    break;
-                case 'RIGHT':
-                    //currentPlayer.direction = Direction.RIGHT;
-                    currentPlayer.moveOffset.x = player.offset;
-                    break;
-                case 'UP':
-                   // currentPlayer.direction = Direction.UP;
-                    currentPlayer.moveOffset.y = -player.offset;
-                    break;
-                case 'DOWN':
-                    //currentPlayer.direction = Direction.DOWN;
-                    currentPlayer.moveOffset.y = player.offset;
-                    break;
+            const prevSnapPlayer = this.prevServerSnap.playersSnap[player.id-1];
+            const curSnapPlayer = this.curServerSnap.playersSnap[player.id-1];
+
+            if (player.id == 1) {
+                console.log('prev '+player.id);
+                console.log(prevSnapPlayer);
+                console.log('cur '+player.id);
+                console.log(curSnapPlayer);
             }
-            currentPlayer.velocity = player.velocity;
+            
+            const cellDiffX = curSnapPlayer.position.x - prevSnapPlayer.position.x;
+            const cellDiffY = curSnapPlayer.position.y - prevSnapPlayer.position.y;
+            const cellDiff = CELL_SIZE * (cellDiffX + cellDiffY); // one (and only one) of cellDiffS may be 1, so cellDiff may be 0 or CELL_SIZE
+
+            // TO-DO
+            // Probably we should base interpolation
+            // not on time spent by server to generate snap (this.curServerSnap.frameTime)
+            // but time between recievings of snaps by client
+            const interFrameRation = this.interCounter / this.curServerSnap.frameTime;
+
+            // must add cellDiff in case if curPos is very low (~0)
+            // (happens when curSnap is on next cell after prevSnap)
+            // to prevnt negative value, that may cause reverse moving
+            const interFrameMove = curSnapPlayer.offset + cellDiff - prevSnapPlayer.offset;
+            
+            const interFrameOffset = prevSnapPlayer.offset + interFrameMove * interFrameRation;
+
+            if (player.id == 1) console.log (this.interCounter, this.curServerSnap.frameTime,interFrameRation, interFrameMove, interFrameOffset, cellDiff);
+            currentPlayer.offsetPlayerByDirection(interFrameOffset, player.direction);
         });
     }
+
+    public refreshGameState(data: IGameSnapshot) {
+        console.log('Time from prev ServSnap: ' + (Date.now() - this.prevServerSnapTime));
+        this.prevServerSnapTime = Date.now();
+
+        // Crutch for first serverSnap
+        if (this.curServerSnap == null) {
+            this.curServerSnap = data;
+            return;
+        }
+
+        if (data.timestamp > this.curServerSnap.timestamp) {
+            this.prevServerSnap = this.curServerSnap;
+            this.curServerSnap = data;
+            this.interCounter = 0;
+        }
+
+        // if we have no snap to start from we shouldnt do anything
+        if (this.prevServerSnap == null) {
+            return;
+        }
+
+        // in terms of interpolation we apdating game by old values
+        const field = this.prevServerSnap.gameFieldSnap;
+        Game.Field.fillField(field);
+
+
+        const GamePlayers = Scene.Players;
+        const players = this.prevServerSnap.playersSnap.forEach((player) => {
+            const currentPlayer = GamePlayers.item((c) => c.id === player.id);
+            currentPlayer.score = player.score;
+            
+            currentPlayer.startPosition = new Point(player.position.x, player.position.y);
+            
+            currentPlayer.offsetPlayerByDirection(player.offset, player.direction);
+
+            currentPlayer.velocity = player.velocity;
+        });
+        
+        console.log(data);
+        console.log('previousData');
+        console.log(this.prevServerSnap);
+    }
+
+    /**
+     * May be overwritten. draw call.
+     *
+     * Redraw scene and call logic.
+     *
+     * @param now Current timestamp.
+     */
+    protected gameLoop(now: number): void {
+        if (this.gameAnimationLoop) {
+            // if we have something to interpolate
+            if (!(this.prevServerSnap == null || this.curServerSnap == null)) {
+                this.interpolatePlayersOffsets();
+            }
+
+            this.Scene.clear();
+            this.Scene.render();
+
+            if (this.timer === 0) {
+                this.gameOver();
+                return;
+            }
+
+            if (now - this.lastTimerCall >= 1000) {
+                if (this.running) {
+                    this.timer--;
+                    MetaController.updateTimer(this.timer);
+                }
+                this.lastTimerCall = this.lastTimerCall + 1000; // not now coz maybe more
+            }
+
+            if (this.running) {
+                this.logic(now - this.lastFrameCall, now);
+            }
+
+            this.interCounter = this.interCounter + (now-this.lastFrameCall);
+            console.log('Rendered: ' + (now-this.lastFrameCall));
+
+
+            this.lastFrameCall = now;
+            this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
+        }
+    }
+
 
     /**
      * Logic call.

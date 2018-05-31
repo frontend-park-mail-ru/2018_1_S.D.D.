@@ -112,6 +112,30 @@ export default abstract class Character extends Drawable {
         this.avatar.src = defaultAvatar;
     }
 
+    public offsetPlayerByDirection(offset: number, direction: string) {
+        this.moveOffset.x = 0;
+        this.moveOffset.y = 0;
+
+        switch (direction) {
+            case 'LEFT':
+                //currentPlayer.direction = Direction.LEFT;
+                this.moveOffset.x = -offset;
+                break;
+            case 'RIGHT':
+                //currentPlayer.direction = Direction.RIGHT;
+                this.moveOffset.x = offset;
+                break;
+            case 'UP':
+                // currentPlayer.direction = Direction.UP;
+                this.moveOffset.y = -offset;
+                break;
+            case 'DOWN':
+                //currentPlayer.direction = Direction.DOWN;
+                this.moveOffset.y = offset;
+                break;
+            }
+    }
+
     /**
      * Move player across the field.
      *
@@ -226,7 +250,7 @@ export default abstract class Character extends Drawable {
         // x, y - center
         const startx = this.startPosition.x * Cell.realSize;
         const starty = this.startPosition.y * Cell.realSize;
-        
+
         const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
         const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
 
