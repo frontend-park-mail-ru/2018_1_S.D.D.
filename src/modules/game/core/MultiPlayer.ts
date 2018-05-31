@@ -12,7 +12,7 @@ import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
 import SessionSettings from '../SessionSettings';
 import Game from './Game';
-import { CELL_SIZE } from '../settings';
+import { CELL_SIZE, DIRSTR_MAP } from '../settings';
 
 interface IFieldSnap {
     field: number[][];
@@ -125,8 +125,40 @@ export default class Multiplayer extends Game {
             const interFrameOffset = prevSnapPlayer.offset + interFrameMove * interFrameRation;
 
             if (player.id == 1) console.log (this.interCounter, this.curServerSnap.frameTime,interFrameRation, interFrameMove, interFrameOffset, cellDiff);
-            currentPlayer.offsetPlayerByDirection(interFrameOffset, player.direction);
+
+            if (interFrameOffset <= CELL_SIZE) {
+                currentPlayer.offsetPlayerByDirection(interFrameOffset, player.direction);
+            } else {
+                currentPlayer.offsetPlayerByDirection(CELL_SIZE, player.direction);
+                currentPlayer.offsetPlayerByDirection(interFrameOffset-CELL_SIZE, player.newDirection);
+            }
         });
+    }
+
+    // if we recieve a snap from server, where our local newDirection
+    // doesnot equal the one from serverSnap, then
+    // try send ClientSnapshot
+    public sendClientSnapshot(dataPlayers: IPlayerSnap[]) {
+        const storage = new ServiceManager().UserStorage;
+        const net = new ServiceManager().Net;
+        const localPlayer = Scene.Players.item((c) => {
+            //console.log(c)
+            return c.name === storage.getData('nickname') + " (YOU)";
+        });  
+
+
+        const dataPlayer = dataPlayers[localPlayer.id-1];
+        console.log(dataPlayer);
+        console.log(DIRSTR_MAP.get(localPlayer.nextDirection) + '-' + dataPlayer.newDirection );
+
+        if (DIRSTR_MAP.get(localPlayer.nextDirection) != dataPlayer.newDirection) {
+            const request = {
+                class: 'ClientSnapshot',
+                direction: localPlayer.nextDirection,
+            };
+            new ServiceManager().Net.send(request);
+        }
+        
     }
 
     public refreshGameState(data: IGameSnapshot) {
@@ -167,6 +199,8 @@ export default class Multiplayer extends Game {
             currentPlayer.velocity = player.velocity;
         });
         
+        this.sendClientSnapshot(data.playersSnap);
+
         console.log(data);
         console.log('previousData');
         console.log(this.prevServerSnap);

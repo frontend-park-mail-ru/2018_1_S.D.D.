@@ -15,6 +15,13 @@ export const DIRECTION_MAP = new Map<number, Direction>([
     [4, Direction.UP],
 ]);
 
+export const DIRSTR_MAP = new Map<number, string>([
+    [1, "RIGHT"],
+    [2, "DOWN"],
+    [3, "LEFT"],
+    [4, "UP"],
+]);
+
 export const GAME_DURATION = 60;
 export const DEFAULT_FIELD_RANGE = 8;
 export const CELL_SIZE = 100;

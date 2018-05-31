@@ -112,10 +112,7 @@ export default abstract class Character extends Drawable {
         this.avatar.src = defaultAvatar;
     }
 
-    public offsetPlayerByDirection(offset: number, direction: string) {
-        this.moveOffset.x = 0;
-        this.moveOffset.y = 0;
-
+    public offsetPlayerByDirectionAdditive(offset: number, direction: string) {        
         switch (direction) {
             case 'LEFT':
                 //currentPlayer.direction = Direction.LEFT;
@@ -134,6 +131,13 @@ export default abstract class Character extends Drawable {
                 this.moveOffset.y = offset;
                 break;
             }
+    }
+
+    public offsetPlayerByDirection(offset: number, direction: string) {
+        this.moveOffset.x = 0;
+        this.moveOffset.y = 0;
+
+        this.offsetPlayerByDirectionAdditive(offset, direction);
     }
 
     /**
@@ -271,11 +275,11 @@ export default abstract class Character extends Drawable {
     private subscribeMovement(): void {
         const newDirectionRequest = (direction) => {
             if (SessionSettings.mode === 'offline') { return; }
-            const request = {
-                class: 'ClientSnapshot',
-                direction,
-            };
-            new ServiceManager().Net.send(request);
+            // const request = {
+            //     class: 'ClientSnapshot',
+            //     direction,
+            // };
+            // new ServiceManager().Net.send(request);
         };
 
         GameEventBus.subscribe(`MOVE.UP:${this.id}`, () => {
