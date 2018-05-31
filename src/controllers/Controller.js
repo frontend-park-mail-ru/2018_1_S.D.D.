@@ -84,6 +84,10 @@ class Controller {
     noResponseError() {
         this.go('/error/503', false);
     }
+
+    onPageLeave() {
+        return true;
+    }
 }
 
 export default Controller;

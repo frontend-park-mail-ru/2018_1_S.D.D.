@@ -1,6 +1,7 @@
 import GameView from '../../views/GameView.js';
 import ServiceManager from '../ServiceManager';
 import Game from './core/Game';
+import MultiPlayer from './core/MultiPlayer';
 import SinglePlayer from './core/SinglePlayer';
 import GameEventBus from './GameEventBus';
 import { IPlayerData } from './playerdata';
@@ -29,24 +30,19 @@ export default class GameInitializer {
         Scene.sceneCanvas = View.getScene();
         Scene.sceneMetaBlock = View.getMetaBlock();
         Scene.viewController = View;
-        if (SessionSettings.mode === 'offline') {
-            this.game = new SinglePlayer();
-        } else {
-            // Get Other PLayers
-            // new MultiPlayer(Me, OtherPlayers);
-        }
+        this.game = SessionSettings.mode === 'offline' ? new SinglePlayer() : new MultiPlayer();
     }
 
     /**
      * Destroy current game instance.
      *
-     * @returns True;
+     * @returns False;
      */
     public destroy(): boolean {
         GameEventBus.unSubscribeAll();
         if (this.game) {
             return this.game.destroy();
         }
-        return true;
+        return false;
     }
 }

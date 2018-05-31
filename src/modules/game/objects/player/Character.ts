@@ -1,7 +1,9 @@
+import ServiceManager from '../../../ServiceManager';
 import * as defaultAvatar from '../../bin/1.svg';
 import GameEventBus from '../../GameEventBus';
 import MetaController from '../../MetaController';
 import Scene from '../../Scene';
+import SessionSettings from '../../SessionSettings';
 import { CHARACTER_VELOCITY, COLOR_MAP, DIRECTION_MAP } from '../../settings';
 import Drawable from '../Drawable';
 import Cell from '../field/Cell';
@@ -57,30 +59,33 @@ export default abstract class Character extends Drawable {
     public stucked: boolean = false;
 
     /**
-     * Color associated with this character.
+     * Player position on field (on cell).
      */
-    protected color: string;
+    public startPosition: Point;
+
+    /**
+     * Movement offset between cells.
+     */
+    public moveOffset: Point = new Point(0, 0);
+    // public moveOffset: number = 0;/
+
+    public clearOffset: number = 0;
 
     /**
      * Current character movement direction.
      */
-    protected direction: Direction;
+    public direction: Direction;
 
     /**
      * New character movement direction.
      * Would apply after character step on field.
      */
-    protected nextDirection: Direction ;
+    public nextDirection: Direction;
 
     /**
-     * Movement offset between cells.
+     * Color associated with this character.
      */
-    protected moveOffset: Point = new Point(0, 0);
-
-    /**
-     * Player position on field (on cell).
-     */
-    private startPosition: Point;
+    protected color: string;
 
     /**
      * Initializes charater in the beginning of game.
@@ -105,6 +110,34 @@ export default abstract class Character extends Drawable {
         this.nextDirection = this.direction;
         this.avatar = new Image();
         this.avatar.src = defaultAvatar;
+    }
+
+    public offsetPlayerByDirectionAdditive(offset: number, direction: string) {        
+        switch (direction) {
+            case 'LEFT':
+                //currentPlayer.direction = Direction.LEFT;
+                this.moveOffset.x = -offset;
+                break;
+            case 'RIGHT':
+                //currentPlayer.direction = Direction.RIGHT;
+                this.moveOffset.x = offset;
+                break;
+            case 'UP':
+                // currentPlayer.direction = Direction.UP;
+                this.moveOffset.y = -offset;
+                break;
+            case 'DOWN':
+                //currentPlayer.direction = Direction.DOWN;
+                this.moveOffset.y = offset;
+                break;
+            }
+    }
+
+    public offsetPlayerByDirection(offset: number, direction: string) {
+        this.moveOffset.x = 0;
+        this.moveOffset.y = 0;
+
+        this.offsetPlayerByDirectionAdditive(offset, direction);
     }
 
     /**
@@ -207,8 +240,11 @@ export default abstract class Character extends Drawable {
 
     /**
      * Draw player.
+     * Dima (HaseProgr) is a gay 💩. Where are commentaries for variables?
+     * FFS
      */
     public draw(): void {
+        //console.log(this);
         this.bg(this.color);
         const margin = 5 * this.scale;
         const border = 4 * this.scale;
@@ -218,6 +254,7 @@ export default abstract class Character extends Drawable {
         // x, y - center
         const startx = this.startPosition.x * Cell.realSize;
         const starty = this.startPosition.y * Cell.realSize;
+
         const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
         const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
 
@@ -236,10 +273,27 @@ export default abstract class Character extends Drawable {
      * Listen events on which charater will change movement direction.
      */
     private subscribeMovement(): void {
-        GameEventBus.subscribe(`MOVE.UP:${this.id}`, () => { this.nextDirection = Direction.UP; }, this);
-        GameEventBus.subscribe(`MOVE.DOWN:${this.id}`, () => { this.nextDirection = Direction.DOWN; }, this);
-        GameEventBus.subscribe(`MOVE.LEFT:${this.id}`, () => { this.nextDirection = Direction.LEFT; }, this);
-        GameEventBus.subscribe(`MOVE.RIGHT:${this.id}`, () => { this.nextDirection = Direction.RIGHT; }, this);
+        const newDirectionRequest = (direction) => {
+            if (SessionSettings.mode === 'offline') { return; }
+            // const request = {
+            //     class: 'ClientSnapshot',
+            //     direction,
+            // };
+            // new ServiceManager().Net.send(request);
+        };
+
+        GameEventBus.subscribe(`MOVE.UP:${this.id}`, () => {
+            this.nextDirection = Direction.UP; newDirectionRequest('UP');
+        }, this);
+        GameEventBus.subscribe(`MOVE.DOWN:${this.id}`, () => {
+            this.nextDirection = Direction.DOWN; newDirectionRequest('DOWN');
+        }, this);
+        GameEventBus.subscribe(`MOVE.LEFT:${this.id}`, () => {
+            this.nextDirection = Direction.LEFT; newDirectionRequest('LEFT');
+        }, this);
+        GameEventBus.subscribe(`MOVE.RIGHT:${this.id}`, () => {
+            this.nextDirection = Direction.RIGHT; newDirectionRequest('RIGHT');
+        }, this);
     }
 
     /**

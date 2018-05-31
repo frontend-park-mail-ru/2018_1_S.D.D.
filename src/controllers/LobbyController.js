@@ -30,11 +30,13 @@ class LobbyController extends Controller {
 
     subscribeEvents() {
         const EventBus = this.ServiceManager.EventBus;
+        EventBus.subscribe('logout', this.disconnect, this);
         EventBus.subscribe('WS:Lobbies', this.showLobbies, this);
         EventBus.subscribe('WS:OneLobbyInfo', this.addLobbyInList, this);
         EventBus.subscribe('WS:OneLobbyInfo', this.connectToMyLobby, this);
         EventBus.subscribe('WS:LobbyConnected', this.connectToLobby, this);
         EventBus.subscribe('WS:LobbyStateMessage', this.changedState, this);
+        EventBus.subscribe('WS:GameStart', this.startGame, this);
         EventBus.subscribe('logout', () => {
             this.showLobbies();
         }, this);
@@ -151,47 +153,64 @@ class LobbyController extends Controller {
     }
 
     connectToLobby(data = null) {
-        // tut sdelat cherez sessionsettings kak na 131 str
         this.isOwner = false;
         let players = [];
         data.users.forEach(user => {
             players.push({
                 avatar: defaultAvatar,
-                name: user
+                name: user.additionalInfo
             });
         });
 
-        const US = this.ServiceManager.UserStorage;
-        const me = {};
-        me.name = US.getData('nickname');
-        me.avatar = US.getData('avatar') !== 'null' ? US.getData('avatar') : defaultAvatar;
+        players.push({
+            avatar: defaultAvatar,
+            name: this.ServiceManager.UserStorage.getData('nickname')
+        });
 
-        players.push(me);
-
-        const pageData = {
-            'Room': {
-                owner: false,
-                isOwner: false,
-                lobbyname: data.name,
-                mode: 'multiplayer',
-                field: data.fieldSize,
-                time: data.gameTime,
-                players: players
-            }
-        };
-        
-        this.LobbyView.constructRoom(pageData);
+        SessionSettings.mode = 'multiplayer';
+        SessionSettings.time = data.gameTime;
+        SessionSettings.size = data.fieldSize;
+        SessionSettings.lname = data.name;
+        SessionSettings.players = players;
+        this.ServiceManager.Router.re(`/lobby/room/${data.id}`);
     }
 
     changedState(data = null) {
+        let newPlayer = null;
         switch (data.action) {
         case 'CONNECTED':
-            this.LobbyView.addPlayersToRoom([{
+            newPlayer = {
                 avatar: defaultAvatar,
-                name: data.nickname
-            }], this.isOwner);
+                name: data.nickname,
+                id: data.id
+            };
+            this.LobbyView.addPlayersToRoom([newPlayer], this.isOwner);
+            SessionSettings.players.push(newPlayer);
+            break;
+        case 'READY':  
+            this.ServiceManager.Net.send({
+                class: 'LobbyMessage',
+                action: 'START',
+                id: data.lobbyId
+            });
             break;
         }
+    }
+
+    startGame(data = {}) {
+        const players = data.players;
+        players.forEach(player => {
+            const name = player.additionalInfo;
+            const id = player.id;
+            const cur = SessionSettings.players.find(p => { return p.name === name; });
+            cur.id = id;
+        });
+        //console.log(players)
+        this.ServiceManager.Router.re('/play');
+    }
+
+    disconnect() {
+        this.ServiceManager.Net.disconnect();
     }
     
 }

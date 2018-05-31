@@ -29,7 +29,7 @@ export default abstract class Game {
     /**
      * ID of current player.
      */
-    protected me: number;
+    protected me: number = -1;
 
     /**
      * Scene object. Contains canvas and game objects.
@@ -54,12 +54,12 @@ export default abstract class Game {
     /**
      * Timestamp of last timer changed.
      */
-    private lastTimerCall: number;
+    protected lastTimerCall: number;
 
     /**
      * Timestamp of last requestAnimationFrame was called.
      */
-    private lastFrameCall: number;
+    protected lastFrameCall: number;
 
     /**
      * Initializes scene and common game system.
@@ -73,7 +73,7 @@ export default abstract class Game {
     /**
      * Destroy game instance.
      *
-     * @returns True.
+     * @returns False.
      */
     public destroy(): boolean {
         this.pauseAnimationFrame();
@@ -83,7 +83,7 @@ export default abstract class Game {
         if (Game.Field.destroy()) {
             Game.Field = null;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -126,7 +126,9 @@ export default abstract class Game {
         }
     }
 
-    /**
+     /**
+     * Should be overwritten. Logic call.
+     *
      * Redraw scene and call logic.
      *
      * @param now Current timestamp.

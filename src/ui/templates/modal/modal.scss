@@ -17,7 +17,7 @@
     }
 
     &__outer {
-        position: absolute;
+        position: fixed;
         height: 100%;
         width: 100%;
         top: 0;
@@ -35,8 +35,8 @@
         padding: 10px 0;
         color: #ddd;
         position: absolute;
-        right: 20px;
-        top: 30px;
+        right: 0px;
+        top: 10px;
         z-index: 100;
         cursor: pointer;
         width: 40px;
@@ -54,6 +54,7 @@
         position: relative;
         margin: auto;
         z-index: 100;
+        margin-bottom: 10px;
     }
 }
 
@@ -75,4 +76,9 @@
 
 .content__header {
     border-bottom: 1px solid rgb(189, 189, 189);
+}
+
+.outer-wrapper {
+    width: 95%;
+    margin: auto;
 }

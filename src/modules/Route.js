@@ -39,6 +39,7 @@ class Route {
      * Destroys instance
      */
     destroy() {
+        this.instance.onPageLeave();
         this.instance = null;
     }
 }
