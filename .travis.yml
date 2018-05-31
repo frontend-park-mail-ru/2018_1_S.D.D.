@@ -10,7 +10,9 @@ deploy:
   app: color-it
   on:
     all_branches: true
-run: npm install && npm run start-heroku
+
+scripts:
+- scp -i color-it.pem public/sw.js root@color-it.online:/home/ubuntu/color-it-frontend/public
 before_install:
 - openssl aes-256-cbc -K $encrypted_dd5ca86accb9_key -iv $encrypted_dd5ca86accb9_iv
   -in color-it.pem.enc -out color-it.pem -d
