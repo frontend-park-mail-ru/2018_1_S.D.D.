@@ -10,7 +10,7 @@ deploy:
   app: color-it
   on:
     all_branches: true
-
+run: npm install && npm run start-heroku
 scripts:
 - scp -i color-it.pem public/sw.js root@color-it.online:/home/ubuntu/color-it-frontend/public
 before_install:
