@@ -1,8 +1,12 @@
-.modal-dialog__wrapper
-    .modal-dialog__close.close-modal &#10006;
-    .outer-wrapper
-        .modal-dialog__window-holder
-            .window__wrapper
-                .window__content
-                    .content
-    .modal-dialog__outer.close-modal
+if !mobile
+    .modal-dialog__wrapper
+        .modal-dialog__close.close-modal &#10006;
+        .outer-wrapper
+            .modal-dialog__window-holder
+                .window__wrapper
+                    .window__content
+                        .content
+        .modal-dialog__outer.close-modal
+else
+    | kek
+    .content
