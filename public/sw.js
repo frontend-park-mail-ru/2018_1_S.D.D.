@@ -80,12 +80,12 @@ this.addEventListener('fetch', function(event) {
     if (event.request.method != 'GET') {
         return;
     }
-    if (!cacheRegExp.test(event.request.url)) {
-
-        // request will be networked
-        return;
-    }
     /* if (navigator.onLine) { 
+        if (!cacheRegExp.test(event.request.url)) {
+
+            // request will be networked
+            return;
+        }
         fetch(event.request).then(function(response) {
             return caches.open(CACHE_NAME).then(function(cache) {
                 cache.put(event.request, response.clone());
