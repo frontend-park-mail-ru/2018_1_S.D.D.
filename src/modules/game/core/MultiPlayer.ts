@@ -9,9 +9,9 @@ import { Direction } from '../objects/player/directions';
 import Player from '../objects/player/Player';
 import Point from '../objects/Point';
 import { IPlayerData } from '../playerdata';
+import Scene from '../Scene';
 import { CELL_SIZE, DIRSTR_MAP } from '../settings';
 import Game from './Game';
-import Scene from '../Scene';
 import SessionSettings from '../SessionSettings';
 
 interface IFieldSnap {
