@@ -9,6 +9,7 @@
     "start-dev": "npm run build-dev && npm run server",
     "server": "node server/app.js",
     "build-heroku": "webpack --config webpack.heroku.js",
+    "build-online": "webpack --config webpack.online.js",
     "build-dev": "webpack --config webpack.dev.js",
     "build-dev-watch": "webpack --config webpack.dev.js --watch",
     "lint": "eslint ./ && tslint -c tslint.json './src/**/*.ts'",
