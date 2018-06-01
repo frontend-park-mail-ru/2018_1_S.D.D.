@@ -82,3 +82,72 @@
     width: 95%;
     margin: auto;
 }
+
+@import '../../styles/constants';
+
+.modal-dialog {
+    &__wrapper-mobile {
+        min-width: 320px;
+        position: absolute;
+        height: auto;
+        min-height: 100%;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        -o-transition: $animation-disabled;
+        -ms-transition: $animation-disabled;
+        -moz-transition: $animation-disabled;
+        -webkit-transition: $animation-disabled;
+        transition: $animation-disabled;
+        text-align: center;
+        background: rgba(221, 221, 221, 0.94);
+    }
+    
+    &__close-mobile {
+        font-size: 25px;
+        text-align: center;
+        padding: 10px 0;
+        color: rgb(126, 126, 126);
+        position: absolute;
+        right: 5px;
+        top: 10px;
+        z-index: 100;
+        cursor: pointer;
+        width: 40px;
+        height: 20px;
+
+        &:hover {
+            color: rgba(30, 30, 48, 0.9);
+        }
+    }
+
+    &__window-holder-mobile {
+        display: inline-block;
+        margin: 50px auto 20px auto;
+        z-index: 100;
+    }
+}
+
+.window {
+    &__wrapper-mobile {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    &__content-mobile {
+        width: 90%;
+        margin: auto;
+        padding: 10px;
+    }
+}
+
+.content__header-mobile {
+    border-bottom: 1px solid rgb(189, 189, 189);
+}
+
+.outer-wrapper-mobile {
+    width: 95%;
+    margin: auto;
+}

@@ -18,6 +18,12 @@ export default {
                 Service.Router.re(Service.Router.last);
             });
         });
+        elem.querySelectorAll('.close-modal-mobile').forEach(element => {
+            element.addEventListener('click', () => {
+                const Service = new ServiceManager();
+                Service.Router.re(Service.Router.last);
+            });
+        });
         return elem;
     }
 };
