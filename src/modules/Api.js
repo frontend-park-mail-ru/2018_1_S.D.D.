@@ -44,7 +44,8 @@ class Api {
         if (navigator.onLine) {
             return this._request('GET', path, data);
         } else {
-            this.Bus.emit('error:noresponse');
+            const EventBus = new ServiceManager().EventBus;
+            EventBus.emit('error:noresponse');
         }
     }
 
@@ -60,7 +61,8 @@ class Api {
         if (navigator.onLine) {
             return this._request('POST', path, data, json);
         } else {
-            this.Bus.emit('error:noresponse');
+            const EventBus = new ServiceManager().EventBus;
+            EventBus.emit('error:noresponse');
          }
     }
 
@@ -100,7 +102,8 @@ class Api {
                 return response.json();
             },
             () => {
-                this.Bus.emit('error:noresponse');
+                const EventBus = new ServiceManager().EventBus;
+            	EventBus.emit('error:noresponse');
             }
         );
     }
