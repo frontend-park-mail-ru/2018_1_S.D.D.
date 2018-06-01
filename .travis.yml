@@ -1,11 +1,13 @@
-sudo: required
+# sudo: required
 # dist: trusty
-# language: node_js
+language: node_js
 node_js: '8'
 # install: npm install
 scripts:
 - npm install
 - npm run build-dev
+- chmod 600 color-it.pem
+- ssh-keyscan -H color-it.online >> ~/.ssh/known_hosts
 - scp -i color-it.pem -r public root@color-it.online:/home/ubuntu/color-it-frontend
 # deploy:
 #   provider: heroku
