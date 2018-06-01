@@ -112,27 +112,39 @@ export default abstract class Character extends Drawable {
         this.avatar.src = defaultAvatar;
     }
 
+    /**
+     * Adds to player's moveOffset offset depending on direction
+     * @param offset to add
+     * @param direction defines part to add offset (x or y)
+     * and will it be positive or negative
+     */
     public offsetPlayerByDirectionAdditive(offset: number, direction: string) {
         switch (direction) {
             case 'LEFT':
                 // currentPlayer.direction = Direction.LEFT;
-                this.moveOffset.x = -offset;
+                this.moveOffset.x = this.moveOffset.x - offset;
                 break;
             case 'RIGHT':
                 // currentPlayer.direction = Direction.RIGHT;
-                this.moveOffset.x = offset;
+                this.moveOffset.x =  this.moveOffset.x + offset;
                 break;
             case 'UP':
                 // currentPlayer.direction = Direction.UP;
-                this.moveOffset.y = -offset;
+                this.moveOffset.y = this.moveOffset.y - offset;
                 break;
             case 'DOWN':
                 // currentPlayer.direction = Direction.DOWN;
-                this.moveOffset.y = offset;
+                this.moveOffset.y = this.moveOffset.y + offset;
                 break;
             }
     }
 
+    /**
+     * Fills player's moveOffset with offset depending on direction
+     * @param offset to fill
+     * @param direction defines part to fill with offset (x or y)
+     * and will it be positive or negative
+     */
     public offsetPlayerByDirection(offset: number, direction: string) {
         this.moveOffset.x = 0;
         this.moveOffset.y = 0;
@@ -240,11 +252,8 @@ export default abstract class Character extends Drawable {
 
     /**
      * Draw player.
-     * Dima (HaseProgr) is a gay 💩. Where are commentaries for variables?
-     * FFS
      */
     public draw(): void {
-        // console.log(this);
         this.bg(this.color);
         const margin = 5 * this.scale;
         const border = 4 * this.scale;
