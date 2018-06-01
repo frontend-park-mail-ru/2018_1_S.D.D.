@@ -9,11 +9,10 @@ class Api {
      * Creates Api instance
      * 
      * @param {string} serverAddress Server address.
-     */
-    const eventBus = new ServiceManager().EventBus;
-    
+     */  
     constructor(serverAddress) {
         this.serverAddress = serverAddress;
+        this.Bus = new ServiceManager().EventBus;
     }
 
     /**
@@ -45,7 +44,7 @@ class Api {
         if (navigator.onLine) {
             return this._request('GET', path, data);
         } else {
-            eventBus.emit('error:noresponse');
+            this.Bus.emit('error:noresponse');
         }
     }
 
@@ -61,7 +60,7 @@ class Api {
         if (navigator.onLine) {
             return this._request('POST', path, data, json);
         } else {
-            eventBus.emit('error:noresponse');
+            this.Bus.emit('error:noresponse');
         }
     }
 
@@ -101,7 +100,7 @@ class Api {
                 return response.json();
             },
             () => {
-                throw new Error('Connection issues. Try again later!');
+                this.Bus.emit('error:noresponse');
             }
         );
     }
