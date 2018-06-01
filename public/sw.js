@@ -25,6 +25,22 @@ this.addEventListener('install', (event) => {
     );
 });
 
+/*self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+          // Return true if you want to remove this cache,
+          // but remember that caches are shared across
+          // the whole origin
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+});*/
+
 /*this.addEventListener('fetch', (event) => {
 
 	const options = {
@@ -64,21 +80,30 @@ this.addEventListener('fetch', function(event) {
     if (event.request.method != 'GET') {
         return;
     }
-    if (!cacheRegExp.test(event.request.url)) {
+    /* if (navigator.onLine) { 
+        if (!cacheRegExp.test(event.request.url)) {
 
-        // request will be networked
-        return;
-    }
-    event.respondWith(
-        caches.match(event.request).then(function(resp) {
-            return resp || fetch(event.request).then(function(response) {
-                return caches.open(CACHE_NAME).then(function(cache) {
-                    cache.put(event.request, response.clone());
-                    return response;
-                });
+            // request will be networked
+            return;
+        }
+        fetch(event.request).then(function(response) {
+            return caches.open(CACHE_NAME).then(function(cache) {
+                cache.put(event.request, response.clone());
+                return response;
             });
-        }).catch(function() {
-            return caches.match('/');
+        });
+     } else { */
+        event.respondWith(
+            caches.match(event.request).then(function(resp) {
+                return resp || fetch(event.request).then(function(response) {
+                    return caches.open(CACHE_NAME).then(function(cache) {
+                        cache.put(event.request, response.clone());
+                        return response;
+                    });
+                });
+            }).catch(function() {
+                return caches.match('/');
         })
     );
+    // }
 });

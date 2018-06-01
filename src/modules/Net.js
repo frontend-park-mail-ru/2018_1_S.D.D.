@@ -13,12 +13,15 @@ export default class Net {
         window.onbeforeunload = () => {
             this.disconnect();
         };
+        const Bus = new ServiceManager().EventBus;
+        Bus.subscribe('logout', () => { this.disconnect(); }, this);
     }
 
-    connect() {
+    connect(msg = null) {
         this.disconnected = false;
         this.socket = new WebSocket(this.socketAddres);
         this.socket.onmessage = this.messageHandler;
+        
         this.socket.onopen = () => {
             this.ready = true;
         };
@@ -26,11 +29,16 @@ export default class Net {
             this.ready = false;
             this.disconnected = true;
         };
+
+        if (msg !== null) {
+            this.send(msg);
+        }
     }
 
     send(msg) {
         if (this.disconnected) {
-            this.connect(this.socketAddres);
+            this.connect(msg);
+            return;
         }
         if (!this.ready) {
             setTimeout(() => {
@@ -50,6 +58,8 @@ export default class Net {
 
     disconnect() {
         this.socket.onclose = () => {};
+        this.ready = false;
+        this.disconnected = true;
         this.socket.close();
     }
 }

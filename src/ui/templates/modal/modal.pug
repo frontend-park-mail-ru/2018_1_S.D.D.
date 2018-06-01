@@ -1,8 +1,17 @@
-.modal-dialog__wrapper
-    .modal-dialog__close.close-modal &#10006;
-    .outer-wrapper
-        .modal-dialog__window-holder
-            .window__wrapper
-                .window__content
+if mobile
+    .modal-dialog__wrapper-mobile
+        .modal-dialog__close-mobile.close-modal-mobile &#10006;
+        .modal-dialog__window-holder-mobile
+            .window__wrapper-mobile
+                .window__content-mobile
                     .content
-    .modal-dialog__outer.close-modal
+        .modal-dialog__outer-mobile.close-modal-mobile
+else
+    .modal-dialog__wrapper
+        .modal-dialog__close.close-modal &#10006;
+        .outer-wrapper
+            .modal-dialog__window-holder
+                .window__wrapper
+                    .window__content
+                        .content
+        .modal-dialog__outer.close-modal
