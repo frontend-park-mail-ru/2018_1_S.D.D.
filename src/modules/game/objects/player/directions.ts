@@ -2,8 +2,8 @@
  * Possible directions on field.
  */
 export enum Direction {
-   UP = 1,
+   RIGHT = 1,
    DOWN = 2,
    LEFT = 3,
-   RIGHT = 4,
+   UP = 4,
 }
