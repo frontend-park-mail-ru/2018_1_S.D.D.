@@ -85,14 +85,14 @@ this.addEventListener('fetch', function(event) {
         // request will be networked
         return;
     }
-    /* if (navigator.onLine) { */
+    /* if (navigator.onLine) { 
         fetch(event.request).then(function(response) {
             return caches.open(CACHE_NAME).then(function(cache) {
                 cache.put(event.request, response.clone());
                 return response;
             });
         });
-    /* } else { */
+     } else { */
         event.respondWith(
             caches.match(event.request).then(function(resp) {
                 return resp || fetch(event.request).then(function(response) {
