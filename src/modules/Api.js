@@ -10,7 +10,6 @@ class Api {
      * 
      * @param {string} serverAddress Server address.
      */
-    const eventBus = new ServiceManager().EventBus;
     
     constructor(serverAddress) {
         this.serverAddress = serverAddress;
@@ -45,7 +44,8 @@ class Api {
         if (navigator.onLine) {
             return this._request('GET', path, data);
         } else {
-            eventBus.emit('error:noresponse');
+            const EventBus = new ServiceManager().EventBus;
+            EventBus.emit('error:noresponse');
         }
     }
 
@@ -61,7 +61,8 @@ class Api {
         if (navigator.onLine) {
             return this._request('POST', path, data, json);
         } else {
-            eventBus.emit('error:noresponse');
+            const EventBus = new ServiceManager().EventBus;
+            EventBus.emit('error:noresponse');
         }
     }
 
