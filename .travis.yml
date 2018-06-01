@@ -5,7 +5,7 @@ node_js: '8'
 # install: npm install
 script:
 - npm install
-- npm run build-dev
+- npm run build-heroku
 - chmod 600 color-it.pem
 - ssh-keyscan -H color-it.online >> ~/.ssh/known_hosts
 - scp -i color-it.pem -r public root@color-it.online:/home/ubuntu/color-it-frontend
