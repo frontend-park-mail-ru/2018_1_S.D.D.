@@ -304,9 +304,9 @@ export default class Multiplayer extends Game {
             ptoadd.setAvatar(player.avatar);
             this.Scene.addPlayer(ptoadd);
         });
-        const ptoadd1 = new Player(3, 'nickname1', new Point(Field.range - 1, Field.range - 1));
-        this.Scene.addPlayer(ptoadd1);
-        const ptoadd2 = new Player(4, 'nickname2', new Point(0, Field.range - 1));
-        this.Scene.addPlayer(ptoadd2);
+        // const ptoadd1 = new Player(3, 'nickname1', new Point(Field.range - 1, Field.range - 1));
+        // this.Scene.addPlayer(ptoadd1);
+        // const ptoadd2 = new Player(4, 'nickname2', new Point(0, Field.range - 1));
+        // this.Scene.addPlayer(ptoadd2);
     }
 }
