@@ -83,7 +83,7 @@ export default class Multiplayer extends Game {
         this.baseInit();
         this.gameStartTime = Date.now();
         const Bus = new ServiceManager().EventBus;
-        Bus.subscribe('WS:ServerSnapshot', this.refreshGameState, this);
+        Bus.subscribe('WS:ServerSnapshot', this.serverSnapHandler, this);
         this.addPlayers();
         MetaController.initPlayersScores(
             Scene.Players.get(),
@@ -140,7 +140,7 @@ export default class Multiplayer extends Game {
 
     // if we recieve a snap from server, where our local newDirection
     // doesnot equal the one from serverSnap, then
-    // try send ClientSnapshot
+    // try send ClientSnapshot again
     public sendClientSnapshot(dataPlayers: IPlayerSnap[]) {
         const storage = new ServiceManager().UserStorage;
         const net = new ServiceManager().Net;
@@ -163,32 +163,11 @@ export default class Multiplayer extends Game {
     }
 
     public refreshGameState(data: IGameSnapshot) {
-        // console.log('Time from prev ServSnap: ' + (Date.now() - this.prevServerSnapTime));
-        this.prevServerSnapTime = Date.now();
-
-        // Crutch for first serverSnap
-        if (this.curServerSnap == null) {
-            this.curServerSnap = data;
-            return;
-        }
-
-        if (data.timestamp > this.curServerSnap.timestamp) {
-            this.prevServerSnap = this.curServerSnap;
-            this.curServerSnap = data;
-            this.interCounter = 0;
-        }
-
-        // if we have no snap to start from we shouldnt do anything
-        if (this.prevServerSnap == null) {
-            return;
-        }
-
-        // in terms of interpolation we apdating game by old values
-        const field = this.prevServerSnap.gameFieldSnap;
+        const field = data.gameFieldSnap;
         Game.Field.fillField(field);
 
         const GamePlayers = Scene.Players;
-        const players = this.prevServerSnap.playersSnap.forEach((player) => {
+        const players = data.playersSnap.forEach((player) => {
             const currentPlayer = GamePlayers.item((c) => c.id === player.id);
             currentPlayer.score = player.score;
 
@@ -198,8 +177,50 @@ export default class Multiplayer extends Game {
 
             currentPlayer.velocity = player.velocity;
         });
+    }
 
-        this.sendClientSnapshot(data.playersSnap);
+    public serverSnapHandler(data: IGameSnapshot) {
+        // console.log('Time from prev ServSnap: ' + (Date.now() - this.prevServerSnapTime));
+        // this.prevServerSnapTime = Date.now();
+
+        // Crutch for first serverSnap
+        if (this.curServerSnap == null) {
+            this.prevServerSnap = data;
+            this.curServerSnap = data;
+        }
+
+        if (data.timestamp > this.curServerSnap.timestamp) {
+            this.prevServerSnap = this.curServerSnap;
+            this.curServerSnap = data;
+            this.interCounter = 0;
+        }
+
+        // in terms of interpolation we apdating game by old values
+        this.refreshGameState(this.prevServerSnap);
+
+
+        // if we have no snap to start from we shouldnt do anything
+        // if (this.prevServerSnap == null) {
+        //     return;
+        // }
+
+        
+        // const field = this.prevServerSnap.gameFieldSnap;
+        // Game.Field.fillField(field);
+
+        // const GamePlayers = Scene.Players;
+        // const players = this.prevServerSnap.playersSnap.forEach((player) => {
+        //     const currentPlayer = GamePlayers.item((c) => c.id === player.id);
+        //     currentPlayer.score = player.score;
+
+        //     currentPlayer.startPosition = new Point(player.position.x, player.position.y);
+
+        //     currentPlayer.offsetPlayerByDirection(player.offset, player.direction);
+
+        //     currentPlayer.velocity = player.velocity;
+        // });
+
+        //this.sendClientSnapshot(data.playersSnap);
 
         // console.log(data);
         // console.log('previousData');
@@ -267,7 +288,7 @@ export default class Multiplayer extends Game {
         net.send({
             class: 'ClientSnapshot',
             clientTime: nowTime - this.gameStartTime,
-            direction: null, // currentPlayer.direction,
+            direction: DIRSTR_MAP.get(currentPlayer.nextDirection),
             velocity: currentPlayer.velocity,
         });
         this.gameStartTime = nowTime;

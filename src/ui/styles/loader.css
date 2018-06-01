@@ -1,13 +1,16 @@
-html, body {
+html {
     width: 100%;
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
     min-width: 320px;
+    background: linear-gradient(-50deg, rgb(47, 22, 78), rgb(125, 185, 253));
+    background-attachment: fixed;
 }
 
 body {
-    background: linear-gradient(-50deg, rgb(47, 22, 78), rgb(125, 185, 253));
-    background-attachment: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: scroll
 }
 
 .preloader {
