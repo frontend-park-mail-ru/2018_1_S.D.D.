@@ -1,5 +1,6 @@
 'use strict';
 import ProgressBar from '../modules/ProgressBar';
+import ServiceManager from '../modules/ServiceManager';
 /**
  *  Sends requests to server. 
  */ 
@@ -9,6 +10,8 @@ class Api {
      * 
      * @param {string} serverAddress Server address.
      */
+    const EventBus = new ServiceManager().EventBus;
+    
     constructor(serverAddress) {
         this.serverAddress = serverAddress;
     }
@@ -42,7 +45,7 @@ class Api {
         if (navigator.onLine) {
             return this._request('GET', path, data);
         } else {
-            throw new Error('Connection issues. Try again later!');
+            EventBus.emit('error:noresponse');
         }
     }
 
@@ -58,7 +61,7 @@ class Api {
         if (navigator.onLine) {
             return this._request('POST', path, data, json);
         } else {
-            throw new Error('Connection issues. Try again later!');
+            EventBus.emit('error:noresponse');
         }
     }
 
