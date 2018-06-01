@@ -39,7 +39,11 @@ class Api {
      * @returns {Promise} Promise with server response.
      */
     GET(path, data = null) {
-        return this._request('GET', path, data);
+        if (navigator.onLine) {
+            return this._request('GET', path, data);
+        } else {
+            throw new Error('Connection issues. Try again later!');
+        }
     }
 
     /**
@@ -51,7 +55,11 @@ class Api {
      * @returns {Promise} Promise with server response.
      */
     POST(path, data = null, json = true) {
-        return this._request('POST', path, data, json);
+        if (navigator.onLine) {
+            return this._request('POST', path, data, json);
+        } else {
+            throw new Error('Connection issues. Try again later!');
+        }
     }
 
     /**
