@@ -4,6 +4,10 @@ const CACHE_NAME = 'color-it-cache';
 const cacheUrls = [
 ];
 
+let cacheRegExp = new RegExp('(' + [
+  '.(css|js|woff2?|ttf|png|jpe?g)'
+].join('(/?)|\\') + ')$');
+
 this.addEventListener('install', (event) => {
     // задержим обработку события
     // если произойдёт ошибка, serviceWorker не установится
@@ -57,6 +61,14 @@ this.addEventListener('install', (event) => {
 });*/
 
 this.addEventListener('fetch', function(event) {
+    if (event.request.method != 'GET') {
+        return;
+    }
+    if (!cacheRegExp.test(event.request.url)) {
+
+        // request will be networked
+        return;
+    }
     event.respondWith(
         caches.match(event.request).then(function(resp) {
             return resp || fetch(event.request).then(function(response) {
