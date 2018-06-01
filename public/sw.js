@@ -25,7 +25,7 @@ this.addEventListener('install', (event) => {
     );
 });
 
-/*self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -39,7 +39,7 @@ this.addEventListener('install', (event) => {
       );
     })
   );
-});*/
+});
 
 /*this.addEventListener('fetch', (event) => {
 
