@@ -3,7 +3,7 @@
 language: node_js
 node_js: '8'
 # install: npm install
-scripts:
+script:
 - npm install
 - npm run build-dev
 - chmod 600 color-it.pem
