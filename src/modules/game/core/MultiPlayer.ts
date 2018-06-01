@@ -1,7 +1,6 @@
 import ServiceManager from '../../ServiceManager';
 import InputController from '../InputController';
 import MetaController from '../MetaController';
-import Scene from '../Scene';
 import Bonus from '../objects/bonus/BonusObject';
 import Field from '../objects/field/Field';
 import Bot from '../objects/player/Bot';
@@ -13,6 +12,7 @@ import { IPlayerData } from '../playerdata';
 import { CELL_SIZE, DIRSTR_MAP } from '../settings';
 import Game from './Game';
 import SessionSettings from '../SessionSettings';
+import Scene from '../Scene';
 
 interface IFieldSnap {
     field: number[][];
