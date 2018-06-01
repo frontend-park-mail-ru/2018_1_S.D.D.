@@ -16,10 +16,10 @@ export const DIRECTION_MAP = new Map<number, Direction>([
 ]);
 
 export const DIRSTR_MAP = new Map<number, string>([
-    [1, "RIGHT"],
-    [2, "DOWN"],
-    [3, "LEFT"],
-    [4, "UP"],
+    [1, 'RIGHT'],
+    [2, 'DOWN'],
+    [3, 'LEFT'],
+    [4, 'UP'],
 ]);
 
 export const GAME_DURATION = 60;

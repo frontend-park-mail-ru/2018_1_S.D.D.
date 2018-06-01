@@ -112,14 +112,14 @@ export default abstract class Character extends Drawable {
         this.avatar.src = defaultAvatar;
     }
 
-    public offsetPlayerByDirectionAdditive(offset: number, direction: string) {        
+    public offsetPlayerByDirectionAdditive(offset: number, direction: string) {
         switch (direction) {
             case 'LEFT':
-                //currentPlayer.direction = Direction.LEFT;
+                // currentPlayer.direction = Direction.LEFT;
                 this.moveOffset.x = -offset;
                 break;
             case 'RIGHT':
-                //currentPlayer.direction = Direction.RIGHT;
+                // currentPlayer.direction = Direction.RIGHT;
                 this.moveOffset.x = offset;
                 break;
             case 'UP':
@@ -127,7 +127,7 @@ export default abstract class Character extends Drawable {
                 this.moveOffset.y = -offset;
                 break;
             case 'DOWN':
-                //currentPlayer.direction = Direction.DOWN;
+                // currentPlayer.direction = Direction.DOWN;
                 this.moveOffset.y = offset;
                 break;
             }
@@ -244,7 +244,7 @@ export default abstract class Character extends Drawable {
      * FFS
      */
     public draw(): void {
-        //console.log(this);
+        // console.log(this);
         this.bg(this.color);
         const margin = 5 * this.scale;
         const border = 4 * this.scale;

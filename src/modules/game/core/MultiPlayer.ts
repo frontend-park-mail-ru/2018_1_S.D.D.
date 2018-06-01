@@ -12,7 +12,7 @@ import { IPlayerData } from '../playerdata';
 import Scene from '../Scene';
 import SessionSettings from '../SessionSettings';
 import Game from './Game';
-import { CELL_SIZE, DIRSTR_MAP } from '../settings';
+import { DIRSTR_MAP, CELL_SIZE } from '../settings';
 
 interface IFieldSnap {
     field: number[][];
@@ -54,7 +54,7 @@ export default class Multiplayer extends Game {
     private IController: InputController;
     private gameStartTime: number;
 
-    private prevServerSnap: IGameSnapshot; 
+    private prevServerSnap: IGameSnapshot;
     private curServerSnap: IGameSnapshot;
 
     // counter from 0 to frameTime of last Snap for interpolation
@@ -71,7 +71,6 @@ export default class Multiplayer extends Game {
     constructor() {
         super();
 
-
         this.prevServerSnapTime = Date.now();
         this.playerData = SessionSettings.players[0];
         this.initGame();
@@ -82,7 +81,7 @@ export default class Multiplayer extends Game {
      */
     public initGame(): void {
         this.baseInit();
-        this.gameStartTime = Date.now();        
+        this.gameStartTime = Date.now();    
         const Bus = new ServiceManager().EventBus;
         Bus.subscribe('WS:ServerSnapshot', this.refreshGameState, this);
         this.addPlayers();
@@ -97,19 +96,20 @@ export default class Multiplayer extends Game {
         this.curServerSnap.playersSnap.forEach((player) => {
             const currentPlayer = Scene.Players.item((c) => c.id === player.id);
 
-            const prevSnapPlayer = this.prevServerSnap.playersSnap[player.id-1];
-            const curSnapPlayer = this.curServerSnap.playersSnap[player.id-1];
+            const prevSnapPlayer = this.prevServerSnap.playersSnap[player.id - 1];
+            const curSnapPlayer = this.curServerSnap.playersSnap[player.id - 1];
 
-            if (player.id == 1) {
-                console.log('prev '+player.id);
-                console.log(prevSnapPlayer);
-                console.log('cur '+player.id);
-                console.log(curSnapPlayer);
+            if (player.id === 1) {
+                // console.log('prev '+ player.id);
+                // console.log(prevSnapPlayer);
+                // console.log('cur '+ player.id);
+                // console.log(curSnapPlayer);
             }
-            
+        
             const cellDiffX = curSnapPlayer.position.x - prevSnapPlayer.position.x;
             const cellDiffY = curSnapPlayer.position.y - prevSnapPlayer.position.y;
-            const cellDiff = CELL_SIZE * (cellDiffX + cellDiffY); // one (and only one) of cellDiffS may be 1, so cellDiff may be 0 or CELL_SIZE
+            // one (and only one) of cellDiffS may be 1, so cellDiff may be 0 or CELL_SIZE
+            const cellDiff = CELL_SIZE * (cellDiffX + cellDiffY);
 
             // TO-DO
             // Probably we should base interpolation
@@ -121,10 +121,12 @@ export default class Multiplayer extends Game {
             // (happens when curSnap is on next cell after prevSnap)
             // to prevnt negative value, that may cause reverse moving
             const interFrameMove = curSnapPlayer.offset + cellDiff - prevSnapPlayer.offset;
-            
+
             const interFrameOffset = prevSnapPlayer.offset + interFrameMove * interFrameRation;
 
-            if (player.id == 1) console.log (this.interCounter, this.curServerSnap.frameTime,interFrameRation, interFrameMove, interFrameOffset, cellDiff);
+            if (player.id === 1) {
+                // console.log(this.interCounter, this.curServerSnap.frameTime, interFrameRation, interFrameMove, interFrameOffset, cellDiff);
+            }
 
             if (interFrameOffset <= CELL_SIZE) {
                 currentPlayer.offsetPlayerByDirection(interFrameOffset, player.direction);
@@ -142,27 +144,25 @@ export default class Multiplayer extends Game {
         const storage = new ServiceManager().UserStorage;
         const net = new ServiceManager().Net;
         const localPlayer = Scene.Players.item((c) => {
-            //console.log(c)
-            return c.name === storage.getData('nickname') + " (YOU)";
-        });  
+            // console.log(c)
+            return c.name === storage.getData('nickname') + ' (YOU)';
+        });
 
+        const dataPlayer = dataPlayers[localPlayer.id - 1];
+        // console.log(dataPlayer);
+        // console.log(DIRSTR_MAP.get(localPlayer.nextDirection) + '-' + dataPlayer.newDirection);
 
-        const dataPlayer = dataPlayers[localPlayer.id-1];
-        console.log(dataPlayer);
-        console.log(DIRSTR_MAP.get(localPlayer.nextDirection) + '-' + dataPlayer.newDirection );
-
-        if (DIRSTR_MAP.get(localPlayer.nextDirection) != dataPlayer.newDirection) {
+        if (DIRSTR_MAP.get(localPlayer.nextDirection) !== dataPlayer.newDirection) {
             const request = {
                 class: 'ClientSnapshot',
                 direction: localPlayer.nextDirection,
             };
             new ServiceManager().Net.send(request);
         }
-        
     }
 
     public refreshGameState(data: IGameSnapshot) {
-        console.log('Time from prev ServSnap: ' + (Date.now() - this.prevServerSnapTime));
+        // console.log('Time from prev ServSnap: ' + (Date.now() - this.prevServerSnapTime));
         this.prevServerSnapTime = Date.now();
 
         // Crutch for first serverSnap
@@ -186,24 +186,23 @@ export default class Multiplayer extends Game {
         const field = this.prevServerSnap.gameFieldSnap;
         Game.Field.fillField(field);
 
-
         const GamePlayers = Scene.Players;
         const players = this.prevServerSnap.playersSnap.forEach((player) => {
             const currentPlayer = GamePlayers.item((c) => c.id === player.id);
             currentPlayer.score = player.score;
-            
+
             currentPlayer.startPosition = new Point(player.position.x, player.position.y);
-            
+
             currentPlayer.offsetPlayerByDirection(player.offset, player.direction);
 
             currentPlayer.velocity = player.velocity;
         });
-        
+
         this.sendClientSnapshot(data.playersSnap);
 
-        console.log(data);
-        console.log('previousData');
-        console.log(this.prevServerSnap);
+        // console.log(data);
+        // console.log('previousData');
+        // console.log(this.prevServerSnap);
     }
 
     /**
@@ -240,15 +239,13 @@ export default class Multiplayer extends Game {
                 this.logic(now - this.lastFrameCall, now);
             }
 
-            this.interCounter = this.interCounter + (now-this.lastFrameCall);
-            console.log('Rendered: ' + (now-this.lastFrameCall));
-
+            this.interCounter = this.interCounter + (now - this.lastFrameCall);
+            // console.log('Rendered: ' + (now - this.lastFrameCall));
 
             this.lastFrameCall = now;
             this.gameAnimationLoop = requestAnimationFrame(this.gameLoop.bind(this));
         }
     }
-
 
     /**
      * Logic call.
@@ -259,20 +256,20 @@ export default class Multiplayer extends Game {
     protected logic(lastLogicCall: number, now: number): void {
         const storage = new ServiceManager().UserStorage;
         const net = new ServiceManager().Net;
-        //console.log(storage.getData('nickname'));
+        // console.log(storage.getData('nickname'));
         const currentPlayer = Scene.Players.item((c) => {
-            //console.log(c)
-            return c.name === storage.getData('nickname') + " (YOU)";
-        });      
+            // console.log(c)
+            return c.name === storage.getData('nickname') + ' (YOU)';
+        });
         const nowTime = Date.now();
-        //console.log(currentPlayer);   
+        // console.log(currentPlayer);
         net.send({
             class: "ClientSnapshot",
-            direction: null,//currentPlayer.direction,
+            clientTime: nowTime - this.gameStartTime,
+            direction: null, // currentPlayer.direction,
             velocity: currentPlayer.velocity,
-            clientTime: nowTime - this.gameStartTime
-        })
-        this.gameStartTime = nowTime
+        });
+        this.gameStartTime = nowTime;
         // todo (interpolation?)
     }
 

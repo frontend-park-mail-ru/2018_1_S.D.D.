@@ -126,7 +126,7 @@ export default abstract class Game {
         }
     }
 
-     /**
+    /**
      * Should be overwritten. Logic call.
      *
      * Redraw scene and call logic.
