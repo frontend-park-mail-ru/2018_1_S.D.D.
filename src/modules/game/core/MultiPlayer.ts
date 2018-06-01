@@ -156,7 +156,7 @@ export default class Multiplayer extends Game {
         if (DIRSTR_MAP.get(localPlayer.nextDirection) !== dataPlayer.newDirection) {
             const request = {
                 class: 'ClientSnapshot',
-                direction: localPlayer.nextDirection,
+                direction: DIRSTR_MAP.get(localPlayer.nextDirection),
             };
             new ServiceManager().Net.send(request);
         }
