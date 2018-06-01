@@ -11,8 +11,8 @@ import Point from '../objects/Point';
 import { IPlayerData } from '../playerdata';
 import { CELL_SIZE, DIRSTR_MAP } from '../settings';
 import Game from './Game';
-import SessionSettings from '../SessionSettings';
 import Scene from '../Scene';
+import SessionSettings from '../SessionSettings';
 
 interface IFieldSnap {
     field: number[][];
