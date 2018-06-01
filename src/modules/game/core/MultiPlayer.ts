@@ -9,10 +9,10 @@ import { Direction } from '../objects/player/directions';
 import Player from '../objects/player/Player';
 import Point from '../objects/Point';
 import { IPlayerData } from '../playerdata';
+import { CELL_SIZE, DIRSTR_MAP } from '../settings';
+import Game from './Game';
 import Scene from '../Scene';
 import SessionSettings from '../SessionSettings';
-import Game from './Game';
-import { DIRSTR_MAP, CELL_SIZE } from '../settings';
 
 interface IFieldSnap {
     field: number[][];
@@ -81,7 +81,7 @@ export default class Multiplayer extends Game {
      */
     public initGame(): void {
         this.baseInit();
-        this.gameStartTime = Date.now();    
+        this.gameStartTime = Date.now();
         const Bus = new ServiceManager().EventBus;
         Bus.subscribe('WS:ServerSnapshot', this.refreshGameState, this);
         this.addPlayers();
@@ -105,7 +105,7 @@ export default class Multiplayer extends Game {
                 // console.log('cur '+ player.id);
                 // console.log(curSnapPlayer);
             }
-        
+
             const cellDiffX = curSnapPlayer.position.x - prevSnapPlayer.position.x;
             const cellDiffY = curSnapPlayer.position.y - prevSnapPlayer.position.y;
             // one (and only one) of cellDiffS may be 1, so cellDiff may be 0 or CELL_SIZE
@@ -125,14 +125,15 @@ export default class Multiplayer extends Game {
             const interFrameOffset = prevSnapPlayer.offset + interFrameMove * interFrameRation;
 
             if (player.id === 1) {
-                // console.log(this.interCounter, this.curServerSnap.frameTime, interFrameRation, interFrameMove, interFrameOffset, cellDiff);
+                // console.log(this.interCounter, this.curServerSnap.frameTime, interFrameRation);
+                // console.log(interFrameMove, interFrameOffset, cellDiff);
             }
 
             if (interFrameOffset <= CELL_SIZE) {
                 currentPlayer.offsetPlayerByDirection(interFrameOffset, player.direction);
             } else {
                 currentPlayer.offsetPlayerByDirection(CELL_SIZE, player.direction);
-                currentPlayer.offsetPlayerByDirection(interFrameOffset-CELL_SIZE, player.newDirection);
+                currentPlayer.offsetPlayerByDirection(interFrameOffset - CELL_SIZE, player.newDirection);
             }
         });
     }
@@ -264,7 +265,7 @@ export default class Multiplayer extends Game {
         const nowTime = Date.now();
         // console.log(currentPlayer);
         net.send({
-            class: "ClientSnapshot",
+            class: 'ClientSnapshot',
             clientTime: nowTime - this.gameStartTime,
             direction: null, // currentPlayer.direction,
             velocity: currentPlayer.velocity,
