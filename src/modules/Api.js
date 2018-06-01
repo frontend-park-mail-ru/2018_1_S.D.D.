@@ -61,7 +61,7 @@ class Api {
             return this._request('POST', path, data, json);
         } else {
             this.Bus.emit('error:noresponse');
-        }
+         }
     }
 
     /**
