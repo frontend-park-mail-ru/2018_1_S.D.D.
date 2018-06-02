@@ -71,7 +71,7 @@ class LoginController extends Controller {
         return {
             back: true,
             header: 'COME IN!',
-            social: true,
+            social: false,
             formAction: '/login/submit',
             onSubmit: () => this.go('/login/submit', false),
             formInputs: [

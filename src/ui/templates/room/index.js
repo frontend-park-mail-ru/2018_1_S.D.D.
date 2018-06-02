@@ -4,9 +4,10 @@ import template from './room.pug';
 import addnewmmbr from './member.pug';
 import './room.scss';
 import ServiceManager from '../../../modules/ServiceManager';
+import SessionSettings from '../../../modules/game/SessionSettings';
 
 export default {
-    addPlayersToRoom: function(tmpl, players, isowner) {
+    addPlayersToRoom: function(tmpl, players, isowner, lobbyId) {
         const place = tmpl.querySelector('.room__members');
         players.forEach(player => {
             const nm = addnewmmbr({
@@ -15,9 +16,46 @@ export default {
             });
             const nmdiv = document.createElement('div');
             nmdiv.classList.add('member');
+            nmdiv.classList.add(`member-${player.name}`);
             nmdiv.innerHTML = nm;
+            const rembtn = nmdiv.querySelector('.member__remove');
+            if (rembtn) {
+                rembtn.addEventListener('click', () => {
+                    const SM = new ServiceManager();
+                    SM.Net.send({
+                        'class': 'LobbyMessage',
+                        'action': 'DISCONNECT',
+                        'id': lobbyId,
+                        'userId': player.id
+                    });
+                });
+            }
             place.appendChild(nmdiv);
         });
+    },
+
+    ready() {
+        const startbtn = document.querySelector('.start-btn');
+        if (startbtn) {
+            startbtn.classList.remove('start-btn-not-ready');
+        }
+    },
+
+    notready() {
+        const startbtn = document.querySelector('.start-btn');
+        if (startbtn) {
+            startbtn.classList.add('start-btn-not-ready');
+        }
+    },
+
+    removePlayersFromRoom: function(tmpl, player) {
+        const place = tmpl.querySelector('.room__members');
+        //console.log(place.querySelector(`.member-${player.name}`), `.member-${player}`)
+        const rem = place.querySelector(`.member-${player}`);
+        if (!rem) {
+            return;
+        }
+        rem.remove();
     },
 
     render: function(params) {
@@ -25,10 +63,23 @@ export default {
         elem.innerHTML = template(params);
 
         const startbtn = elem.querySelector('.start-btn');
-        startbtn.addEventListener('click', () => {
-            const SM = new ServiceManager();
-            SM.Router.re('/play');
-        });
+        if (startbtn) {
+            startbtn.addEventListener('click', () => {
+                if (SessionSettings.mode === 'offline') {
+                    const SM = new ServiceManager();
+                    SM.Router.re('/play');
+                    return;
+                }
+                if (SessionSettings.ready) {
+                    const SM = new ServiceManager();
+                    SM.Net.send({
+                        class: 'LobbyMessage',
+                        action: 'START',
+                        id: SessionSettings.lobbyId
+                    });
+                }
+            });
+        }
 
         return elem;
     }

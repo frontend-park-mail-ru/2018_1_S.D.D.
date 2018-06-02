@@ -1,16 +1,22 @@
-sudo: required
-dist: trusty
+# sudo: required
+# dist: trusty
 language: node_js
-node_js: "8"
-install: npm install
-
-#branches: travis
-
-deploy: 
-  provider: heroku
-  api_key:
-    secure: b6a99335-aa23-49e9-8130-4e04ef9c0b73
-  app: color-it
-  on:
-    all_branches: true
-run: npm install && npm run start-heroku
+node_js: '8'
+# install: npm install
+script:
+- npm install
+- npm run build-online
+- chmod 600 color-it.pem
+- ssh-keyscan -H color-it.online >> ~/.ssh/known_hosts
+- scp -i color-it.pem -r public root@color-it.online:/home/ubuntu/color-it-frontend
+# deploy:
+#   provider: heroku
+#   api_key:
+#     secure: b6a99335-aa23-49e9-8130-4e04ef9c0b73
+#   app: color-it
+#   on:
+#     all_branches: true
+# run: npm install && npm run start-heroku
+before_install:
+- openssl aes-256-cbc -K $encrypted_dd5ca86accb9_key -iv $encrypted_dd5ca86accb9_iv
+  -in color-it.pem.enc -out color-it.pem -d

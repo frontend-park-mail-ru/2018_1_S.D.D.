@@ -6,3 +6,6 @@ public/index.html
 
 #ide
 .vscode/
+
+#private_key
+color-it.pem
