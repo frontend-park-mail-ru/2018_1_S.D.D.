@@ -4,7 +4,7 @@ import template from './room.pug';
 import addnewmmbr from './member.pug';
 import './room.scss';
 import ServiceManager from '../../../modules/ServiceManager';
-import SessionSettings from '../../../modules/game/SessionSettings'
+import SessionSettings from '../../../modules/game/SessionSettings';
 
 export default {
     addPlayersToRoom: function(tmpl, players, isowner, lobbyId) {
@@ -23,10 +23,10 @@ export default {
                 rembtn.addEventListener('click', () => {
                     const SM = new ServiceManager();
                     SM.Net.send({
-                        "class": "LobbyMessage",
-                        "action": "DISCONNECT",
-                        "id": lobbyId,
-                        "userId": player.id
+                        'class': 'LobbyMessage',
+                        'action': 'DISCONNECT',
+                        'id': lobbyId,
+                        'userId': player.id
                     });
                 });
             }
