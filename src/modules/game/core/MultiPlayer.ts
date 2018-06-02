@@ -5,6 +5,7 @@ import Bonus from '../objects/bonus/BonusObject';
 import Field from '../objects/field/Field';
 import Bot from '../objects/player/Bot';
 import { BOTAVATARS_MAP, BOTNAMES_MAP } from '../objects/player/botsettings';
+import Character from '../objects/player/Character';
 import { Direction } from '../objects/player/directions';
 import Player from '../objects/player/Player';
 import Point from '../objects/Point';
@@ -13,7 +14,6 @@ import Scene from '../Scene';
 import SessionSettings from '../SessionSettings';
 import { CELL_SIZE, DIRSTR_MAP } from '../settings';
 import Game from './Game';
-import Character from '../objects/player/Character';
 
 interface IFieldSnap {
     field: number[][];
@@ -64,7 +64,7 @@ export default class Multiplayer extends Game {
     private curServerSnap: IGameSnapshot;
 
     private gameSnapSaves: IGameSnapSave[];
-    
+
     private lastSnapRecieveTimestamp: number;
     private currentTimestamp: number;
 
@@ -84,7 +84,7 @@ export default class Multiplayer extends Game {
     private prevServerSnapTime: number;
 
     /**
-     * Time between 
+     * Time between
      */
     private serverSnapTimeDiff: number;
 
@@ -134,7 +134,7 @@ export default class Multiplayer extends Game {
             const cellDiffY = Math.abs(curSnapPlayer.position.y - prevSnapPlayer.position.y);
             // one (and only one) of cellDiffS may be 1, so cellDiff may be 0 or CELL_SIZE
             const cellDiff = CELL_SIZE * (cellDiffX + cellDiffY);
-            
+
             // must add cellDiff in case if curPos is very low (~0)
             // (happens when curSnap is on next cell after prevSnap)
             // to prevnt negative value, that may cause reverse moving
@@ -173,7 +173,7 @@ export default class Multiplayer extends Game {
             const cellDiffY = Math.abs(curSnapPlayer.position.y - prevSnapPlayer.position.y);
             // one (and only one) of cellDiffS may be 1, so cellDiff may be 0 or CELL_SIZE
             const cellDiff = CELL_SIZE * (cellDiffX + cellDiffY);
-            
+
             // must add cellDiff in case if curPos is very low (~0)
             // (happens when curSnap is on next cell after prevSnap)
             // to prevnt negative value, that may cause reverse moving
@@ -194,12 +194,12 @@ export default class Multiplayer extends Game {
 
     /**
      * Low-level func to send server local player's snapshot.
-     * 
+     *
      * @param localPlayer info about local player
      */
-    private _sendClientSnap(localPlayer: Character){
+    private _sendClientSnap(localPlayer: Character) {
         const net = new ServiceManager().Net;
-        
+
         const nowTime = Date.now();
         net.send({
             class: 'ClientSnapshot',
@@ -207,13 +207,13 @@ export default class Multiplayer extends Game {
             direction: DIRSTR_MAP.get(localPlayer.nextDirection),
             velocity: localPlayer.velocity,
         });
-        
+
         this.gameStartTime = nowTime;
     }
 
     /**
      * Sending client snapshot.
-     * 
+     *
      * @param dataPlayers info about players from serverSnapshot/
      * Used to check if server has valid newDirection of local player.
      * If null - forced sending without checking.
@@ -222,7 +222,7 @@ export default class Multiplayer extends Game {
         const localPlayer = Scene.Players.item((c) => {
             return c.isCurrentPlayer;
         });
-        
+
         // null means force send and end of func
         if (dataPlayers == null) {
             return this._sendClientSnap(localPlayer);
@@ -230,15 +230,14 @@ export default class Multiplayer extends Game {
 
         // here not forced send if there is diff between serverSnap and local dir
         const dataPlayer = dataPlayers[localPlayer.id - 1];
-        if (DIRSTR_MAP.get(localPlayer.nextDirection) !== dataPlayer.newDirection)
-        {
+        if (DIRSTR_MAP.get(localPlayer.nextDirection) !== dataPlayer.newDirection) {
             this._sendClientSnap(localPlayer);
         }
     }
 
     /**
      * Apdating local game info with data from server
-     * 
+     *
      * @param data serverSnapshot to take info from
      */
     public refreshGameState(data: IGameSnapshot) {
@@ -252,7 +251,7 @@ export default class Multiplayer extends Game {
 
             const x = player.position.x;
             const y = player.position.y;
-            
+
             currentPlayer.startPosition.x = x;
             currentPlayer.startPosition.y = y;
 
@@ -263,7 +262,7 @@ export default class Multiplayer extends Game {
 
     /**
      * Handler of incoming serverSnapshots
-     * 
+     *
      * @param data serverSnapshot to handle.
      */
     public serverSnapHandler(data: IGameSnapshot) {
@@ -278,8 +277,8 @@ export default class Multiplayer extends Game {
             });
         }
 
-        // if new timestamp is newer that last recieved, than add it 
-        if (data.timestamp >= this.gameSnapSaves[this.gameSnapSaves.length-1].gameSnapshot.timestamp) {
+        // if new timestamp is newer that last recieved, than add it
+        if (data.timestamp >= this.gameSnapSaves[this.gameSnapSaves.length - 1].gameSnapshot.timestamp) {
             this.gameSnapSaves.push({
                 recievingTimestamp: this.lastSnapRecieveTimestamp,
                 gameSnapshot: data,
@@ -287,8 +286,6 @@ export default class Multiplayer extends Game {
 
             this.interCounter = 0;
         }
-
-
 
         /* OLD INTERPOLATION
         this.serverSnapTimeDiff = Date.now() - this.prevServerSnapTime;
@@ -345,7 +342,7 @@ export default class Multiplayer extends Game {
             }
 
             this.interCounter = this.interCounter + (now - this.lastFrameCall);
-            
+
             this.Scene.clear();
             this.Scene.render();
 
@@ -365,7 +362,7 @@ export default class Multiplayer extends Game {
 
         // ToDo Probably its beter to switch serverTime on clientReceivingTime
 
-        if (this.gameSnapSaves.length < 2) {return;}
+        if (this.gameSnapSaves.length < 2) {return; }
         // 1) Find ration of interCounter to Length of Last Snap FrameTime
         const lastSaveIndex = this.gameSnapSaves.length - 1;
         const newestSnap = this.gameSnapSaves[lastSaveIndex];
@@ -396,7 +393,6 @@ export default class Multiplayer extends Game {
         console.log('interpole',newOldestSnap, newestSnap, clientTimeToNewestSnapRatio);
         this.interpolatePlayersOffsetsBetween(newOldestSnap.gameSnapshot, newestSnap.gameSnapshot, clientTimeToNewestSnapRatio);
     }
-
 
     /**
      * Adds player to game

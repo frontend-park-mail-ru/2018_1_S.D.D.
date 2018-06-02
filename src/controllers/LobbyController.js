@@ -56,13 +56,16 @@ class LobbyController extends Controller {
     }
 
     actionGetLobbies() {
+        SessionSettings.lobbyId = -1;
+        SessionSettings.ready = false;
+        this.LobbyView.setNotReady();
         const loggedin = this.ServiceManager.UserStorage.getBooleanData('loggedin');
         //console.log(this.inLobby, this.lobbyId)
         if (this.inLobby && this.lobbyId > 0) {
             this.ServiceManager.Net.send({
-                "class": "LobbyMessage",
-                "action": "DISCONNECT",
-                "id": this.lobbyId
+                'class': 'LobbyMessage',
+                'action': 'DISCONNECT',
+                'id': this.lobbyId
             });
             this.inLobby = false;
             this.lobbyId = -1;
@@ -75,11 +78,14 @@ class LobbyController extends Controller {
     }
 
     actionCreateLobby() {
+        SessionSettings.lobbyId = -1;
+        SessionSettings.ready = false;
+        this.LobbyView.setNotReady();
         if (this.inLobby && this.lobbyId > 0) {
             this.ServiceManager.Net.send({
-                "class": "LobbyMessage",
-                "action": "DISCONNECT",
-                "id": this.lobbyId
+                'class': 'LobbyMessage',
+                'action': 'DISCONNECT',
+                'id': this.lobbyId
             });
             this.inLobby = false;
             this.lobbyId = -1;
@@ -145,6 +151,9 @@ class LobbyController extends Controller {
     }
 
     showLobbies(data = null) {
+        SessionSettings.lobbyId = -1;
+        SessionSettings.ready = false;
+        this.LobbyView.setNotReady();
         const pageData = {
             'Lobby': {
                 loggedIn: this.ServiceManager.UserStorage.getBooleanData('loggedin'),
@@ -209,6 +218,8 @@ class LobbyController extends Controller {
 
     changedState(data = null) {
         let newPlayer = null;
+        const US = this.ServiceManager.UserStorage;
+        let filtered = null;
         switch (data.action) {
         case 'CONNECTED':
             newPlayer = {
@@ -220,22 +231,23 @@ class LobbyController extends Controller {
             SessionSettings.players.push(newPlayer);
             break;
         case 'DISCONNECTED':
+            SessionSettings.ready = false;
+            this.LobbyView.setNotReady();
             this.LobbyView.removePlayersFromRoom(data.nickname);
-            const filtered = SessionSettings.players.filter(p => p.name != data.nickname);
+            filtered = SessionSettings.players.filter(p => p.name != data.nickname);
             SessionSettings.players = filtered;
-            const US = this.ServiceManager.UserStorage;
+            
             if (data.nickname === US.getData('nickname')) {
                 this.inLobby = false;
                 this.lobbyId = -1;
+                SessionSettings.lobbyId = -1;
                 this.ServiceManager.Router.re('/lobby');
             }
             break;
-        case 'READY':  
-            this.ServiceManager.Net.send({
-                class: 'LobbyMessage',
-                action: 'START',
-                id: data.lobbyId
-            });
+        case 'READY':
+            SessionSettings.lobbyId = data.lobbyId;
+            SessionSettings.ready = true;
+            this.LobbyView.setReady();
             break;
         }
     }

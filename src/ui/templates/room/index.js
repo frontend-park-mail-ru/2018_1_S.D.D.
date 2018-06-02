@@ -4,6 +4,7 @@ import template from './room.pug';
 import addnewmmbr from './member.pug';
 import './room.scss';
 import ServiceManager from '../../../modules/ServiceManager';
+import SessionSettings from '../../../modules/game/SessionSettings';
 
 export default {
     addPlayersToRoom: function(tmpl, players, isowner, lobbyId) {
@@ -21,22 +22,30 @@ export default {
             if (rembtn) {
                 rembtn.addEventListener('click', () => {
                     const SM = new ServiceManager();
-                    console.log(player, {
-                        "class": "LobbyMessage",
-                        "action": "DISCONNECT",
-                        "id": lobbyId,
-                        "userId": player.id
-                    })
                     SM.Net.send({
-                        "class": "LobbyMessage",
-                        "action": "DISCONNECT",
-                        "id": lobbyId,
-                        "userId": player.id
+                        'class': 'LobbyMessage',
+                        'action': 'DISCONNECT',
+                        'id': lobbyId,
+                        'userId': player.id
                     });
                 });
             }
             place.appendChild(nmdiv);
         });
+    },
+
+    ready() {
+        const startbtn = document.querySelector('.start-btn');
+        if (startbtn) {
+            startbtn.classList.remove('start-btn-not-ready');
+        }
+    },
+
+    notready() {
+        const startbtn = document.querySelector('.start-btn');
+        if (startbtn) {
+            startbtn.classList.add('start-btn-not-ready');
+        }
     },
 
     removePlayersFromRoom: function(tmpl, player) {
@@ -56,8 +65,14 @@ export default {
         const startbtn = elem.querySelector('.start-btn');
         if (startbtn) {
             startbtn.addEventListener('click', () => {
-                const SM = new ServiceManager();
-                SM.Router.re('/play');
+                if (SessionSettings.ready) {
+                    const SM = new ServiceManager();
+                    SM.Net.send({
+                        class: 'LobbyMessage',
+                        action: 'START',
+                        id: SessionSettings.lobbyId
+                    });
+                }
             });
         }
 
