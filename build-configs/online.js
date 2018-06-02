@@ -1,6 +1,6 @@
 const webpack = require('webpack');
-const serverUrl = 'https://color-it.online:8080';
-const wsAddress = 'wss://color-it.online:8080/game';
+const serverUrl = 'https://color-it.online';
+const wsAddress = 'wss://color-it.online/game';
 
 module.exports = {
     serverUrl: serverUrl,
