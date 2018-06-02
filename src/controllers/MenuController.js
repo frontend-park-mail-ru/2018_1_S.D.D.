@@ -29,7 +29,7 @@ class MenuController extends Controller {
                 menuItems: [
                     { link:'/lobby', text:'PLAY' },
                     { link:'/scores/show', text:'SCORES' },
-                    { link:'/rules', text:'RULES' },
+                    //{ link:'/rules', text:'RULES' },
                     { link:'/about', text:'DEVELOPERS' }
                 ]
             },

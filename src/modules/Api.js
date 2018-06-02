@@ -63,7 +63,7 @@ class Api {
         } else {
             const EventBus = new ServiceManager().EventBus;
             EventBus.emit('error:noresponse');
-         }
+        }
     }
 
     /**
@@ -103,7 +103,7 @@ class Api {
             },
             () => {
                 const EventBus = new ServiceManager().EventBus;
-            	EventBus.emit('error:noresponse');
+                EventBus.emit('error:noresponse');
             }
         );
     }

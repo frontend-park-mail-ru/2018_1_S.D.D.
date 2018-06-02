@@ -22,6 +22,13 @@
                         include ./row.pug
                         each lobby in lobbies
                             +row(lobby)
+                        tr.table__tr
+                            td(colspan="5").table__td.table_nodata.data-exists
+                                | NO ONE PLAYS NOW :(
+                                br
+                                | YOU CAN 
+                                a(href='/lobby/create') CREATE
+                                |  LOBBY BY YOURSELF
                 else
                     tr.table__tr
                         td(colspan="5").table__td.table_nodata YOU SHOULD LOGIN TO PLAY ONLINE

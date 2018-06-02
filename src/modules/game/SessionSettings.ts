@@ -16,4 +16,6 @@ export default class SessionSettings {
     public static time: number = 60;
     public static size: number = 8;
     public static players: IPlayer[] = [];
+    public static ready: boolean = false;
+    public static lobbyId: number = -1;
 }

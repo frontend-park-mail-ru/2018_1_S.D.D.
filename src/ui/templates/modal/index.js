@@ -7,7 +7,7 @@ import ServiceManager from '../../../modules/ServiceManager';
 export default {
     render: (params = {}) => {
         params.mobile = false;
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             params.mobile = true;
         }
         const elem = document.createElement('div');
