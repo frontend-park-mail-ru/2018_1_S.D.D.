@@ -7,7 +7,7 @@ const cacheUrls = [
     '/scores/show',
     '/public/bundle.js',
     '/public/index.html',
-    '/public/img',
+    '/public/images',
     '/public/css',
     '/public/js'
 ];
