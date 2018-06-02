@@ -3,7 +3,7 @@ mixin mmbr(player, isOwner)
         img(src=player.avatar, alt="")
     .member__nickname.member__property #{player.name}
     if isOwner
-        .member__remove.member__property &#10006;
+        div(class=`member__remove member__remove-${player.name} member__property`) &#10006;
 
 if newMmbr
     +mmbr(newMmbr, isowner)

@@ -57,8 +57,20 @@ class LobbyView extends View {
             });
     }
 
-    addPlayersToRoom(players, isowner) {
-        RoomTemplate.addPlayersToRoom(this.load('Room'), players, isowner);
+    updateLobby(id, count, owner) {
+        LobbyTemplate.updateLobby(id, count, owner);
+    }
+
+    deleteLobby(id) {
+        LobbyTemplate.deleteLobby(id);
+    }
+
+    addPlayersToRoom(players, isowner, lobbyId) {
+        RoomTemplate.addPlayersToRoom(this.load('Room'), players, isowner, lobbyId);
+    }
+
+    removePlayersFromRoom(player) {
+        RoomTemplate.removePlayersFromRoom(this.load('Room'), player);
     }
 
     showPage() {

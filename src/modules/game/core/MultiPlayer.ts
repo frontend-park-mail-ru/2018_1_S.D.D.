@@ -248,6 +248,7 @@ export default class Multiplayer extends Game {
 
             currentPlayer.velocity = player.velocity;
         });
+        MetaController.updateScores();
     }
 
     /**
