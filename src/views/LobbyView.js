@@ -57,6 +57,14 @@ class LobbyView extends View {
             });
     }
 
+    setReady() {
+        RoomTemplate.ready();
+    }
+
+    setNotReady() {
+        RoomTemplate.notready();
+    }
+
     updateLobby(id, count, owner) {
         LobbyTemplate.updateLobby(id, count, owner);
     }
