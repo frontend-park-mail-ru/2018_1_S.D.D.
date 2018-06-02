@@ -2,6 +2,14 @@
 const CACHE_NAME = 'color-it-cache';
 // ссылки на кэшируемые файлы
 const cacheUrls = [
+    '/',
+    '/play',
+    '/scores/show',
+    '/public/bundle.js',
+    '/public/index.html',
+    '/public/img',
+    '/public/css',
+    '/public/js'
 ];
 
 let cacheRegExp = new RegExp('(' + [
