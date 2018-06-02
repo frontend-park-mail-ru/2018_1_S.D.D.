@@ -65,6 +65,11 @@ export default {
         const startbtn = elem.querySelector('.start-btn');
         if (startbtn) {
             startbtn.addEventListener('click', () => {
+                if (SessionSettings.mode === 'offline') {
+                    const SM = new ServiceManager();
+                    SM.Router.re('/play');
+                    return;
+                }
                 if (SessionSettings.ready) {
                     const SM = new ServiceManager();
                     SM.Net.send({
