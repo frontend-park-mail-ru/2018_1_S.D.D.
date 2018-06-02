@@ -67,6 +67,9 @@ export default abstract class Character extends Drawable {
      * Movement offset between cells.
      */
     public moveOffset: Point = new Point(0, 0);
+    // public moveOffset: number = 0;/
+
+    public clearOffset: number = 0;
 
     /**
      * Current character movement direction.
@@ -107,6 +110,46 @@ export default abstract class Character extends Drawable {
         this.nextDirection = this.direction;
         this.avatar = new Image();
         this.avatar.src = defaultAvatar;
+    }
+
+    /**
+     * Adds to player's moveOffset offset depending on direction
+     * @param offset to add
+     * @param direction defines part to add offset (x or y)
+     * and will it be positive or negative
+     */
+    public offsetPlayerByDirectionAdditive(offset: number, direction: string) {
+        switch (direction) {
+            case 'LEFT':
+                // currentPlayer.direction = Direction.LEFT;
+                this.moveOffset.x = this.moveOffset.x - offset;
+                break;
+            case 'RIGHT':
+                // currentPlayer.direction = Direction.RIGHT;
+                this.moveOffset.x =  this.moveOffset.x + offset;
+                break;
+            case 'UP':
+                // currentPlayer.direction = Direction.UP;
+                this.moveOffset.y = this.moveOffset.y - offset;
+                break;
+            case 'DOWN':
+                // currentPlayer.direction = Direction.DOWN;
+                this.moveOffset.y = this.moveOffset.y + offset;
+                break;
+            }
+    }
+
+    /**
+     * Fills player's moveOffset with offset depending on direction
+     * @param offset to fill
+     * @param direction defines part to fill with offset (x or y)
+     * and will it be positive or negative
+     */
+    public offsetPlayerByDirection(offset: number, direction: string) {
+        this.moveOffset.x = 0;
+        this.moveOffset.y = 0;
+
+        this.offsetPlayerByDirectionAdditive(offset, direction);
     }
 
     /**
@@ -220,6 +263,7 @@ export default abstract class Character extends Drawable {
         // x, y - center
         const startx = this.startPosition.x * Cell.realSize;
         const starty = this.startPosition.y * Cell.realSize;
+
         const x = startx + Cell.realSize * this.moveOffset.x / 100 + Cell.size / 2 + margin / 2;
         const y = starty + Cell.realSize * this.moveOffset.y / 100 + Cell.size / 2 + margin / 2;
 
@@ -240,11 +284,11 @@ export default abstract class Character extends Drawable {
     private subscribeMovement(): void {
         const newDirectionRequest = (direction) => {
             if (SessionSettings.mode === 'offline') { return; }
-            const request = {
-                class: 'ClientSnapshot',
-                direction,
-            };
-            new ServiceManager().Net.send(request);
+            // const request = {
+            //     class: 'ClientSnapshot',
+            //     direction,
+            // };
+            // new ServiceManager().Net.send(request);
         };
 
         GameEventBus.subscribe(`MOVE.UP:${this.id}`, () => {

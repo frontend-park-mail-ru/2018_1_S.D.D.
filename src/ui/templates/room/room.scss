@@ -65,3 +65,17 @@
         top: 36%;
     }
 }
+
+.notowner {
+    display: none;
+}
+
+.inl-fix {
+    display: inline-block;
+    width: 100px;
+}
+
+.start-btn-not-ready {
+    cursor: not-allowed;
+    background: rgb(190, 190, 190) !important;
+}

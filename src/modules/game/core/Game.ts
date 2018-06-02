@@ -54,12 +54,12 @@ export default abstract class Game {
     /**
      * Timestamp of last timer changed.
      */
-    private lastTimerCall: number;
+    protected lastTimerCall: number;
 
     /**
      * Timestamp of last requestAnimationFrame was called.
      */
-    private lastFrameCall: number;
+    protected lastFrameCall: number;
 
     /**
      * Initializes scene and common game system.
@@ -127,6 +127,8 @@ export default abstract class Game {
     }
 
     /**
+     * Should be overwritten. Logic call.
+     *
      * Redraw scene and call logic.
      *
      * @param now Current timestamp.

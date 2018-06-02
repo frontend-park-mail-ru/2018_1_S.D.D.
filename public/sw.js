@@ -2,7 +2,19 @@
 const CACHE_NAME = 'color-it-cache';
 // ссылки на кэшируемые файлы
 const cacheUrls = [
+    '/',
+    '/play',
+    '/scores/show',
+    '/public/bundle.js',
+    '/public/index.html',
+    '/public/images',
+    '/public/css',
+    '/public/js'
 ];
+
+let cacheRegExp = new RegExp('(' + [
+  '.(css|js|woff2?|ttf|png|jpe?g)'
+].join('(/?)|\\') + ')$');
 
 this.addEventListener('install', (event) => {
     // задержим обработку события
@@ -20,6 +32,22 @@ this.addEventListener('install', (event) => {
             })
     );
 });
+
+/*self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+          // Return true if you want to remove this cache,
+          // but remember that caches are shared across
+          // the whole origin
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+});*/
 
 /*this.addEventListener('fetch', (event) => {
 
@@ -57,16 +85,33 @@ this.addEventListener('install', (event) => {
 });*/
 
 this.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request).then(function(resp) {
-            return resp || fetch(event.request).then(function(response) {
-                return caches.open(CACHE_NAME).then(function(cache) {
-                    cache.put(event.request, response.clone());
-                    return response;
-                });
+    if (event.request.method != 'GET') {
+        return;
+    }
+    /*if (navigator.onLine) { 
+        if (!cacheRegExp.test(event.request.url)) {
+
+            // request will be networked
+            return;
+        }
+        fetch(event.request).then(function(response) {
+            return caches.open(CACHE_NAME).then(function(cache) {
+                cache.put(event.request, response.clone());
+                return response;
             });
-        }).catch(function() {
-            return caches.match('/');
+        });
+     } else { */
+        event.respondWith(
+            caches.match(event.request).then(function(resp) {
+                return resp || fetch(event.request).then(function(response) {
+                    return caches.open(CACHE_NAME).then(function(cache) {
+                        cache.put(event.request, response.clone());
+                        return response;
+                    });
+                });
+            }).catch(function() {
+                return caches.match('/');
         })
     );
+    // }
 });
