@@ -158,6 +158,7 @@ class LobbyController extends Controller {
         SessionSettings.mode = 'offline';
         SessionSettings.time = time;
         SessionSettings.size = field;
+        SessionSettings.players = [];
         SessionSettings.players.push(owner);
         this.LobbyView.constructRoom(pageData).then(() => {
             this.LobbyView.setReady();
