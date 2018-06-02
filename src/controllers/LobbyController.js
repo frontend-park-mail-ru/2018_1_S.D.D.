@@ -98,7 +98,18 @@ class LobbyController extends Controller {
         this.LobbyView.constructCreation(pageData);
     }
 
-    actionOnlineLobby() {
+    actionOnlineLobby(roomId = -1) {
+        if (SessionSettings.players.length === 0) {
+            const SM = this.ServiceManager;
+            const Net = SM.Net;
+            const connectRequest = {
+                'class': 'LobbyMessage',
+                'action': 'CONNECT',
+                'id': roomId
+            };
+            Net.send(connectRequest);
+            return;
+        }
         const pageData = {
             'Room': {
                 owner: SessionSettings.players[0],
