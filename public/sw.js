@@ -80,7 +80,7 @@ this.addEventListener('fetch', function(event) {
     if (event.request.method != 'GET') {
         return;
     }
-    /* if (navigator.onLine) { 
+    if (navigator.onLine) { 
         if (!cacheRegExp.test(event.request.url)) {
 
             // request will be networked
@@ -92,7 +92,7 @@ this.addEventListener('fetch', function(event) {
                 return response;
             });
         });
-     } else { */
+     } else { 
         event.respondWith(
             caches.match(event.request).then(function(resp) {
                 return resp || fetch(event.request).then(function(response) {
@@ -105,5 +105,5 @@ this.addEventListener('fetch', function(event) {
                 return caches.match('/');
         })
     );
-    // }
+    }
 });
