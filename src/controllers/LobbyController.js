@@ -117,6 +117,7 @@ class LobbyController extends Controller {
     }
 
     actionOfflineLobby() {
+        SessionSettings.ready = true;
         const Router = this.ServiceManager.Router;
         const field = Router.getAdditionalParams('field');
         const time = Router.getAdditionalParams('time');
@@ -147,7 +148,9 @@ class LobbyController extends Controller {
         SessionSettings.time = time;
         SessionSettings.size = field;
         SessionSettings.players.push(owner);
-        this.LobbyView.constructRoom(pageData);
+        this.LobbyView.constructRoom(pageData).then(() => {
+            this.LobbyView.setReady();
+        })
     }
 
     showLobbies(data = null) {
